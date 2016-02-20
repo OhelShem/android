@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="questions">
+        <item>מדוע השינויים לא נכונים</item>
+        <item>איך האפליקציה עובדת</item>
+        <item>כיצד ניתן לקבל תזכורת על מבחנים מראש</item>
+    </string-array>
+
+    <string-array name="answers">
+        <item>האפליקציה שומרת את השינויים מהפעם האחרונה שעדכנת אותם. עדכון בשנית על מנת שהשינויים יתעדכנו ישירות מהאתר. כדי לראות מתי עדכנת לאחרונה, היכנס לתפריט האפשרויות</item>
+        <item>האפליקציה ניגשת לשרתים של בית הספר, ומבקשת ממנו את השינויים. בנוסף, האפליקציה שומרת את השינויים על המכשיר, על מנת שיהיה ניתן לראות אותם שוב גם ללא חיבור לאינטרנט</item>
+        <item>בהגדרות של האפליקציה ניתן לסמן שהאפליקציה תשלח תזכורת זמן קבוע לפני כל מבחן.</item>
+    </string-array>
+
+    <string name="who_am_i">מי פיתח את האפליקציה?</string>
+    <string name="more_apps_i_built">אפליקציות נוספות שבניתי</string>
+    <string name="mashov">Mashov (Unofficial)</string>
+    <string name="openu">Open University</string>
+    <string name="quick_apps">(LG) Quick Circle Apps</string>
+    <string name="yoav_sternberg">יואב שטרנברג</string>
+    <string name="yoav_sternberg_info">תלמיד כיתה יא 4</string>
+</resources>

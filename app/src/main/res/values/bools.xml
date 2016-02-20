@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="dashboard_as_default">true</bool>
+    <bool name="dashboard_show_tests">true</bool>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vlonjatg.progressactivity.ProgressActivity
+    android:id="@+id/progressActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/activityToolbar"
+    app:progressEmptyStateBackgroundColor="@color/colorPrimaryLight"
+    app:progressEmptyStateContentTextColor="@android:color/white"
+    app:progressEmptyStateTitleTextColor="@android:color/white"
+    app:progressErrorStateBackgroundColor="@color/colorPrimaryLight"
+    app:progressErrorStateButtonTextColor="@android:color/white"
+    app:progressErrorStateContentTextColor="@android:color/white"
+    app:progressErrorStateTitleTextColor="@android:color/white">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:padding="16dp" />
+    </android.support.design.widget.CoordinatorLayout>
+</com.vlonjatg.progressactivity.ProgressActivity>

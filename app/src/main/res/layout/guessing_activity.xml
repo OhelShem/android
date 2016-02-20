@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@drawable/entrance_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_marginTop="65dp"
+        android:layout_marginTop="40dp"
+        android:id="@+id/mainLayout"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/guessing_game"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/guessing_game_description"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/startPlayingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            app:backgroundTint="@color/md_green_500"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            android:text="@string/start_playing"
+            android:textColor="@android:color/white"
+            tools:ignore="RtlHardcoded"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        tools:layout_marginBottom="60dp">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/notThisTimeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:backgroundTint="@color/md_deep_purple_500"
+            android:text="@string/not_this_time"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/white"
+            tools:ignore="RtlHardcoded"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/neverButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:backgroundTint="@color/md_red_500"
+            android:layout_marginLeft="16dp"
+            android:text="@string/never"
+            android:textColor="@android:color/white"
+            tools:ignore="RtlHardcoded"/>
+    </LinearLayout>
+</FrameLayout>

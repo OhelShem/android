@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+    <group
+        android:id="@+id/navigation"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboard"
+            android:checked="true"
+            android:title="@string/dashboard"/>
+        <item
+            android:id="@+id/changes"
+            android:title="@string/changes"/>
+        <item
+            android:id="@+id/timetable"
+            android:title="@string/timetable"/>
+        <item
+            android:id="@+id/tests"
+            android:title="@string/tests"/>
+        <item
+            android:id="@+id/layer"
+            tools:ignore="MenuTitle"/>
+
+        <item
+            android:id="@+id/holidays"
+            android:title="@string/holidays"/>
+    </group>
+
+    <group
+        android:id="@+id/links">
+        <item
+            android:id="@+id/regulations"
+            android:icon="@drawable/ic_book"
+            android:title="@string/regulations"/>
+
+        <item
+            android:id="@+id/help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/help"/>
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+    </group>
+</menu>

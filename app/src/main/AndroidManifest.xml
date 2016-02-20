@@ -1,0 +1,68 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.yoavst.changesystemohelshem">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name="com.ohelshem.app.android.App"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup, android:supportsRtl">
+        <activity
+            android:name="com.ohelshem.app.android.activity.MainActivity"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.ohelshem.app.android.activity.SettingsActivity" />
+        <activity android:name="com.ohelshem.app.android.activity.HelpActivity" />
+        <activity android:name="com.ohelshem.app.android.activity.OverridesActivity" />
+
+        <activity
+            android:name="com.ohelshem.app.android.activity.LoginActivity"
+            android:theme="@style/AppTheme.Login" />
+
+        <activity
+            android:name="com.ohelshem.app.android.activity.GuessingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Login" />
+
+        <activity
+            android:name="com.ohelshem.app.android.activity.GuessingGameActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name="com.ohelshem.app.android.service.NotificationService"
+            android:exported="false" />
+        <service
+            android:name="com.ohelshem.app.android.service.OngoingNotificationService"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.ohelshem.app.android.receiver.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="com.ohelshem.app.android.MyFileProvider"
+            android:authorities="com.yoavst.changesystemohelshem"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+    </application>
+
+</manifest>

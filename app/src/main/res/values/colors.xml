@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorPrimaryLight">#64B5F6</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="md_green_500">#4CAF50</color>
+    <color name="md_red_500">#F44336</color>
+    <color name="md_teal_500">#009688</color>
+    <color name="md_amber_500">#FFC107</color>
+    <color name="md_deep_purple_500">#673AB7</color>
+    <color name="md_blue_500">#2196F3</color>
+    <color name="md_orange_500">#FF9800</color>
+    <color name="md_cyan_500">#00BCD4</color>
+    <color name="md_blue_grey_500">#607D8B</color>
+
+
+    <color name="material_login_login_color">#FFFFFF</color>
+    <color name="material_login_login_error_color">#ff5151</color>
+    <color name="material_login_login_text_color">#000</color>
+    <color name="material_login_register_color">#FF4081</color>
+    <color name="material_login_register_error_color">#ffcdce</color>
+    <color name="material_login_register_text_color">#000</color>
+
+    <array name="colors">
+        <item>#F44336</item>
+        <item>#E91E63</item>
+        <item>#9C27B0</item>
+        <item>#673AB7</item>
+        <item>#3F51B5</item>
+        <item>#2196F3</item>
+        <item>#03A9F4</item>
+        <item>#00BCD4</item>
+        <item>#009688</item>
+        <item>#4CAF50</item>
+        <item>#8BC34A</item>
+        <item>#CDDC39</item>
+        <item>#FF9800</item>
+        <item>#FF5722</item>
+        <item>#795548</item>
+        <item>#607D8B</item>
+    </array>
+
+</resources>
