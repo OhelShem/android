@@ -22,21 +22,22 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import com.chibatching.kotpref.Kotpref
+import com.ohelshem.api.ApiFactory
 import com.orhanobut.logger.Logger as ExternalLogger
 import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.service.NotificationService
 import com.ohelshem.app.android.service.OngoingNotificationService
 import com.ohelshem.app.clearTime
-import com.ohelshem.app.controller.DBController
-import com.ohelshem.app.controller.TimetableController
 import com.ohelshem.app.injection.ControllerInjectionModule
-import com.ohelshem.api.controller.declaration.ApiController
 import com.ohelshem.api.controller.declaration.ApiParser
+import com.ohelshem.api.controller.declaration.ApiProvider
 import com.ohelshem.api.controller.declaration.ColorProvider
-import com.ohelshem.api.controller.implementation.ApiControllerImpl
 import com.ohelshem.api.controller.implementation.ApiParserImpl
+import com.ohelshem.api.controller.implementation.ApiProviderImpl
 import com.ohelshem.api.controller.implementation.ColorProviderImpl
+import com.ohelshem.api.logger
 import com.ohelshem.api.model.AuthData
+import com.ohelshem.app.controller.*
 import org.jetbrains.anko.alarmManager
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.*
@@ -51,18 +52,20 @@ import org.jetbrains.anko.intentFor
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Injekt.importModule(ControllerInjectionModule)
         addColorProvider()
-        Injekt.addSingleton<ApiParser>(ApiParserImpl(Injekt.get()))
-        Injekt.addSingleton<ApiController>(ApiControllerImpl(Injekt.get(), Injekt.get(), Injekt.get()))
-
+        logger = LoggerImpl
+        Injekt.importModule(ControllerInjectionModule)
         Instance = this
 
         Kotpref.init(this)
         com.orhanobut.logger.Logger.init("OhelShem")
 
+        val parser = ApiParserImpl(Injekt.get()).apply { timetableColors = getThemeColors() }
+        Injekt.addSingleton<ApiParser>(parser)
+        Injekt.addSingleton<ApiProvider>(ApiProviderImpl(parser, Injekt.get()))
+        Injekt.addSingleton<ApiController>(ApiControllerImpl(Injekt.get(), Injekt.get()))
+
         Injekt.get<ApiController>().setNetworkAvailabilityProvider { isNetworkAvailable() }
-        Injekt.get<ApiParser>().timetableColors = getThemeColors()
         initDatabase(Injekt.get<DBController>())
         initTimetable(this, Injekt.get<TimetableController>())
 

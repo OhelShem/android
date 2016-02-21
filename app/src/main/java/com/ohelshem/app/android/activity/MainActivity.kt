@@ -39,7 +39,7 @@ import com.ohelshem.app.controller.DBController
 import com.ohelshem.app.model.ApiUpdatable
 import com.ohelshem.app.model.DrawerActivity
 import com.ohelshem.app.model.DrawerActivity.Companion.FragmentType
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.fragment.*
 import kotlinx.android.synthetic.main.main_activity.*

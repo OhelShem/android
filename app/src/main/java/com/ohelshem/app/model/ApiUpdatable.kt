@@ -17,7 +17,7 @@
 
 package com.ohelshem.app.model
 
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 
 interface ApiUpdatable<T: Any>: Updatable<T> {
     val api: ApiController.Api?

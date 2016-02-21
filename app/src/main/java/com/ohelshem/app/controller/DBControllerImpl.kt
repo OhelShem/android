@@ -21,7 +21,7 @@ import com.chibatching.kotpref.Kotpref
 import com.chibatching.kotpref.KotprefModel
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.Updatable
-import com.ohelshem.api.controller.declaration.ApiDatabase
+import com.ohelshem.app.controller.ApiDatabase
 import com.ohelshem.api.model.*
 import uy.kohesive.injekt.injectLazy
 import java.io.File

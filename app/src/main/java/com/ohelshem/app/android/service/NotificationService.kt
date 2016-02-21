@@ -33,8 +33,8 @@ import com.ohelshem.app.controller.TimetableController
 import com.ohelshem.app.controller.TimetableController.Companion.DayType.Holiday
 import com.ohelshem.app.getHour
 import com.ohelshem.app.model.DrawerActivity.Companion.FragmentType
-import com.ohelshem.api.controller.declaration.ApiController
-import com.ohelshem.api.controller.declaration.ApiController.Api
+import com.ohelshem.app.controller.ApiController
+import com.ohelshem.app.controller.ApiController.Api
 import com.ohelshem.api.model.AuthData
 import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UpdateError

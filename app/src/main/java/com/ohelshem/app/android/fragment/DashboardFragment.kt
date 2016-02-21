@@ -34,7 +34,7 @@ import com.ohelshem.app.controller.TimetableController
 import com.ohelshem.app.model.ApiUpdatable
 import com.ohelshem.app.model.DrawerActivity
 import com.ohelshem.app.toCalendar
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UpdateError
 import kotlinx.android.synthetic.main.dashboard_fragment.*

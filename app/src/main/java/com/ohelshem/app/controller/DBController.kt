@@ -19,7 +19,7 @@ package com.ohelshem.app.controller
 
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.Updatable
-import com.ohelshem.api.controller.declaration.ApiDatabase
+import com.ohelshem.app.controller.ApiDatabase
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.*
 import java.io.File

@@ -30,7 +30,7 @@ import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.hideKeyboard
 import com.ohelshem.app.android.setMargins
 import com.ohelshem.app.controller.DBController
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 import com.ohelshem.api.model.AuthData
 import com.ohelshem.api.model.UpdateError
 import kotlinx.android.synthetic.main.login_activity.*

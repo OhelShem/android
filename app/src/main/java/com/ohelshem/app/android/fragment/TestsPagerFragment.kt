@@ -21,7 +21,7 @@ import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.adapter.TestsFragmentAdapter
 import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.model.ApiUpdatable
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UpdateError
 import kotlinx.android.synthetic.main.tests_fragment.pager

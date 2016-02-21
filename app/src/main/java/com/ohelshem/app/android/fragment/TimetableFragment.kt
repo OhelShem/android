@@ -38,7 +38,7 @@ import com.ohelshem.app.getHour
 import com.ohelshem.app.model.ApiUpdatable
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.WrappedHour
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.UpdateError
 import org.jetbrains.anko.*

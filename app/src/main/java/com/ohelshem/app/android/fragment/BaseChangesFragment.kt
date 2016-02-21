@@ -28,7 +28,7 @@ import com.ohelshem.app.getDay
 import com.ohelshem.app.model.ApiUpdatable
 import com.ohelshem.app.model.DrawerActivity
 import com.ohelshem.app.toCalendar
-import com.ohelshem.api.controller.declaration.ApiController
+import com.ohelshem.app.controller.ApiController
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.UpdateError
 import uy.kohesive.injekt.injectLazy
