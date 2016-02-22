@@ -22,7 +22,6 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import com.chibatching.kotpref.Kotpref
-import com.ohelshem.api.ApiFactory
 import com.orhanobut.logger.Logger as ExternalLogger
 import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.service.NotificationService
