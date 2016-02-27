@@ -113,7 +113,7 @@ Available tests:
 
 # Becoming a part in the project
 Want to become a part in the project that makes the life of an Ohel Shem student better?  
-Contact me at ![Yoavst.com](http://yoavst.com).
+Contact me at [Yoavst.com](http://yoavst.com).
 
 Also, I would merge any useful pull request.
 
