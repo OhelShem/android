@@ -10,7 +10,7 @@
                 android:paddingTop="5dp"
                 tools:layout_width="72dp">
 
-    <com.ohelshem.app.android.view.AutoResizeTextView
+    <com.ohelshem.app.android.util.view.AutoResizeTextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

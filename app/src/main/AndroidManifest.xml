@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup, android:supportsRtl">
         <activity
-            android:name="com.ohelshem.app.android.activity.MainActivity"
+            android:name="com.ohelshem.app.android.MainActivity"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,32 +26,32 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.ohelshem.app.android.activity.SettingsActivity" />
-        <activity android:name="com.ohelshem.app.android.activity.HelpActivity" />
-        <activity android:name="com.ohelshem.app.android.activity.OverridesActivity" />
+        <activity android:name="com.ohelshem.app.android.settings.activity.SettingsActivity" />
+        <activity android:name="com.ohelshem.app.android.help.HelpActivity" />
+        <activity android:name="com.ohelshem.app.android.settings.activity.OverridesActivity" />
 
         <activity
-            android:name="com.ohelshem.app.android.activity.LoginActivity"
+            android:name="com.ohelshem.app.android.login.LoginActivity"
             android:theme="@style/AppTheme.Login" />
 
         <activity
-            android:name="com.ohelshem.app.android.activity.GuessingActivity"
+            android:name="com.ohelshem.app.android.guessing.activity.GuessingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Login" />
 
         <activity
-            android:name="com.ohelshem.app.android.activity.GuessingGameActivity"
+            android:name="com.ohelshem.app.android.guessing.activity.GuessingGameActivity"
             android:screenOrientation="portrait" />
 
         <service
-            android:name="com.ohelshem.app.android.service.NotificationService"
+            android:name="com.ohelshem.app.android.notifications.service.NotificationService"
             android:exported="false" />
         <service
-            android:name="com.ohelshem.app.android.service.OngoingNotificationService"
+            android:name="com.ohelshem.app.android.notifications.service.OngoingNotificationService"
             android:exported="false" />
 
         <receiver
-            android:name="com.ohelshem.app.android.receiver.BootReceiver"
+            android:name="com.ohelshem.app.android.notifications.receiver.BootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -59,7 +59,7 @@
         </receiver>
 
         <provider
-            android:name="com.ohelshem.app.android.MyFileProvider"
+            android:name="com.ohelshem.app.android.util.provider.MyFileProvider"
             android:authorities="com.yoavst.changesystemohelshem"
             android:exported="true"
             tools:ignore="ExportedContentProvider" />

@@ -60,6 +60,7 @@
                 <ScrollView
                     android:id="@+id/testsCard"
                     android:layout_width="match_parent"
+                    android:saveEnabled="false"
                     android:layout_height="wrap_content"
                     android:scrollbars="none">
 

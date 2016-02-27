@@ -65,6 +65,8 @@ fun getHour(): Int {
     return cal.get(Calendar.HOUR_OF_DAY)
 }
 
+fun isSaturday() = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+
 fun Calendar.getDay(): Int {
     return get(Calendar.DAY_OF_WEEK)
 }

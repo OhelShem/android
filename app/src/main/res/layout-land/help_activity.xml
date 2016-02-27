@@ -18,7 +18,7 @@
             android:layout_height="122dp"
             android:background="?colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            app:navigationIcon="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+            app:navigationIcon="@drawable/ic_back"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:ignore="PrivateResource">
 
@@ -56,7 +56,7 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/eliButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -79,9 +79,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/councilButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -105,9 +105,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/eranButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -131,9 +131,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/phonesListButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -157,9 +157,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/layerCounselorButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -183,7 +183,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
             </LinearLayout>
 
             <LinearLayout

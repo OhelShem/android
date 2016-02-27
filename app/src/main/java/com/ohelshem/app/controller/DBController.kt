@@ -23,6 +23,7 @@ import com.ohelshem.app.controller.ApiDatabase
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.*
 import java.io.File
+import java.util.*
 
 /**
  * An interface for classes that control the application's data storage.
@@ -60,7 +61,7 @@ interface DBController : ApiDatabase {
 
     fun isCacheUpdated(): Boolean {
         val cal = changesDate.toCalendar().clearTime()
-        return cal.isToday() && getHour() < 21 || cal.isTomorrow()
+        return cal.isToday() && getHour() < 21 || cal.isTomorrow() || isSaturday() && getHour() < 21
     }
 
     fun hasChanges(): Boolean = isSetup() && changes?.let { it.size != 0 && it.firstOrNull { it.clazz == userData.clazz } != null } ?: false

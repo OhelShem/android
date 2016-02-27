@@ -57,6 +57,7 @@ The project functionality is very modular. Every feature got his own controller,
 * `DBController` - responsible of storing the data of the application.
 * `OffsetDataController` - responsible on reading an `offset data` - The way timetable and tests are saved.
 * `TimetableController` - responsible on managing the timetable and tests.
+* `ApiController` - responsible on querying the api
 
 Each of those controller are interfaces, make them easy to test and pass by. Their implementations has the suffix `Impl`.  
 Beside that, there are few wrappers for the implementations:

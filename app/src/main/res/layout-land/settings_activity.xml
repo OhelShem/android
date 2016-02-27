@@ -17,7 +17,7 @@
             android:layout_height="122dp"
             android:background="?colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            app:navigationIcon="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+            app:navigationIcon="@drawable/ic_back"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:ignore="PrivateResource">
 
@@ -54,7 +54,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/exitButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -76,9 +76,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/openSourceButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -102,9 +102,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/overridesButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -128,9 +128,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/facebookButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -154,9 +154,9 @@
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
 
-                <com.ohelshem.app.android.view.ForegroundLinearLayout
+                <com.ohelshem.app.android.util.view.ForegroundLinearLayout
                     android:id="@+id/siteButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -180,7 +180,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-                </com.ohelshem.app.android.view.ForegroundLinearLayout>
+                </com.ohelshem.app.android.util.view.ForegroundLinearLayout>
             </LinearLayout>
 
             <LinearLayout

@@ -24,8 +24,8 @@ import android.content.Context
 import com.chibatching.kotpref.Kotpref
 import com.orhanobut.logger.Logger as ExternalLogger
 import com.yoavst.changesystemohelshem.R
-import com.ohelshem.app.android.service.NotificationService
-import com.ohelshem.app.android.service.OngoingNotificationService
+import com.ohelshem.app.android.notifications.service.NotificationService
+import com.ohelshem.app.android.notifications.service.OngoingNotificationService
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.injection.ControllerInjectionModule
 import com.ohelshem.api.controller.declaration.ApiParser
@@ -36,6 +36,9 @@ import com.ohelshem.api.controller.implementation.ApiProviderImpl
 import com.ohelshem.api.controller.implementation.ColorProviderImpl
 import com.ohelshem.api.logger
 import com.ohelshem.api.model.AuthData
+import com.ohelshem.app.android.util.colorArrayRes
+import com.ohelshem.app.android.util.colorRes
+import com.ohelshem.app.android.util.isNetworkAvailable
 import com.ohelshem.app.controller.*
 import org.jetbrains.anko.alarmManager
 import uy.kohesive.injekt.Injekt
