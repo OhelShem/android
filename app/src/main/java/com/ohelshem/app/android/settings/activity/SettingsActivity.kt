@@ -82,7 +82,7 @@ class SettingsActivity : AppCompatActivity() {
             browse("https://www.facebook.com/ohelshem.school")
         }
         siteButton.onClick {
-            browse("http://www.ohel-shem.com/portal4/index.php")
+            browse("http://www.ohel-shem.com/portal6")
         }
         overridesButton.onClick {
             startActivity<OverridesActivity>()

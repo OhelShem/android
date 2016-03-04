@@ -47,8 +47,10 @@ class LayerChangesFragment : BaseChangesFragment() {
         if (databaseController.isCacheUpdated()) {
             emptyLayout.showContent()
             val changes = databaseController.changes
-            if (changes != null)
-                recyclerView.adapter = LayerChangesAdapter(activity, data, DBController.Companion.classesAtLayer(databaseController.userData.layer))
+            if (changes != null) {
+                recyclerView.setHasFixedSize(false);
+                recyclerView.adapter = LayerChangesAdapter(activity, data, DBController.classesAtLayer(databaseController.userData.layer))
+            }
             else noData()
             setTitle()
         } else onError(UpdateError.NoData)

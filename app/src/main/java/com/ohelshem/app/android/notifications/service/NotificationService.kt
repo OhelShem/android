@@ -83,6 +83,7 @@ class NotificationService : IntentService("OhelShemNotificationService") {
                         if (databaseController.changes?.any { it.clazz == clazz } ?: false)
                             notifyChanges()
                         else notifyNoChanges()
+                        databaseController.lastNotificationTime = System.currentTimeMillis()
                     }
                     apiController -= CallbackId
                 }

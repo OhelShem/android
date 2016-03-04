@@ -67,10 +67,22 @@ class ApiControllerImpl(override val database: ApiDatabase, private val apiProvi
                 database.serverUpdateDate = serverUpdateDate
                 database.updateDate = System.currentTimeMillis()
                 userData?.let { database.userData = it; apis += Api.UserData }
-                changes?.let { database.changes = it; apis += Api.Changes }
-                tests?.let { database.tests = it; apis += Api.Tests }
-                messages?.let { database.messages = it; apis += Api.Messages }
-                timetable?.let { database.timetable = it; apis += Api.Timetable }
+                if (changes != null || database.changes?.let { it.isNotEmpty() } ?: false) {
+                    database.changes = changes
+                    apis += Api.Changes
+                }
+                if (tests != null || database.tests?.let { it.isNotEmpty() } ?: false) {
+                    database.tests = tests
+                    apis += Api.Tests
+                }
+                if (messages != null || database.messages?.let { it.isNotEmpty() } ?: false) {
+                    database.messages = messages
+                    apis += Api.Messages
+                }
+                if (timetable != null || database.timetable?.let { it.isNotEmpty() } ?: false) {
+                    database.timetable = timetable
+                    apis += Api.Timetable
+                }
             }
             if (apis.isEmpty()) forEach { it.onFail(UpdateError.NoData) }
             else forEach { it.onSuccess(apis) }
