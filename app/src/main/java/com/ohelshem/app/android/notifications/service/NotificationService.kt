@@ -32,12 +32,12 @@ import com.ohelshem.app.controller.DBController
 import com.ohelshem.app.controller.TimetableController
 import com.ohelshem.app.controller.TimetableController.Companion.DayType.Holiday
 import com.ohelshem.app.getHour
-import com.ohelshem.app.model.DrawerActivity.Companion.FragmentType
 import com.ohelshem.app.controller.ApiController
 import com.ohelshem.app.controller.ApiController.Api
 import com.ohelshem.api.model.AuthData
 import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.android.main.ScreenType
 import org.jetbrains.anko.notificationManager
 import uy.kohesive.injekt.injectLazy
 import java.util.*
@@ -56,7 +56,7 @@ class NotificationService : IntentService("OhelShemNotificationService") {
                 add(Calendar.DAY_OF_YEAR, 1)
             }.clearTime()
             if (getHour() >= 21 && databaseController.lastNotificationTime < Calendar.getInstance().clearTime().timeInMillis) {
-                val dayType = timetableController.getDayType(day)
+                val dayType = TimetableController.getDayType(day, timetableController.learnsOnFriday)
                 if (dayType == Holiday) {
                     if (databaseController.notificationsForHolidaysEnabled)
                         notifyHoliday()
@@ -123,35 +123,35 @@ class NotificationService : IntentService("OhelShemNotificationService") {
 
     //region Notifications
     private fun notifyHoliday() {
-        notificationManager.notify(1002, notification(getString(R.string.holiday_notification), "", hasChanges = false, fragmentType = FragmentType.Holidays))
+        notificationManager.notify(1002, notification(getString(R.string.holiday_notification), "", hasChanges = false, screenType = ScreenType.Holidays))
     }
 
     private fun notifyChanges() {
         notificationManager.notify(1001, notification(getString(R.string.notification_about_changes), getString(R.string.enter_to_see_changes),
-                hasChanges = true, fragmentType = FragmentType.Changes))
+                hasChanges = true, screenType = ScreenType.Changes))
 
     }
 
     private fun notifyNoChanges() {
         notificationManager.notify(1001, notification(getString(R.string.notification_about_changes), getString(R.string.no_changes),
-                hasChanges = false, fragmentType = FragmentType.Dashboard))
+                hasChanges = false, screenType = ScreenType.Dashboard))
     }
 
     private fun notifyTestTomorrow(test: Test) {
-        notificationManager.notify(1003, notification(getString(R.string.test_tomorrow), test.content, hasChanges = false, fragmentType = FragmentType.Tests))
+        notificationManager.notify(1003, notification(getString(R.string.test_tomorrow), test.content, hasChanges = false, screenType = ScreenType.Tests))
     }
 
     private fun notifyTestsInAWeek(tests: List<Test>) {
         val text = if (tests.size == 1) tests.first().content else getString(R.string.tests_this_week_subtitle)
-        notificationManager.notify(1004, notification(getString(R.string.tests_this_week), text, hasChanges = false, fragmentType = FragmentType.Tests))
+        notificationManager.notify(1004, notification(getString(R.string.tests_this_week), text, hasChanges = false, screenType = ScreenType.Tests))
     }
 
-    private fun notification(title: String, text: String, hasChanges: Boolean, fragmentType: FragmentType): Notification? {
+    private fun notification(title: String, text: String, hasChanges: Boolean, screenType: ScreenType): Notification? {
                 val intent =
                         if (hasChanges && databaseController.guessingGameEnabled)
                             Intent(applicationContext, GuessingActivity::class.java)
                         else
-                            Intent(applicationContext, MainActivity::class.java).putExtra(MainActivity.Key_Fragment, fragmentType.ordinal)
+                            Intent(applicationContext, MainActivity::class.java).putExtra(MainActivity.Key_Fragment, screenType.ordinal)
                 val pIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
                 return NotificationCompat.Builder(applicationContext)
                         .setSmallIcon(R.drawable.ic_notification)

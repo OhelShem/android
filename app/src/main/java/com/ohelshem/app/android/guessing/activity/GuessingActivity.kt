@@ -8,11 +8,11 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.ohelshem.app.android.MainActivity
+import com.ohelshem.app.android.main.ScreenType
 import com.readystatesoftware.systembartint.SystemBarTintManager
 import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.util.setMargins
 import com.ohelshem.app.controller.DBController
-import com.ohelshem.app.model.DrawerActivity
 import kotlinx.android.synthetic.main.guessing_activity.*
 import org.jetbrains.anko.*
 import uy.kohesive.injekt.injectLazy
@@ -38,7 +38,7 @@ class GuessingActivity : AppCompatActivity() {
     }
 
     private fun startMain() {
-        startActivity<MainActivity>(MainActivity.Key_Fragment to DrawerActivity.Companion.FragmentType.Changes.ordinal)
+        startActivity<MainActivity>(MainActivity.Key_Fragment to ScreenType.Changes.ordinal)
         finish()
     }
 

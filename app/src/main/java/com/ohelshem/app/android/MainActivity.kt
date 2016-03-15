@@ -30,17 +30,19 @@ import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.Spinner
+import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.ohelshem.api.model.UpdateError
-import com.ohelshem.app.android.changes.fragment.ChangesFragment
-import com.ohelshem.app.android.changes.fragment.LayerChangesFragment
+import com.ohelshem.app.android.changes.ClassChangesFragment
+import com.ohelshem.app.android.changes.LayerChangesFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.help.HelpActivity
-import com.ohelshem.app.android.holidays.fragment.HolidaysFragment
+import com.ohelshem.app.android.holidays.HolidaysFragment
 import com.ohelshem.app.android.login.LoginActivity
+import com.ohelshem.app.android.main.ScreenType
+import com.ohelshem.app.android.main.TopNavigationScreenManager
 import com.ohelshem.app.android.settings.activity.SettingsActivity
-import com.ohelshem.app.android.tests.fragment.TestsFragment
-import com.ohelshem.app.android.tests.fragment.TestsPagerFragment
-import com.ohelshem.app.android.timetable.fragment.TimetableFragment
+import com.ohelshem.app.android.tests.TestsFragment
+import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.util.colorRes
 import com.ohelshem.app.android.util.drawableRes
 import com.ohelshem.app.android.util.hide
@@ -48,21 +50,17 @@ import com.ohelshem.app.android.util.show
 import com.ohelshem.app.controller.ApiController
 import com.ohelshem.app.controller.DBController
 import com.ohelshem.app.model.ApiUpdatable
-import com.ohelshem.app.model.DrawerActivity
-import com.ohelshem.app.model.DrawerActivity.Companion.FragmentType
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_activity.view.*
 import org.jetbrains.anko.*
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
 import uy.kohesive.injekt.injectLazy
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback {
+class MainActivity : AppCompatActivity(), ApiController.Callback, TopNavigationScreenManager {
     private val databaseController: DBController by injectLazy()
     private val apiController: ApiController by injectLazy()
 
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
     private var lastUpdate: Long = 0
 
     private var queuedId: Int = -1
-    private var fragmentStack: Stack<FragmentType> = Stack()
+    private var fragmentStack: Stack<ScreenType> = Stack()
     private var miniDrawerItems: Array<ImageView>? = null
     private val selectedColor by lazy { colorRes(R.color.colorAccent) }
     private lateinit var updatedAt: String
@@ -89,14 +87,14 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
             lastUpdate = databaseController.updateDate
             if (savedInstanceState == null) {
                 if (resources.getBoolean(R.bool.dashboard_as_default))
-                    setFragment(FragmentType.Dashboard)
-                else setFragment(FragmentType.Timetable)
+                    setScreen(ScreenType.Dashboard)
+                else setScreen(ScreenType.Timetable)
                 refresh()
-            } else setFragment(FragmentType.values()[savedInstanceState.getInt(Key_Fragment)])
+            } else setScreen(ScreenType.values()[savedInstanceState.getInt(Key_Fragment)])
             if (extraFragment != null)
                 supportFragmentManager.beginTransaction().replace(R.id.extraFragment, DashboardFragment()).commit()
             if (secondaryExtraFragment != null)
-                supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, TestsFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, TestsFragment()).commit() //FIXME
         }
     }
 
@@ -122,7 +120,7 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
     override fun onBackPressed() {
         if (fragmentStack.size > 1) {
             fragmentStack.pop() // current fragment
-            setFragment(fragmentStack.peek())
+            setScreen(fragmentStack.peek())
         } else super.onBackPressed()
     }
 
@@ -155,13 +153,13 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
             miniDrawerItems = arrayOf(changesDrawerItem.getChildAt(0) as ImageView, timetableDrawerItem.getChildAt(0) as ImageView,
                     layerChangesDrawerItem.getChildAt(0) as ImageView, holidaysDrawerItem.getChildAt(0) as ImageView)
             changesDrawerItem.onClick {
-                setFragment(FragmentType.Changes)
+                setScreen(ScreenType.Changes)
             }
             timetableDrawerItem.onClick {
-                setFragment(FragmentType.Timetable)
+                setScreen(ScreenType.Timetable)
             }
             layerChangesDrawerItem.onClick {
-                setFragment(FragmentType.LayerChanges)
+                setScreen(ScreenType.LayerChanges)
             }
             regulationsDrawerItem.onClick {
                 openRegulations()
@@ -170,7 +168,7 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
                 openHelp()
             }
             holidaysDrawerItem.onClick {
-                setFragment(FragmentType.Holidays)
+                setScreen(ScreenType.Holidays)
             }
             settingsDrawerItem.onClick {
                 openSettings()
@@ -193,18 +191,18 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
             }
             toolbar.navigationIcon = drawableRes(R.drawable.ic_menu)
             toolbar.setNavigationOnClickListener {
-                openDrawer()
+                drawerLayout.openDrawer(Gravity.LEFT)
             }
             drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
                 override fun onDrawerClosed(drawerView: View?) {
                     if (queuedId != -1) {
                         when (queuedId) {
-                            R.id.dashboard -> setFragment(FragmentType.Dashboard)
-                            R.id.changes -> setFragment(FragmentType.Changes)
-                            R.id.timetable -> setFragment(FragmentType.Timetable)
-                            R.id.tests -> setFragment(FragmentType.Tests)
-                            R.id.layer -> setFragment(FragmentType.LayerChanges)
-                            R.id.holidays -> setFragment(FragmentType.Holidays)
+                            R.id.dashboard -> setScreen(ScreenType.Dashboard)
+                            R.id.changes -> setScreen(ScreenType.Changes)
+                            R.id.timetable -> setScreen(ScreenType.Timetable)
+                            R.id.tests -> setScreen(ScreenType.Tests)
+                            R.id.layer -> setScreen(ScreenType.LayerChanges)
+                            R.id.holidays -> setScreen(ScreenType.Holidays)
                             R.id.help -> {
                                 openHelp()
                             }
@@ -226,12 +224,12 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
             updateLastUpdated(lastUpdate)
     }
 
-    private fun setSelected(type: FragmentType) {
+    private fun setSelected(type: ScreenType) {
         if (miniDrawerItems != null) {
             miniDrawerItems!!.forEach { it.setColorFilter(ColorUnselected) }
-            if (type == FragmentType.Changes)
+            if (type == ScreenType.Changes)
                 miniDrawerItems!![0].setColorFilter(selectedColor)
-            else if (type == FragmentType.Timetable)
+            else if (type == ScreenType.Timetable)
                 miniDrawerItems!![1].setColorFilter(selectedColor)
             else
                 miniDrawerItems!![2].setColorFilter(selectedColor)
@@ -263,32 +261,12 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
     private fun updateLastUpdated(time: Long) {
         headerView.lastUpdated.text = updatedAt + HourFormatter.format(Date(time))
     }
-
-    override fun openDrawer() {
-        drawerLayout.openDrawer(Gravity.LEFT)
-    }
     //endregion
 
     fun logout() {
-        Injekt.get<DBController>().clearData()
+        databaseController.clearData()
         startActivity(intentFor<LoginActivity>().clearTask())
         finish()
-    }
-
-    override fun setFragment(fragmentType: FragmentType, backStack: Boolean) {
-        val fragment: Fragment = when (fragmentType) {
-            FragmentType.Dashboard -> DashboardFragment()
-            FragmentType.Changes -> ChangesFragment()
-            FragmentType.Timetable -> TimetableFragment()
-            FragmentType.Tests -> TestsPagerFragment()
-            FragmentType.LayerChanges -> LayerChangesFragment()
-            FragmentType.Holidays -> HolidaysFragment()
-        }
-        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
-        if (!backStack)
-            fragmentStack.clear()
-        fragmentStack.add(fragmentType)
-        setSelected(fragmentType)
     }
 
     private fun getUpdatableFragments(): List<ApiUpdatable<*>> {
@@ -312,31 +290,22 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
         }
     }
 
-    override fun refresh() {
-        if (apiController.update()) {
-            toast(R.string.refreshing)
+
+    override fun refresh(): Boolean {
+        val result = apiController.update()
+        if (result) {
+            // FIXME apply refresh state
         }
+        return result
     }
 
-    override fun getNavigationSpinner(): Spinner {
-        toolbar.title = ""
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        navigationSpinner.show()
-        return navigationSpinner
-    }
-
-    override fun setToolbarTitle(title: String) {
-        navigationSpinner.adapter = null
-        navigationSpinner.hide()
-        supportActionBar?.setDisplayShowTitleEnabled(true)
-        toolbar.title = title
-    }
 
     override fun onSuccess(apis: List<ApiController.Api>) {
         onUiThread {
             updateLastUpdated(databaseController.updateDate)
             toast(R.string.refreshed)
             updateFragment(apis)
+            updatables.forEach { it.onSuccess(apis) }
         }
     }
 
@@ -347,8 +316,52 @@ class MainActivity : AppCompatActivity(), DrawerActivity, ApiController.Callback
             if (error == UpdateError.Connection)
                 toast(R.string.no_connection)
             errorFragment(error)
+            updatables.forEach { it.onFail(error) }
         }
     }
+
+    override fun setScreen(screen: ScreenType, backStack: Boolean) {
+        val fragment: Fragment = when (screen) {
+            ScreenType.Dashboard -> DashboardFragment()
+            ScreenType.Changes -> ClassChangesFragment()
+            ScreenType.Timetable -> TimetableFragment()
+            ScreenType.Tests -> TestsFragment()
+            ScreenType.LayerChanges -> LayerChangesFragment()
+            ScreenType.Holidays -> HolidaysFragment()
+        }
+        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
+        if (!backStack)
+            fragmentStack.clear()
+        fragmentStack.add(screen)
+        setSelected(screen)
+    }
+
+    override var screenTitle: CharSequence
+        get() = toolbar.title
+        set(value) {
+            navigationSpinner.adapter = null
+            navigationSpinner.hide()
+            supportActionBar?.setDisplayShowTitleEnabled(true)
+            toolbar.title = value
+        }
+
+    override val topNavigationElement: Spinner
+        get() {
+            toolbar.title = ""
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+            navigationSpinner.show()
+            return navigationSpinner
+        }
+
+    val updatables: List<ApiController.Callback>
+        get() {
+            @Suppress("UNCHECKED_CAST")
+            return listOf(
+                    (supportFragmentManager.findFragmentById(R.id.fragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
+                    (supportFragmentManager.findFragmentById(R.id.extraFragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
+                    (supportFragmentManager.findFragmentById(R.id.secondaryExtraFragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback)
+                    .filterNotNull()
+        }
 
     companion object {
         private const val CallbackId = 75

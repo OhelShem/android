@@ -29,10 +29,6 @@ interface ApiController {
     operator fun set(id: Int, callback: Callback)
     operator fun minusAssign(id: Int)
 
-
-    fun setCallback(id: Int, callback: Callback) = set(id, callback)
-    fun removeCallback(id: Int) = minusAssign(id)
-
     fun update(): Boolean
 
     fun login(): Boolean {

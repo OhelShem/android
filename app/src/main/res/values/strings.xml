@@ -104,9 +104,6 @@
     <string name="version_name">שם גרסה</string>
     <string name="version_code">מספר גרסה</string>
     <string name="version_type">סוג גרסה</string>
-    <string name="force_changes">זייף שינויים</string>
-    <string name="force_no_changes">זייף אין שינויים</string>
-    <string name="cancel_forcing">בטל זיוף</string>
     <string name="test_tomorrow">מבחן מחר</string>
     <string name="tests_this_week">מבחנים בשבוע הקרוב</string>
     <string name="tests_this_week_subtitle">היכנס לאפליקציה על מנת לראות</string>

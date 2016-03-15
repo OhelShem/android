@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android.holidays.adapter
+package com.ohelshem.app.android.holidays
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -24,19 +24,18 @@ import android.widget.TextView
 import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.util.hide
 import com.ohelshem.app.android.util.show
-import com.ohelshem.app.controller.TimetableController
+import com.ohelshem.app.controller.TimetableController.Companion.Holiday
 import org.jetbrains.anko.layoutInflater
 import kotlinx.android.synthetic.main.holiday_item.view.*
 
 
-class HolidaysAdapter : RecyclerView.Adapter<HolidaysAdapter.HolidayHolder>() {
-    override fun getItemCount(): Int = TimetableController.Holidays.size
-    private val items = TimetableController.Holidays
+class HolidaysAdapter(val holidays: Array<Holiday>) : RecyclerView.Adapter<HolidaysAdapter.HolidayHolder>() {
+    override fun getItemCount(): Int = holidays.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolidayHolder = HolidayHolder(parent.context.layoutInflater.inflate(R.layout.holiday_item, parent, false))
 
     override fun onBindViewHolder(holder: HolidayHolder, position: Int) {
-        val item = items[position]
+        val item = holidays[position]
         holder.title.text = item.name
         if (item.isOneDay()) {
             holder.endBlock.hide()
@@ -53,13 +52,13 @@ class HolidaysAdapter : RecyclerView.Adapter<HolidaysAdapter.HolidayHolder>() {
     }
 
     class HolidayHolder(layout: View) : RecyclerView.ViewHolder(layout) {
-        val title: TextView by lazy { itemView.title }
-        val startDate: TextView by lazy { itemView.startDate }
-        val endDate: TextView by lazy { itemView.endDate }
-        val length: TextView by lazy { itemView.length }
-        val endBlock: View by lazy { itemView.endBlock }
-        val daysBlock: View by lazy { itemView.daysBlock }
-        val startText: TextView by lazy { itemView.startText }
+        val title: TextView = itemView.title
+        val startDate: TextView = itemView.startDate
+        val endDate: TextView = itemView.endDate
+        val length: TextView = itemView.length
+        val endBlock: View = itemView.endBlock
+        val daysBlock: View = itemView.daysBlock
+        val startText: TextView = itemView.startText
 
     }
 }

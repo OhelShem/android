@@ -59,7 +59,7 @@ interface DBController : ApiDatabase {
 
     fun isSetup(): Boolean = !userData.isEmpty() && timetable != null
 
-    fun isCacheUpdated(): Boolean {
+    fun areChangesUpdated(): Boolean {
         val cal = changesDate.toCalendar().clearTime()
         return cal.isToday() && getHour() < 21 || cal.isTomorrow() || isSaturday() && getHour() < 21
     }

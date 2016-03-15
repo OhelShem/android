@@ -20,15 +20,15 @@ package com.ohelshem.app.android.tests.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.ohelshem.app.android.tests.fragment.TestsCalendarFragment
-import com.ohelshem.app.android.tests.fragment.TestsFragment
+import com.ohelshem.app.android.tests.TestsListFragment
+import com.ohelshem.app.android.tests.TestsCalendarFragment
 
 /**
  * An adapter for tests fragments
  */
 class TestsFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
     override fun getItem(position: Int): Fragment {
-        return if (position == 0) TestsFragment()
+        return if (position == 0) TestsListFragment()
         else TestsCalendarFragment()
     }
 

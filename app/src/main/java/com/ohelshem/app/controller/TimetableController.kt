@@ -43,23 +43,6 @@ interface TimetableController {
 
     var colors: IntArray
 
-    fun getDayType(calendar: Calendar = Calendar.getInstance()): DayType {
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        if (dayOfWeek == 7) return DayType.Saturday
-        val time = calendar.clearTime().timeInMillis
-        val parser = SimpleDateFormat("dd/MM/yyyy")
-        for (holiday in Holidays) {
-            if (holiday.isOneDay()) {
-                if (time == holiday.startTime) return DayType.Holiday
-            } else {
-                if (time >= holiday.startTime && time <= holiday.endTime) return DayType.Holiday
-            }
-        }
-        if (time >= parser.parse(Summer.start).time && time <= parser.parse(Summer.end).time) return DayType.Summer
-        if (dayOfWeek == 6 && !learnsOnFriday) return DayType.Friday
-        else return DayType.Regular
-    }
-
     fun init()
 
     companion object {
@@ -146,6 +129,23 @@ interface TimetableController {
          */
         internal fun getTimeToCompare(minutes: Int, hours: Int): Int {
             return hours * 60 + minutes
+        }
+
+        fun getDayType(calendar: Calendar = Calendar.getInstance(), learnsOnFriday: Boolean): DayType {
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+            if (dayOfWeek == 7) return DayType.Saturday
+            val time = calendar.clearTime().timeInMillis
+            val parser = SimpleDateFormat("dd/MM/yyyy")
+            for (holiday in Holidays) {
+                if (holiday.isOneDay()) {
+                    if (time == holiday.startTime) return DayType.Holiday
+                } else {
+                    if (time >= holiday.startTime && time <= holiday.endTime) return DayType.Holiday
+                }
+            }
+            if (time >= parser.parse(Summer.start).time && time <= parser.parse(Summer.end).time) return DayType.Summer
+            if (dayOfWeek == 6 && !learnsOnFriday) return DayType.Friday
+            else return DayType.Regular
         }
 
         data class Holiday(val name: String, val start: String, val end: String = "") {

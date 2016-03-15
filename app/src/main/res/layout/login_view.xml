@@ -61,9 +61,11 @@
                     app:theme="@style/MaterialLoginTheme.TextAppearanceLogin">
 
                     <EditText
+                        android:id="@+id/passwordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:imeOptions="actionGo"
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:textSize="20sp" />

@@ -19,9 +19,11 @@ package com.ohelshem.app.android.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.os.Build
+import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.SwitchCompat
 import android.view.View
@@ -32,6 +34,8 @@ import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.inputMethodManager
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 fun Context.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, theme)
 fun Context.colorRes(id: Int): Int {
@@ -75,3 +79,17 @@ fun View.setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0
     params.setMargins(left, top, right, bottom)
     layoutParams = params
 }
+
+
+class StringResourceDelegate(private val resources: () -> Resources, private val id: Int) : ReadOnlyProperty<Any?, String> {
+    private var value: String? = null
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): String {
+        if (value == null) {
+            value = resources().getString(id)
+        }
+        return value!!
+    }
+}
+fun Fragment.stringResource(id: Int): StringResourceDelegate = StringResourceDelegate(futureResources(), id)
+private fun Fragment.futureResources(): () -> Resources = { resources }

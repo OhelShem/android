@@ -23,13 +23,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
+import com.nbsp.materialfilepicker.MaterialFilePicker
+import com.nbsp.materialfilepicker.ui.FilePickerActivity
 import com.yoavst.changesystemohelshem.R
 import com.ohelshem.app.android.settings.adapter.OverridesAdapter
 import com.ohelshem.app.android.util.adapter.SimpleHeaderAdapter.HeaderViewHolder
@@ -51,6 +52,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 class OverridesActivity : AppCompatActivity() {
     private val timetableController: TimetableController by injectLazy()
@@ -69,13 +71,10 @@ class OverridesActivity : AppCompatActivity() {
             if (it.itemId == R.id.save) {
                 backupData()
             } else if (it.itemId == R.id.restore) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED)
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED)
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RequestStorageReadPermission)
                 else {
-                    val intent = Intent(Intent.ACTION_GET_CONTENT).setType("file/*")
-                    if (packageManager.queryIntentActivities(intent, 0).size > 0)
-                        startActivityForResult(Intent.createChooser(intent, getString(R.string.choose_opener)), RequestFileCode)
-                    else toast(R.string.no_file_manager_installed)
+                    launchFileChooser()
                 }
             }
             true
@@ -89,6 +88,15 @@ class OverridesActivity : AppCompatActivity() {
         updateUI()
     }
 
+    fun launchFileChooser() {
+        MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(RequestFileCode)
+                .withFilter(Pattern.compile(".*\\.backup$")) // Filtering files and directories by file name using regexp
+                .withHiddenFiles(true) // Show hidden files and folders
+                .start();
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == RequestStoragePermission) {
@@ -97,10 +105,7 @@ class OverridesActivity : AppCompatActivity() {
             else toast(R.string.permission_denied)
         } else if (requestCode == RequestStorageReadPermission) {
             if (grantResults.size == 1 && grantResults[0] == PERMISSION_GRANTED) {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).setType("file/*")
-                if (packageManager.queryIntentActivities(intent, 0).size > 0)
-                    startActivityForResult(Intent.createChooser(intent, getString(R.string.choose_opener)), RequestFileCode)
-                else toast(R.string.no_file_manager_installed)
+                launchFileChooser()
             } else toast(R.string.permission_denied)
         }
     }
@@ -108,25 +113,31 @@ class OverridesActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RequestFileCode && resultCode == Activity.RESULT_OK && data != null) {
-            contentResolver.openInputStream(data.data).use {
-                tempFile.createNewFile()
-                FileOutputStream(tempFile).use { file ->
-                    it.copyTo(file)
-                }
-            }
-            try {
-                databaseController.importOverrideFile(tempFile)
-                updateUI()
-                toast(R.string.restored)
-            } catch (e: Exception) {
-                toast(R.string.invalid_backup_file)
-            }
-            tempFile.delete()
+            val path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH)
+            processFile(path)
         }
     }
 
+    fun processFile(file: String) {
+        File(file).inputStream().use {
+            tempFile.createNewFile()
+            FileOutputStream(tempFile).use { file ->
+                it.copyTo(file)
+            }
+        }
+        try {
+            databaseController.importOverrideFile(tempFile)
+            updateUI()
+            toast(R.string.restored)
+        } catch (e: Exception) {
+            toast(R.string.invalid_backup_file)
+        }
+        tempFile.delete()
+
+    }
+
     private fun backupData() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), RequestStoragePermission)
         } else {
             val name = BackupFileName()

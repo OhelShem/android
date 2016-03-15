@@ -55,21 +55,13 @@ class DaySpinnerAdapter(context: Context, private val daysInWeek: Int) : BaseAda
         mDropDownHelper.dropDownViewTheme = theme
     }
 
-    override fun getDropDownViewTheme(): Resources.Theme? {
-        return mDropDownHelper.dropDownViewTheme
-    }
+    override fun getDropDownViewTheme(): Resources.Theme? = mDropDownHelper.dropDownViewTheme
 
-    override fun getCount(): Int {
-        return daysInWeek + 1
-    }
+    override fun getCount(): Int = daysInWeek + 1
 
-    override fun getItem(position: Int): Any {
-        return position
-    }
+    override fun getItem(position: Int) = position
 
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
+    override fun getItemId(position: Int): Long = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)

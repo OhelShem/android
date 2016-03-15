@@ -10,6 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:contentDescription="@string/app_name"
         android:background="?colorPrimary"
         android:src="@drawable/logo" />
 
@@ -18,12 +19,16 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:id="@+id/testsLayoutHeader"
             android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
-            android:layout_weight="1"
             card:cardCornerRadius="2dp">
 
             <LinearLayout
@@ -74,7 +79,7 @@
                 </ScrollView>
             </LinearLayout>
         </android.support.v7.widget.CardView>
-
+        </LinearLayout>
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"

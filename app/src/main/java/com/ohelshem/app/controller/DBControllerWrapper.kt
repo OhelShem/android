@@ -106,7 +106,7 @@ class DBControllerWrapper(private val databaseController: DBController) : DBCont
             return _changes
         }
         set(value) {
-            _changes = value
+            _changes = value?.let { if (it.isEmpty()) null else it }
             storeInDB { databaseController.changes = value }
         }
 

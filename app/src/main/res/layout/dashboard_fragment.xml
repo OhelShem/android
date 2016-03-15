@@ -10,6 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:contentDescription="@string/app_name"
         android:background="?colorPrimary"
         android:src="@drawable/logo"/>
 
@@ -100,7 +101,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            tools:ignore="HardcodedText,SpUsage"
+                            tools:ignore="ContentDescription,HardcodedText,SpUsage"
                             android:src="@drawable/ic_alarm"/>
                     </LinearLayout>
 
@@ -195,6 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="6dp"
+                android:saveEnabled="false"
                 card:cardCornerRadius="2dp">
 
                     <LinearLayout

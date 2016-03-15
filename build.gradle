@@ -17,6 +17,9 @@ allprojects {
         maven {
             url "http://dl.bintray.com/ohelshem/maven"
         }
+        maven {
+            url  "http://dl.bintray.com/lukaville/maven"
+        }
     }
 }
 

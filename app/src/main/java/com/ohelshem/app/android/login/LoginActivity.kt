@@ -24,39 +24,36 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import com.readystatesoftware.systembartint.SystemBarTintManager
-import com.yoavst.changesystemohelshem.R
-import com.ohelshem.app.android.util.hideKeyboard
-import com.ohelshem.app.android.util.setMargins
-import com.ohelshem.app.controller.DBController
-import com.ohelshem.app.controller.ApiController
-import com.ohelshem.api.model.AuthData
+import android.view.inputmethod.EditorInfo
+import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.MainActivity
+import com.ohelshem.app.android.util.hideKeyboard
+import com.ohelshem.app.android.util.setMargins
+import com.readystatesoftware.systembartint.SystemBarTintManager
+import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.login_activity.*
 import kotlinx.android.synthetic.main.login_view.*
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.startActivity
-import uy.kohesive.injekt.injectLazy
 
-class LoginActivity : AppCompatActivity(), ApiController.Callback {
-    val apiController: ApiController by injectLazy()
-    val databaseController: DBController by injectLazy()
+class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
+    override var onDestroyCallback: (() -> Unit)? = null
 
-    var lastPassword: String = ""
+    override fun createPresenter(): LoginPresenter = LoginPresenter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
         initLayout()
         initViews()
-        initFunctionality()
+        presenter.init()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        apiController -= Id
+        onDestroyCallback?.invoke()
     }
 
     fun initLayout() {
@@ -89,41 +86,23 @@ class LoginActivity : AppCompatActivity(), ApiController.Callback {
             browse("http://ohel-shem.com/portal6/system/register.php")
         }
         loginButton.onClick { onLogin() }
-    }
-
-    fun initFunctionality() {
-        apiController[Id] = this
-        apiController.authData = AuthData("", "")
-    }
-
-
-    fun onLogin() {
-        if (!apiController.isBusy) {
-            idInputLayout.error = null
-            passwordInputLayout.error = null
-            val id = idInputLayout.editText!!.text.toString()
-            val password = passwordInputLayout.editText!!.text.toString()
-            if (id.length != 9 || !id.all(Char::isDigit)) idInputLayout.error = getString(R.string.invalid_id)
-            else if (password.length < 4) passwordInputLayout.error = getString(R.string.password_too_short)
-            else {
-                lastPassword = password
-                passwordInputLayout.isEnabled = false
-                idInputLayout.isEnabled = false
-                apiController.authData = AuthData(id, password)
-                apiController.login()
-                hideKeyboard()
-                progress.showNow()
+        passwordInput.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                onLogin()
+                true
             }
+            else false
         }
     }
 
-    override fun onSuccess(apis: List<ApiController.Api>) {
-        databaseController.password = lastPassword
-        startActivity<MainActivity>()
-        finish()
+    override fun showLoading() {
+        passwordInputLayout.isEnabled = false
+        idInputLayout.isEnabled = false
+        hideKeyboard()
+        progress.showNow()
     }
 
-    override fun onFail(error: UpdateError) {
+    override fun showLoginError(error: UpdateError) {
         progress.hideNow()
         passwordInputLayout.isEnabled = true
         idInputLayout.isEnabled = true
@@ -133,12 +112,31 @@ class LoginActivity : AppCompatActivity(), ApiController.Callback {
             UpdateError.NoData -> throw IllegalStateException("Data should be returned from login")
             UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
         }
-        if (error == UpdateError.Connection) {
-            Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
-        }
     }
 
-    companion object {
-        private const val Id = 532
+    override fun showIdInvalidError() {
+        progress.hideNow()
+        idInputLayout.error = null
+        idInputLayout.error = getString(R.string.invalid_id)
+    }
+
+    override fun showPasswordInvalidError() {
+        progress.hideNow()
+        passwordInputLayout.error = null
+        passwordInputLayout.error = getString(R.string.password_too_short)
+    }
+
+    override fun launchMainApp() {
+        startActivity<MainActivity>()
+        finish()
+    }
+
+    fun onLogin() {
+        idInputLayout.error = null
+        passwordInputLayout.error = null
+        val id = idInputLayout.editText!!.text.toString()
+        val password = passwordInputLayout.editText!!.text.toString()
+        hideKeyboard()
+        presenter.login(id, password)
     }
 }
