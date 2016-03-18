@@ -77,7 +77,7 @@ class NotificationService : IntentService("OhelShemNotificationService") {
                 override fun onSuccess(apis: List<Api>) {
                     if (Api.Changes !in apis || databaseController.changesDate != day.timeInMillis) {
                         // Changes were not updated yet
-                        handler.postDelayed({ notifyChanges() }, TimeUnit.MINUTES.toMillis(1))
+                        handler.postDelayed({ checkData(day) }, TimeUnit.MINUTES.toMillis(1))
                     } else {
                         val clazz = databaseController.userData.clazz
                         if (databaseController.changes?.any { it.clazz == clazz } ?: false)
@@ -90,7 +90,7 @@ class NotificationService : IntentService("OhelShemNotificationService") {
 
                 override fun onFail(error: UpdateError) {
                     if (error == UpdateError.Connection || error == UpdateError.NoData)
-                        handler.postDelayed({ notifyChanges() }, TimeUnit.MINUTES.toMillis(1))
+                        handler.postDelayed({ checkData(day) }, TimeUnit.MINUTES.toMillis(1))
                     else {
                         databaseController.lastNotificationTime = System.currentTimeMillis()
                     }

@@ -10,8 +10,8 @@ android {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 67
-        versionName "6.0"
+        versionCode 68
+        versionName "6.0.1"
     }
     buildTypes {
         release {

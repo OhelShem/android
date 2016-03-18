@@ -73,12 +73,17 @@ object DBControllerImpl : KotprefModel(), DBController {
     override var timetable: Array<Array<Hour>>?
         get() {
             if (!TimetableDataFile.exists() || !TimetableOffsetFile.exists()) return null
-            val data = offsetDataController.read(TimetableOffsetFile, TimetableDataFile, OffsetDataController.AllFile)
-            return Array(data.size / 10) { day ->
-                val offset = day * 10
-                Array(10) { hour ->
-                    data[offset + hour].split(InnerSeparator, limit = 3).let { Hour(it[0], it[1], it[2].toInt()) }
+            try {
+                val data = offsetDataController.read(TimetableOffsetFile, TimetableDataFile, OffsetDataController.AllFile)
+                return Array(data.size / 10) { day ->
+                    val offset = day * 10
+                    Array(10) { hour ->
+                        data[offset + hour].split(InnerSeparator, limit = 3).let { Hour(it[0], it[1], it[2].toInt()) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return null
             }
         }
         set(value) {
