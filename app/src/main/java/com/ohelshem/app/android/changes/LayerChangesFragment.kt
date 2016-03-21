@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.layer_changes_fragment.*
 class LayerChangesFragment: BaseChangesFragment<LayerChangesPresenter>() {
     override val layoutId: Int = R.layout.layer_changes_fragment
 
-    override fun createPresenter(): LayerChangesPresenter? = LayerChangesPresenter()
+    override fun createPresenter(): LayerChangesPresenter = LayerChangesPresenter()
 
     override fun init() {
         recyclerView.layoutManager = GridLayoutManager(activity, 11, LinearLayoutManager.HORIZONTAL, true)

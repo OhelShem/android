@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.tests_fragment.*
 
 class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     override val layoutId: Int = R.layout.tests_fragment
-    override fun createPresenter(): TestsPresenter? = TestsPresenter()
+    override fun createPresenter(): TestsPresenter = TestsPresenter()
 
     override fun init() {
         screenManager.screenTitle = getString(R.string.tests)

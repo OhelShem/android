@@ -68,7 +68,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         }
     }.view
 
-    override fun createPresenter(): TimetablePresenter? = TimetablePresenter()
+    override fun createPresenter(): TimetablePresenter = TimetablePresenter()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)

@@ -23,7 +23,7 @@ import com.ohelshem.app.android.changes.adapter.ChangesAdapter
 import kotlinx.android.synthetic.main.list_fragment.*
 
 class ClassChangesFragment: BaseChangesFragment<ClassChangesPresenter>() {
-    override fun createPresenter(): ClassChangesPresenter? = ClassChangesPresenter()
+    override fun createPresenter(): ClassChangesPresenter = ClassChangesPresenter()
 
     override fun init() {
         recyclerView.layoutManager = LinearLayoutManager(activity)

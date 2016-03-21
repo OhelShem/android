@@ -34,7 +34,7 @@ import org.jetbrains.anko.support.v4.dip
 import java.util.*
 
 class TestsListFragment: BaseMvpFragment<TestsChildView, TestsChildPresenter>(), TestsChildView {
-    override fun createPresenter(): TestsChildPresenter? = TestsChildPresenter()
+    override fun createPresenter(): TestsChildPresenter = TestsChildPresenter()
 
 
     private lateinit var recyclerView: RecyclerView
