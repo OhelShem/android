@@ -67,7 +67,8 @@ class TimetableControllerWrapper(internal val timetableController: BaseTimetable
         val daysOfWeek = timetableController.size - 1
         val goodOverrides = data.toMutableList()
         data.forEachReversedWithIndex { i, overrideData ->
-            if (overrideData.day > daysOfWeek || overrideData.hour > timetableController[overrideData.day].size - 1) goodOverrides.removeAt(i)
+            if (overrideData.day > daysOfWeek || overrideData.hour >= timetableController[overrideData.day].size)
+                goodOverrides.removeAt(i)
         }
         if (goodOverrides.size != data.size) {
             databaseController.overrides = goodOverrides.toTypedArray()

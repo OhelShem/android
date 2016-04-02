@@ -19,6 +19,7 @@ package com.ohelshem.app.controller
 
 import com.chibatching.kotpref.Kotpref
 import com.chibatching.kotpref.KotprefModel
+import com.ohelshem.api.controller.implementation.ApiParserImpl
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.Updatable
 import com.ohelshem.app.controller.ApiDatabase
@@ -75,9 +76,10 @@ object DBControllerImpl : KotprefModel(), DBController {
             if (!TimetableDataFile.exists() || !TimetableOffsetFile.exists()) return null
             try {
                 val data = offsetDataController.read(TimetableOffsetFile, TimetableDataFile, OffsetDataController.AllFile)
-                return Array(data.size / 10) { day ->
-                    val offset = day * 10
-                    Array(10) { hour ->
+                val hours = ApiParserImpl.MaxHoursADay
+                return Array(data.size / hours) { day ->
+                    val offset = day * hours
+                    Array(hours) { hour ->
                         data[offset + hour].split(InnerSeparator, limit = 3).let { Hour(it[0], it[1], it[2].toInt()) }
                     }
                 }

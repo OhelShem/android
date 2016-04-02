@@ -39,7 +39,6 @@ import org.jetbrains.anko.custom.customView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
-import java.util.*
 
 class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), TimetableView {
     private lateinit var recyclerView: RecyclerView
@@ -141,7 +140,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 }
                 (view.layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
                 view.onClick {
-                    presenter.startEdit(data[d][i], d, i)
+                    if (data.size > d && data[d].size > i)
+                        presenter.startEdit(data[d][i], d, i)
                 }
                 tableRow.addView(view)
             }

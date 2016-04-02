@@ -62,7 +62,7 @@ class App : Application() {
         Kotpref.init(this)
         com.orhanobut.logger.Logger.init("OhelShem")
 
-        val parser = ApiParserImpl(Injekt.get()).apply { timetableColors = getThemeColors() }
+        val parser = ApiParserImpl(Injekt.get())
         Injekt.addSingleton<ApiParser>(parser)
         Injekt.addSingleton<ApiProvider>(ApiProviderImpl(parser, Injekt.get()))
         Injekt.addSingleton<ApiController>(ApiControllerImpl(Injekt.get(), Injekt.get()))
@@ -77,7 +77,7 @@ class App : Application() {
     private fun addColorProvider() {
         val filters = resources.getStringArray(R.array.changesFilters)
         val colors = colorArrayRes(R.array.changesColors)
-        Injekt.addSingleton<ColorProvider>(ColorProviderImpl(colors zip filters, colorRes(R.color.changeDefaultColor)))
+        Injekt.addSingleton<ColorProvider>(ColorProviderImpl(colors zip filters, colorRes(R.color.changeDefaultColor), getThemeColors()))
     }
 
     private fun initDatabase(databaseController: DBController) {
