@@ -17,8 +17,8 @@
 
 package com.ohelshem.app.controller
 
-import com.ohelshem.api.model.AuthData
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.model.AuthData
 
 interface ApiController {
     var authData: AuthData
@@ -39,7 +39,7 @@ interface ApiController {
     fun setNetworkAvailabilityProvider(provider: () -> Boolean)
 
     enum class Api {
-        Changes, Messages, Tests, Timetable, UserData
+        Changes, Tests, Timetable, UserData
     }
 
     interface Callback {

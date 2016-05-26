@@ -22,29 +22,30 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import com.chibatching.kotpref.Kotpref
-import com.orhanobut.logger.Logger as ExternalLogger
-import com.yoavst.changesystemohelshem.R
-import com.ohelshem.app.android.notifications.service.NotificationService
-import com.ohelshem.app.android.notifications.service.OngoingNotificationService
-import com.ohelshem.app.clearTime
-import com.ohelshem.app.injection.ControllerInjectionModule
+import com.ohelshem.api.controller.declaration.ApiEngine
 import com.ohelshem.api.controller.declaration.ApiParser
-import com.ohelshem.api.controller.declaration.ApiProvider
 import com.ohelshem.api.controller.declaration.ColorProvider
+import com.ohelshem.api.controller.implementation.ApiEngineImpl
 import com.ohelshem.api.controller.implementation.ApiParserImpl
-import com.ohelshem.api.controller.implementation.ApiProviderImpl
 import com.ohelshem.api.controller.implementation.ColorProviderImpl
 import com.ohelshem.api.logger
-import com.ohelshem.api.model.AuthData
+import com.ohelshem.app.android.notifications.service.NotificationService
+import com.ohelshem.app.android.notifications.service.OngoingNotificationService
 import com.ohelshem.app.android.util.colorArrayRes
 import com.ohelshem.app.android.util.colorRes
 import com.ohelshem.app.android.util.isNetworkAvailable
+import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.*
+import com.ohelshem.app.injection.ControllerInjectionModule
+import com.ohelshem.app.model.AuthData
+import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.alarmManager
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.*
-import java.util.*
 import org.jetbrains.anko.intentFor
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.addSingleton
+import uy.kohesive.injekt.api.get
+import java.util.*
+import com.orhanobut.logger.Logger as ExternalLogger
 
 /**
  * The [Application] class of this application.
@@ -64,7 +65,7 @@ class App : Application() {
 
         val parser = ApiParserImpl(Injekt.get())
         Injekt.addSingleton<ApiParser>(parser)
-        Injekt.addSingleton<ApiProvider>(ApiProviderImpl(parser, Injekt.get()))
+        Injekt.addSingleton<ApiEngine>(ApiEngineImpl(parser, Injekt.get()))
         Injekt.addSingleton<ApiController>(ApiControllerImpl(Injekt.get(), Injekt.get()))
 
         Injekt.get<ApiController>().setNetworkAvailabilityProvider { isNetworkAvailable() }

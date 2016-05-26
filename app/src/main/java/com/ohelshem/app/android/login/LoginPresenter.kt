@@ -18,11 +18,11 @@
 package com.ohelshem.app.android.login
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter
-import com.ohelshem.api.model.AuthData
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.base.presenter.InitializerPresenter
 import com.ohelshem.app.controller.ApiController
 import com.ohelshem.app.controller.DBController
+import com.ohelshem.app.model.AuthData
 import uy.kohesive.injekt.injectLazy
 
 class LoginPresenter : MvpBasePresenter<LoginView>(), InitializerPresenter, ApiController.Callback {

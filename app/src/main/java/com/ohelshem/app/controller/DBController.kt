@@ -17,13 +17,11 @@
 
 package com.ohelshem.app.controller
 
-import com.ohelshem.app.model.OverrideData
-import com.ohelshem.app.model.Updatable
-import com.ohelshem.app.controller.ApiDatabase
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.*
+import com.ohelshem.app.model.OverrideData
+import com.ohelshem.app.model.Updatable
 import java.io.File
-import java.util.*
 
 /**
  * An interface for classes that control the application's data storage.
@@ -57,7 +55,7 @@ interface DBController : ApiDatabase {
 
     fun init()
 
-    fun isSetup(): Boolean = !userData.isEmpty() && timetable != null
+    fun isSetup(): Boolean = userData.id != 0 && timetable != null
 
     fun areChangesUpdated(): Boolean {
         val cal = changesDate.toCalendar().clearTime()

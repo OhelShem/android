@@ -17,15 +17,18 @@
 
 package com.ohelshem.app.controller
 
+import com.ohelshem.api.Api.Callback
+import com.ohelshem.api.Api.ExtraData.Student
+import com.ohelshem.api.Api.Response
+import com.ohelshem.api.controller.declaration.ApiEngine
 import com.ohelshem.api.controller.declaration.ApiParser
-import com.ohelshem.api.controller.declaration.ApiProvider
 import com.ohelshem.api.logger
-import com.ohelshem.api.model.AuthData
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.ApiController.Api
+import com.ohelshem.app.model.AuthData
 import java.util.*
 
-class ApiControllerImpl(override val database: ApiDatabase, private val apiProvider: ApiProvider) : ApiController {
+class ApiControllerImpl(override val database: ApiDatabase, private val apiEngine: ApiEngine) : ApiController, Callback {
     private var networkProvider: () -> Boolean = { true }
     override lateinit var authData: AuthData
     override var isBusy: Boolean = false
@@ -49,50 +52,15 @@ class ApiControllerImpl(override val database: ApiDatabase, private val apiProvi
         if (!isBusy) {
             if (networkProvider()) {
                 isBusy = true
-                apiProvider.update(authData, database.serverUpdateDate) {
-                    it.fold(OnUpdateSuccess, OnUpdateFail)
-                    isBusy = false
-                }
+                apiEngine.call(authData.id, authData.password, database.serverUpdateDate, this)
                 return true
             } else forEach { it.onFail(UpdateError.Connection) }
         }
         return false
     }
 
-    private val OnUpdateSuccess = { data: ApiParser.ParsedData ->
-        try {
-            val apis: MutableList<Api> = LinkedList()
-            data.apply {
-                database.changesDate = changesDate
-                database.serverUpdateDate = serverUpdateDate
-                database.updateDate = System.currentTimeMillis()
-                userData?.let { database.userData = it; apis += Api.UserData }
-                if (changes != null || database.changes?.let { it.isNotEmpty() } ?: false) {
-                    database.changes = changes
-                    apis += Api.Changes
-                }
-                if (tests != null || database.tests?.let { it.isNotEmpty() } ?: false) {
-                    database.tests = tests
-                    apis += Api.Tests
-                }
-                if (messages != null || database.messages?.let { it.isNotEmpty() } ?: false) {
-                    database.messages = messages
-                    apis += Api.Messages
-                }
-                if (timetable != null || database.timetable?.let { it.isNotEmpty() } ?: false) {
-                    database.timetable = timetable
-                    apis += Api.Timetable
-                }
-            }
-            if (apis.isEmpty()) forEach { it.onFail(UpdateError.NoData) }
-            else forEach { it.onSuccess(apis) }
-        } catch (e: Exception) {
-            logger.log(e)
-            forEach { it.onFail(UpdateError.Exception) }
-        }
-    }
-
-    private val OnUpdateFail = { exception: Exception ->
+    override fun onFailure(exception: Exception) {
+        isBusy = false
         if (exception !is ApiParser.ApiException) {
             logger.log(exception)
             forEach { it.onFail(UpdateError.Exception) }
@@ -107,6 +75,46 @@ class ApiControllerImpl(override val database: ApiDatabase, private val apiProvi
                 3 -> forEach { it.onFail(UpdateError.Login) }
                 else -> forEach { it.onFail(UpdateError.Exception) }
             }
+        }
+    }
+
+    override fun onSuccess(response: Response) {
+        isBusy = false
+        try {
+            val apis = LinkedList<Api>()
+            response.apply {
+                database.changesDate = changesDate
+                database.serverUpdateDate = serverUpdateDate
+                database.updateDate = System.currentTimeMillis()
+
+                database.userData = userData
+                apis += Api.UserData
+
+                if (timetable != null || database.timetable?.let { it.isNotEmpty() } ?: false) {
+                    database.timetable = timetable
+                    apis += Api.Timetable
+                }
+
+                when (data) {
+                    is Student -> {
+                        val data = data as Student
+                        if (data.changes != null || database.changes?.let { it.isNotEmpty() } ?: false) {
+                            database.changes = data.changes
+                            apis += Api.Changes
+                        }
+                        if (data.tests != null || database.tests?.let { it.isNotEmpty() } ?: false) {
+                            database.tests = data.tests
+                            apis += Api.Tests
+                        }
+                    }
+                }
+
+            }
+            if (apis.isEmpty()) forEach { it.onFail(UpdateError.NoData) }
+            else forEach { it.onSuccess(apis) }
+        } catch (e: Exception) {
+            logger.log(e)
+            forEach { it.onFail(UpdateError.Exception) }
         }
     }
 

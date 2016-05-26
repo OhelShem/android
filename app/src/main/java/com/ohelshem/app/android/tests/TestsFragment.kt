@@ -45,7 +45,7 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     override fun update(tests: List<Test>) {
         childFragmentManager.fragments?.forEach {
             @Suppress("UNCHECKED_CAST")
-            (it as? MvpFragment<*, TestsChildPresenter>)?.presenter?.update(tests)
+            (it as? MvpFragment<*, TestsChildPresenter>)?.getPresenter()?.update(tests)
         }
     }
 }

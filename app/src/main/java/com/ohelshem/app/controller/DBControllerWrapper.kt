@@ -17,7 +17,10 @@
 
 package com.ohelshem.app.controller
 
-import com.ohelshem.api.model.*
+import com.ohelshem.api.model.Change
+import com.ohelshem.api.model.Hour
+import com.ohelshem.api.model.Test
+import com.ohelshem.api.model.UserData
 
 /*
  * A wrapper for [DBController] with support for caching for runtime.
@@ -120,18 +123,6 @@ class DBControllerWrapper(private val databaseController: DBController) : DBCont
         set(value) {
             _tests = value
             storeInDB { databaseController.tests = value }
-        }
-
-    private var _messages: List<Message>? = null
-    override var messages: List<Message>?
-        get() {
-            if (_messages == null)
-                _messages = databaseController.messages
-            return _messages
-        }
-        set(value) {
-            _messages = value
-            storeInDB { databaseController.messages = value }
         }
 
     private var _timetable: Array<Array<Hour>>? = null

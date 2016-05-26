@@ -15,25 +15,6 @@
  *
  */
 
-package com.ohelshem.app.controller
+package com.ohelshem.app.model
 
-import com.ohelshem.api.model.Change
-import com.ohelshem.api.model.Hour
-import com.ohelshem.api.model.Test
-import com.ohelshem.api.model.UserData
-
-interface ApiDatabase {
-    var serverUpdateDate: Long
-    var changesDate: Long
-    var updateDate: Long
-
-    var userData: UserData
-    var timetable: Array<Array<Hour>>?
-
-    var changes: List<Change>?
-    var tests: List<Test>?
-
-    companion object {
-        const val EmptyUpdateDate = 0L
-    }
-}
+data class AuthData(val id: String, val password: String)

@@ -19,11 +19,14 @@ package com.ohelshem.app.controller
 
 import com.chibatching.kotpref.Kotpref
 import com.chibatching.kotpref.KotprefModel
+import com.ohelshem.api.Role
 import com.ohelshem.api.controller.implementation.ApiParserImpl
+import com.ohelshem.api.model.Change
+import com.ohelshem.api.model.Hour
+import com.ohelshem.api.model.Test
+import com.ohelshem.api.model.UserData
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.Updatable
-import com.ohelshem.app.controller.ApiDatabase
-import com.ohelshem.api.model.*
 import uy.kohesive.injekt.injectLazy
 import java.io.File
 import java.util.*
@@ -147,32 +150,8 @@ object DBControllerImpl : KotprefModel(), DBController {
             }
         }
 
-    override var messages: List<Message>?
-        get() {
-            if (!MessagesDataFile.exists() || !MessagesOffsetFile.exists()) return null
-            val data = offsetDataController.read(MessagesOffsetFile, MessagesDataFile, OffsetDataController.AllFile)
-            val list = ArrayList<Message>(data.size)
-            for (i in 0 until data.size) {
-                list += data[i].split(InnerSeparator, limit = 5).let {
-                    Message(it[0].toInt(), it[1], it[2], it[3].toInt(), it[4].toLong())
-                }
-            }
-            return list
-        }
-        set(value) {
-            if (value == null) {
-                TestsDataFile.delete()
-                TestsOffsetFile.delete()
-            } else {
-                init()
-                value.map { it.id.toString() + InnerSeparator + it.title + InnerSeparator + it.content + InnerSeparator + it.author + InnerSeparator + it.date }.let {
-                    offsetDataController.write(MessagesOffsetFile, MessagesDataFile, it)
-                }
-            }
-        }
-
     override var userData: UserData
-        get() = UserData(_userId, _userIdentity, _userPrivateName, _userFamilyName, _userLayer, _userClazz, _userGender, _userEmail, _userPhone, _userBirthday)
+        get() = UserData(_userId, _userIdentity, _userPrivateName, _userFamilyName, _userLayer, _userClazz, _userGender, _userEmail, _userPhone, _userBirthday, Role.values()[_userRole])
         set(value) {
             _userId = value.id
             _userIdentity = value.identity
@@ -184,6 +163,7 @@ object DBControllerImpl : KotprefModel(), DBController {
             _userEmail = value.email
             _userPhone = value.phone
             _userBirthday = value.birthday
+            _userRole = value.role.ordinal
         }
 
     private var _userClazz: Int by intPrefVar()
@@ -196,6 +176,7 @@ object DBControllerImpl : KotprefModel(), DBController {
     private var _userEmail: String by stringPrefVar()
     private var _userPhone: String by stringPrefVar()
     private var _userBirthday: String by stringPrefVar()
+    private var _userRole: Int by intPrefVar()
 
     private val InnerSeparator: Char = '\u2004'
 
@@ -250,7 +231,7 @@ object DBControllerImpl : KotprefModel(), DBController {
             TimetableOverridesFile.copyTo(TimetableOverridesFileBackup, overwrite = true)
         } else TimetableOverridesFile.createNewFile()
         file.copyTo(TimetableOverridesFile, overwrite = true)
-        var data: Array<OverrideData>
+        val data: Array<OverrideData>
         try {
             data = readOverrides()
         } catch (e: Exception) {
