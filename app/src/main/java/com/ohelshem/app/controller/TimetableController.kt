@@ -17,11 +17,11 @@
 
 package com.ohelshem.app.controller
 
+import com.ohelshem.api.model.Hour
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.daysBetween
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.toCalendar
-import com.ohelshem.api.model.Hour
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,17 +83,17 @@ interface TimetableController {
         )
 
         val Holidays = arrayOf(
-                Holiday("ראש השנה", "13/09/2015", "15/09/2015"),
-                Holiday("יום כיפור", "22/09/2015", "23/09/2015"),
-                Holiday("סוכות", "27/09/2015", "06/10/2015"),
-                Holiday("חנוכה", "08/12/2015", "14/12/2015"),
-                Holiday("פורים", "23/03/2016", "25/03/2016"),
-                Holiday("פסח", "13/04/2016", "30/04/2016"),
-                Holiday("יום העצמאות", "12/05/2016"),
-                Holiday("ל\"ג בעומר", "26/05/2016"),
-                Holiday("שבועות", "11/06/2016", "13/06/2016"))
+                Holiday("ראש השנה", "02/10/2016", "04/10/2016"),
+                Holiday("יום כיפור", "11/10/2016", "12/10/2016"),
+                Holiday("סוכות", "16/10/2016", "25/10/2016"),
+                Holiday("חנוכה", "26/12/2016", "01/01/2017"),
+                Holiday("פורים", "12/03/2017", "13/03/2017"),
+                Holiday("פסח", "02/04/2017", "18/04/2017"),
+                Holiday("יום העצמאות", "02/05/2017"),
+                Holiday("ל\"ג בעומר", "14/05/2017"),
+                Holiday("שבועות", "30/05/2017", "01/06/2017"))
 
-        val Summer = Holiday("קיץ", "21/06/2016", "29/08/2016")
+        val Summer = Holiday("קיץ", "21/06/2017", "31/08/2017")
 
 
         fun getStartOfHour(hour: Int): String = DayHours[hour * 2 - 2]
@@ -109,7 +109,6 @@ interface TimetableController {
                     return false
                 i--
             } while (true)
-            throw IllegalStateException()
         }
 
         /**

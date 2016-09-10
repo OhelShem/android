@@ -34,6 +34,7 @@ import com.ohelshem.app.android.notifications.service.OngoingNotificationService
 import com.ohelshem.app.android.util.colorArrayRes
 import com.ohelshem.app.android.util.colorRes
 import com.ohelshem.app.android.util.isNetworkAvailable
+import com.ohelshem.app.android.util.stringArrayRes
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.*
 import com.ohelshem.app.injection.ControllerInjectionModule
@@ -76,7 +77,7 @@ class App : Application() {
     }
 
     private fun addColorProvider() {
-        val filters = resources.getStringArray(R.array.changesFilters)
+        val filters = stringArrayRes(R.array.changesFilters)
         val colors = colorArrayRes(R.array.changesColors)
         Injekt.addSingleton<ColorProvider>(ColorProviderImpl(colors zip filters, colorRes(R.color.changeDefaultColor), getThemeColors()))
     }

@@ -22,7 +22,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Color
-import android.os.Build
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.SwitchCompat
@@ -38,11 +37,8 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 fun Context.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, theme)
-fun Context.colorRes(id: Int): Int {
-    return if (Build.VERSION.SDK_INT >= 23)
-        resources.getColor(id, theme)
-    else @Suppress("DEPRECATION") resources.getColor(id)
-}
+fun Context.colorRes(id: Int): Int = ResourcesCompat.getColor(resources, id, theme)
+fun Context.stringArrayRes(id: Int): Array<String> = resources.getStringArray(id)
 fun Context.colorArrayRes(id: Int): IntArray {
     return resources.obtainTypedArray(id).use { IntArray(it.length()) { i -> it.getColor(i, Color.WHITE)} }
 }
