@@ -49,13 +49,13 @@
     <string name="no_new_data">אין מידע מעודכן</string>
     <string name="no_new_data_subtitle">אתר בית הספר לא עודכן להיום, אנא רענן שנית מאוחר יותר</string>
     <string name="shabat_today">שבת היום!</string>
-    <string name="shabat_today_subtitle">תתביישו לכם! שבת היום!</string>
+    <string name="shabat_today_subtitle">תתביישו לכם!</string>
     <string name="friday_today">שישי היום!</string>
     <string name="friday_today_subtitle">עתידות: בכיתה יא תלמדו בשישי</string>
     <string name="close_week">בשבוע הקרוב</string>
     <string name="later">מאוחר יותר</string>
     <string name="floating_hour">נוספה לך שעה</string>
-    <string name="holiday_today">חופש היום</string>
+    <string name="holiday_today">חופש היום!</string>
     <string name="holiday_today_subtitle">לך, לך לישון</string>
     <string name="today_plan">המערכת להיום</string>
     <string name="tomorrow">מחר</string>
