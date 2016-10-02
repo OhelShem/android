@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity(), ApiController.Callback, TopNavigationS
                     window.statusBarColor = Color.TRANSPARENT
             }
             updatedAt = getString(R.string.updated_at)
-            navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer) + " " + userLayerText
+            navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer_changes) + " " + userLayerText
             headerView = navigationView.inflateHeaderView(R.layout.main_drawer_header).apply {
                 classText.text = getString(R.string.clazz) + " " + userLayerText + "'" + databaseController.userData.clazz.toString()
             }

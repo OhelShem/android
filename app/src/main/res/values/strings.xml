@@ -6,9 +6,9 @@
     <string name="id">מספר ת.ז.</string>
     <string name="password">סיסמה</string>
     <string name="do_login">התחבר</string>
-    <string name="invalid_id">Invalid ID number</string>
-    <string name="password_too_short">Password is too short</string>
-    <string name="login_wrong">שם משתמש או סיסמא אינם נכונים</string>
+    <string name="invalid_id">מספר ת.ז. שגוי</string>
+    <string name="password_too_short">הסיסמה קצרה מדי</string>
+    <string name="login_wrong">שם משתמש או סיסמה אינם נכונים</string>
 
     <string name="my_layer">השכבה שלי</string>
     <string name="my_class">הכיתה שלי</string>
@@ -28,7 +28,7 @@
     <string name="help">עזרה</string>
     <string name="settings">הגדרות</string>
     <string name="overrides">שינוים במערכת</string>
-    <string name="layer">שכבת</string>
+    <string name="layer_changes">שינויים בשכבת</string>
     <string name="clazz">כיתה</string>
     <string name="holidays">חגים ומועדים</string>
     <string name="days_left">ימים לחופש הבא</string>

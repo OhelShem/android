@@ -69,11 +69,13 @@ class DashboardFragment: BaseMvpFragment<DashboardView, DashboardPresenter>(), D
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean,  isTomorrow: Boolean) {
         try {
             val subWithTeacherHTML: String = "<b>"+data.hour.name+"</b>" + with + data.hour.teacher
+            val nextSubWithTeacherHTML: String = "<b>"+data.nextHour.name+"</b>" + with + data.nextHour.teacher
+
             lessonName.text = if (data.hour.isEmpty()) windowLesson else Html.fromHtml(subWithTeacherHTML)
             progress.progress = data.progress
             if (isEndOfDay)
                 nextLessonName.text = Html.fromHtml("<b>"+endOfDay+"</b>")
-            else nextLessonName.text = if (data.nextHour.isEmpty()) windowLesson else Html.fromHtml(subWithTeacherHTML)
+            else nextLessonName.text = if (data.nextHour.isEmpty()) windowLesson else Html.fromHtml(nextSubWithTeacherHTML)
             if (isTomorrow)
                 timeLeft.text = tomorrow
             else if (data.isBefore)
