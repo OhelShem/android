@@ -17,6 +17,12 @@
 
 package com.ohelshem.app.android.tests
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.view.Menu
+import android.view.MenuInflater
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.base.fragment.BaseMvpFragment
@@ -24,6 +30,7 @@ import com.ohelshem.app.android.tests.adapter.TestsFragmentAdapter
 import com.ohelshem.app.android.util.drawableRes
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.tests_fragment.*
+import org.jetbrains.anko.support.v4.toast
 
 class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     override val layoutId: Int = R.layout.tests_fragment
@@ -48,4 +55,41 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
             (it as? MvpFragment<*, TestsChildPresenter>)?.getPresenter()?.update(tests)
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {
+            val intent = activity.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")
+            if (isGraderInstalled() && intent!=null) {
+                intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                activity.startActivity(intent)
+            } else {
+                toast(getString(R.string.menu_mashov_message))
+                launchPlayStore("com.yoavst.mashov")
+            }
+
+            true
+        }
+    }
+
+    private fun isGraderInstalled(): Boolean {
+        try {
+            context.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
+            return true
+        } catch (e: PackageManager.NameNotFoundException) {
+            return false
+        }
+
+    }
+
+    private fun launchPlayStore(packageName: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
+        }
+    }
+
+    override var menuId: Int = R.menu.tests
+
 }

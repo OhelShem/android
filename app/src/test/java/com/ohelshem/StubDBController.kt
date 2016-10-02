@@ -17,7 +17,12 @@
 
 package com.ohelshem
 
-import com.ohelshem.api.model.*
+import android.os.Message
+import com.ohelshem.api.Role
+import com.ohelshem.api.model.Change
+import com.ohelshem.api.model.Hour
+import com.ohelshem.api.model.Test
+import com.ohelshem.api.model.UserData
 import com.ohelshem.app.controller.DBController
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.Updatable
@@ -90,7 +95,7 @@ open class StubDBController : DBController {
 
     override var updateDate: Long = 0
 
-    override var userData: UserData = UserData(0, "", "", "", 0, 0, 0, "", "", "")
+    override var userData: UserData = UserData(0, "", "", "", 0, 0, 0, "", "", "", Role.Student) //can't leave the role parameter unspecified for some reason
 
     override var timetable: Array<Array<Hour>>? = null
 
@@ -98,6 +103,6 @@ open class StubDBController : DBController {
 
     override var tests: List<Test>? = null
 
-    override var messages: List<Message>? = null
+    var messages: List<Message>? = null //removed override to get rid of the error
 
 }

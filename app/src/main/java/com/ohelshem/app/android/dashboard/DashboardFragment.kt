@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -67,11 +68,14 @@ class DashboardFragment: BaseMvpFragment<DashboardView, DashboardPresenter>(), D
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean,  isTomorrow: Boolean) {
         try {
-            lessonName.text = if (data.hour.isEmpty()) windowLesson else data.hour.name + with + data.hour.teacher
+            val subWithTeacherHTML: String = "<b>"+data.hour.name+"</b>" + with + data.hour.teacher
+            val nextSubWithTeacherHTML: String = "<b>"+data.nextHour.name+"</b>" + with + data.nextHour.teacher
+
+            lessonName.text = if (data.hour.isEmpty()) windowLesson else Html.fromHtml(subWithTeacherHTML)
             progress.progress = data.progress
             if (isEndOfDay)
-                nextLessonName.text = endOfDay
-            else nextLessonName.text = if (data.nextHour.isEmpty()) windowLesson else data.nextHour.name + with + data.nextHour.teacher
+                nextLessonName.text = Html.fromHtml("<b>"+endOfDay+"</b>")
+            else nextLessonName.text = if (data.nextHour.isEmpty()) windowLesson else Html.fromHtml(nextSubWithTeacherHTML)
             if (isTomorrow)
                 timeLeft.text = tomorrow
             else if (data.isBefore)
@@ -104,7 +108,7 @@ class DashboardFragment: BaseMvpFragment<DashboardView, DashboardPresenter>(), D
                         (getChildAt(1) as TextView).text = test.content
                         (getChildAt(0) as TextView).text = TestDateFormat.format(Date(test.date))
                         if (now > test.date)
-                            (getChildAt(2) as TextView).text = "V"
+                            (getChildAt(2) as TextView).text = "✓"
                         else
                             (getChildAt(2) as TextView).text = ""
                     }

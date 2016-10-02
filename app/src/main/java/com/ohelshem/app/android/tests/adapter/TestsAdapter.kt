@@ -22,10 +22,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.yoavst.changesystemohelshem.R
-import com.ohelshem.app.model.VisibleItem
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.util.adapter.SimpleHeaderAdapter
+import com.ohelshem.app.model.VisibleItem
+import com.yoavst.changesystemohelshem.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,7 +43,7 @@ class TestsAdapter(context: Context, items: MutableList<VisibleItem<Test>>, call
         holder.title.text = item.content
         holder.date.text = DateFormat.format(Date(item.date))
         if (now > item.date)
-            holder.indicator.text = "V"
+            holder.indicator.text = "✓"
         else
             holder.indicator.text = ""
 

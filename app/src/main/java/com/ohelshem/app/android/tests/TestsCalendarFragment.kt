@@ -75,7 +75,7 @@ class TestsCalendarFragment: BaseMvpFragment<TestsChildView, TestsChildPresenter
             title.text = test.content
             extra.text = TestsDateFormat.format(Date(test.date))
             if (now > test.date)
-                indicator.text = "V"
+                indicator.text = "✓"
             else
                 indicator.text = ""
         } else clear()

@@ -61,7 +61,7 @@ class HelpActivity : AppCompatActivity() {
             email("yoav.sternberg@gmail.com", subject = getString(R.string.email_title))
         }
         phonesListButton.onClick {
-            browse("http://www.ohel-shem.com/portal4/News.php?308")
+            browse("http://www.ohel-shem.com/portal4/News.php?308") //this page hasn't been copied to portal6
         }
         eranButton.onClick {
             browse("http://www.eran.org.il/")
@@ -89,6 +89,7 @@ class HelpActivity : AppCompatActivity() {
     fun LinearLayout.questionItem(title: String, text: String): CardView {
         return customView<CardView> {
             setContentPadding(usedPadding, usedPadding, usedPadding, usedPadding)
+            useCompatPadding = true
             linearLayout {
                 orientation = LinearLayout.VERTICAL
                 include<TextView>(R.layout.item_header) {

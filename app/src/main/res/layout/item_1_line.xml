@@ -39,7 +39,7 @@
         android:textColor="@color/md_green_500"
         android:layout_height="32dp"
         android:layout_gravity="center_vertical"
-        tools:text="V"
+        tools:text="✓"
         tools:ignore="SpUsage"/>
 
 </LinearLayout>
