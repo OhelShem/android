@@ -4,5 +4,6 @@
     <item android:title="@string/menu_mashov"
           android:id="@+id/menu_mashov"
           android:icon="@drawable/mashov"
+          android:orderInCategory="1"
           app:showAsAction="always" />
 </menu>
