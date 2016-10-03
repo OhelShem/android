@@ -25,11 +25,14 @@ class App : Application(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
+
         Kotpref.init(this)
 
         initApi()
         initStorage()
         initTimetable()
+
     }
 
     private fun initApi() {
@@ -57,5 +60,9 @@ class App : Application(), KodeinAware {
         val colors = colorArrayRes(R.array.changesColors)
 
         import(Modules.api(ApiFactory.defaultColorProvider(colorRes(R.color.changeDefaultColor), colors zip filters, colorArrayRes(R.array.colors))))
+    }
+
+    companion object {
+        lateinit var instance: App
     }
 }

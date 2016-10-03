@@ -31,6 +31,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Spinner
 import com.github.salomonbrys.kodein.instance
+import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
@@ -402,6 +403,18 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 ProcessPhoenix.triggerRebirth(this)
             }
 
+            val shareFirebaseTokenAction = ButtonAction("Share firebaseToken") {
+                toast(FirebaseInstanceId.getInstance().token ?: "No token available")
+                startActivity(
+                        Intent(Intent.createChooser(
+                                Intent(Intent.ACTION_SEND)
+                                        .putExtra(Intent.EXTRA_TEXT, FirebaseInstanceId.getInstance().token)
+                                        .setType("text/plain"), "Share text")
+
+                        )
+                )
+            }
+
             val fakingOptions = listOf("Real info", "Fake changes", "Fake no changes")
             val fakingAction = SpinnerAction(fakingOptions) { value ->
                 when (fakingOptions.indexOf(value)) {
@@ -413,7 +426,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(fakingAction, nightModeAction, restartAction),
+                    ActionsModule(fakingAction, nightModeAction, restartAction, shareFirebaseTokenAction),
                     DeviceModule(this),
                     BuildModule(this),
                     NetworkModule(this),
