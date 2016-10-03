@@ -1,0 +1,204 @@
+<resources>
+    <string name="app_name">Ohel Shem</string>
+
+    <!-- Login -->
+    <string name="login">התחברות</string>
+    <string name="id">מספר ת.ז.</string>
+    <string name="password">סיסמה</string>
+    <string name="do_login">התחבר</string>
+    <string name="invalid_id">Invalid ID number</string>
+    <string name="password_too_short">Password is too short</string>
+    <string name="login_wrong">שם משתמש או סיסמא אינם נכונים</string>
+    <string name="no_connection">אין חיבור לאינטרנט</string>
+    <string name="no_connection_subtitle">אנא התחבר לאינטרנט ונסה שנית</string>
+    <string name="general_error">שגיאה, אנא נסה בשנית</string>
+    <!-- Drawer menu -->
+    <string name="dashboard">ראשי</string>
+    <string name="changes">שינויים</string>
+    <string name="refreshing">מעדכן מידע</string>
+    <string name="timetable">מערכת שעות</string>
+    <string name="tests">מבחנים</string>
+    <string name="messages">הודעות</string>
+    <string name="help">עזרה</string>
+    <string name="settings">הגדרות</string>
+    <string name="holidays">חגים ומועדים</string>
+    <string name="regulations">תקנון בית הספר</string>
+    <string name="updated_at">עודכן ב-</string>
+    <!-- Info -->
+    <string name="layer">שכבה</string>
+    <string name="clazz">כיתה</string>
+    <!-- Messages -->
+    <string name="refreshed">המידע עודכן</string>
+
+    <!-- General -->
+    <string name="list">רשימה</string>
+    <string name="calendar">לוח שנה</string>
+    <string name="refresh">רענן</string>
+    <string name="day">יום</string>
+    <string name="error">שגיאה</string>
+    <string name="end_date">סיום</string>
+    <string name="start_date">התחלה</string>
+    <string name="days">ימים</string>
+    <string name="no_thanks">לא תודה</string>
+    <string name="download">הורד</string>
+    <string name="apply">אישור</string>
+    <string name="cancel">ביטול</string>
+
+    <!-- Dashboard -->
+    <string name="tomorrow">מחר</string>
+    <string name="future">בעתיד</string>
+    <string name="short_minute">דקות</string>
+    <string name="to_start">לשיעור</string>
+    <string name="left">נשארו</string>
+    <string name="end_of_day">סוף היום</string>
+    <string name="go_to_timetable">עבור למערכת השעות</string>
+
+    <!-- Overrides -->
+    <string name="edit">ערוך</string>
+    <string name="done">בוצע</string>
+    <string name="start_edit_mode">מתחיל מצב עריכה, לחץ על השיעור שברצונך לשנות</string>
+    <string name="finish_edit_mode">מצב עריכה הופסק</string>
+    <string name="current_name">שם השיעור הנוכחי</string>
+    <string name="current_teacher">שם המורה הנוכחי</string>
+    <string name="original_name">שם השיעור המקורי</string>
+    <string name="original_teacher">שם המורה המקורי</string>
+    <string name="with">עם</string>
+    <string name="new_name">שם השיעור החדש</string>
+    <string name="new_teacher_name">שם המורה החדש</string>
+    <string name="change_all">שנה עבור כל השיעורים בעלי אותו השם</string>
+    <string name="edit_lesson">עריכת שיעור</string>
+    <string name="return_to_default">החזר למקור</string>
+
+    <!-- Holidays -->
+    <string name="weeks_left_to_summer">שבועות לקיץ</string>
+    <string name="days_left">ימים לחופש הבא</string>
+    <string name="days_left_to_summer">ימים לחופשת הקיץ</string>
+
+    <!-- Tests -->
+    <string name="total_tests">מבחנים השנה</string>
+    <string name="days_left_to_next_test">ימים למבחן הבא</string>
+
+
+    <string name="my_layer">השכבה שלי</string>
+    <string name="my_class">הכיתה שלי</string>
+    <string name="no_such_class">לא קיימת כיתה בעלת מספר כזה בשכבה זו</string>
+    <string name="notification_about_changes">התראה על שינויים</string>
+    <string name="want_get_notification_for_changes">האם ברצונך לקבל התראה בשעה תשע כשהשינויים מתעדכנים?</string>
+    <string name="who_are_you">מי אתה</string>
+    <string name="student">תלמיד</string>
+    <string name="other">אחר</string>
+    <string name="test_in">מקצוע המבחן</string>
+    <string name="enter_to_see_changes">היכנס על מנת לראות את השינויים</string>
+    <string name="try_again">נסה שנית</string>
+    <string name="no_data">אין מידע עדכני</string>
+    <string name="no_data_subtitle">רענן על מנת לקבל מידע עדכני</string>
+    <string name="no_changes">אין שינויים</string>
+    <string name="no_changes_subtitle">כנראה ששחר אלוני לא חשב עליך היום…</string>
+    <string name="no_new_data">אין מידע מעודכן</string>
+    <string name="no_new_data_subtitle">אתר בית הספר לא עודכן להיום, אנא רענן שנית מאוחר יותר</string>
+    <string name="shabat_today">שבת היום!</string>
+    <string name="shabat_today_subtitle">תתביישו לכם! שבת היום!</string>
+    <string name="friday_today">שישי היום!</string>
+    <string name="friday_today_subtitle">עתידות: בכיתה יא תלמדו בשישי</string>
+    <string name="close_week">בשבוע הקרוב</string>
+    <string name="later">מאוחר יותר</string>
+    <string name="floating_hour">נוספה לך שעה</string>
+    <string name="holiday_today">חופש היום</string>
+    <string name="holiday_today_subtitle">לך, לך לישון</string>
+    <string name="today_plan">המערכת להיום</string>
+    <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
+    <string name="see_more">ראה הכל</string>
+    <string name="no_tests_next_week">אין מבחנים בשבוע הקרוב</string>
+    <string name="no_overrides">אין שינוים למערכת השעות</string>
+    <string name="test_tomorrow">מבחן מחר</string>
+    <string name="tests_this_week">מבחנים בשבוע הקרוב</string>
+    <string name="tests_this_week_subtitle">היכנס לאפליקציה על מנת לראות</string>
+    <string name="holiday_notification">מחר יום חופש</string>
+    <string name="permission_denied">אנא אשר את ההרשאה על מנת שזה יעבוד</string>
+    <string name="window_lesson">שעת חלון</string>
+    <string name="guessing_game">משחק השינויים</string>
+    <string name="guessing_game_description">חושב שאתה שחר אלוני? בוא נראה אם אתה יכול לנחש את השינויים</string>
+    <string name="not_this_time">לא הפעם</string>
+    <string name="hours_tomorrow">שעות מחר</string>
+    <string name="changes_tomorrow">שינויים מחר</string>
+    <string name="finished">סיימתי</string>
+    <string name="launch_game">פתח משחק</string>
+    <string name="never">אף פעם</string>
+    <string name="start_playing">התחל לשחק</string>
+    
+    <!-- Grader -->
+    <string name="grader">Grader</string>
+    <string name="grader_dialog_title">לוקחים את המשו\"ב צעד קדימה</string>
+    <string name="grader_dialog_description">מהיוצרים של אפליקציית אהל שם. קליינט למשו\"ב עם כל הפיצ\'רים המוכרים והאהובים, ביחד עם גרפים שנראים טוב וממשק מהיר. וגם המשו\"ב לא ממש מחבבים את האפליקציה, אז אם אתם לא אוהבים את המשו\"ב, זאת סיבה מעולה להוריד!</string>
+    <string name="menu_mashov_message">התקן את אפליקציית Grader</string>
+
+    <!-- Settings -->
+    <string name="overrides">שינוים במערכת</string>
+    <string name="development_info">מידע למפתחים</string>
+    <string name="developer_mode">מצב מפתחים</string>
+    <string name="version_name">שם גרסה</string>
+    <string name="version_code">מספר גרסה</string>
+    <string name="version_type">סוג גרסה</string>
+    <string name="not_yet_implemented">האפשרות הבאה עדיין איננה זמינה.</string>
+    <string name="theme_settings">ערכת נושא</string>
+    <string name="theme_color">צבע מרכזי</string>
+    <string name="restart_app">הפעל מחדש את האפליקציה</string>
+    <string name="app_restart_required">על מנת ליישם את השינויים יש לסגור ולפתוח את האפליקציה</string>
+    <string name="dark_mode">מצב לילה</string>
+    <string name="enabled">מופעל</string>
+    <string name="disabled">מכובה</string>
+    <string name="automatic">אוטומטי</string>
+    <string-array name="night_mode_options">
+        <item>@string/disabled</item>
+        <item>@string/enabled</item>
+        <item>@string/automatic</item>
+    </string-array>
+    <string name="save_backup">גיבוי</string>
+    <string name="restore_backup">שחזור</string>
+    <string name="backup_file_saved_on">Backup file is saved on sdcard/</string>
+    <string name="no_file_manager_installed">אף סייר קבצים לא מותקן על המכשיר</string>
+    <string name="choose_opener">בחר תוכנה לשימוש</string>
+    <string name="restored">שוחזר בהצלחה</string>
+    <string name="invalid_backup_file">קובץ גיבוי לא תקין</string>
+    <string name="fake_changes">זייף שינויים</string>
+    <string name="fake_no_changes">זייף אין שינויים</string>
+    <string name="cancel_faking">בטל זיוף</string>
+
+    <!-- Help -->
+    <string name="who_are_we">מי אנחנו</string>
+    <string name="more_apps_i_built">אפליקציות נוספות שלי</string>
+    <string name="logout">התנתק</string>
+    <string name="open_source">קוד פתוח</string>
+    <string name="overrides_properties">מערכת</string>
+    <string name="email_title">אפליקציית אהל שם</string>
+    <string name="facebook">דף הפייסבוק</string>
+    <string name="school_site">אתר אהל שם</string>
+    <string name="notifications">התראות</string>
+    <string name="eran">ער\"ן תמיכה נפשית</string>
+    <string name="eli">האגודה להגנת הילד</string>
+    <string name="council">נציב קבילות ילדים ונוער</string>
+    <string name="layer_counselor">יועצת השכבה</string>
+    <string name="phones_list">רשימת טלפונים</string>
+    <string name="soon">בקרוב</string>
+
+    <string-array name="questions">
+        <item>מדוע השינויים לא נכונים</item>
+        <item>איך האפליקציה עובדת</item>
+        <item>כיצד ניתן לקבל תזכורת על מבחנים מראש</item>
+    </string-array>
+
+    <string-array name="answers">
+        <item>האפליקציה שומרת את השינויים מהפעם האחרונה שעדכנת אותם. עדכון בשנית על מנת שהשינויים יתעדכנו ישירות מהאתר. כדי לראות מתי עדכנת לאחרונה, היכנס לתפריט האפשרויות.</item>
+        <item>האפליקציה ניגשת לשרתים של בית הספר, ומבקשת מהם את השינויים. בנוסף, האפליקציה שומרת את השינויים על המכשיר, על מנת שיהיה ניתן לראות אותם שוב גם ללא חיבור לאינטרנט.</item>
+        <item>בהגדרות של האפליקציה ניתן לסמן שהאפליקציה תשלח תזכורת זמן קבוע לפני כל מבחן.</item>
+    </string-array>
+
+    <!-- Yoav Sternberg -->
+    <string name="yoav_sternberg">יואב שטרנברג</string>
+    <string name="yoav_sternberg_info">תלמיד כיתה יב\' 4.</string>
+    <string name="quick_circle_apps">Quick Circle Apps</string>
+
+    <!-- Eran Machlev -->
+    <string name="eran_machlev">ערן מחלב</string>
+    <string name="eran_machlev_info">תלמיד כיתה י\'9</string>
+</resources>

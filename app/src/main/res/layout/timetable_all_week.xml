@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TableRow
+        android:id="@+id/header_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimary"
+        android:paddingRight="26dp"
+        tools:ignore="RtlHardcoded,RtlSymmetry">
+
+        <TextView
+            android:id="@+id/title_friday"
+            style="@style/HeaderText"
+            android:text="@string/friday" />
+
+        <TextView
+            style="@style/HeaderText"
+            android:text="@string/thursday" />
+
+        <TextView
+            style="@style/HeaderText"
+            android:text="@string/wednesday" />
+
+        <TextView
+            style="@style/HeaderText"
+            android:text="@string/tuesday" />
+
+        <TextView
+            style="@style/HeaderText"
+            android:text="@string/monday" />
+
+        <TextView
+            style="@style/HeaderText"
+            android:text="@string/sunday" />
+    </TableRow>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableLayout
+                android:id="@+id/table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

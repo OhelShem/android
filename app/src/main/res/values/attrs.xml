@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Used for ForegroundLinearLayout -->
+    <!-- Refer to https://gist.github.com/chrisbanes/9091754 for original code -->
+    <declare-styleable name="Foreground">
+        <attr name="android:foreground" />
+        <attr name="android:foregroundInsidePadding" />
+        <attr name="android:foregroundGravity" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp"
+    tools:ignore="RtlHardcoded,RtlSymmetry"
+    android:baselineAligned="false">
+
+    <FrameLayout
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:foreground="?selectableItemBackground"
+        android:paddingTop="5dp"
+        tools:background="?colorPrimary">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            tools:text="שיעור כיפי במיוחד"/>
+
+        <TextView
+            android:id="@+id/hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="5dp"
+            android:gravity="right"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="8:00"/>
+
+        <TextView
+            android:id="@+id/tillHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="8:50"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/lesson"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/number_circle"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="1"/>
+    </FrameLayout>
+
+</LinearLayout>

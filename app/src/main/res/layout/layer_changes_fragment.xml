@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vlonjatg.progressactivity.ProgressActivity
+    android:id="@+id/progressActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:progressActivity="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/activityToolbar"
+    progressActivity:progressEmptyStateBackgroundColor="?colorPrimaryLight"
+    progressActivity:progressEmptyStateContentTextColor="@android:color/white"
+    progressActivity:progressEmptyStateTitleTextColor="@android:color/white"
+    progressActivity:progressErrorStateBackgroundColor="?colorPrimaryLight"
+    progressActivity:progressErrorStateButtonTextColor="@android:color/white"
+    progressActivity:progressErrorStateContentTextColor="@android:color/white"
+    progressActivity:progressErrorStateTitleTextColor="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="0dp"
+            android:id="@+id/recyclerView"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <include layout="@layout/layer_hours" />
+    </LinearLayout>
+</com.vlonjatg.progressactivity.ProgressActivity>
