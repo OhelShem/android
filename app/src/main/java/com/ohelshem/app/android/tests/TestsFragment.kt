@@ -74,6 +74,12 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
 
     private fun initFragments() {
         // landscape
+        if (mainFragment != null) {
+            val adapter = TestsFragmentAdapter(childFragmentManager)
+            childFragmentManager.beginTransaction()
+                    .replace(R.id.mainFragment, adapter.getItem(0))
+                    .commit()
+        }
         if (leftFragment != null) {
             val adapter = TestsFragmentAdapter(childFragmentManager)
             childFragmentManager.beginTransaction()
@@ -87,8 +93,8 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
         val now = Calendar.getInstance().clearTime().timeInMillis
         val nextTest = tests.firstOrNull { now <= it.date }
         if (nextTest != null) {
-            daysToTest.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
-            testName.text = nextTest.content
+            daysToTest?.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
+            testName?.text = nextTest.content
             totalTests?.text = tests.size.toString()
         }
 
