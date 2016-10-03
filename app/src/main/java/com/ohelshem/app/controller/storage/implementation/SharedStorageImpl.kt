@@ -40,7 +40,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             _theme = value.ordinal
         }
 
-    override var darkMode: Int by intPrefVar(AppCompatDelegate.MODE_NIGHT_YES)
+    override var darkMode: Int by intPrefVar(AppCompatDelegate.MODE_NIGHT_AUTO)
 
     //region UserData
     override var userData: UserData
