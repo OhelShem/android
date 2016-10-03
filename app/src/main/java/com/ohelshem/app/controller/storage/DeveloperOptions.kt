@@ -29,7 +29,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
         }
         set(value) {
             if (!isFakingChanges)
-                storage.changesDate = value
+                storage.serverUpdateDate = value
         }
 
     override var changes: List<Change>?

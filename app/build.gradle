@@ -10,7 +10,7 @@ android {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 71
+        versionCode 72
         versionName "7.0.0"
     }
 
@@ -39,7 +39,7 @@ dependencies {
     // Firebase
     compile "com.google.firebase:firebase-core:$firebase"
     compile "com.google.firebase:firebase-messaging:$firebase"
-    //compile "com.google.firebase:firebase-crash:$firebase"
+    compile "com.google.firebase:firebase-crash:$firebase"
     // Kotlin libraries
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
     compile 'com.github.salomonbrys.kodein:kodein:3.1.0'
