@@ -95,7 +95,7 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
     }
 
     private fun MutableList<*>.removeAtIfPositive(position: Int) {
-        if (position > 0)
+        if (position >= 0)
             removeAt(position)
     }
 
