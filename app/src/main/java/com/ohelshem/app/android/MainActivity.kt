@@ -198,7 +198,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     window.statusBarColor = Color.TRANSPARENT
             }
             updatedAt = getString(R.string.updated_at)
-            navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer) + " " + layerText
+            navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer_changes) + " " + layerText
             headerView = navigationView.inflateHeaderView(R.layout.main_drawer_header).apply {
                 classText.text = headerText
             }

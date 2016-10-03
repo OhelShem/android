@@ -116,7 +116,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/layer"
+                        android:contentDescription="@string/layer_changes"
                         android:src="@drawable/ic_layers" />
                 </FrameLayout>
 

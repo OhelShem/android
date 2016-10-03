@@ -6,9 +6,9 @@
     <string name="id">מספר ת.ז.</string>
     <string name="password">סיסמה</string>
     <string name="do_login">התחבר</string>
-    <string name="invalid_id">Invalid ID number</string>
-    <string name="password_too_short">Password is too short</string>
-    <string name="login_wrong">שם משתמש או סיסמא אינם נכונים</string>
+    <string name="invalid_id">מספר ת.ז. שגוי</string>
+    <string name="password_too_short">סיסמה קצרה מדי</string>
+    <string name="login_wrong">שם משתמש או סיסמה אינם נכונים</string>
     <string name="no_connection">אין חיבור לאינטרנט</string>
     <string name="no_connection_subtitle">אנא התחבר לאינטרנט ונסה שנית</string>
     <string name="general_error">שגיאה, אנא נסה בשנית</string>
@@ -25,7 +25,7 @@
     <string name="regulations">תקנון בית הספר</string>
     <string name="updated_at">עודכן ב-</string>
     <!-- Info -->
-    <string name="layer">שכבה</string>
+    <string name="layer_changes">שינויים בשכבת</string>
     <string name="clazz">כיתה</string>
     <!-- Messages -->
     <string name="refreshed">המידע עודכן</string>
