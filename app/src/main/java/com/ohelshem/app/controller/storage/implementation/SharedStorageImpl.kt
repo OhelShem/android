@@ -1,6 +1,5 @@
 package com.ohelshem.app.controller.storage.implementation
 
-import android.content.Context
 import android.support.v7.app.AppCompatDelegate
 import com.chibatching.kotpref.KotprefModel
 import com.ohelshem.api.Role
@@ -130,6 +129,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             try {
                 return readOverrides()
             } catch(e: Exception) {
+                e.printStackTrace()
                 TimetableOverridesFile.delete()
                 return emptyArray()
             }
@@ -214,44 +214,38 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
 
     override fun migration() {
         if (version == EmptyData) {
-            val oldPrefsName = "DBControllerImpl.xml"
-            val oldPrefsFile = File(SharedPreferencesFolder, oldPrefsName)
-            if (oldPrefsFile.exists()) {
-                val prefs = context.getSharedPreferences(oldPrefsName, Context.MODE_PRIVATE)
-                val oldVersion = prefs.getInt("databaseVersion", EmptyData)
-                if (oldVersion != 3) {
-                    FilesFolder.deleteRecursively()
-                    FilesFolder.mkdir()
-                    oldPrefsFile.delete()
-                } else {
-                    val oldId = prefs.getString("_userIdentity", "")
-                    if (oldId.isNotEmpty())
-                        id = oldId
-
-                    val oldPassword = prefs.getString("password", "")
-                    if (oldPassword.isNotEmpty())
-                        password = oldPassword
-
-                    val oldDeveloperMode = prefs.getBoolean("developerModeEnabled", false)
-                    developerMode = oldDeveloperMode
-
-                    val oldChangesNotification = prefs.getBoolean("notificationsForChangesEnabled", false)
-                    notificationsForChanges = oldChangesNotification
-
-                    val oldHolidaysNotification = prefs.getBoolean("notificationsForHolidaysEnabled", false)
-                    notificationsForHolidays = oldHolidaysNotification
-
-                    val oldTestNotifications = prefs.getBoolean("notificationsForTestsEnabled", false)
-                    notificationsForTests = oldTestNotifications
-
-                    val oldTimetableNotifications = prefs.getBoolean("notificationsForTimetableEnabled", false)
-                    notificationsForTimetable = oldTimetableNotifications
-                }
-
+            val old = OldStorage
+            if (old.databaseVersion != 3) {
+                old.clearData()
                 FilesFolder.deleteRecursively()
                 FilesFolder.mkdir()
-                oldPrefsFile.delete()
+            } else {
+                val oldId = old.userData.identity
+                val oldPassword = old.password
+                val oldTimetable = old.timetable
+                if (oldId.isNotEmpty() && oldPassword.isNotEmpty() && oldTimetable != null) {
+                    id = oldId
+                    password = oldPassword
+                    userData = old.userData
+
+                    developerMode = old.developerModeEnabled
+
+                    notificationsForChanges = old.notificationsForChangesEnabled
+
+                    notificationsForHolidays = old.notificationsForHolidaysEnabled
+
+                    notificationsForTests = old.notificationsForTestsEnabled
+
+                    notificationsForTimetable = old.notificationsForTimetableEnabled
+
+                    updateDate = 0
+                    serverUpdateDate = 0
+
+                    timetable = oldTimetable
+                    overrides = old.overrides
+                }
             }
+            old.clearData()
         }
         version = 4
     }
@@ -265,13 +259,11 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
 
     private val FilesFolder: File by lazy { context.filesDir }
 
-    private val TimetableDataFile: File by lazy { File(FilesFolder, "timetable3.bin") }
-    private val TimetableOffsetFile: File by lazy { File(FilesFolder, "timetable3_offsets.bin") }
+    private val TimetableDataFile: File by lazy { File(FilesFolder, "timetable4.bin") }
+    private val TimetableOffsetFile: File by lazy { File(FilesFolder, "timetable4_offsets.bin") }
 
-    private val TimetableOverridesFile: File by lazy { File(FilesFolder, "timetable_overrides.csv") }
-    private val TimetableOverridesFileBackup: File by lazy { File(FilesFolder, "timetable_overrides_backup.csv") }
-
-    private val SharedPreferencesFolder: File by lazy { File(context.filesDir.parent, "shared_prefs") }
+    private val TimetableOverridesFile: File by lazy { File(FilesFolder, "timetable4_overrides.csv") }
+    private val TimetableOverridesFileBackup: File by lazy { File(FilesFolder, "timetable4_overrides_backup.csv") }
 
     companion object : KLogging() {
         private const val InnerSeparator: Char = '\u2004'

@@ -31,7 +31,6 @@ class App : Application(), KodeinAware {
 
         initApi()
         initStorage()
-        initTimetable()
 
     }
 
@@ -42,6 +41,7 @@ class App : Application(), KodeinAware {
     private fun initStorage() {
         with(kodein.instance<Storage>()) {
             prepare()
+            initTimetable()
             migration()
             if (isSetup())
                 kodein.instance<ApiController>().setAuthData(id, password)

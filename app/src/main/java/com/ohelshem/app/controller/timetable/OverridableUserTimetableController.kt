@@ -12,11 +12,14 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
 : TimetableController by timetableController {
     private var overrideTimetable: Array<Array<Hour>>? = null
 
-    init {
-        storage.attachOverridesListener(1) { onUpdate(it) }
+    override fun init() {
+        storage.attachOverridesListener(1) {
+            onUpdate(it)
+        }
         timetableController.timetableUpdatedCallback = {
             onUpdate(storage.overrides)
         }
+        timetableController.init()
     }
 
     override fun get(day: Int, hour: Int): Hour = this[day][hour]
@@ -36,7 +39,9 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
         else return temp.toTypedArray()
     }
 
-    override fun getHourData(day: Int, hour: Int, minutesNow: Int): HourData = timetableController.getHourDataFromTimetable(day, hour, minutesNow, overrideTimetable!!)
+    override fun getHourData(day: Int, hour: Int, minutesNow: Int): HourData {
+        return timetableController.getHourDataFromTimetable(day, hour, minutesNow, overrideTimetable!!)
+    }
 
 
     fun onUpdate(data: Array<OverrideData>) {

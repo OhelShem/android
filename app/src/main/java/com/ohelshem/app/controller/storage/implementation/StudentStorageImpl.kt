@@ -3,14 +3,14 @@ package com.ohelshem.app.controller.storage.implementation
 import com.chibatching.kotpref.KotprefModel
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
-import com.ohelshem.app.controller.utils.OffsetDataController
-import com.ohelshem.app.controller.storage.IStorage
+import com.ohelshem.app.controller.storage.IStorage.Companion.EmptyData
 import com.ohelshem.app.controller.storage.StudentStorage
+import com.ohelshem.app.controller.utils.OffsetDataController
 import java.io.File
 import java.util.*
 
 class StudentStorageImpl(private val offsetDataController: OffsetDataController) : StudentStorage, KotprefModel() {
-    override var version: Int by intPrefVar(IStorage.EmptyData)
+    override var version: Int by intPrefVar(EmptyData)
 
     override var changes: List<Change>?
         get() {
@@ -59,7 +59,10 @@ class StudentStorageImpl(private val offsetDataController: OffsetDataController)
 
 
     override fun migration() {
-        version = 4
+        if (version == EmptyData) {
+            tests = emptyList()
+            version = 4
+        }
     }
 
     override fun clean() {
@@ -76,11 +79,11 @@ class StudentStorageImpl(private val offsetDataController: OffsetDataController)
 
     private val FilesFolder: File by lazy { context.filesDir }
 
-    private val ChangesDataFile: File by lazy { File(FilesFolder, "changes3.bin") }
-    private val ChangesOffsetFile: File by lazy { File(FilesFolder, "changes3_offsets.bin") }
+    private val ChangesDataFile: File by lazy { File(FilesFolder, "changes4.bin") }
+    private val ChangesOffsetFile: File by lazy { File(FilesFolder, "changes4_offsets.bin") }
 
-    private val TestsDataFile: File by lazy { File(FilesFolder, "tests3.bin") }
-    private val TestsOffsetFile: File by lazy { File(FilesFolder, "tests3_offsets.bin") }
+    private val TestsDataFile: File by lazy { File(FilesFolder, "tests4.bin") }
+    private val TestsOffsetFile: File by lazy { File(FilesFolder, "tests4_offsets.bin") }
 
     companion object {
         private const val InnerSeparator: Char = '\u2004'
