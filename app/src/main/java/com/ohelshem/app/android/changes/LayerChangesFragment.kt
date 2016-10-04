@@ -21,20 +21,21 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.HorizontalScrollView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
-import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.screenSize
 import com.ohelshem.app.android.stringArrayRes
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.layer_changes_fragment.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.backgroundDrawable
+import org.jetbrains.anko.margin
 import org.jetbrains.anko.padding
+import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.textColor
 
 class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
@@ -56,19 +57,27 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
     }
 
     fun fillTable(changes: List<Change>) {
+        val classes = presenter.classesAtLayer
+
         if (!hasInitTable) {
             val standardColumnWidth = screenSize.x / 6
             val primaryColor = activity.primaryColor
-            val rows: Array<TableRow?> = arrayOfNulls(11)
+            val dp30 = dip(30)
 
-            repeat(presenter.classesAtLayer) { clazz ->
+            val rows: Array<TableRow?> = arrayOfNulls(11)
+            repeat(classes) { c ->
+                val clazz = classes - c - 1
                 repeat(MaxChangeHours + 1) { hour ->
                     if (rows[hour] == null) {
                         rows[hour] = TableRow(context).apply {
                             id = hour
                             layoutParams = TableLayout.LayoutParams().apply {
-                                weight = 1.0f
-                                height = 0
+                                if (hour == TitleRow) {
+                                    height = dp30
+                                } else {
+                                    weight = 1.0f
+                                    height = 0
+                                }
                                 width = MATCH_PARENT
                             }
                         }
@@ -78,13 +87,15 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
 
                     val cell = TextView(context).apply {
                         gravity = Gravity.CENTER
-                        backgroundDrawable = drawableRes(R.drawable.cell_shape)
+                        backgroundColor = NoChangesColors[hour % 2]
                         textColor = Color.WHITE
                         padding = 10
 
                         layoutParams = TableRow.LayoutParams(clazz).apply {
                             height = MATCH_PARENT
                             width = standardColumnWidth
+                            if (hour != TitleRow)
+                                margin = 3
                         }
                     }
 
@@ -102,14 +113,19 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
         }
 
         changes.forEach {
-            (rows[it.hour].getChildAt(it.clazz - 1) as TextView).apply {
+            (rows[it.hour].getChildAt(classes - it.clazz) as TextView).apply {
                 backgroundColor = it.color
                 text = it.content
             }
         }
+        tableScrollView.post {
+            tableScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        }
+
     }
 
     companion object {
+        private val NoChangesColors = intArrayOf(Color.parseColor("#D9D9D9"), Color.parseColor("#BABABA"))
         private const val TitleRow = 0
         private const val MaxChangeHours = 10
     }

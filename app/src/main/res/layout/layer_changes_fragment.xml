@@ -1,68 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.vlonjatg.progressactivity.ProgressActivity
-    android:id="@+id/progressActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.vlonjatg.progressactivity.ProgressActivity xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:progressActivity="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/progressActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/activityToolbar"
     progressActivity:progressEmptyStateBackgroundColor="?colorPrimaryLight"
     progressActivity:progressEmptyStateContentTextColor="@android:color/white"
     progressActivity:progressEmptyStateTitleTextColor="@android:color/white"
     progressActivity:progressErrorStateBackgroundColor="?colorPrimaryLight"
     progressActivity:progressErrorStateButtonTextColor="@android:color/white"
     progressActivity:progressErrorStateContentTextColor="@android:color/white"
-    progressActivity:progressErrorStateTitleTextColor="@android:color/white">
+    progressActivity:progressErrorStateTitleTextColor="@android:color/white"
+    tools:ignore="RtlHardcoded">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <include
+        android:id="@+id/layerHours"
+        layout="@layout/layer_hours"
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true" />
 
-    <include layout="@layout/layer_hours" android:id="@+id/inc"/>
 
-    <ScrollView
+    <HorizontalScrollView
         android:id="@+id/tableScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
+        android:layout_toLeftOf="@+id/layerHours"
         android:fillViewport="true"
-        android:layout_toRightOf="@id/inc">
+        android:overScrollMode="never">
 
-    <HorizontalScrollView
-        android:id="@+id/svHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="horizontal"
-        android:fillViewport="true">
-
-            <TableLayout
-                android:id="@+id/layerChangesTable"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:gravity="right"/>
+        <TableLayout
+            android:id="@+id/layerChangesTable"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="right" />
 
 
     </HorizontalScrollView>
-
-    </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:visibility="invisible">
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="0dp"
-            android:id="@+id/recyclerView"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible"/>
-    </LinearLayout>
-
-    </RelativeLayout>
 </com.vlonjatg.progressactivity.ProgressActivity>

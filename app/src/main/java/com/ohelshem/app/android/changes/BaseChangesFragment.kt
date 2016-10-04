@@ -45,7 +45,7 @@ abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, Base
     abstract fun showData(changes: List<Change>)
 
     override fun onError(error: UpdateError) {
-        recyclerView.adapter = null
+        recyclerView?.adapter = null
         screenManager.screenTitle = getString(R.string.changes)
         when (error) {
             UpdateError.NoData -> {
@@ -69,7 +69,7 @@ abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, Base
     }
 
     override fun onEmptyData(dayType: DayType) {
-        recyclerView.adapter = null
+        recyclerView?.adapter = null
         if (progressActivity.isError)
             progressActivity.showContent()
         setTitle()
