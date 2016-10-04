@@ -134,8 +134,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
             } else return storage.changes
         }
         set(value) {
-            if (!isFakingChanges)
-                storage.changes = changes
+            storage.changes = value
         }
 
     override fun hasChanges(clazz: Int): Boolean {
