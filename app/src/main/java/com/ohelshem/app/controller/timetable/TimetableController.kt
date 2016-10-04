@@ -93,14 +93,14 @@ interface TimetableController {
         fun getEndOfHour(hour: Int): String = DayHours[hour * 2 - 1]
 
         fun isEndOfDay(hour: Int, day: Array<Hour>): Boolean {
-            if (hour >= day.size) return true
-            var i = day.size - 1
+            if (hour+1 >= day.size) return true else return false
+           /* var i = day.size - 1
             do {
                 if (i == hour) return true
                 else if (!(i >= 0 && day[i].isEmpty()))
                     return false
                 i--
-            } while (true)
+            } while (true) */
         }
 
         /**
