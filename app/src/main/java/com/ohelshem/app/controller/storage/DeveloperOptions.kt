@@ -43,12 +43,51 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 val size = timetable[day - 1].size
                 var skip = false
                 val changes = mutableListOf<Change>()
-                repeat(size) {
+                changes += Change(9, 0, "שלח", Color.BLUE)
+                changes += Change(9, 1, "שלח", Color.BLUE)
+                changes += Change(9, 2, "שלח", Color.BLUE)
+                changes += Change(9, 3, "שלח", Color.BLUE)
+                changes += Change(9, 4, "שלח", Color.BLUE)
+                changes += Change(9, 5, "שלח", Color.BLUE)
+                changes += Change(9, 6, "שלח", Color.BLUE)
+                changes += Change(9, 7, "שלח", Color.BLUE)
+                changes += Change(9, 8, "שלח", Color.BLUE)
+                changes += Change(9, 9, "שלח", Color.BLUE)
+                changes += Change(12, 2, "הצגה באשכול", Color.YELLOW)
+                changes += Change(12, 3, "הצגה באשכול", Color.YELLOW)
+                changes += Change(1, 4, "מקבץ בלי בכר", Color.GREEN)
+                changes += Change(1, 5, "מקבץ בלי בכר", Color.GREEN)
+                changes += Change(8, 0, "מבוטל", Color.RED)
+                changes += Change(8, 1, "מבוטל", Color.RED)
+                changes += Change(8, 6, "בלי בן יעקב", Color.GREEN)
+                changes += Change(8, 7, "בלי בן יעקב", Color.GREEN)
+                changes += Change(8, 8, "בלי בן יעקב", Color.GREEN)
+                changes += Change(6, 0, "חנג בלי גולן", Color.GREEN)
+                changes += Change(6, 1, "בספריה", Color.GREEN)
+                changes += Change(4, 0, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 1, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 2, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 3, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 4, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 5, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 6, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 7, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 8, "סיור כיתתי", Color.BLUE)
+                changes += Change(4, 9, "סיור כיתתי", Color.BLUE)
+                changes += Change(3, 0, "מבוטל", Color.RED)
+                changes += Change(3, 4, "גולן בחדר 232", Color.GREEN)
+                changes += Change(11, 0, "סדנא גוטמן בחדר 304", Color.YELLOW)
+                changes += Change(11, 1, "סדנא גוטמן בחדר 304", Color.YELLOW)
+                changes += Change(11, 2, "סדנא מארק בחדר 304", Color.YELLOW)
+                changes += Change(11, 3, "סדנא מארק בחדר 304", Color.YELLOW)
+                changes += Change(11, 4, "סדנא שלטי בחדר 304", Color.YELLOW)
+                changes += Change(11, 5, "סדנא שלטי בחדר 304", Color.YELLOW)
+                /*repeat(size) {
                     if (!skip) {
-                        changes += Change(clazz, it, "שינוי מזויף", Color.BLUE)
+
                     }
                     skip = !skip
-                }
+                } */
                 return changes
             } else return storage.changes
         }

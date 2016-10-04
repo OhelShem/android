@@ -14,20 +14,55 @@
     progressActivity:progressErrorStateContentTextColor="@android:color/white"
     progressActivity:progressErrorStateTitleTextColor="@android:color/white">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <include layout="@layout/layer_hours" android:id="@+id/inc"/>
+
+    <ScrollView
+        android:id="@+id/tableScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:fillViewport="true"
+        android:layout_toRightOf="@id/inc">
+
+    <HorizontalScrollView
+        android:id="@+id/svHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal"
+        android:fillViewport="true">
+
+            <TableLayout
+                android:id="@+id/layerChangesTable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:gravity="right"/>
+
+
+    </HorizontalScrollView>
+
+    </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:visibility="invisible">
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="0dp"
             android:id="@+id/recyclerView"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <include layout="@layout/layer_hours" />
+            android:layout_weight="1"
+            android:visibility="invisible"/>
     </LinearLayout>
+
+    </RelativeLayout>
 </com.vlonjatg.progressactivity.ProgressActivity>

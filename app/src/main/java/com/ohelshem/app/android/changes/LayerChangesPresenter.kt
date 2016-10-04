@@ -29,4 +29,7 @@ class LayerChangesPresenter(private val schoolInfo: SchoolInfo, storage: Storage
 
     val classesAtLayer: Int
         get() = schoolInfo[storage.userData.layer]
+
+    val userLayer: Int
+        get() = storage.userData.layer
 }
