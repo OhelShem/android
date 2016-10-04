@@ -10,7 +10,7 @@ android {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 72
+        versionCode 74
         versionName "7.0.0"
     }
 

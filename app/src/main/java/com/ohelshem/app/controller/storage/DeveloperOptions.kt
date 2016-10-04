@@ -1,10 +1,12 @@
 package com.ohelshem.app.controller.storage
 
-import android.graphics.Color
 import com.ohelshem.api.model.Change
+import com.ohelshem.app.android.App
+import com.ohelshem.app.android.colorArrayRes
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.getHour
 import com.ohelshem.app.toCalendar
+import com.yoavst.changesystemohelshem.R
 import java.util.*
 
 class DeveloperOptions(private val storage: Storage) : Storage by storage {
@@ -32,6 +34,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 storage.serverUpdateDate = value
         }
 
+    private val fakingChangesColors = App.instance.colorArrayRes(R.array.changesColors)
     override var changes: List<Change>?
         get() {
             if (isFakingChanges) {
@@ -40,54 +43,91 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 val day = changesDate.toCalendar()[Calendar.DAY_OF_WEEK]
                 val timetable = timetable ?: return emptyList()
                 if (day > timetable.size || timetable[day - 1].size == 0) return emptyList()
-                val size = timetable[day - 1].size
+
+                var c = 0
+
+                // change every 2nd hour for the user's class. Helps to test the class changes view.
                 var skip = false
                 val changes = mutableListOf<Change>()
-                changes += Change(9, 0, "שלח", Color.BLUE)
-                changes += Change(9, 1, "שלח", Color.BLUE)
-                changes += Change(9, 2, "שלח", Color.BLUE)
-                changes += Change(9, 3, "שלח", Color.BLUE)
-                changes += Change(9, 4, "שלח", Color.BLUE)
-                changes += Change(9, 5, "שלח", Color.BLUE)
-                changes += Change(9, 6, "שלח", Color.BLUE)
-                changes += Change(9, 7, "שלח", Color.BLUE)
-                changes += Change(9, 8, "שלח", Color.BLUE)
-                changes += Change(9, 9, "שלח", Color.BLUE)
-                changes += Change(12, 2, "הצגה באשכול", Color.YELLOW)
-                changes += Change(12, 3, "הצגה באשכול", Color.YELLOW)
-                changes += Change(1, 4, "מקבץ בלי בכר", Color.GREEN)
-                changes += Change(1, 5, "מקבץ בלי בכר", Color.GREEN)
-                changes += Change(8, 0, "מבוטל", Color.RED)
-                changes += Change(8, 1, "מבוטל", Color.RED)
-                changes += Change(8, 6, "בלי בן יעקב", Color.GREEN)
-                changes += Change(8, 7, "בלי בן יעקב", Color.GREEN)
-                changes += Change(8, 8, "בלי בן יעקב", Color.GREEN)
-                changes += Change(6, 0, "חנג בלי גולן", Color.GREEN)
-                changes += Change(6, 1, "בספריה", Color.GREEN)
-                changes += Change(4, 0, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 1, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 2, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 3, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 4, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 5, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 6, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 7, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 8, "סיור כיתתי", Color.BLUE)
-                changes += Change(4, 9, "סיור כיתתי", Color.BLUE)
-                changes += Change(3, 0, "מבוטל", Color.RED)
-                changes += Change(3, 4, "גולן בחדר 232", Color.GREEN)
-                changes += Change(11, 0, "סדנא גוטמן בחדר 304", Color.YELLOW)
-                changes += Change(11, 1, "סדנא גוטמן בחדר 304", Color.YELLOW)
-                changes += Change(11, 2, "סדנא מארק בחדר 304", Color.YELLOW)
-                changes += Change(11, 3, "סדנא מארק בחדר 304", Color.YELLOW)
-                changes += Change(11, 4, "סדנא שלטי בחדר 304", Color.YELLOW)
-                changes += Change(11, 5, "סדנא שלטי בחדר 304", Color.YELLOW)
-                /*repeat(size) {
+                repeat(timetable[day - 1].size) {
                     if (!skip) {
-
+                        changes += Change(clazz, it, "שינוי מזויף", fakingChangesColors[c])
                     }
                     skip = !skip
-                } */
+                }
+
+                // Random changes for other classes
+                if (clazz != 1) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(1, 4, "מקבץ בלי בכר", color)
+                    changes += Change(1, 5, "מקבץ בלי בכר", color)
+                }
+                if (clazz != 3) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(3, 0, "מבוטל", color)
+                    changes += Change(3, 4, "גולן בחדר 232", color)
+                }
+                if (clazz != 4) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(4, 0, "סיור כיתתי", color)
+                    changes += Change(4, 1, "סיור כיתתי", color)
+                    changes += Change(4, 2, "סיור כיתתי", color)
+                    changes += Change(4, 3, "סיור כיתתי", color)
+                    changes += Change(4, 4, "סיור כיתתי", color)
+                    changes += Change(4, 5, "סיור כיתתי", color)
+                    changes += Change(4, 6, "סיור כיתתי", color)
+                    changes += Change(4, 7, "סיור כיתתי", color)
+                    changes += Change(4, 8, "סיור כיתתי", color)
+                    changes += Change(4, 9, "סיור כיתתי", color)
+                }
+                if (clazz != 6) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(6, 0, "חנג בלי גולן", color)
+                    changes += Change(6, 1, "בספריה", color)
+                }
+                if (clazz != 8) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(8, 0, "מבוטל", color)
+                    changes += Change(8, 1, "מבוטל", color)
+                    changes += Change(8, 6, "בלי בן יעקב", color)
+                    changes += Change(8, 7, "בלי בן יעקב", color)
+                    changes += Change(8, 8, "בלי בן יעקב", color)
+                }
+                if (clazz != 9) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(9, 0, "שלח", color)
+                    changes += Change(9, 1, "שלח", color)
+                    changes += Change(9, 2, "שלח", color)
+                    changes += Change(9, 3, "שלח", color)
+                    changes += Change(9, 4, "שלח", color)
+                    changes += Change(9, 5, "שלח", color)
+                    changes += Change(9, 6, "שלח", color)
+                    changes += Change(9, 7, "שלח", color)
+                    changes += Change(9, 8, "שלח", color)
+                    changes += Change(9, 9, "שלח", color)
+                }
+                if (clazz != 11) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(11, 0, "סדנא גוטמן בחדר 304", color)
+                    changes += Change(11, 1, "סדנא גוטמן בחדר 304", color)
+                    changes += Change(11, 2, "סדנא מארק בחדר 304", color)
+                    changes += Change(11, 3, "סדנא מארק בחדר 304", color)
+                    changes += Change(11, 4, "סדנא שלטי בחדר 304", color)
+                    changes += Change(11, 5, "סדנא שלטי בחדר 304", color)
+                }
+                if (clazz != 12) {
+                    c++
+                    val color = fakingChangesColors[c]
+                    changes += Change(12, 2, "הצגה באשכול", color)
+                    changes += Change(12, 3, "הצגה באשכול", color)
+                }
                 return changes
             } else return storage.changes
         }
