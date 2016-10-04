@@ -23,13 +23,18 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="?colorPrimary"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/logo" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="?colorPrimary"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/logo" />
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

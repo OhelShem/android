@@ -22,6 +22,7 @@
 
         <activity
             android:name="com.ohelshem.app.android.MainActivity"
+            android:theme="@style/AppTheme.MaterialColdStart"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
