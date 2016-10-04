@@ -20,6 +20,7 @@ package com.ohelshem.app.android.changes
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.HorizontalScrollView
 import android.widget.TableLayout
@@ -30,6 +31,7 @@ import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.screenSize
 import com.ohelshem.app.android.stringArrayRes
+import com.ohelshem.app.android.utils.view.AutoResizeTextView
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.layer_changes_fragment.*
 import org.jetbrains.anko.backgroundColor
@@ -85,7 +87,7 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
                         layerChangesTable.addView(rows[hour])
                     }
 
-                    val cell = TextView(context).apply {
+                    val cell = AutoResizeTextView(context).apply {
                         gravity = Gravity.CENTER
                         backgroundColor = NoChangesColors[hour % 2]
                         textColor = Color.WHITE
@@ -105,7 +107,13 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
                         cell.setTypeface(null, Typeface.BOLD)
                     }
 
+
                     rows[hour]!!.addView(cell)
+
+                    cell.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+                    cell.width = cell.measuredWidth
+                    cell.height = cell.measuredHeight
+
                 }
             }
             this.rows = rows.requireNoNulls()
