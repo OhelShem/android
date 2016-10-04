@@ -29,4 +29,10 @@ class TeacherStorageCacheImpl(private val storage: TeacherStorage) : TeacherStor
             _primaryClass = value
             storage.primaryClass = value
         }
+
+    override fun clean() {
+        _classes = null
+        _primaryClass = null
+        storage.clean()
+    }
 }

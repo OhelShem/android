@@ -150,6 +150,7 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
 
     override fun clean() {
         clear()
+        version = 4
         Files.forEach { it.delete() }
     }
 

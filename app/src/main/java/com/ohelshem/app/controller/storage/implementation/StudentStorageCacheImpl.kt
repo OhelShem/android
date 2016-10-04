@@ -30,4 +30,9 @@ class StudentStorageCacheImpl(private val storage: StudentStorage) : StudentStor
             storage.tests = value
         }
 
+    override fun clean() {
+        _changes = null
+        _tests = null
+        storage.clean()
+    }
 }

@@ -126,4 +126,18 @@ class SharedStorageCachedImpl(private val storage: SharedStorage) : SharedStorag
             _theme = theme
             storage.theme = value
         }
+
+    override fun clean() {
+        _userData = null
+        _changesDate = null
+        _updateDate = null
+        _serverUpdateDate = null
+        _password = null
+        _id = null
+        _timetable = null
+        _developerMode = null
+        _darkMode = null
+        _theme = null
+        storage.clean()
+    }
 }
