@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
@@ -41,6 +42,11 @@ fun View.invisible() {
 fun View.show() {
     visibility = View.VISIBLE
 }
+
+
+fun Fragment.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, activity.theme)
+fun Fragment.colorRes(id: Int): Int = ResourcesCompat.getColor(resources, id, activity.theme)
+fun Fragment.stringArrayRes(id: Int): Array<String> = resources.getStringArray(id)
 
 fun Context.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, theme)
 fun Context.colorRes(id: Int): Int = ResourcesCompat.getColor(resources, id, theme)
@@ -169,6 +175,14 @@ fun String.fromHtml(): CharSequence = if (Build.VERSION.SDK_INT >= Build.VERSION
 
 fun ViewManager.appCompatSwitch(theme: Int = 0, init: SwitchCompat.() -> Unit = {}): SwitchCompat = ankoView({ SwitchCompat(it, null) }, theme, init)
 
+val Fragment.screenSize: Point
+    get() {
+        val screen = activity.windowManager.defaultDisplay
+        val size = Point()
+        screen.getSize(size)
+        return size
+    }
+
 /**
  * Returns darker version of specified `color`.
  */
@@ -183,3 +197,4 @@ fun Int.darker(factor: Float): Int {
             Math.max((g * factor).toInt(), 0),
             Math.max((b * factor).toInt(), 0))
 }
+

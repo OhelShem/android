@@ -67,8 +67,8 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
                 }
             }
             tabs.setupWithViewPager(pager)
-            tabs.getTabAt(0)!!.icon = activity.drawableRes(R.drawable.ic_list)
-            tabs.getTabAt(1)!!.icon = activity.drawableRes(R.drawable.ic_calendar)
+            tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
+            tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_calendar)
         }
     }
 

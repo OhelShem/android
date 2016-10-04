@@ -50,29 +50,30 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 var skip = false
                 val changes = mutableListOf<Change>()
                 repeat(timetable[day - 1].size) {
-                    if (!skip) {
-                        changes += Change(clazz, it, "שינוי מזויף", fakingChangesColors[c])
+                    if (it + 1 <= 10) {
+                        if (!skip) {
+                            changes += Change(clazz, it + 1, "שינוי מזויף", fakingChangesColors[c])
+                        }
+                        skip = !skip
                     }
-                    skip = !skip
                 }
 
                 // Random changes for other classes
                 if (clazz != 1) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(1, 4, "מקבץ בלי בכר", color)
                     changes += Change(1, 5, "מקבץ בלי בכר", color)
+                    changes += Change(1, 6, "מקבץ בלי בכר", color)
                 }
                 if (clazz != 3) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(3, 0, "מבוטל", color)
-                    changes += Change(3, 4, "גולן בחדר 232", color)
+                    changes += Change(3, 1, "מבוטל", color)
+                    changes += Change(3, 5, "גולן בחדר 232", color)
                 }
                 if (clazz != 4) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(4, 0, "סיור כיתתי", color)
                     changes += Change(4, 1, "סיור כיתתי", color)
                     changes += Change(4, 2, "סיור כיתתי", color)
                     changes += Change(4, 3, "סיור כיתתי", color)
@@ -82,18 +83,19 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                     changes += Change(4, 7, "סיור כיתתי", color)
                     changes += Change(4, 8, "סיור כיתתי", color)
                     changes += Change(4, 9, "סיור כיתתי", color)
+                    changes += Change(4, 10, "סיור כיתתי", color)
                 }
                 if (clazz != 6) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(6, 0, "חנג בלי גולן", color)
-                    changes += Change(6, 1, "בספריה", color)
+                    changes += Change(6, 1, "חנג בלי גולן", color)
+                    changes += Change(6, 2, "בספריה", color)
                 }
                 if (clazz != 8) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(8, 0, "מבוטל", color)
                     changes += Change(8, 1, "מבוטל", color)
+                    changes += Change(8, 2, "מבוטל", color)
                     changes += Change(8, 6, "בלי בן יעקב", color)
                     changes += Change(8, 7, "בלי בן יעקב", color)
                     changes += Change(8, 8, "בלי בן יעקב", color)
@@ -101,7 +103,6 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 if (clazz != 9) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(9, 0, "שלח", color)
                     changes += Change(9, 1, "שלח", color)
                     changes += Change(9, 2, "שלח", color)
                     changes += Change(9, 3, "שלח", color)
@@ -111,16 +112,17 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                     changes += Change(9, 7, "שלח", color)
                     changes += Change(9, 8, "שלח", color)
                     changes += Change(9, 9, "שלח", color)
+                    changes += Change(9, 10, "שלח", color)
                 }
                 if (clazz != 11) {
                     c++
                     val color = fakingChangesColors[c]
-                    changes += Change(11, 0, "סדנא גוטמן בחדר 304", color)
                     changes += Change(11, 1, "סדנא גוטמן בחדר 304", color)
                     changes += Change(11, 2, "סדנא מארק בחדר 304", color)
                     changes += Change(11, 3, "סדנא מארק בחדר 304", color)
                     changes += Change(11, 4, "סדנא שלטי בחדר 304", color)
                     changes += Change(11, 5, "סדנא שלטי בחדר 304", color)
+                    changes += Change(11, 6, "סדנא גוטמן בחדר 304", color)
                 }
                 if (clazz != 12) {
                     c++

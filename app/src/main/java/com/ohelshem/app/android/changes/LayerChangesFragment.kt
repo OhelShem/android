@@ -17,23 +17,24 @@
 
 package com.ohelshem.app.android.changes
 
-import android.content.Context
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.Typeface
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Gravity
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.drawableRes
-import com.ohelshem.app.android.utils.view.DividerItemDecoration
+import com.ohelshem.app.android.primaryColor
+import com.ohelshem.app.android.screenSize
+import com.ohelshem.app.android.stringArrayRes
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.layer_changes_fragment.*
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.backgroundDrawable
+import org.jetbrains.anko.padding
 import org.jetbrains.anko.textColor
 
 class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
@@ -41,90 +42,75 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
 
     override fun createPresenter(): LayerChangesPresenter = with(kodein()) { LayerChangesPresenter(instance(), instance(), instance()) }
 
+    private val layerText: String by lazy { stringArrayRes(R.array.layers)[presenter.userLayer - 9] }
+
+    private var hasInitTable = false
+    private lateinit var rows: Array<TableRow>
+
     override fun init() {
         screenManager.setToolbarElevation(false)
-
-        recyclerView.layoutManager = GridLayoutManager(activity, 11, LinearLayoutManager.HORIZONTAL, true)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(DividerItemDecoration(activity.drawableRes(R.drawable.abc_list_divider_mtrl_alpha)))
     }
 
     override fun showData(changes: List<Change>) {
         fillTable(changes)
-        //recyclerView.adapter = LayerChangesAdapter(activity, recyclerView.measuredHeight / 11, changes, presenter.classesAtLayer)
     }
 
     fun fillTable(changes: List<Change>) {
+        if (!hasInitTable) {
+            val standardColumnWidth = screenSize.x / 6
+            val primaryColor = activity.primaryColor
+            val rows: Array<TableRow?> = arrayOfNulls(11)
 
-        val screen = activity.getWindowManager().getDefaultDisplay()
-        val size = Point()
-        screen.getSize(size)
+            repeat(presenter.classesAtLayer) { clazz ->
+                repeat(MaxChangeHours + 1) { hour ->
+                    if (rows[hour] == null) {
+                        rows[hour] = TableRow(context).apply {
+                            id = hour
+                            layoutParams = TableLayout.LayoutParams().apply {
+                                weight = 1.0f
+                                height = 0
+                                width = MATCH_PARENT
+                            }
+                        }
 
-        val standardColumnWidth = size.x / 6 //every column takes 1/6 of the screen horizontally
-
-        val rows = kotlin.arrayOfNulls<TableRow>(11)
-        val cells = arrayOfNulls<TextView>(presenter.classesAtLayer*10)
-
-        for (c in 0..(presenter.classesAtLayer-1)) {
-            for (i in 0..10) { //added a row for the top title
-                if (rows[i] == null) { //if current row is null, initialize it
-                    rows[i] = TableRow(activity)
-                    val rowParams = TableLayout.LayoutParams()
-                    rowParams.weight = 1.0f
-                    rowParams.height = 0
-                    rowParams.width = TableLayout.LayoutParams.MATCH_PARENT
-                    rows[i]?.setLayoutParams(rowParams)
-                    rows[i]?.setId(i)
-                    //add the initialized row to the layout
-                    layerChangesTable.addView(rows[i])
-                }
-
-
-                cells[i] = TextView(activity)
-                cells[i]?.setGravity(Gravity.CENTER)
-
-                val sdk = android.os.Build.VERSION.SDK_INT
-                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        cells[i]?.setBackgroundDrawable(ContextCompat.getDrawable(activity, R.drawable.cell_shape))
-                    } else {
-                        cells[i]?.setBackground(ContextCompat.getDrawable(activity, R.drawable.cell_shape))
+                        layerChangesTable.addView(rows[hour])
                     }
 
-                cells[i]?.textColor = Color.parseColor("#FFFFFF")
+                    val cell = TextView(context).apply {
+                        gravity = Gravity.CENTER
+                        backgroundDrawable = drawableRes(R.drawable.cell_shape)
+                        textColor = Color.WHITE
+                        padding = 10
 
-                cells[i]?.setPadding(10, 10, 10, 10)
-
-                //add any matching change to the current cell
-                changes.forEach {
-                    if (it.clazz==(c+1) && it.hour==(i-1)) {
-                        cells[i]?.setBackgroundColor(it.color)
-                        cells[i]?.setText(it.content)
+                        layoutParams = TableRow.LayoutParams(clazz).apply {
+                            height = MATCH_PARENT
+                            width = standardColumnWidth
+                        }
                     }
+
+                    if (hour == TitleRow) {
+                        cell.setBackgroundColor(primaryColor)
+                        cell.text = layerText + "'" + (clazz + 1).toString()
+                        cell.setTypeface(null, Typeface.BOLD)
+                    }
+
+                    rows[hour]!!.addView(cell)
                 }
+            }
+            this.rows = rows.requireNoNulls()
+            hasInitTable = true
+        }
 
-                if (i==0) { //if current row is the title row
-                    cells[i]?.setBackgroundColor(Color.parseColor("#5677fc"))
-                    cells[i]?.setText(layerText + "'" +(c+1).toString())
-                    cells[i]?.setTypeface(null, Typeface.BOLD)
-                }
-
-                val cellParams = TableRow.LayoutParams(c)
-
-                cellParams.height = TableRow.LayoutParams.MATCH_PARENT
-                // cellParams.setMargins(5, 5, 5, 5);
-                cellParams.width = standardColumnWidth
-
-                cells[i]?.setLayoutParams(cellParams)
-
-                //add the cell to the row
-                rows[i]?.addView(cells[i])
-
+        changes.forEach {
+            (rows[it.hour].getChildAt(it.clazz - 1) as TextView).apply {
+                backgroundColor = it.color
+                text = it.content
             }
         }
     }
 
-    fun Context.stringArrayRes(id: Int): Array<String> = resources.getStringArray(id)
-    private val layer: Int by lazy { presenter.userLayer }
-    private val layerText: String by lazy { activity.stringArrayRes(R.array.layers)[layer - 9] }
-
+    companion object {
+        private const val TitleRow = 0
+        private const val MaxChangeHours = 10
+    }
 }

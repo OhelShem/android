@@ -24,11 +24,13 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Hour
-import com.ohelshem.app.android.colorRes
 import com.ohelshem.app.android.hide
+import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
@@ -119,40 +121,56 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         val dp1 = dip(1)
         val dp24 = dip(24)
         val dp30 = dip(30)
-        for (i in 0..max - 1) {
-            val tableRow = TableRow(activity)
-            val tableParams = TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            tableParams.setMargins(dp1, 0, 0, dp1)
-            tableRow.layoutParams = tableParams
-            table.addView(tableRow)
-            for (d in data.size - 1 downTo 0) {
-                val view = activity.layoutInflater.inflate(R.layout.timetable_weekly_item, tableRow, false)
-                view.id = getId(d, i)
-                if (data[d].size == 0) {
-                    continue
-                } else if (data[d].size <= i) {
-                    view.setBackgroundColor(Color.TRANSPARENT)
-                } else {
-                    view.setBackgroundColor(data[d][i].color)
-                    (view.findViewById(R.id.text) as TextView).text = data[d][i].name
+        val primaryColor = activity.primaryColor
+
+        repeat(max) { hour ->
+            val tableRow = TableRow(context).apply {
+                layoutParams = TableLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
+                    setMargins(dp1, 0, 0, dp1)
                 }
-                (view.layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
-                view.onClick {
-                    if (data.size > d && data[d].size > i)
-                        presenter.startEdit(data[d][i], d, i)
+            }
+
+            table.addView(tableRow)
+
+            for (day in data.size - 1 downTo 0) {
+                if (data[day].size == 0) {
+                    continue
+                }
+
+                val view = activity.layoutInflater.inflate(R.layout.timetable_weekly_item, tableRow, false).apply {
+                    id = getId(day, hour)
+
+                    if (data[day].size <= hour) {
+                        backgroundColor = Color.TRANSPARENT
+                    } else {
+                        backgroundColor = data[day][hour].color
+                        (find<TextView>(R.id.text)).text = data[day][hour].name
+                    }
+
+                    (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
+
+                    onClick {
+                        if (data.size > day && data[day].size > hour)
+                            presenter.startEdit(data[day][hour], day, hour)
+                    }
                 }
                 tableRow.addView(view)
             }
-            val frameLayout = FrameLayout(activity)
-            frameLayout.layoutParams = TableRow.LayoutParams(dp30, ViewGroup.LayoutParams.MATCH_PARENT)
-            frameLayout.setBackgroundColor(activity.colorRes(R.color.colorPrimary))
-            val number = TextView(activity)
-            number.layoutParams = FrameLayout.LayoutParams(dp24, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
-            number.textSize = 15f
-            number.setTypeface(null, Typeface.BOLD)
-            number.setTextColor(Color.WHITE)
-            number.gravity = Gravity.CENTER
-            number.text = (i + 1).toString()
+            val frameLayout = FrameLayout(activity).apply {
+                layoutParams = TableRow.LayoutParams(dp30, MATCH_PARENT)
+                backgroundColor = primaryColor
+            }
+
+            val number = TextView(activity).apply {
+                layoutParams = FrameLayout.LayoutParams(dp24, WRAP_CONTENT, Gravity.CENTER)
+                textSize = 15f
+                gravity = Gravity.CENTER
+                text = (hour + 1).toString()
+                textColor = Color.WHITE
+
+                setTypeface(null, Typeface.BOLD)
+            }
+
             frameLayout.addView(number)
             tableRow.addView(frameLayout)
         }

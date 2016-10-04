@@ -49,19 +49,19 @@ abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, Base
         screenManager.screenTitle = getString(R.string.changes)
         when (error) {
             UpdateError.NoData -> {
-                progressActivity.showError(activity.drawableRes(R.drawable.ic_sync_problem), getString(R.string.no_data), getString(R.string.no_data_subtitle),
+                progressActivity.showError(drawableRes(R.drawable.ic_sync_problem), getString(R.string.no_data), getString(R.string.no_data_subtitle),
                         getString(R.string.refresh)) {
                     presenter.refresh(screenManager)
                 }
             }
             UpdateError.Connection -> {
-                progressActivity.showError(activity.drawableRes(R.drawable.ic_sync_problem), getString(R.string.no_connection), getString(R.string.no_connection_subtitle),
+                progressActivity.showError(drawableRes(R.drawable.ic_sync_problem), getString(R.string.no_connection), getString(R.string.no_connection_subtitle),
                         getString(R.string.try_again)) {
                     presenter.refresh(screenManager)
                 }
             }
             else -> {
-                progressActivity.showError(activity.drawableRes(R.drawable.ic_error), getString(R.string.general_error), getString(R.string.try_again), getString(R.string.try_again)) {
+                progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.general_error), getString(R.string.try_again), getString(R.string.try_again)) {
                     presenter.refresh(screenManager)
                 }
             }
@@ -74,14 +74,14 @@ abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, Base
             progressActivity.showContent()
         setTitle()
         if (dayType == DayType.Holiday || dayType == DayType.Summer) {
-            progressActivity.showEmpty(activity.drawableRes(R.drawable.ic_beach), getString(R.string.holiday_today), getString(R.string.holiday_today_subtitle))
+            progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.holiday_today), getString(R.string.holiday_today_subtitle))
         } else {
             if (dayType == DayType.Saturday)
-                progressActivity.showEmpty(activity.drawableRes(R.drawable.ic_beach), getString(R.string.shabat_today), getString(R.string.shabat_today_subtitle))
+                progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.shabat_today), getString(R.string.shabat_today_subtitle))
             else if (dayType == DayType.Friday)
-                progressActivity.showEmpty(activity.drawableRes(R.drawable.ic_beach), getString(R.string.friday_today), getString(R.string.friday_today_subtitle))
+                progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.friday_today), getString(R.string.friday_today_subtitle))
             else
-                progressActivity.showError(activity.drawableRes(R.drawable.ic_error), getString(R.string.no_changes), getString(R.string.no_changes_subtitle), getString(R.string.go_to_timetable)) {
+                progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.no_changes), getString(R.string.no_changes_subtitle), getString(R.string.go_to_timetable)) {
                     presenter.launchTimetableScreen(screenManager)
                 }
         }
