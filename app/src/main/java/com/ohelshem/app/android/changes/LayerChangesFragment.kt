@@ -127,7 +127,9 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
             }
         }
 
-        tableScrollView?.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        tableScrollView.post {
+            tableScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        }
 
     }
 
