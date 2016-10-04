@@ -49,7 +49,6 @@ class TestsCalendarFragment : BaseMvpFragment<TestsView, TestsPresenter>(), Test
     override fun init() {
         calendarView.currentDate = CalendarDay.today()
         calendarView.isPagingEnabled = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        calendarView.isPagingEnabled = false
         calendarView.state().edit().apply {
             setMinimumDate(CalendarDay.from(TimetableController.StartOfTheYear))
             setMaximumDate(CalendarDay.from(Date(TimetableController.Summer.endTime)))
