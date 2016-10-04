@@ -8,7 +8,7 @@ import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.app.controller.analytics.Analytics
-import com.ohelshem.app.controller.storage.SharedStorage.Theme
+import com.ohelshem.app.controller.storage.SharedStorage
 import com.ohelshem.app.controller.storage.Storage
 import com.yoavst.changesystemohelshem.R
 
@@ -19,15 +19,14 @@ abstract class AppThemedActivity: AppCompatActivity(), LazyKodeinAware {
     protected val analytics: Analytics by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(storage.darkMode)
         val theme = storage.theme
         val themeId = when (theme) {
-            Theme.Red -> R.style.Theme_Red
-            Theme.Green -> R.style.Theme_Green
-            Theme.Blue ->  R.style.Theme_Blue
+            SharedStorage.Theme.Red -> R.style.Theme_Red
+            SharedStorage.Theme.Green -> R.style.Theme_Green
+            SharedStorage.Theme.Blue ->  R.style.Theme_Blue
         }
         setTheme(themeId)
-        AppCompatDelegate.setDefaultNightMode(storage.darkMode)
-
+        super.onCreate(savedInstanceState)
     }
 }
