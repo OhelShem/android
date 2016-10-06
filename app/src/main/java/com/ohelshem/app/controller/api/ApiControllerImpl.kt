@@ -87,7 +87,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                 when (data) {
                     is Api.ExtraData.Student -> {
                         if (data.changes != null) {
-                            storage.changes = data.changes
+                            storage.changes = data.changes?.filter { it.content.replace("\r\n", "").isNotBlank() }
                             apis += UpdatedApi.Changes
                         }
                         if (data.tests != null) {
