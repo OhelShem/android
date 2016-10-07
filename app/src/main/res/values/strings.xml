@@ -135,7 +135,7 @@
     <string name="menu_mashov_message">התקן את אפליקציית Grader</string>
 
     <!-- Settings -->
-    <string name="overrides">שינוים במערכת</string>
+    <string name="overrides">שינויים במערכת</string>
     <string name="development_info">מידע למפתחים</string>
     <string name="developer_mode">מצב מפתחים</string>
     <string name="version_name">שם גרסה</string>
@@ -171,7 +171,7 @@
     <string name="more_apps_i_built">אפליקציות נוספות שלי</string>
     <string name="logout">התנתק</string>
     <string name="open_source">קוד פתוח</string>
-    <string name="overrides_properties">מערכת</string>
+    <string name="overrides_properties">מערכת שעות</string>
     <string name="email_title">אפליקציית אהל שם</string>
     <string name="facebook">דף הפייסבוק</string>
     <string name="school_site">אתר אהל שם</string>

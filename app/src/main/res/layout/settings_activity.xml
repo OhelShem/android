@@ -122,15 +122,14 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:contentDescription="@string/overrides_properties"
-                        android:src="@drawable/ic_swaps" />
+                        android:src="@drawable/ic_web" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/overrides_properties"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
             </LinearLayout>
 
@@ -163,7 +162,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:background="@color/md_red_500"
-                    android:drawableRight="@drawable/ic_web"
+                    android:drawableRight="@drawable/ic_net"
                     android:foreground="?selectableItemBackground"
                     android:gravity="center"
                     android:minHeight="32dp"
