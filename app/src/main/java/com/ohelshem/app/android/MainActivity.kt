@@ -399,6 +399,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 storage.darkMode = if (it) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             }
 
+            val debugFlagAction = DebugMenuSwitchAction("Debug flag", storage.debugFlag) {
+                storage.debugFlag = it
+            }
+
             val restartAction = ButtonAction("Restart app") {
                 ProcessPhoenix.triggerRebirth(this)
             }
@@ -426,7 +430,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(fakingAction, nightModeAction, restartAction, shareFirebaseTokenAction),
+                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, shareFirebaseTokenAction),
                     DeviceModule(this),
                     BuildModule(this),
                     NetworkModule(this),
