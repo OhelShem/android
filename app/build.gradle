@@ -10,7 +10,7 @@ android {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 74
+        versionCode 75
         versionName "7.0.0 Beta 1"
     }
 
@@ -28,7 +28,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.ohelshem:api:0.4.1'
+    compile 'com.ohelshem:api:0.4.2'
     // Android support libraries
     compile "com.android.support:support-v4:$androidSupportLibrary"
     compile "com.android.support:appcompat-v7:$androidSupportLibrary"
