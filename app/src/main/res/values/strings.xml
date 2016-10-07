@@ -195,6 +195,12 @@
         <item>בהגדרות של האפליקציה ניתן לסמן שהאפליקציה תשלח תזכורת זמן קבוע לפני כל מבחן.</item>
     </string-array>
 
+    <!-- Intro -->
+    <string name="intro_drawer_primary_text">הכל נמצא כאן</string>
+    <string name="intro_drawer_secondary_text">מערכת שינויים אישית ושכבתית, מערכת שעות, מבחנים, חגים ומועדים, התקנון וההגדרות. הכל נמצא כאן.</string>
+    <string name="intro_timetable_primary_text">הכוח בידך</string>
+    <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>
+
     <!-- Yoav Sternberg -->
     <string name="yoav_sternberg">יואב שטרנברג</string>
     <string name="yoav_sternberg_info">תלמיד כיתה יב\' 4</string>

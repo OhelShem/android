@@ -35,13 +35,16 @@ import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
+import kotlinx.android.synthetic.main.main.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.customView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
 class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), TimetableView {
     private lateinit var recyclerView: RecyclerView
@@ -52,6 +55,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     private lateinit var menuDone: MenuItem
 
     private var hasInitAllWeek = false
+
+    private val storage: Storage by kodein.instance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = UI {
         frameLayout {
@@ -74,6 +79,30 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+        val menuView = activity.toolbar.getChildAt(2) as? ViewGroup
+        menuView?.post {
+            if (storage.firstTimeInTimetable) {
+                val title = getString(R.string.edit)
+                val view = menuView.childrenSequence().firstOrNull { it.contentDescription == title }
+                if (view != null) {
+                    MaterialTapTargetPrompt.Builder(activity)
+                            .setPrimaryText(R.string.intro_timetable_primary_text)
+                            .setSecondaryText(R.string.intro_timetable_secondary_text)
+                            .setIcon(R.drawable.ic_edit2)
+                            .setTarget(view)
+                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+                                override fun onHidePromptComplete() {
+                                    storage.firstTimeInTimetable = false
+                                }
+
+                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                }
+
+                            }).show()
+                }
+            }
+        }
+
         menuEdit = menu.findItem(R.id.edit)
         menuEdit.setOnMenuItemClickListener {
             toast(R.string.start_edit_mode)
@@ -91,6 +120,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             presenter.isEditModeOn = false
             true
         }
+
+
     }
 
     override fun init() {

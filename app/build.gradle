@@ -54,7 +54,6 @@ dependencies {
     compile 'org.jetbrains.anko:anko-support-v4:0.9'
     // MVP
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
-    compile 'com.hannesdorfmann.mosby:viewstate:2.0.1'
     // UI
     compile 'com.nbsp:library:1.09' // material file picker
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
@@ -62,6 +61,7 @@ dependencies {
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.prolificinteractive:material-calendarview:1.4.0'
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.0'
+    compile 'uk.co.samuelwall:material-tap-target-prompt:1.4.3'
     compile('com.vlonjatg.android:progress-activity:1.1.1') {
         exclude group: 'com.android.support'
     }

@@ -32,6 +32,7 @@
         android:layout_gravity="center"
         android:layout_margin="6dp"
         android:layout_weight="1"
+        card:cardUseCompatPadding="true"
         card:cardCornerRadius="2dp">
 
         <LinearLayout

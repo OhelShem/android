@@ -38,9 +38,10 @@ object Modules {
         bind<SharedStorage>() with singleton { SharedStorageCachedImpl(SharedStorageImpl(instance())) }
         bind<TeacherStorage>() with singleton { TeacherStorageCacheImpl(TeacherStorageImpl(instance(), instance())) }
         bind<StudentStorage>() with singleton { StudentStorageCacheImpl(StudentStorageImpl(instance())) }
+        bind<UIStorage>() with singleton { UIStorageCacheImpl(UIStorageImpl()) }
 
         bind<Storage>() with singleton {
-            val storage = UnitedStorage(instance(), instance(), instance())
+            val storage = UnitedStorage(instance(), instance(), instance(), instance())
             if (BuildConfig.DEBUG) DeveloperOptions(storage) else storage
         }
     }

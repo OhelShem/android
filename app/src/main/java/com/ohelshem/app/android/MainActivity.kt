@@ -25,9 +25,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatDelegate
-import android.view.Gravity
-import android.view.Menu
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import android.widget.Spinner
 import com.github.salomonbrys.kodein.instance
@@ -64,6 +62,7 @@ import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_drawer_header.view.*
 import org.jetbrains.anko.*
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -88,6 +87,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private lateinit var headerView: View
 
     private var debugDrawer: DebugDrawer? = null
+
     //region Activity events
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +111,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, TestsFragment()).commit()
 
             debug()
+
+            showIntro()
         }
     }
 
@@ -128,6 +130,17 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         super.onPause()
         debugDrawer?.onPause()
         apiController -= CallbackId
+    }
+
+    override fun onStart() {
+        super.onStart()
+        debugDrawer?.onStart()
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        debugDrawer?.onStop()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -192,10 +205,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 openSettings()
             }
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                // If there is drawer layout
-                if (navigationView != null)
-                    window.statusBarColor = Color.TRANSPARENT
+            // If there is drawer layout
+            if (navigationView != null) {
+                doFromSdk(Build.VERSION_CODES.LOLLIPOP) {
+                    setTranslucentStatusFlag(true)
+                }
             }
             updatedAt = getString(R.string.updated_at)
             navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer_changes) + " " + layerText
@@ -241,6 +255,21 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         if (lastUpdate != IStorage.EmptyData.toLong())
             updateLastUpdated(lastUpdate)
     }
+
+    private fun setTranslucentStatusFlag(on: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val win = window
+            val winParams = win.attributes
+            val bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+            if (on) {
+                winParams.flags = winParams.flags or bits
+            } else {
+                winParams.flags = winParams.flags and bits.inv()
+            }
+            win.attributes = winParams
+        }
+    }
+
 
     private fun setSelected(type: ScreenType) {
         if (miniDrawerItems != null) {
@@ -438,15 +467,30 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        debugDrawer?.onStart()
-    }
+    private fun showIntro() {
+        if (storage.firstTimeInApp) {
+            if (drawerLayout != null) {
+                var prompt: MaterialTapTargetPrompt? = null
+                prompt = MaterialTapTargetPrompt.Builder(this)
+                        .setPrimaryText(R.string.intro_drawer_primary_text)
+                        .setSecondaryText(R.string.intro_drawer_secondary_text)
+                        .setIcon(R.drawable.ic_menu2)
+                        .setTarget(toolbar.getChildAt(1))
+                        .setAutoDismiss(false)
+                        .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+                            override fun onHidePromptComplete() {
+                                storage.firstTimeInApp = false
+                            }
 
+                            override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                if (tappedTarget) {
+                                    prompt!!.dismiss()
+                                }
+                            }
 
-    override fun onStop() {
-        super.onStop()
-        debugDrawer?.onStop()
+                        }).show()
+            }
+        }
     }
 
     private val RegulationFile by lazy { File(File(filesDir, SharingFolder).apply { mkdirs() }, RegulationFilename) }
