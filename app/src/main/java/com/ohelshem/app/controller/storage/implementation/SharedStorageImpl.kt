@@ -32,6 +32,9 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     override var serverUpdateDate: Long by longPrefVar(EmptyData.toLong())
     override var updateDate: Long by longPrefVar(EmptyData.toLong())
 
+    override var appVersion: Int by intPrefVar(EmptyData)
+    override var debugFlag: Boolean by booleanPrefVar()
+
     var _theme: Int by intPrefVar(Theme.Blue.ordinal)
     override var theme: Theme
         get() = Theme.values()[_theme]

@@ -103,6 +103,18 @@ class SharedStorageCachedImpl(private val storage: SharedStorage) : SharedStorag
             storage.developerMode = value
         }
 
+    private var _debugFlag: Boolean? = null
+    override var debugFlag: Boolean
+        get() {
+            if (_debugFlag == null)
+                _debugFlag = storage.debugFlag
+            return _debugFlag!!
+        }
+        set(value) {
+            _debugFlag = value
+            storage.debugFlag = value
+        }
+
     private var _darkMode: Int? = null
     override var darkMode: Int
         get() {
@@ -113,6 +125,18 @@ class SharedStorageCachedImpl(private val storage: SharedStorage) : SharedStorag
         set(value) {
             _darkMode = value
             storage.darkMode = value
+        }
+
+    private var _appVersion: Int? = null
+    override var appVersion: Int
+        get() {
+            if (_appVersion == null)
+                _appVersion = storage.appVersion
+            return _appVersion!!
+        }
+        set(value) {
+            _appVersion = value
+            storage.appVersion = value
         }
 
     private var _theme: Theme? = null
@@ -136,6 +160,8 @@ class SharedStorageCachedImpl(private val storage: SharedStorage) : SharedStorag
         _id = null
         _timetable = null
         _developerMode = null
+        _appVersion = null
+        _debugFlag = null
         _darkMode = null
         _theme = null
         storage.clean()

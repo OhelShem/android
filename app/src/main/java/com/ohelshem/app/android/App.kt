@@ -11,6 +11,7 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.injection.Modules
+import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 
 class App : Application(), KodeinAware {
@@ -45,6 +46,12 @@ class App : Application(), KodeinAware {
             migration()
             if (isSetup())
                 kodein.instance<ApiController>().setAuthData(id, password)
+
+            val version = BuildConfig.VERSION_CODE
+            if (version != appVersion) {
+                // Migration comes here
+                appVersion = version
+            }
         }
     }
 

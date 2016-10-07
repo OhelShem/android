@@ -23,6 +23,8 @@ interface SharedStorage : IStorage {
     var notificationsForTimetable: Boolean
 
     var developerMode: Boolean
+    var appVersion: Int
+    var debugFlag: Boolean
 
     var theme: Theme
 
