@@ -106,6 +106,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
+                            android:contentDescription="@string/current_hour"
                             android:src="@drawable/ic_alarm"
                             android:tint="?textColorPrimary"
                             tools:ignore="ContentDescription,HardcodedText,SpUsage" />
@@ -144,6 +145,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:src="@drawable/ic_arrow_forward"
+                            android:contentDescription="@string/next_hour"
                             android:tint="?textColorPrimary"
                             tools:ignore="HardcodedText,SpUsage" />
                     </LinearLayout>

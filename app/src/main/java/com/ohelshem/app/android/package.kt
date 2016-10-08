@@ -13,8 +13,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
-import android.os.Bundle
-import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.SwitchCompat
@@ -23,11 +21,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
 import com.ohelshem.app.android.utils.AttributeExtractor
-import org.jetbrains.anko.AnkoException
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.inputMethodManager
-import java.io.Serializable
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -45,7 +41,6 @@ fun View.show() {
 
 
 fun Fragment.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, activity.theme)
-fun Fragment.colorRes(id: Int): Int = ResourcesCompat.getColor(resources, id, activity.theme)
 fun Fragment.stringArrayRes(id: Int): Array<String> = resources.getStringArray(id)
 
 fun Context.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, theme)
@@ -100,48 +95,6 @@ val Context.primaryLightColor: Int
 val Context.accentColor: Int
     get() = AttributeExtractor.extractAccentColorFrom(this)
 
-fun bundleOf(params: List<Pair<String, Any>>): Bundle {
-    val b = Bundle()
-    for (p in params) {
-        val (k, v) = p
-        when (v) {
-            is Boolean -> b.putBoolean(k, v)
-            is Byte -> b.putByte(k, v)
-            is Char -> b.putChar(k, v)
-            is Short -> b.putShort(k, v)
-            is Int -> b.putInt(k, v)
-            is Long -> b.putLong(k, v)
-            is Float -> b.putFloat(k, v)
-            is Double -> b.putDouble(k, v)
-            is String -> b.putString(k, v)
-            is CharSequence -> b.putCharSequence(k, v)
-            is Parcelable -> b.putParcelable(k, v)
-            is Serializable -> b.putSerializable(k, v)
-            is BooleanArray -> b.putBooleanArray(k, v)
-            is ByteArray -> b.putByteArray(k, v)
-            is CharArray -> b.putCharArray(k, v)
-            is DoubleArray -> b.putDoubleArray(k, v)
-            is FloatArray -> b.putFloatArray(k, v)
-            is IntArray -> b.putIntArray(k, v)
-            is LongArray -> b.putLongArray(k, v)
-            is Array<*> -> {
-                @Suppress("UNCHECKED_CAST")
-                when {
-                    v.isArrayOf<Parcelable>() -> b.putParcelableArray(k, v as Array<out Parcelable>)
-                    v.isArrayOf<CharSequence>() -> b.putCharSequenceArray(k, v as Array<out CharSequence>)
-                    v.isArrayOf<String>() -> b.putStringArray(k, v as Array<out String>)
-                    else -> throw AnkoException("Unsupported bundle component (${v.javaClass})")
-                }
-            }
-            is ShortArray -> b.putShortArray(k, v)
-            is Bundle -> b.putBundle(k, v)
-            else -> throw AnkoException("Unsupported bundle component (${v.javaClass})")
-        }
-    }
-
-    return b
-}
-
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 fun getPressedColorRippleDrawable(normalColor: Int, selectedColor: Int, pressedColor: Int): Drawable {
     val drawable = StateListDrawable()
@@ -182,19 +135,3 @@ val Fragment.screenSize: Point
         screen.getSize(size)
         return size
     }
-
-/**
- * Returns darker version of specified `color`.
- */
-fun Int.darker(factor: Float): Int {
-    val a = Color.alpha(this)
-    val r = Color.red(this)
-    val g = Color.green(this)
-    val b = Color.blue(this)
-
-    return Color.argb(a,
-            Math.max((r * factor).toInt(), 0),
-            Math.max((g * factor).toInt(), 0),
-            Math.max((b * factor).toInt(), 0))
-}
-

@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.utils.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -24,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -51,6 +53,7 @@ public class ForegroundLinearLayout extends LinearLayout {
         this(context, attrs, 0);
     }
 
+    @SuppressLint("PrivateResource")
     public ForegroundLinearLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
@@ -114,7 +117,7 @@ public class ForegroundLinearLayout extends LinearLayout {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@NonNull Drawable who) {
         return super.verifyDrawable(who) || (who == mForeground);
     }
 
@@ -184,8 +187,8 @@ public class ForegroundLinearLayout extends LinearLayout {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+        super.onSizeChanged(w, h, oldW, oldH);
         mForegroundBoundsChanged = true;
     }
 

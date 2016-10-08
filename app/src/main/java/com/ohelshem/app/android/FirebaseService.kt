@@ -10,7 +10,6 @@ import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
 
 class FirebaseService: FirebaseMessagingService() {
-    val TAG = "FirebaseService"
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //FIXME
         if (remoteMessage.notification == null) {

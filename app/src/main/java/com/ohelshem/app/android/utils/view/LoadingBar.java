@@ -21,14 +21,13 @@ public class LoadingBar extends View {
     private float mPadding = 5f;
 
     private float eatErWidth = 60f;
-    private float eatErPositonX = 0f;
+    private float eatErPositionX = 0f;
     int eatSpeed = 5;
-    private float beansWidth = 10f;
 
 
     private float mAngle = 34;
-    private float eatErStrtAngle = mAngle;
-    private float eatErEndAngle = 360 - 2 * eatErStrtAngle;
+    private float eatErStartAngle = mAngle;
+    private float eatErEndAngle = 360 - 2 * eatErStartAngle;
 
 
     public LoadingBar(Context context) {
@@ -53,15 +52,22 @@ public class LoadingBar extends View {
         mHigh = getMeasuredHeight();
     }
 
+    RectF animationRect = new RectF(0,0,0,0);
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float eatRightX = mPadding + eatErWidth + eatErPositonX;
-        RectF rectF = new RectF(mPadding + eatErPositonX, mHigh / 2 - eatErWidth / 2, eatRightX, mHigh / 2 + eatErWidth / 2);
-        canvas.drawArc(rectF, eatErStrtAngle, eatErEndAngle
+        float eatRightX = mPadding + eatErWidth + eatErPositionX;
+        RectF rectF = animationRect;
+        rectF.left = mPadding + eatErPositionX;
+        rectF.top = mHigh / 2 - eatErWidth / 2;
+        rectF.right = eatRightX;
+        rectF.bottom = mHigh / 2 + eatErWidth / 2;
+
+        canvas.drawArc(rectF, eatErStartAngle, eatErEndAngle
                 , true, mPaint);
-        canvas.drawCircle(mPadding + eatErPositonX + eatErWidth / 2,
+        float beansWidth = 10f;
+        canvas.drawCircle(mPadding + eatErPositionX + eatErWidth / 2,
                 mHigh / 2 - eatErWidth / 4,
                 beansWidth / 2, mPaintEye);
 
@@ -102,7 +108,7 @@ public class LoadingBar extends View {
             valueAnimator.setRepeatCount(0);
             valueAnimator.cancel();
             valueAnimator.end();
-            eatErPositonX = 0;
+            eatErPositionX = 0;
             postInvalidate();
         }
     }
@@ -120,9 +126,9 @@ public class LoadingBar extends View {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
 
                 float mAnimatedValue = (float) valueAnimator.getAnimatedValue();
-                eatErPositonX = (mWidth - 2 * mPadding - eatErWidth) * mAnimatedValue;
-                eatErStrtAngle = mAngle * (1 - (mAnimatedValue * eatSpeed - (int) (mAnimatedValue * eatSpeed)));
-                eatErEndAngle = 360 - eatErStrtAngle * 2;
+                eatErPositionX = (mWidth - 2 * mPadding - eatErWidth) * mAnimatedValue;
+                eatErStartAngle = mAngle * (1 - (mAnimatedValue * eatSpeed - (int) (mAnimatedValue * eatSpeed)));
+                eatErEndAngle = 360 - eatErStartAngle * 2;
                 invalidate();
             }
         });

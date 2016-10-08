@@ -24,7 +24,7 @@ public class AutoResizeTextView extends TextView {
     private static final int NO_LINE_LIMIT = -1;
     private final RectF _availableSpaceRect = new RectF();
     private final SizeTester _sizeTester;
-    private float _maxTextSize,_spacingMult = 1.0f, _spacingAdd = 0.0f, _minTextSize;
+    private float _maxTextSize, _spacingMulti = 1.0f, _spacingAdd = 0.0f, _minTextSize;
     private int _widthLimit, _maxLines;
     private boolean _initialized = false;
     private TextPaint _paint;
@@ -71,7 +71,7 @@ public class AutoResizeTextView extends TextView {
                     textRect.bottom = _paint.getFontSpacing();
                     textRect.right = _paint.measureText(text);
                 } else {
-                    final StaticLayout layout = new StaticLayout(text, _paint, _widthLimit, Alignment.ALIGN_NORMAL, _spacingMult, _spacingAdd, true);
+                    final StaticLayout layout = new StaticLayout(text, _paint, _widthLimit, Alignment.ALIGN_NORMAL, _spacingMulti, _spacingAdd, true);
                     // return early if we have more lines
                     if (getMaxLines() != NO_LINE_LIMIT && layout.getLineCount() > getMaxLines())
                         return 1;
@@ -106,9 +106,9 @@ public class AutoResizeTextView extends TextView {
     }
 
     @Override
-    public void setMaxLines(final int maxlines) {
-        super.setMaxLines(maxlines);
-        _maxLines = maxlines;
+    public void setMaxLines(final int maxLines) {
+        super.setMaxLines(maxLines);
+        _maxLines = maxLines;
         adjustTextSize();
     }
 
@@ -152,16 +152,15 @@ public class AutoResizeTextView extends TextView {
     }
 
     @Override
-    public void setLineSpacing(final float add, final float mult) {
-        super.setLineSpacing(add, mult);
-        _spacingMult = mult;
+    public void setLineSpacing(final float add, final float multi) {
+        super.setLineSpacing(add, multi);
+        _spacingMulti = multi;
         _spacingAdd = add;
     }
 
     /**
      * Set the lower text size limit and invalidate the view
      *
-     * @param minTextSize
      */
     public void setMinTextSize(final float minTextSize) {
         _minTextSize = minTextSize;
@@ -221,9 +220,9 @@ public class AutoResizeTextView extends TextView {
     }
 
     @Override
-    protected void onSizeChanged(final int width, final int height, final int oldwidth, final int oldheight) {
-        super.onSizeChanged(width, height, oldwidth, oldheight);
-        if (width != oldwidth || height != oldheight)
+    protected void onSizeChanged(final int width, final int height, final int oldWidth, final int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
+        if (width != oldWidth || height != oldHeight)
             adjustTextSize();
     }
 }

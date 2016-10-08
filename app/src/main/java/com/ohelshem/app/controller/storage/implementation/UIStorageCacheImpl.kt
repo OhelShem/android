@@ -25,7 +25,7 @@ class UIStorageCacheImpl(private val storage: UIStorage): UIStorage by storage {
             return _firstTimeInTimetable!!
         }
         set(value) {
-            _firstTimeInApp = value
+            _firstTimeInTimetable = value
             storage.firstTimeInTimetable = value
         }
 

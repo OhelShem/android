@@ -146,28 +146,5 @@ abstract class BaseTimetableController : TimetableController {
         fun getLessonTimeToCompare(lessonNum: Int, start: Boolean = true): Int {
             return TimetableController.HoursToCompare[if (start) lessonNum * 2 else lessonNum * 2 + 1]
         }
-
-        /**
-         * Convert the calendar to "time compare" format
-         * *
-         * @return The date in "time compare" format
-         */
-        private fun Int.getCalendarFromTimeToCompare(): Calendar {
-            val cal = Calendar.getInstance().clearTime()
-            cal.set(Calendar.HOUR_OF_DAY, this / 60)
-            cal.set(Calendar.MINUTE, this % 60)
-            return cal
-        }
-
-        /**
-         * Returns the given date with the time values cleared.
-         */
-        private fun Calendar.clearTime(): Calendar {
-            this.set(Calendar.HOUR_OF_DAY, 0)
-            this.set(Calendar.MINUTE, 0)
-            this.set(Calendar.SECOND, 0)
-            this.set(Calendar.MILLISECOND, 0)
-            return this
-        }
     }
 }

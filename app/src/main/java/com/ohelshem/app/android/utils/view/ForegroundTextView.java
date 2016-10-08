@@ -25,6 +25,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
@@ -58,7 +59,7 @@ public class ForegroundTextView extends TextView {
         final Drawable d = a.getDrawable(R.styleable.Foreground_android_foreground);
         foregroundPadding = a.getBoolean(R.styleable.Foreground_android_foregroundInsidePadding, false);
 
-        // Apply foreground padding for ninepatches automatically
+        // Apply foreground padding for nine patches automatically
         if (!foregroundPadding && getBackground() instanceof NinePatchDrawable) {
             final NinePatchDrawable npd = (NinePatchDrawable) getBackground();
             if (npd.getPadding(rectPadding)) {
@@ -120,7 +121,7 @@ public class ForegroundTextView extends TextView {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@NonNull Drawable who) {
         return super.verifyDrawable(who) || (who == foreground);
     }
 
@@ -134,8 +135,8 @@ public class ForegroundTextView extends TextView {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+        super.onSizeChanged(w, h, oldW, oldH);
         foregroundBoundsChanged = true;
     }
 

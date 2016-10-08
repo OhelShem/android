@@ -12,8 +12,8 @@
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         app:layout_widthPercent="50%">
 
         <ImageView
@@ -32,8 +32,8 @@
         android:layout_gravity="center"
         android:layout_margin="6dp"
         android:layout_weight="1"
-        card:cardUseCompatPadding="true"
-        card:cardCornerRadius="2dp">
+        card:cardCornerRadius="2dp"
+        card:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,6 +101,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                    android:contentDescription="@string/current_hour"
                     android:src="@drawable/ic_alarm"
                     tools:ignore="HardcodedText,SpUsage" />
             </LinearLayout>
@@ -137,6 +138,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                    android:contentDescription="@string/next_hour"
                     android:src="@drawable/ic_arrow_forward"
                     tools:ignore="HardcodedText,SpUsage" />
             </LinearLayout>

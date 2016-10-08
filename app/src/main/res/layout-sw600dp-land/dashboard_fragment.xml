@@ -82,6 +82,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="16dp"
+                android:contentDescription="@string/current_hour"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_alarm"
                 tools:ignore="HardcodedText,SpUsage" />
@@ -118,6 +119,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="16dp"
+                android:contentDescription="@string/next_hour"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_arrow_forward"
                 tools:ignore="HardcodedText,SpUsage" />

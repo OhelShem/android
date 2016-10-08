@@ -24,7 +24,6 @@ import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UserData
-import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.controller.utils.OffsetDataController
 import com.ohelshem.app.controller.utils.OffsetDataControllerImpl
 import com.ohelshem.app.model.OverrideData
@@ -40,14 +39,7 @@ object OldStorage : KotprefModel() {
     var notificationsForHolidaysEnabled: Boolean by booleanPrefVar()
     var notificationsForTestsEnabled: Boolean by booleanPrefVar()
     var notificationsForTimetableEnabled: Boolean by booleanPrefVar()
-    var guessingGameEnabled: Boolean by booleanPrefVar(true)
-    var lastNotificationTime: Long by longPrefVar()
     var developerModeEnabled: Boolean by booleanPrefVar()
-
-    var changesDate: Long by longPrefVar(IStorage.EmptyData.toLong())
-    var serverUpdateDate: Long by longPrefVar(IStorage.EmptyData.toLong())
-    var updateDate: Long by longPrefVar(IStorage.EmptyData.toLong())
-
 
     var password: String by stringPrefVar()
 
@@ -68,7 +60,6 @@ object OldStorage : KotprefModel() {
                 return null
             }
         }
-
 
 
     val changes: List<Change>?
@@ -145,17 +136,15 @@ object OldStorage : KotprefModel() {
     }
 
 
-    internal val ChangesDataFile = File("/data/data/com.yoavst.changesystemohelshem/files/changes3.bin")
-    internal val ChangesOffsetFile = File("/data/data/com.yoavst.changesystemohelshem/files/changes3_offsets.bin")
+    private val ChangesDataFile by lazy { File(FilesFolder, "changes3.bin") }
+    private val ChangesOffsetFile by lazy { File(FilesFolder, "changes3_offsets.bin") }
+    private val TestsDataFile by lazy { File(FilesFolder, "tests3.bin") }
+    private val TestsOffsetFile by lazy { File(FilesFolder, "tests3_offsets.bin") }
+    private val MessagesDataFile by lazy { File(FilesFolder, "messages3.bin") }
+    private val MessagesOffsetFile by lazy { File(FilesFolder, "messages3_offsets.bin") }
+    private val TimetableDataFile by lazy { File(FilesFolder, "timetable3.bin") }
+    private val TimetableOffsetFile by lazy { File(FilesFolder, "timetable3_offsets.bin") }
+    private val TimetableOverridesFile by lazy { File(FilesFolder, "timetable_overrides.csv") }
 
-    internal val TestsDataFile = File("/data/data/com.yoavst.changesystemohelshem/files/tests3.bin")
-    internal val TestsOffsetFile = File("/data/data/com.yoavst.changesystemohelshem/files/tests3_offsets.bin")
-
-    internal val MessagesDataFile = File("/data/data/com.yoavst.changesystemohelshem/files/messages3.bin")
-    internal val MessagesOffsetFile = File("/data/data/com.yoavst.changesystemohelshem/files/messages3_offsets.bin")
-
-    internal val TimetableDataFile = File("/data/data/com.yoavst.changesystemohelshem/files/timetable3.bin")
-    internal val TimetableOffsetFile = File("/data/data/com.yoavst.changesystemohelshem/files/timetable3_offsets.bin")
-
-    internal val TimetableOverridesFile = File("/data/data/com.yoavst.changesystemohelshem/files/timetable_overrides.csv")
+    private val FilesFolder: File by lazy { context.filesDir }
 }

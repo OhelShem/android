@@ -22,6 +22,4 @@ import com.ohelshem.api.model.Hour
 /**
  * An override for an [Hour] allowing the user to change the name of a lesson.
  */
-class WrappedHour(newName: String, newTeacher: String, val oldName: String = "", val oldTeacher: String = "", color: Int = 0) : Hour(newName, newTeacher, color) {
-    constructor(hour: Hour, newName: String, newTeacher: String) : this(newName, newTeacher, hour.name, hour.teacher, hour.color)
-}
+class WrappedHour(newName: String, newTeacher: String, val oldName: String = "", val oldTeacher: String = "", color: Int = 0) : Hour(newName, newTeacher, color)

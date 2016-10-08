@@ -21,8 +21,12 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
     }
 }
 
@@ -36,6 +40,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$androidSupportLibrary"
     compile "com.android.support:design:$androidSupportLibrary"
     compile "com.android.support:percent:$androidSupportLibrary"
+
     // Firebase
     compile "com.google.firebase:firebase-core:$firebase"
     compile "com.google.firebase:firebase-messaging:$firebase"

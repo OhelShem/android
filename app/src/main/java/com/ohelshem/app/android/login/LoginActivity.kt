@@ -78,6 +78,9 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     }
 
     override fun showLoading() {
+        idInputLayout.error = null
+        passwordInputLayout.error = null
+
         passwordInputLayout.isEnabled = false
         idInputLayout.isEnabled = false
         hideKeyboard()
@@ -90,10 +93,11 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         loadingBar.invisible()
         passwordInputLayout.isEnabled = true
         idInputLayout.isEnabled = true
+
         when (error) {
             UpdateError.Connection -> Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
-            UpdateError.Login -> Snackbar.make(coordinatorLayout, R.string.login_wrong, Snackbar.LENGTH_SHORT).show()
-            UpdateError.NoData -> throw IllegalStateException("Data should be returned from login")
+            UpdateError.Login ->   passwordInputLayout.error =  getString(R.string.login_wrong)
+            UpdateError.NoData -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
             UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
         }
     }

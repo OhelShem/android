@@ -52,6 +52,8 @@
     <string name="left">נשארו</string>
     <string name="end_of_day">סוף היום</string>
     <string name="go_to_timetable">עבור למערכת השעות</string>
+    <string name="current_hour">שעה נוכחית</string>
+    <string name="next_hour">שעה הבאה</string>
 
     <!-- Overrides -->
     <string name="edit">ערוך</string>

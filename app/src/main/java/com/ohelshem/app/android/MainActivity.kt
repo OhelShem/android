@@ -313,6 +313,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     fun logout() {
         storage.clean()
+        analytics.onLogout()
         startActivity(intentFor<LoginActivity>().clearTask())
         finish()
     }

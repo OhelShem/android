@@ -23,9 +23,8 @@ import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.tests.TestsPresenter
 import com.ohelshem.app.android.tests.TestsView
-import com.ohelshem.app.android.tests.list.TestsAdapter
-import com.ohelshem.app.android.utils.adapter.HeaderAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.android.utils.adapter.HeaderAdapter
 import com.ohelshem.app.clearTime
 import com.yoavst.changesystemohelshem.R
 import java.util.*

@@ -86,9 +86,9 @@ class OverridesActivity : AppThemedActivity() {
         MaterialFilePicker()
                 .withActivity(this)
                 .withRequestCode(RequestFileCode)
-                .withFilter(Pattern.compile(".*\\.backup$")) // Filtering files and directories by file name using regexp
-                .withHiddenFiles(true) // Show hidden files and folders
-                .start();
+                .withFilter(Pattern.compile(".*\\.backup$"))
+                .withHiddenFiles(true)
+                .start()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

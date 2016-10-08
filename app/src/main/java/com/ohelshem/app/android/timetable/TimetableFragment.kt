@@ -90,12 +90,14 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                             .setSecondaryText(R.string.intro_timetable_secondary_text)
                             .setIcon(R.drawable.ic_edit2)
                             .setTarget(view)
+                            .setAutoFinish(true)
                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
                                 override fun onHidePromptComplete() {
-                                    storage.firstTimeInTimetable = false
+
                                 }
 
                                 override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                    storage.firstTimeInTimetable = false
                                 }
 
                             }).show()

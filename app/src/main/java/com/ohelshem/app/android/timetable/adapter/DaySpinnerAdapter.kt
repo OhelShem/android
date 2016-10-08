@@ -64,11 +64,23 @@ class DaySpinnerAdapter(context: Context, private val daysInWeek: Int) : BaseAda
     override fun getItemId(position: Int): Long = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
-        view.find<TextView>(android.R.id.text1).apply {
+        val view: View
+        val holder: ViewHolder
+        if (convertView != null) {
+            view = convertView
+            holder = view.tag as ViewHolder
+        } else {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
+            holder = ViewHolder(view.find<TextView>(android.R.id.text1))
+            view.tag = holder
+        }
+
+        holder.title.apply {
             text = if (position == 0) allWeek else daysOfWeek[position - 1]
             gravity = Gravity.CENTER
         }
         return view
     }
+
+    class ViewHolder(val title: TextView)
 }
