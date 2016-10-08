@@ -147,7 +147,7 @@ class SharedStorageCachedImpl(private val storage: SharedStorage) : SharedStorag
             return _theme!!
         }
         set(value) {
-            _theme = theme
+            _theme = value
             storage.theme = value
         }
 

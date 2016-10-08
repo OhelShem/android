@@ -31,6 +31,7 @@ import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.primaryColor
+import com.ohelshem.app.android.primaryDarkColor
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
@@ -42,6 +43,7 @@ import kotlinx.android.synthetic.main.main.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.customView
 import org.jetbrains.anko.support.v4.UI
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
@@ -89,6 +91,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                             .setPrimaryText(R.string.intro_timetable_primary_text)
                             .setSecondaryText(R.string.intro_timetable_secondary_text)
                             .setIcon(R.drawable.ic_edit2)
+                            .setBackgroundColour(act.primaryDarkColor)
+                            .setIconDrawableColourFilter(act.primaryDarkColor)
                             .setTarget(view)
                             .setAutoFinish(true)
                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {

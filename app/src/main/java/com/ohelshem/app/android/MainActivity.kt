@@ -477,6 +477,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                         .setSecondaryText(R.string.intro_drawer_secondary_text)
                         .setIcon(R.drawable.ic_menu2)
                         .setTarget(toolbar.getChildAt(1))
+                        .setBackgroundColour(primaryDarkColor)
+                        .setIconDrawableColourFilter(act.primaryDarkColor)
                         .setAutoDismiss(false)
                         .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
                             override fun onHidePromptComplete() {
