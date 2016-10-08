@@ -209,7 +209,6 @@ class SettingsActivity : AppThemedActivity() {
                     }
                 }
             }.lparams(width = wrapContent, height = matchParent)
-            onClick { v -> (getChildAt(0) as CompoundButton).toggle() }
             linearLayout {
                 orientation = LinearLayout.VERTICAL
 
