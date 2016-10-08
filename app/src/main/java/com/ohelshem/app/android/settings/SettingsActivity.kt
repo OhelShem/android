@@ -29,6 +29,7 @@ import android.widget.CompoundButton
 import android.widget.LinearLayout
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.app.android.*
+import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.controller.storage.SharedStorage.Theme
@@ -58,7 +59,7 @@ class SettingsActivity : AppThemedActivity() {
             }
             settingsItem(getString(R.string.timetable), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
                 storage.notificationsForTimetable = it
-                //FIXME OngoingNotificationService.update(this@SettingsActivity)
+                OngoingNotificationService.update(this@SettingsActivity)
             }
         }
 

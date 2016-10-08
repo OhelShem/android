@@ -57,6 +57,18 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name="com.ohelshem.app.android.notifications.OngoingNotificationService"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.ohelshem.app.android.notifications.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
