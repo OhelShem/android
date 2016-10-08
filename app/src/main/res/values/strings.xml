@@ -83,14 +83,8 @@
     <!-- Notifications -->
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>
 
-    <string name="my_layer">השכבה שלי</string>
-    <string name="my_class">הכיתה שלי</string>
-    <string name="no_such_class">לא קיימת כיתה בעלת מספר כזה בשכבה זו</string>
     <string name="notification_about_changes">התראה על שינויים</string>
     <string name="want_get_notification_for_changes">האם ברצונך לקבל התראה בשעה תשע כשהשינויים מתעדכנים?</string>
-    <string name="who_are_you">מי אתה</string>
-    <string name="student">תלמיד</string>
-    <string name="other">אחר</string>
     <string name="test_in">מקצוע המבחן</string>
     <string name="enter_to_see_changes">היכנס על מנת לראות את השינויים</string>
     <string name="try_again">נסה שנית</string>
@@ -152,6 +146,7 @@
     <string name="enabled">מופעל</string>
     <string name="disabled">מכובה</string>
     <string name="automatic">אוטומטי</string>
+    <string name="save">שמור</string>
     <string-array name="night_mode_options">
         <item>@string/disabled</item>
         <item>@string/enabled</item>

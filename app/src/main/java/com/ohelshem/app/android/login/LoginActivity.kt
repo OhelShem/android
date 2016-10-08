@@ -130,8 +130,10 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     private fun onRepeat() {
         if (shouldStopAnimation) {
             loadingBar.stopAnim()
-            finish()
-            startActivity<MainActivity>()
+            WelcomeDialog.create(appKodein().instance(), this) {
+                finish()
+                startActivity<MainActivity>()
+            }
         }
     }
 
