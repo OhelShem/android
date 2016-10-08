@@ -12,6 +12,7 @@ android {
         targetSdkVersion 24
         versionCode 75
         versionName "7.0.0 Beta 1"
+        resConfigs "en", "he"
     }
 
     testOptions {
@@ -20,8 +21,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

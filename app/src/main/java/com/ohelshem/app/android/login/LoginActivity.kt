@@ -18,10 +18,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.login_view.*
-import org.jetbrains.anko.backgroundDrawable
-import org.jetbrains.anko.browse
-import org.jetbrains.anko.onClick
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.*
 
 class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     override fun createPresenter(): LoginPresenter = with(appKodein()) { LoginPresenter(instance(), instance(), instance()) }
@@ -44,12 +41,18 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val config = SystemBarTintManager(this).config
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // translucent navigation and status bar by default
                 if (!config.isNavigationAtBottom)
                     coordinatorLayout.setMargins(top = config.statusBarHeight)
                 else
                     coordinatorLayout.setMargins(top = config.statusBarHeight, bottom = config.navigationBarHeight)
             } else {
-                coordinatorLayout.setMargins(config.navigationBarHeight)
+                if (!config.isNavigationAtBottom)
+                    coordinatorLayout.topPadding = config.statusBarHeight
+                else {
+                    coordinatorLayout.topPadding = config.statusBarHeight
+                    coordinatorLayout.bottomPadding = config.navigationBarHeight
+                }
             }
         }
         // set background
@@ -67,6 +70,9 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     fun initViews() {
         registerFab.onClick {
             browse("http://ohel-shem.com/portal6/system/register.php")
+        }
+        loadingBar.onRepeat {
+            onRepeat()
         }
         loginButton.onClick { onLogin() }
         passwordInput.setOnEditorActionListener { textView, actionId, keyEvent ->
@@ -96,7 +102,7 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
 
         when (error) {
             UpdateError.Connection -> Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
-            UpdateError.Login ->   passwordInputLayout.error =  getString(R.string.login_wrong)
+            UpdateError.Login -> passwordInputLayout.error = getString(R.string.login_wrong)
             UpdateError.NoData -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
             UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
         }
@@ -117,8 +123,16 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     }
 
     override fun launchApp() {
-        finish()
-        startActivity<MainActivity>()
+        shouldStopAnimation = true
+    }
+
+    private var shouldStopAnimation: Boolean = false
+    private fun onRepeat() {
+        if (shouldStopAnimation) {
+            loadingBar.stopAnim()
+            finish()
+            startActivity<MainActivity>()
+        }
     }
 
     fun onLogin() {

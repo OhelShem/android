@@ -147,6 +147,7 @@ public class LoadingBar extends View {
             @Override
             public void onAnimationRepeat(Animator animation) {
                 super.onAnimationRepeat(animation);
+                if (onAnimationRepeatListener != null) onAnimationRepeatListener.run();
             }
         });
         if (!valueAnimator.isRunning()) {
@@ -155,6 +156,12 @@ public class LoadingBar extends View {
         }
 
         return valueAnimator;
+    }
+
+    Runnable onAnimationRepeatListener;
+
+    public void onRepeat(Runnable onRepeat) {
+        this.onAnimationRepeatListener = onRepeat;
     }
 
 

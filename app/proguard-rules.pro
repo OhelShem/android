@@ -17,6 +17,7 @@
 #}
 
 -dontobfuscate
+-dontwarn org.jetbrains.anko.**
 
 ## Firebase ##
 -keep class com.firebase.** { *; }
