@@ -139,6 +139,14 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
             hasInitTable = true
         }
 
+        rows.forEachIndexed { hour, row ->
+            row.childrenSequence().forEach {
+                it as TextView
+                it.backgroundColor = NoChangesColors[hour % 2]
+                it.text = ""
+            }
+        }
+
         changes.forEach {
             (rows[it.hour - 1][classes - it.clazz] as TextView).apply {
                 backgroundColor = it.color
