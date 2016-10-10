@@ -1,9 +1,5 @@
 package com.ohelshem.app.android.login
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Point
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -55,16 +51,6 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
                 }
             }
         }
-        // set background
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val bmOptions = BitmapFactory.Options()
-        val scaleFactor = Math.min(1080 / size.x, 1920 / size.y)
-        bmOptions.inSampleSize = scaleFactor
-        bmOptions.inPreferredConfig = Bitmap.Config.RGB_565
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.entrance_background, bmOptions)
-        layout.backgroundDrawable = BitmapDrawable(resources, bitmap)
     }
 
     fun initViews() {
