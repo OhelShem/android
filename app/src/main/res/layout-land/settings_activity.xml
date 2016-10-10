@@ -71,13 +71,12 @@
                         android:contentDescription="@string/logout"
                         android:src="@drawable/ic_exit" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/logout"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
@@ -98,13 +97,12 @@
                         android:contentDescription="@string/open_source"
                         android:src="@drawable/ic_code" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/open_source"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
@@ -151,13 +149,12 @@
                         android:contentDescription="@string/facebook"
                         android:src="@drawable/ic_facebook" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/facebook"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
@@ -178,13 +175,12 @@
                         android:contentDescription="@string/school_site"
                         android:src="@drawable/ic_net" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/school_site"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
             </LinearLayout>

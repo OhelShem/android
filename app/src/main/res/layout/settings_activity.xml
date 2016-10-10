@@ -72,12 +72,11 @@
                         android:contentDescription="@string/logout"
                         android:src="@drawable/ic_exit" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/logout"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
@@ -98,12 +97,11 @@
                         android:contentDescription="@string/open_source"
                         android:src="@drawable/ic_code" />
 
-                    <TextView
+                    <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/open_source"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
