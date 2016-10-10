@@ -60,6 +60,7 @@ class App : Application(), KodeinAware {
             val version = BuildConfig.VERSION_CODE
             if (version != appVersion) {
                 // Migration comes here
+                updatedFromVersion = version
                 appVersion = version
             }
         }
@@ -81,6 +82,8 @@ class App : Application(), KodeinAware {
 
     companion object {
         lateinit var instance: App
+
+        var updatedFromVersion: Int = -1
 
         fun setAlarm(context: Context) {
             setAlarmForDayNotification(context)

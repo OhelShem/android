@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android
+package com.ohelshem.app.android.main
 
 import android.content.Intent
 import android.graphics.Color
@@ -28,19 +28,20 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.*
 import android.widget.ImageView
 import android.widget.Spinner
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
+import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.instance
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.android.*
 import com.ohelshem.app.android.changes.ClassChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.holidays.HolidaysFragment
 import com.ohelshem.app.android.login.LoginActivity
-import com.ohelshem.app.android.main.ScreenType
-import com.ohelshem.app.android.main.TopNavigationScreenManager
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.tests.TestsFragment
 import com.ohelshem.app.android.timetable.TimetableFragment
@@ -50,6 +51,7 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.model.ApiUpdatable
+import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -493,6 +495,15 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
                         }).show()
             }
+        }
+        if (App.updatedFromVersion != -1) {
+            App.updatedFromVersion = BuildConfig.VERSION_CODE
+            MaterialStyledDialog.Builder(this)
+                    .setStyle(Style.HEADER_WITH_TITLE)
+                    .setTitle(R.string.changelog)
+                    .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
+                    .setPositiveText(android.R.string.ok)
+                    .show()
         }
     }
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog bulletedList="true">
+    <changelogversion versionName="7.0.0" changeDate="Oct 12, 2016">
+        <changelogtext>[b]New![/b] Theme support - Green, Blue, Red + Night mode.</changelogtext>
+        <changelogtext>[b]New![/b] Night mode.</changelogtext>
+        <changelogtext>[b]New:[/b] Redesigned look for tests and holidays screens.</changelogtext>
+        <changelogtext>[b]Such Wow![/b] APK size has been reduced to 2.5MB!</changelogtext>
+        <changelogtext>The layer changes screen was written from scratch.</changelogtext>
+        <changelogtext>[u]Removed:[/u] 21:00 Notification support (Will be added later)</changelogtext>
+        <changelogtext>[b][font color=red]For developers:[/font][/b] New developer menu.</changelogtext>
+    </changelogversion>
+</changelog>

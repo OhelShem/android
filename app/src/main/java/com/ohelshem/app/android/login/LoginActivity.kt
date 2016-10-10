@@ -9,7 +9,11 @@ import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.instance
 import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.ohelshem.api.model.UpdateError
-import com.ohelshem.app.android.*
+import com.ohelshem.app.android.hideKeyboard
+import com.ohelshem.app.android.invisible
+import com.ohelshem.app.android.main.MainActivity
+import com.ohelshem.app.android.setMargins
+import com.ohelshem.app.android.show
 import com.readystatesoftware.systembartint.SystemBarTintManager
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.login.*

@@ -22,15 +22,19 @@
         tools:replace="android:supportsRtl,android:allowBackup">
 
         <activity
-            android:name="com.ohelshem.app.android.MainActivity"
+            android:name="com.ohelshem.app.android.main.MainActivity"
             android:theme="@style/AppTheme.MaterialColdStart"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance" />
+
+        <activity-alias
+            android:name="com.ohelshem.app.android.MainActivity"
+            android:targetActivity="com.ohelshem.app.android.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <activity
             android:name="com.ohelshem.app.android.login.LoginActivity"

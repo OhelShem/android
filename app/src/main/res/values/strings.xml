@@ -179,6 +179,7 @@
     <string name="layer_counselor">יועצת השכבה</string>
     <string name="phones_list">רשימת טלפונים</string>
     <string name="soon">בקרוב</string>
+    <string name="changelog">Changelog</string>
 
     <string-array name="questions">
         <item>מדוע השינויים לא נכונים</item>
