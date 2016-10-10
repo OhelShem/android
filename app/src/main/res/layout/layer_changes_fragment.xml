@@ -29,14 +29,5 @@
         android:layout_toLeftOf="@+id/layerHours"
         android:fillViewport="true"
         android:overScrollMode="never">
-
-        <TableLayout
-            android:id="@+id/layerChangesTable"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:gravity="right" />
-
-
     </HorizontalScrollView>
 </com.vlonjatg.progressactivity.ProgressActivity>

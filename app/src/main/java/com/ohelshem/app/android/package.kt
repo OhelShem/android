@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
 import com.ohelshem.app.android.utils.AttributeExtractor
+import com.ohelshem.app.android.utils.view.AutoResizeTextView
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.inputMethodManager
@@ -126,7 +127,13 @@ fun getColorDrawableFromColor(color: Int): ColorDrawable {
 @Suppress("DEPRECATION")
 fun String.fromHtml(): CharSequence = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY) else Html.fromHtml(this)
 
-fun ViewManager.appCompatSwitch(theme: Int = 0, init: SwitchCompat.() -> Unit = {}): SwitchCompat = ankoView({ SwitchCompat(it, null) }, theme, init)
+fun ViewManager.appCompatSwitch(theme: Int = 0): SwitchCompat = appCompatSwitch(theme) {}
+inline fun ViewManager.appCompatSwitch(theme: Int = 0, init: SwitchCompat.() -> Unit): SwitchCompat = ankoView(::SwitchCompat, theme, init)
+
+fun ViewManager.autoResizeTextView(theme: Int = 0) = autoResizeTextView(theme) {}
+inline fun ViewManager.autoResizeTextView(theme: Int = 0, init: AutoResizeTextView.() -> Unit) = ankoView(::AutoResizeTextView, theme, init)
+
+operator fun View.get(index: Int): View = (this as ViewGroup).getChildAt(index)
 
 val Fragment.screenSize: Point
     get() {

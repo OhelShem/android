@@ -20,25 +20,20 @@ package com.ohelshem.app.android.changes
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup
 import android.widget.HorizontalScrollView
-import android.widget.TableLayout
-import android.widget.TableRow
+import android.widget.LinearLayout
+import android.widget.LinearLayout.HORIZONTAL
+import android.widget.LinearLayout.VERTICAL
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
-import com.ohelshem.app.android.primaryColor
-import com.ohelshem.app.android.screenSize
-import com.ohelshem.app.android.stringArrayRes
-import com.ohelshem.app.android.utils.view.AutoResizeTextView
+import com.ohelshem.app.android.*
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.layer_changes_fragment.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.margin
-import org.jetbrains.anko.padding
+import org.jetbrains.anko.*
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.textColor
 
 class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
     override val layoutId: Int = R.layout.layer_changes_fragment
@@ -48,7 +43,7 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
     private val layerText: String by lazy { stringArrayRes(R.array.layers)[presenter.userLayer - 9] }
 
     private var hasInitTable = false
-    private lateinit var rows: Array<TableRow>
+    private lateinit var rows: List<LinearLayout>
 
     override fun init() {
         screenManager.setToolbarElevation(false)
@@ -58,70 +53,94 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
         fillTable(changes)
     }
 
+    private fun initLayout() {
+        val classes = presenter.classesAtLayer
+
+        val headerRowHeight = dip(30)
+        val defaultCellMargin = dip(1)
+        val standardColumnWidth = screenSize.x / 6
+
+        val rows: MutableList<LinearLayout> = mutableListOf()
+
+        with(tableScrollView) {
+            linearLayout {
+                gravity = Gravity.RIGHT
+                orientation = VERTICAL
+
+                // Header row:
+                linearLayout {
+                    orientation = HORIZONTAL
+                    backgroundColor = act.primaryColor
+
+                    repeat(classes) { c ->
+                        val clazz = classes - c
+                        autoResizeTextView {
+                            gravity = Gravity.CENTER
+                            textColor = Color.WHITE
+                            padding = 10
+                            text = "$layerText'$clazz"
+
+                            setTypeface(null, Typeface.BOLD)
+                        }.lparams(width = standardColumnWidth, height = matchParent) {
+                            marginize(clazz, classes, 0, MaxChangeHours, defaultCellMargin)
+                        }
+
+                    }
+                }.lparams(width = matchParent, height = headerRowHeight)
+
+                // Changes rows
+                repeat(MaxChangeHours) { hour ->
+                    rows += linearLayout {
+                        orientation = HORIZONTAL
+
+                        repeat(classes) { c ->
+                            val clazz = classes - c
+                            autoResizeTextView {
+                                gravity = Gravity.CENTER
+                                textColor = Color.WHITE
+                                backgroundColor = NoChangesColors[hour % 2]
+                                padding = 10
+
+                            }.lparams(width = standardColumnWidth, height = matchParent) {
+                                marginize(clazz, classes, hour, MaxChangeHours, defaultCellMargin)
+                            }
+                        }
+
+                    }.lparams(width = matchParent, height = 0) {
+                        weight = 1f
+                    }
+                }
+            }
+        }
+        this.rows = rows
+    }
+
+    private fun ViewGroup.MarginLayoutParams.marginize(clazz: Int, maxClasses: Int, hour: Int, maxHours: Int, margin: Int) {
+        if (hour != 0) {
+            topMargin = margin
+        }
+        if (hour != maxHours - 1) {
+            bottomMargin = margin
+        }
+
+        if (clazz != maxClasses) {
+            leftMargin = margin
+        }
+        if (clazz != 0) {
+            rightMargin = margin
+        }
+    }
+
     fun fillTable(changes: List<Change>) {
         val classes = presenter.classesAtLayer
 
         if (!hasInitTable) {
-            val standardColumnWidth = screenSize.x / 6
-            val primaryColor = activity.primaryColor
-            val dp30 = dip(30)
-
-            val rows: Array<TableRow?> = arrayOfNulls(11)
-            repeat(classes) { c ->
-                val clazz = classes - c - 1
-                repeat(MaxChangeHours + 1) { hour ->
-                    if (rows[hour] == null) {
-                        rows[hour] = TableRow(context).apply {
-                            id = hour
-                            layoutParams = TableLayout.LayoutParams().apply {
-                                if (hour == TitleRow) {
-                                    height = dp30
-                                } else {
-                                    weight = 1.0f
-                                    height = 0
-                                }
-                                width = MATCH_PARENT
-                            }
-                        }
-
-                        layerChangesTable.addView(rows[hour])
-                    }
-
-                    val cell = AutoResizeTextView(context).apply {
-                        gravity = Gravity.CENTER
-                        backgroundColor = NoChangesColors[hour % 2]
-                        textColor = Color.WHITE
-                        padding = 10
-
-                        layoutParams = TableRow.LayoutParams(clazz).apply {
-                            height = MATCH_PARENT
-                            width = standardColumnWidth
-                            if (hour != TitleRow)
-                                margin = 3
-                        }
-                    }
-
-                    if (hour == TitleRow) {
-                        cell.setBackgroundColor(primaryColor)
-                        cell.text = layerText + "'" + (clazz + 1).toString()
-                        cell.setTypeface(null, Typeface.BOLD)
-                    }
-
-
-                    rows[hour]!!.addView(cell)
-
-                    cell.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-                    cell.width = cell.measuredWidth
-                    cell.height = cell.measuredHeight
-
-                }
-            }
-            this.rows = rows.requireNoNulls()
+            initLayout()
             hasInitTable = true
         }
 
         changes.forEach {
-            (rows[it.hour].getChildAt(classes - it.clazz) as TextView).apply {
+            (rows[it.hour - 1][classes - it.clazz] as TextView).apply {
                 backgroundColor = it.color
                 text = it.content
             }
@@ -135,7 +154,6 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
 
     companion object {
         private val NoChangesColors = intArrayOf(Color.parseColor("#D9D9D9"), Color.parseColor("#BABABA"))
-        private const val TitleRow = 0
         private const val MaxChangeHours = 10
     }
 }
