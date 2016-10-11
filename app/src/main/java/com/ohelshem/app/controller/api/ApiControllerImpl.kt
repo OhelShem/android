@@ -3,6 +3,7 @@ package com.ohelshem.app.controller.api
 import com.ohelshem.api.Api
 import com.ohelshem.api.controller.declaration.ApiEngine
 import com.ohelshem.api.controller.declaration.ApiParser
+import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
@@ -71,7 +72,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
         isBusy = false
         try {
             val apis = mutableSetOf<UpdatedApi>()
-            response.apply {
+            with(response) {
                 storage.changesDate = changesDate
                 storage.serverUpdateDate = serverUpdateDate
                 storage.updateDate = System.currentTimeMillis()
@@ -79,8 +80,13 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                 storage.userData = userData
                 apis += UpdatedApi.UserData
 
+                val timetable = timetable
                 if (timetable != null) {
-                    storage.timetable = timetable
+                    if (timetable.size == 6 && timetable[5].all(Hour::isEmpty)) {
+                        storage.timetable = timetable.sliceArray(0..4)
+                    } else {
+                        storage.timetable = timetable
+                    }
                     apis += UpdatedApi.Timetable
                 }
                 val data = data

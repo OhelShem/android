@@ -70,7 +70,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             }
             allWeek = include<LinearLayout>(R.layout.timetable_all_week) {
                 headerView = find(R.id.header_row)
-                //FIXME                if (!presenter.learnsOnFriday) headerView.removeViewAt(0)
                 table = find(R.id.table)
                 visibility = View.GONE
             }
@@ -140,6 +139,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 }
             }
         }
+        if (presenter.weekDays == 5) headerView.removeViewAt(0)
     }
 
     override fun showDayTimetable() {
