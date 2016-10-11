@@ -11,6 +11,7 @@ import com.ohelshem.app.controller.storage.SharedStorage
 import com.ohelshem.app.controller.storage.SharedStorage.Theme
 import com.ohelshem.app.controller.utils.OffsetDataController
 import com.ohelshem.app.model.OverrideData
+import com.yoavst.changesystemohelshem.BuildConfig
 import mu.KLogging
 import java.io.File
 import java.util.*
@@ -213,6 +214,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     override fun clean() {
         clear()
         version = 4
+        appVersion = BuildConfig.VERSION_CODE
         Files.forEach { it.delete() }
     }
 
