@@ -90,6 +90,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private var debugDrawer: DebugDrawer? = null
 
+    private var showChangelog: Boolean = true
+
     //region Activity events
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,12 +116,13 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
             debug()
 
-            showIntro()
+            //showIntro()
         }
     }
 
     override fun onResume() {
         super.onResume()
+        showIntro()
         debugDrawer?.onResume()
         apiController[CallbackId] = this
         if (lastUpdate != storage.updateDate) {
@@ -148,6 +151,12 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(Key_Fragment, fragmentStack.peek().ordinal)
+        outState.putBoolean("showChangelog", showChangelog)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        showChangelog = savedInstanceState!!.getBoolean("showChangelog", false)
     }
 
     override fun onBackPressed() {
@@ -496,7 +505,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                         }).show()
             }
         }
-        if (App.updatedFromVersion != -1) {
+        if (App.updatedFromVersion != -1 && showChangelog) {
             App.updatedFromVersion = BuildConfig.VERSION_CODE
             MaterialStyledDialog.Builder(this)
                     .setStyle(Style.HEADER_WITH_TITLE)
@@ -504,6 +513,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
                     .setPositiveText(android.R.string.ok)
                     .show()
+            showChangelog = false
         }
     }
 
