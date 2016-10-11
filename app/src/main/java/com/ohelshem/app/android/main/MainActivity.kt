@@ -51,7 +51,6 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.model.ApiUpdatable
-import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -90,8 +89,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private var debugDrawer: DebugDrawer? = null
 
-    private var showChangelog: Boolean = true
-
     //region Activity events
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,13 +113,12 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
             debug()
 
-            //showIntro()
+            showIntro()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        showIntro()
         debugDrawer?.onResume()
         apiController[CallbackId] = this
         if (lastUpdate != storage.updateDate) {
@@ -151,12 +147,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(Key_Fragment, fragmentStack.peek().ordinal)
-        outState.putBoolean("showChangelog", showChangelog)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        showChangelog = savedInstanceState!!.getBoolean("showChangelog", false)
     }
 
     override fun onBackPressed() {
@@ -354,7 +344,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun refresh(): Boolean {
         val result = apiController.update()
         if (result) {
-            // FIXME apply refresh state
+            // TODO apply refresh state
         }
         return result
     }
@@ -505,15 +495,14 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                         }).show()
             }
         }
-        if (App.updatedFromVersion != -1 && showChangelog) {
-            App.updatedFromVersion = BuildConfig.VERSION_CODE
+        if (App.updatedFromVersion != -1) {
+            App.updatedFromVersion = -1
             MaterialStyledDialog.Builder(this)
                     .setStyle(Style.HEADER_WITH_TITLE)
                     .setTitle(R.string.changelog)
                     .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
                     .setPositiveText(android.R.string.ok)
                     .show()
-            showChangelog = false
         }
     }
 
