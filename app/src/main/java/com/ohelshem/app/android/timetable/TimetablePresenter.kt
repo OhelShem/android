@@ -18,13 +18,16 @@
 package com.ohelshem.app.android.timetable
 
 import com.ohelshem.api.model.Hour
+import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter
+import com.ohelshem.app.controller.api.ApiController
+import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.OverrideData
 import java.util.*
 
-class TimetablePresenter(val storage: Storage, val timetableController: TimetableController) : BasePresenter<TimetableView>() {
+class TimetablePresenter(val storage: Storage, val timetableController: TimetableController) : BasePresenter<TimetableView>(), ApiController.Callback {
     var isEditModeOn: Boolean = false
 
     override fun onDestroy() = Unit
@@ -35,6 +38,14 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
         setDay(currentDay)
     }
 
+    override fun onSuccess(apis: Set<UpdatedApi>) {
+        if (UpdatedApi.Timetable in apis) {
+            view?.flush()
+            setDay(currentDay)
+        }
+    }
+
+    override fun onFail(error: UpdateError) = Unit
     fun setDay(day: Int) {
         currentDay = day
         if (day == 0)
