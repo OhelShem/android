@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/edit"
         android:icon="@drawable/ic_edit"
@@ -13,4 +13,9 @@
         android:title="@string/done"
         android:visible="false"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/overridesSettings"
+        android:title="@string/settings_name"
+        app:showAsAction="never" />
 </menu>

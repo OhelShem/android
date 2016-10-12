@@ -9,6 +9,7 @@ class UIStorageImpl: UIStorage, KotprefModel() {
 
     override var firstTimeInApp: Boolean by booleanPrefVar(true)
     override var firstTimeInTimetable: Boolean by booleanPrefVar(true)
+    override var firstTimeInOverridesManager: Boolean by booleanPrefVar(true)
 
     override fun migration() {
         version = 4

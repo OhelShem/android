@@ -70,6 +70,15 @@
     <string name="change_all">שנה עבור כל השיעורים בעלי אותו השם</string>
     <string name="edit_lesson">עריכת שיעור</string>
     <string name="return_to_default">החזר למקור</string>
+    <string name="settings_name">ניהול עריכות שיעורים</string>
+    <string name="save_backup">גיבוי</string>
+    <string name="restore_backup">שחזור</string>
+    <string name="no_file_manager_installed">אף סייר קבצים לא מותקן על המכשיר</string>
+    <string name="choose_opener">בחר תוכנה לשימוש</string>
+    <string name="restored">שוחזר בהצלחה</string>
+    <string name="invalid_backup_file">קובץ גיבוי לא תקין</string>
+    <string name="share_backup">שתף</string>
+    <string name="backup_file_name">קובץ גיבוי שינויים במערכת שעות</string>
 
     <!-- Holidays -->
     <string name="weeks_left_to_summer">שבועות לקיץ</string>
@@ -152,13 +161,6 @@
         <item>@string/enabled</item>
         <item>@string/automatic</item>
     </string-array>
-    <string name="save_backup">גיבוי</string>
-    <string name="restore_backup">שחזור</string>
-    <string name="backup_file_saved_on">Backup file is saved on sdcard/</string>
-    <string name="no_file_manager_installed">אף סייר קבצים לא מותקן על המכשיר</string>
-    <string name="choose_opener">בחר תוכנה לשימוש</string>
-    <string name="restored">שוחזר בהצלחה</string>
-    <string name="invalid_backup_file">קובץ גיבוי לא תקין</string>
     <string name="fake_changes">זייף שינויים</string>
     <string name="fake_no_changes">זייף אין שינויים</string>
     <string name="cancel_faking">בטל זיוף</string>
@@ -198,6 +200,9 @@
     <string name="intro_drawer_secondary_text">מערכת שינויים אישית ושכבתית, מערכת שעות, מבחנים, חגים ומועדים, התקנון וההגדרות. הכל נמצא כאן.</string>
     <string name="intro_timetable_primary_text">הכוח בידך</string>
     <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>
+    <string name="intro_overrides_primary_text">חשוב לגבות</string>
+    <string name="intro_overrides_secondary_text">מי יודע מה צופן העתיד? רעידת אדמה עלולה להשמיד עיר שלמה באפריקה. אז כדאי שתגבה את העריכות שעשית ליתר ביטחון.</string>
+
 
     <!-- Yoav Sternberg -->
     <string name="yoav_sternberg">יואב שטרנברג</string>

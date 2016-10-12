@@ -32,6 +32,7 @@ import com.ohelshem.api.model.Hour
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.primaryDarkColor
+import com.ohelshem.app.android.settings.OverridesActivity
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
@@ -123,6 +124,11 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             it.isVisible = false
             menuEdit.isVisible = true
             presenter.isEditModeOn = false
+            true
+        }
+
+        menu.findItem(R.id.overridesSettings).setOnMenuItemClickListener {
+            act.startActivity<OverridesActivity>()
             true
         }
 

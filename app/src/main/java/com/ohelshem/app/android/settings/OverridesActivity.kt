@@ -20,19 +20,25 @@ package com.ohelshem.app.android.settings
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
+import android.view.MotionEvent
+import android.view.ViewGroup
 import com.github.salomonbrys.kodein.instance
 import com.nbsp.materialfilepicker.MaterialFilePicker
 import com.nbsp.materialfilepicker.ui.FilePickerActivity
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.android.drawableRes
+import com.ohelshem.app.android.notifications.OngoingNotificationService
+import com.ohelshem.app.android.primaryDarkColor
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.adapter.SimpleHeaderAdapter
 import com.ohelshem.app.controller.timetable.OverridableUserTimetableController
@@ -41,8 +47,10 @@ import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.VisibleItem
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.overrides_activity.*
+import org.jetbrains.anko.childrenSequence
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.toast
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -134,11 +142,24 @@ class OverridesActivity : AppThemedActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), RequestStoragePermission)
         } else {
-            val name = BackupFileName()
-            if (storage.exportOverrideFile(File(Environment.getExternalStorageDirectory(), name)))
-                toast(getString(R.string.backup_file_saved_on) + name)
-            else
-                toast(R.string.error)
+            if (storage.overrides.isNotEmpty()) {
+                val name = BackupFileName()
+                val file = File(Environment.getExternalStorageDirectory(), name)
+                if (storage.exportOverrideFile(file))
+                    Snackbar.make(coordinatorLayout, file.absolutePath, Snackbar.LENGTH_LONG).setAction(R.string.share_backup) {
+                        val intent = Intent(Intent.ACTION_SEND)
+                                .setType("application/octet-stream")
+                                .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+                                .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.backup_file_name))
+                                .putExtra(Intent.EXTRA_TEXT, "")
+                        startActivity(Intent.createChooser(intent, getString(R.string.share_backup)))
+
+                    }.show()
+                else
+                    toast(R.string.error)
+            } else {
+                toast(R.string.no_overrides)
+            }
         }
     }
 
@@ -199,12 +220,43 @@ class OverridesActivity : AppThemedActivity() {
     }
 
     private fun updateNotification() {
-       //FIXME OngoingNotificationService.update(this)
+        OngoingNotificationService.update(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.overrides, menu)
+        if (storage.overrides.isNotEmpty()) {
+            val menuView = toolbar.getChildAt(2) as? ViewGroup
+            menuView?.post {
+                if (storage.firstTimeInOverridesManager) {
+                    val title = getString(R.string.save_backup)
+                    val view = menuView.childrenSequence().firstOrNull { it.contentDescription == title }
+                    if (view != null) {
+                        MaterialTapTargetPrompt.Builder(this)
+                                .setPrimaryText(R.string.intro_overrides_primary_text)
+                                .setSecondaryText(R.string.intro_overrides_secondary_text)
+                                .setIcon(R.drawable.ic_export2)
+                                .setBackgroundColour(primaryDarkColor)
+                                .setIconDrawableColourFilter(primaryDarkColor)
+                                .setTarget(view)
+                                .setAutoFinish(true)
+                                .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+                                    override fun onHidePromptComplete() {
+
+                                    }
+
+                                    override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                        storage.firstTimeInOverridesManager = false
+                                    }
+
+                                }).show()
+                    }
+                }
+            }
+        } else {
+            menu.findItem(R.id.save).isVisible = false
+        }
         return true
     }
 
