@@ -203,6 +203,8 @@
     <string name="intro_overrides_primary_text">חשוב לגבות</string>
     <string name="intro_overrides_secondary_text">מי יודע מה צופן העתיד? רעידת אדמה עלולה להשמיד עיר שלמה באפריקה. אז כדאי שתגבה את העריכות שעשית ליתר ביטחון.</string>
 
+    <!-- Apache zone -->
+    <string name="apache_menu">איזור למסוקי תקיפה</string>
 
     <!-- Yoav Sternberg -->
     <string name="yoav_sternberg">יואב שטרנברג</string>
