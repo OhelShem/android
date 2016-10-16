@@ -209,6 +209,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             // If there is drawer layout
             updatedAt = getString(R.string.updated_at)
             navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer_changes) + " " + layerText
+            updateDrawerIndicators()
             headerView = navigationView.inflateHeaderView(R.layout.main_drawer_header).apply {
                 classText.text = headerText
             }
@@ -250,6 +251,19 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         val lastUpdate = storage.updateDate
         if (lastUpdate != IStorage.EmptyData.toLong())
             updateLastUpdated(lastUpdate)
+    }
+
+    private fun updateDrawerIndicators() {
+        var howManyChanges: Int = 0
+        if (storage.changes != null) {
+            (storage.changes)!!.forEach {
+                if (it.clazz == storage.userData.clazz) howManyChanges++
+            }
+        }
+        if (howManyChanges>0)
+            navigationView.menu.findItem(R.id.changes).title = (getString(R.string.changes) + " <b><font color='#2196F3'>("+howManyChanges+")</font></b>").fromHtml()
+        else
+            navigationView.menu.findItem(R.id.changes).title = getString(R.string.changes)
     }
 
     private fun setTranslucentStatusFlag(on: Boolean) {
@@ -339,6 +353,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun refresh(): Boolean {
         val result = apiController.update()
         if (result) {
+            updateDrawerIndicators()
             // TODO apply refresh state
         }
         return result
