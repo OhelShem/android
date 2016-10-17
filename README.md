@@ -21,7 +21,7 @@ This app is for students, allowing them to be updated with the most important da
 * Timetable's daily changes
 * Tests
 
-![screenshots](http://i.imgur.com/8OQGEJc.jpg)
+![screenshots](https://i.imgur.com/grue9TJ.jpg)
 
 
 # Technology behind
