@@ -100,6 +100,7 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
                                 textColor = Color.WHITE
                                 backgroundColor = NoChangesColors[hour % 2]
                                 padding = 10
+                                onClick {  } //click sound
 
                             }.lparams(width = standardColumnWidth, height = matchParent) {
                                 marginize(clazz, classes, hour, MaxChangeHours, defaultCellMargin)
@@ -162,6 +163,6 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
 
     companion object {
         private val NoChangesColors = intArrayOf(Color.parseColor("#D9D9D9"), Color.parseColor("#BABABA"))
-        private const val MaxChangeHours = 10
+        private const val MaxChangeHours = 11
     }
 }
