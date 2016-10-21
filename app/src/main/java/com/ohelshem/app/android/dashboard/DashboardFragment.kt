@@ -109,7 +109,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 nextLessonName.text = ("<b>$endOfDay</b>").fromHtml()
             else nextLessonName.text = if (data.nextHour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.nextHour.name + "</b>" + with + data.nextHour.teacher).fromHtml()
             if (isFuture)
-                timeLeft.text = daysOfWeek[data.hour.day]
+                timeLeft.text = daysOfWeek[data.hour.day-1]
             else if (isTomorrow)
                 timeLeft.text = tomorrow
             else if (data.isBefore)
