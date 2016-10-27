@@ -19,8 +19,8 @@ package com.ohelshem.app.android.main
 
 enum class ScreenType {
     Dashboard,
-    Changes,
     Timetable,
+    Changes,
     Dates,
     Contacts
 }

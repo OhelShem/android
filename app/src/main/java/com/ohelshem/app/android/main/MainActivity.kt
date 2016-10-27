@@ -66,12 +66,20 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             setContentView(R.layout.main)
             initNavigation()
             lastUpdate = storage.updateDate
-            if (savedInstanceState == null) {
-                if (resources.getBoolean(R.bool.dashboard_as_default))
-                    setScreen(ScreenType.Dashboard)
-                else setScreen(ScreenType.Timetable)
-                refresh()
-            } else setScreen(ScreenType.values()[savedInstanceState.getInt(Key_Fragment)])
+
+            when (intent?.action) {
+                Shortcut_LaunchChanges -> setScreen(ScreenType.Changes)
+                Shortcut_LaunchTimetable -> setScreen(ScreenType.Timetable)
+                Shortcut_LaunchDates -> setScreen(ScreenType.Dates)
+                else -> {
+                    if (savedInstanceState == null) {
+                        if (resources.getBoolean(R.bool.dashboard_as_default))
+                            setScreen(ScreenType.Dashboard)
+                        else setScreen(ScreenType.Timetable)
+                        refresh()
+                    } else setScreen(ScreenType.values()[savedInstanceState.getInt(Key_Fragment)])
+                }
+            }
             if (extraFragment != null)
                 supportFragmentManager.beginTransaction().replace(R.id.extraFragment, DashboardFragment()).commit()
             if (secondaryExtraFragment != null)
@@ -375,6 +383,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         private const val CallbackId = 75
         private val RegulationFilename = "regulation.pdf"
         private val SharingFolder = "sharing"
-        const val Key_Fragment = "key_fragment"
+        private const val Key_Fragment = "key_fragment"
+
+        private const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"
+        private const val Shortcut_LaunchTimetable = "com.ohelshem.app.LAUNCH_TIMETABLE"
+        private const val Shortcut_LaunchDates = "com.ohelshem.app.LAUNCH_DATES"
+
     }
 }

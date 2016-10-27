@@ -12,7 +12,7 @@
     <string name="no_connection">אין חיבור לאינטרנט</string>
     <string name="no_connection_subtitle">אנא התחבר לאינטרנט ונסה שנית</string>
     <string name="general_error">שגיאה, אנא נסה בשנית</string>
-    <!-- Drawer menu -->
+    <!-- Navigation & Shortcuts -->
     <string name="dashboard">ראשי</string>
     <string name="changes">שינויים</string>
     <string name="refreshing">מעדכן מידע</string>
@@ -26,6 +26,8 @@
     <string name="holidays">חגים ומועדים</string>
     <string name="regulations">תקנון בית הספר</string>
     <string name="updated_at">עודכן ב-</string>
+
+    <string name="changes_long">שינויים כיתתים</string>
     <!-- Info -->
     <string name="layer_changes">שינויים בשכבת</string>
     <string name="clazz">כיתה</string>

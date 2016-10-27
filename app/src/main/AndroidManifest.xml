@@ -23,17 +23,22 @@
 
         <activity
             android:name="com.ohelshem.app.android.main.MainActivity"
-            android:theme="@style/AppTheme.MaterialColdStart"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.MaterialColdStart" />
 
         <activity-alias
             android:name="com.ohelshem.app.android.MainActivity"
             android:targetActivity="com.ohelshem.app.android.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity-alias>
 
         <activity
@@ -55,10 +60,9 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <service
-            android:name="com.ohelshem.app.android.FirebaseService">
+        <service android:name="com.ohelshem.app.android.FirebaseService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 

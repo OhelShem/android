@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:targetApi="n_mr1">
+
+    <shortcut
+        android:shortcutId="changes"
+        android:enabled="true"
+        android:icon="@drawable/ic_track_changes"
+        android:shortcutShortLabel="@string/changes"
+        android:shortcutLongLabel="@string/changes_long"
+        android:shortcutDisabledMessage="@string/disabled">
+        <intent
+            android:action="com.ohelshem.app.LAUNCH_CHANGES"
+            android:targetPackage="com.yoavst.changesystemohelshem"
+            android:targetClass="com.ohelshem.app.android.main.MainActivity" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="timetable"
+        android:enabled="true"
+        android:icon="@drawable/ic_timetable"
+        android:shortcutShortLabel="@string/timetable"
+        android:shortcutLongLabel="@string/timetable"
+        android:shortcutDisabledMessage="@string/disabled">
+        <intent
+            android:action="com.ohelshem.app.LAUNCH_TIMETABLE"
+            android:targetPackage="com.yoavst.changesystemohelshem"
+            android:targetClass="com.ohelshem.app.android.main.MainActivity" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="dates"
+        android:enabled="true"
+        android:icon="@drawable/ic_calendar_black"
+        android:shortcutShortLabel="@string/dates"
+        android:shortcutLongLabel="@string/dates"
+        android:shortcutDisabledMessage="@string/disabled">
+        <intent
+            android:action="com.ohelshem.app.LAUNCH_DATES"
+            android:targetPackage="com.yoavst.changesystemohelshem"
+            android:targetClass="com.ohelshem.app.android.main.MainActivity" />
+    </shortcut>
+</shortcuts>
