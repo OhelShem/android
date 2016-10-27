@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/timetable"
+        icon="@drawable/ic_timetable"
+        title="@string/timetable" />
+    <tab
+        id="@+id/changes"
+        icon="@drawable/ic_track_changes"
+        title="@string/changes" />
+    <tab
+        id="@+id/dates"
+        icon="@drawable/ic_calendar_black"
+        title="@string/dates" />
+    <tab
+        id="@+id/contacts"
+        icon="@drawable/ic_contacts_black"
+        title="@string/contacts" />
+</tabs>

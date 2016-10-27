@@ -2,39 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/ToolbarStyle"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:layout_alignParentTop="true">
 
-        <Spinner
-            android:id="@+id/navigationSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:popupTheme="?attr/popupTheme" />
-    </android.support.v7.widget.Toolbar>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/ToolbarStyle"
+            app:elevation="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/navigationSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:popupTheme="?attr/popupTheme" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/bottomBar"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/appBarLayout"
+        android:layout_toRightOf="@+id/bottomBar" />
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/appBarLayout"
         app:bb_behavior="shifting"
         app:bb_tabXmlResource="@xml/bottom_tabs"
         app:bb_tabletMode="true" />

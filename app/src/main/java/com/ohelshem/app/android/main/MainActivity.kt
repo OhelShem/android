@@ -1,24 +1,6 @@
-/*
- * Copyright 2016 Yoav Sternberg.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
-
 package com.ohelshem.app.android.main
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,8 +8,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
-import android.widget.ImageView
 import android.widget.Spinner
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
@@ -36,20 +16,21 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
-import com.ohelshem.app.android.*
+import com.ohelshem.app.android.App
 import com.ohelshem.app.android.changes.ClassChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.help.HelpActivity
+import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.settings.SettingsActivity
+import com.ohelshem.app.android.show
 import com.ohelshem.app.android.tests.TestsFragment
 import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.DeveloperOptions
-import com.ohelshem.app.model.ApiUpdatable
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -61,7 +42,6 @@ import io.palaima.debugdrawer.commons.NetworkModule
 import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
 import org.jetbrains.anko.*
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -72,9 +52,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private var lastUpdate: Long = 0
 
     private var fragmentStack: Stack<ScreenType> = Stack()
-    private var miniDrawerItems: Array<ImageView>? = null
-
-    private val selectedColor by lazy { primaryColor }
 
     private var debugDrawer: DebugDrawer? = null
 
@@ -112,8 +89,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         apiController[CallbackId] = this
         if (lastUpdate != storage.updateDate) {
             lastUpdate = storage.updateDate
-            updateFragment()
+            updatables.forEach { it.onSuccess() }
         }
+        updateBadges()
     }
 
     override fun onPause() {
@@ -126,7 +104,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         super.onStart()
         debugDrawer?.onStart()
     }
-
 
     override fun onStop() {
         super.onStop()
@@ -185,41 +162,43 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
     //endregion
 
-    //region Drawer
+    //region Navigation
     private fun initNavigation() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
-        if (miniDrawerLayout != null) {
-            //FIXME
-        } else {
-            //FIXME
-            bottomBar.setOnTabSelectListener { id ->
-                when (id) {
-                    R.id.dashboard -> setScreenInternal(ScreenType.Dashboard)
-                    R.id.timetable -> setScreenInternal(ScreenType.Timetable)
-                    R.id.changes -> setScreenInternal(ScreenType.Changes)
-                    R.id.dates -> setScreenInternal(ScreenType.Dates)
-                    R.id.contacts -> setScreenInternal(ScreenType.Contacts)
-                }
+        bottomBar.setOnTabSelectListener { id ->
+            when (id) {
+                R.id.dashboard -> setScreenInternal(ScreenType.Dashboard)
+                R.id.timetable -> setScreenInternal(ScreenType.Timetable)
+                R.id.changes -> setScreenInternal(ScreenType.Changes)
+                R.id.dates -> setScreenInternal(ScreenType.Dates)
+                R.id.contacts -> setScreenInternal(ScreenType.Contacts)
             }
         }
+    }
 
+    override fun setScreen(screen: ScreenType, backStack: Boolean) {
+        if (!backStack)
+            fragmentStack.clear()
+        fragmentStack.add(screen)
+        setSelected(screen)
+    }
+
+    private fun setScreenInternal(screen: ScreenType) {
+        val fragment: Fragment = when (screen) {
+            ScreenType.Dashboard -> DashboardFragment()
+            ScreenType.Changes -> ClassChangesFragment()
+            ScreenType.Timetable -> TimetableFragment()
+            ScreenType.Dates -> TestsFragment()
+            ScreenType.Contacts -> LayerChangesFragment()
+            else -> DashboardFragment()
+        }
+        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
     }
 
     private fun setSelected(type: ScreenType) {
-        if (miniDrawerItems != null) {
-            miniDrawerItems!!.forEach { it.setColorFilter(ColorUnselected) }
-            if (type == ScreenType.Changes)
-                miniDrawerItems!![0].setColorFilter(selectedColor)
-            else if (type == ScreenType.Timetable)
-                miniDrawerItems!![1].setColorFilter(selectedColor)
-            else
-                miniDrawerItems!![2].setColorFilter(selectedColor)
-        } else {
-            bottomBar.selectTabAtPosition(type.ordinal)
-        }
+        bottomBar.selectTabAtPosition(type.ordinal)
     }
-
 
     private fun openSettings() {
         startActivityForResult<SettingsActivity>(42)
@@ -243,7 +222,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             toast("No PDF reader installed")
         } else startActivity(Intent.createChooser(intent, getString(R.string.choose_opener)))
     }
-
 //endregion
 
     fun logout() {
@@ -252,28 +230,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         startActivity(intentFor<LoginActivity>().clearTask())
         finish()
     }
-
-    private fun getUpdatableFragments(): List<ApiUpdatable> {
-        @Suppress("UNCHECKED_CAST")
-        return listOf(supportFragmentManager.findFragmentById(R.id.fragment) as? ApiUpdatable,
-                supportFragmentManager.findFragmentById(R.id.extraFragment) as? ApiUpdatable,
-                supportFragmentManager.findFragmentById(R.id.secondaryExtraFragment) as? ApiUpdatable).filterNotNull()
-    }
-
-    private fun updateFragment(apis: Set<ApiController.UpdatedApi>? = null) {
-        getUpdatableFragments().forEach { fragment ->
-            if (apis == null || fragment.api == null || fragment.api!! in apis) {
-                fragment.onUpdate()
-            }
-        }
-    }
-
-    private fun errorFragment(updateError: UpdateError) {
-        getUpdatableFragments().forEach { fragment ->
-            fragment.onError(updateError)
-        }
-    }
-
 
     override fun refresh(): Boolean {
         val result = apiController.update()
@@ -287,8 +243,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
         runOnUiThread {
             toast(R.string.refreshed)
-            updateFragment(apis)
             updatables.forEach { it.onSuccess(apis) }
+            updateBadges()
         }
     }
 
@@ -298,30 +254,12 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         else {
             if (error == UpdateError.Connection)
                 toast(R.string.no_connection)
-            errorFragment(error)
             updatables.forEach { it.onFail(error) }
         }
     }
 
-    override fun setScreen(screen: ScreenType, backStack: Boolean) {
-        if (!backStack)
-            fragmentStack.clear()
-        fragmentStack.add(screen)
-        setSelected(screen)
-    }
 
-    private fun setScreenInternal(screen: ScreenType) {
-        val fragment: Fragment = when (screen) {
-            ScreenType.Dashboard -> DashboardFragment()
-            ScreenType.Changes -> ClassChangesFragment()
-            ScreenType.Timetable -> TimetableFragment()
-            ScreenType.Dates -> TestsFragment()
-            ScreenType.Contacts -> LayerChangesFragment()
-            else -> DashboardFragment()
-        }
-        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
-    }
-
+    //region Utils
     override var screenTitle: CharSequence
         get() = toolbar.title
         set(value) {
@@ -339,14 +277,25 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             return navigationSpinner
         }
 
+
     override fun setToolbarElevation(enabled: Boolean) {
         doFromSdk(Build.VERSION_CODES.LOLLIPOP) {
             if (enabled) {
-                toolbar.elevation = 4f
+                appBarLayout.elevation = 4f
             } else {
-                toolbar.elevation = 0f
+                appBarLayout.elevation = 0f
             }
         }
+    }
+
+    private fun updateBadges() {
+        val changesTab = bottomBar.getTabWithId(R.id.changes)
+
+        val clazz = storage.userData.clazz
+        val count = storage.changes?.count { it.clazz == clazz } ?: 0
+        if (count == 0)
+            changesTab.removeBadge()
+        else changesTab.setBadgeCount(count)
     }
 
     val updatables: List<ApiController.Callback>
@@ -403,32 +352,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     SettingsModule(this)).build()
         }
     }
+    //endregion
 
     private fun showIntro() {
         if (storage.firstTimeInApp) {
-            if (drawerLayout != null) {
-                var prompt: MaterialTapTargetPrompt? = null
-                prompt = MaterialTapTargetPrompt.Builder(this)
-                        .setPrimaryText(R.string.intro_drawer_primary_text)
-                        .setSecondaryText(R.string.intro_drawer_secondary_text)
-                        .setIcon(R.drawable.ic_menu2)
-                        .setTarget(toolbar.getChildAt(1))
-                        .setBackgroundColour(primaryDarkColor)
-                        .setIconDrawableColourFilter(act.primaryDarkColor)
-                        .setAutoDismiss(false)
-                        .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-                            override fun onHidePromptComplete() {
-                                storage.firstTimeInApp = false
-                            }
-
-                            override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-                                if (tappedTarget) {
-                                    prompt!!.dismiss()
-                                }
-                            }
-
-                        }).show()
-            }
+            // FIXME
         }
         if (App.updatedFromVersion != -1) {
             App.updatedFromVersion = -1
@@ -448,6 +376,5 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         private val RegulationFilename = "regulation.pdf"
         private val SharingFolder = "sharing"
         const val Key_Fragment = "key_fragment"
-        private val ColorUnselected = Color.parseColor("#727272")
     }
 }
