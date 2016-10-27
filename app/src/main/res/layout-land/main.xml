@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="RtlHardcoded">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,17 +26,17 @@
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar"
+        android:layout_toRightOf="@+id/bottomBar"
         android:layout_below="@+id/toolbar" />
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="?colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
         app:bb_behavior="shifting"
-        app:bb_showShadow="false"
-        app:bb_tabXmlResource="@xml/bottom_tabs" />
+        app:bb_tabXmlResource="@xml/bottom_tabs"
+        app:bb_tabletMode="true" />
 
 </RelativeLayout>

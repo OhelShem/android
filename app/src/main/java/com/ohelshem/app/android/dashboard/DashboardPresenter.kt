@@ -58,7 +58,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
     override fun onFail(error: UpdateError) = Unit // Ignored
 
     fun launchTestsScreen(screenManager: ScreenManager) {
-        screenManager.setScreen(ScreenType.Tests, backStack = true)
+        screenManager.setScreen(ScreenType.Dates, backStack = true)
     }
 
     fun launchTodayPlan(screenManager: ScreenManager) {

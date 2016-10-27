@@ -23,9 +23,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatDelegate
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.Spinner
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
@@ -40,7 +41,6 @@ import com.ohelshem.app.android.changes.ClassChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.help.HelpActivity
-import com.ohelshem.app.android.holidays.HolidaysFragment
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.tests.TestsFragment
@@ -49,7 +49,6 @@ import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.DeveloperOptions
-import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.model.ApiUpdatable
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
@@ -61,31 +60,21 @@ import io.palaima.debugdrawer.commons.DeviceModule
 import io.palaima.debugdrawer.commons.NetworkModule
 import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
-import kotlinx.android.synthetic.main.main_drawer_header.view.*
 import org.jetbrains.anko.*
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationScreenManager {
     private val apiController: ApiController by instance()
 
     private var lastUpdate: Long = 0
-    private var queuedId: Int = -1
-
-    private val layer: Int by lazy { storage.userData.layer }
-    private val layerText: String by lazy { stringArrayRes(R.array.layers)[layer - 9] }
-    private val headerText: String by lazy { getString(R.string.clazz) + " " + layerText + "'" + storage.userData.clazz.toString() }
 
     private var fragmentStack: Stack<ScreenType> = Stack()
     private var miniDrawerItems: Array<ImageView>? = null
 
     private val selectedColor by lazy { primaryColor }
-
-    private lateinit var updatedAt: String
-    private lateinit var headerView: View
 
     private var debugDrawer: DebugDrawer? = null
 
@@ -98,7 +87,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             finish()
         } else {
             setContentView(R.layout.main)
-            initDrawer()
+            initNavigation()
             lastUpdate = storage.updateDate
             if (savedInstanceState == null) {
                 if (resources.getBoolean(R.bool.dashboard_as_default))
@@ -166,6 +155,28 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.refresh -> {
+                refresh()
+                true
+            }
+            R.id.regulations -> {
+                openRegulations()
+                true
+            }
+            R.id.help -> {
+                openHelp()
+                true
+            }
+            R.id.settings -> {
+                openSettings()
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 42 && resultCode == 42) {
@@ -175,111 +186,25 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     //endregion
 
     //region Drawer
-    private fun initDrawer() {
+    private fun initNavigation() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
         if (miniDrawerLayout != null) {
-            headerView = header
-            updatedAt = ""
-            classText.text = layerText + "'" + storage.userData.clazz.toString()
-            miniDrawerItems = arrayOf(changesDrawerItem.getChildAt(0) as ImageView, timetableDrawerItem.getChildAt(0) as ImageView,
-                    layerChangesDrawerItem.getChildAt(0) as ImageView, holidaysDrawerItem.getChildAt(0) as ImageView)
-            changesDrawerItem.onClick {
-                setScreen(ScreenType.Changes)
-            }
-            timetableDrawerItem.onClick {
-                setScreen(ScreenType.Timetable)
-            }
-            layerChangesDrawerItem.onClick {
-                setScreen(ScreenType.LayerChanges)
-            }
-            regulationsDrawerItem.onClick {
-                openRegulations()
-            }
-            helpDrawerItem.onClick {
-                openHelp()
-            }
-            holidaysDrawerItem.onClick {
-                setScreen(ScreenType.Holidays)
-            }
-            settingsDrawerItem.onClick {
-                openSettings()
-            }
+            //FIXME
         } else {
-            // If there is drawer layout
-            updatedAt = getString(R.string.updated_at)
-            navigationView.menu.findItem(R.id.layer).title = getString(R.string.layer_changes) + " " + layerText
-            updateDrawerIndicators()
-            headerView = navigationView.inflateHeaderView(R.layout.main_drawer_header).apply {
-                classText.text = headerText
-            }
-            navigationView.setNavigationItemSelectedListener {
-                queuedId = it.itemId
-                drawerLayout.closeDrawer(navigationView)
-                true
-            }
-            toolbar.navigationIcon = drawableRes(R.drawable.ic_menu)
-            toolbar.setNavigationOnClickListener {
-                drawerLayout.openDrawer(Gravity.LEFT)
-            }
-            drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
-                override fun onDrawerClosed(drawerView: View?) {
-                    if (queuedId != -1) {
-                        when (queuedId) {
-                            R.id.dashboard -> setScreen(ScreenType.Dashboard)
-                            R.id.changes -> setScreen(ScreenType.Changes)
-                            R.id.timetable -> setScreen(ScreenType.Timetable)
-                            R.id.tests -> setScreen(ScreenType.Tests)
-                            R.id.layer -> setScreen(ScreenType.LayerChanges)
-                            R.id.holidays -> setScreen(ScreenType.Holidays)
-                            R.id.help -> {
-                                openHelp()
-                            }
-                            R.id.settings -> {
-                                openSettings()
-                            }
-                            R.id.regulations -> {
-                                openRegulations()
-                            }
-                            else -> throw IllegalArgumentException()
-                        }
-                        queuedId = -1
-                    }
+            //FIXME
+            bottomBar.setOnTabSelectListener { id ->
+                when (id) {
+                    R.id.dashboard -> setScreenInternal(ScreenType.Dashboard)
+                    R.id.timetable -> setScreenInternal(ScreenType.Timetable)
+                    R.id.changes -> setScreenInternal(ScreenType.Changes)
+                    R.id.dates -> setScreenInternal(ScreenType.Dates)
+                    R.id.contacts -> setScreenInternal(ScreenType.Contacts)
                 }
-            })
-        }
-        val lastUpdate = storage.updateDate
-        if (lastUpdate != IStorage.EmptyData.toLong())
-            updateLastUpdated(lastUpdate)
-    }
-
-    private fun updateDrawerIndicators() {
-        var howManyChanges: Int = 0
-        if (storage.changes != null) {
-            (storage.changes)!!.forEach {
-                if (it.clazz == storage.userData.clazz) howManyChanges++
             }
         }
-        if (howManyChanges>0)
-            navigationView.menu.findItem(R.id.changes).title = (getString(R.string.changes) + " <b><font color='#2196F3'>("+howManyChanges+")</font></b>").fromHtml()
-        else
-            navigationView.menu.findItem(R.id.changes).title = getString(R.string.changes)
-    }
 
-    private fun setTranslucentStatusFlag(on: Boolean) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val win = window
-            val winParams = win.attributes
-            val bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            if (on) {
-                winParams.flags = winParams.flags or bits
-            } else {
-                winParams.flags = winParams.flags and bits.inv()
-            }
-            win.attributes = winParams
-        }
     }
-
 
     private fun setSelected(type: ScreenType) {
         if (miniDrawerItems != null) {
@@ -290,8 +215,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 miniDrawerItems!![1].setColorFilter(selectedColor)
             else
                 miniDrawerItems!![2].setColorFilter(selectedColor)
-        } else navigationView.menu.getItem(type.ordinal).isChecked = true
+        } else {
+            bottomBar.selectTabAtPosition(type.ordinal)
+        }
     }
+
 
     private fun openSettings() {
         startActivityForResult<SettingsActivity>(42)
@@ -316,10 +244,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         } else startActivity(Intent.createChooser(intent, getString(R.string.choose_opener)))
     }
 
-    private fun updateLastUpdated(time: Long) {
-        headerView.lastUpdated.text = updatedAt + HourFormatter.format(Date(time))
-    }
-    //endregion
+//endregion
 
     fun logout() {
         storage.clean()
@@ -353,7 +278,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun refresh(): Boolean {
         val result = apiController.update()
         if (result) {
-            updateDrawerIndicators()
             // TODO apply refresh state
         }
         return result
@@ -362,7 +286,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
         runOnUiThread {
-            updateLastUpdated(storage.updateDate)
             toast(R.string.refreshed)
             updateFragment(apis)
             updatables.forEach { it.onSuccess(apis) }
@@ -381,20 +304,22 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     override fun setScreen(screen: ScreenType, backStack: Boolean) {
-        val fragment: Fragment = when (screen) {
-            ScreenType.Dashboard -> DashboardFragment()
-            ScreenType.Changes -> ClassChangesFragment()
-            ScreenType.Timetable -> TimetableFragment()
-            ScreenType.Tests -> TestsFragment()
-            ScreenType.LayerChanges -> LayerChangesFragment()
-            ScreenType.Holidays -> HolidaysFragment()
-            else -> DashboardFragment()
-        }
-        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
         if (!backStack)
             fragmentStack.clear()
         fragmentStack.add(screen)
         setSelected(screen)
+    }
+
+    private fun setScreenInternal(screen: ScreenType) {
+        val fragment: Fragment = when (screen) {
+            ScreenType.Dashboard -> DashboardFragment()
+            ScreenType.Changes -> ClassChangesFragment()
+            ScreenType.Timetable -> TimetableFragment()
+            ScreenType.Dates -> TestsFragment()
+            ScreenType.Contacts -> LayerChangesFragment()
+            else -> DashboardFragment()
+        }
+        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
     }
 
     override var screenTitle: CharSequence
@@ -520,7 +445,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     companion object {
         private const val CallbackId = 75
-        private val HourFormatter = SimpleDateFormat("HH:mm")
         private val RegulationFilename = "regulation.pdf"
         private val SharingFolder = "sharing"
         const val Key_Fragment = "key_fragment"

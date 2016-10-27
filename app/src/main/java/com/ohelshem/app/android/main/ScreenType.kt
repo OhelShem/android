@@ -21,7 +21,6 @@ enum class ScreenType {
     Dashboard,
     Changes,
     Timetable,
-    Tests,
-    LayerChanges,
-    Holidays
+    Dates,
+    Contacts
 }

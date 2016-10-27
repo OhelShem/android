@@ -3,15 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 76
-        versionName "7.0.0 Beta 2"
+        versionName "7.0.0 Beta 3"
         resConfigs "en", "he"
     }
 
@@ -69,6 +69,7 @@ dependencies {
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.4.3'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.vlonjatg.android:progress-activity:1.1.1'
+    compile 'com.roughike:bottom-bar:2.0.2'
     // debug
     compile 'io.palaima.debugdrawer:debugdrawer:0.7.0'
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.0'
