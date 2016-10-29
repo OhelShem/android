@@ -6,7 +6,7 @@
     <shortcut
         android:shortcutId="changes"
         android:enabled="true"
-        android:icon="@drawable/ic_track_changes"
+        android:icon="@drawable/shortcut_changes"
         android:shortcutShortLabel="@string/changes"
         android:shortcutLongLabel="@string/changes_long"
         android:shortcutDisabledMessage="@string/disabled">
@@ -19,7 +19,7 @@
     <shortcut
         android:shortcutId="timetable"
         android:enabled="true"
-        android:icon="@drawable/ic_timetable"
+        android:icon="@drawable/shortcut_timetable"
         android:shortcutShortLabel="@string/timetable"
         android:shortcutLongLabel="@string/timetable"
         android:shortcutDisabledMessage="@string/disabled">
@@ -32,7 +32,7 @@
     <shortcut
         android:shortcutId="dates"
         android:enabled="true"
-        android:icon="@drawable/ic_calendar_black"
+        android:icon="@drawable/shortcut_changes"
         android:shortcutShortLabel="@string/dates"
         android:shortcutLongLabel="@string/dates"
         android:shortcutDisabledMessage="@string/disabled">

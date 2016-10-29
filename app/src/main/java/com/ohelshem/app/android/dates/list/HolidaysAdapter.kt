@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android.holidays.list
+package com.ohelshem.app.android.dates.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

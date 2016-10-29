@@ -15,9 +15,10 @@
  *
  */
 
-package com.ohelshem.app.android.changes
+package com.ohelshem.app.android.changes.layer
 
 import com.ohelshem.api.model.Change
+import com.ohelshem.app.android.changes.BaseChangesPresenter
 import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController

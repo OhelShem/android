@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
-    <changelogversion versionName="7.0.0" changeDate="Oct 13, 2016">
+    <changelogversion versionName="7.0.0 Beta 3" changeDate="Oct 29, 2016">
+        <changelogtext>[b]AMAZING![/b] Switched from Navigation Drawer pattern to Bottom Bars</changelogtext>
+        <changelogtext>Migrated Layer Changes and Changes to the same screen.</changelogtext>
+        <changelogtext>Migrated Holidays and Tests to the same screen.</changelogtext>
+        <changelogtext>[b]New![/b] Option to share layer changes as picture</changelogtext>
+        <changelogtext>[b]Added:[b] Launcher shortcuts are supported now.</changelogtext>
+    </changelogversion>
+    <changelogversion versionName="7.0.0 Beta 2" changeDate="Oct 13, 2016">
         <changelogtext>[b]New![/b] Theme support - Green, Blue, Red + Night mode.</changelogtext>
         <changelogtext>[b]New![/b] Night mode.</changelogtext>
         <changelogtext>[b]New:[/b] Redesigned look for tests and holidays screens.</changelogtext>

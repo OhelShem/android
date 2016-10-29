@@ -20,14 +20,43 @@ object LayerChangesGenerator {
     private const val MaxChangeHours = 11
     private val NoChangesColors = intArrayOf(Color.parseColor("#D9D9D9"), Color.parseColor("#BABABA"))
 
-    fun createView(context: Context, classes: Int, layer: Int): View {
-        with (context) {
+
+    fun generateLayerChanges(context: Context, changes: List<Change>, classes: Int, layer: Int, path: File, callback: (File) -> Unit): Boolean {
+        if (changes.isEmpty()) return false
+        doAsync {
+            val (view, width, height) = createView(context, classes, layer)
+            val rows = view.childrenSequence().drop(1).map { it as LinearLayout }.toList()
+            fillTable(changes, classes, rows)
+
+            try {
+                val bitmap = takeScreenShot(view, width, height)
+                path.outputStream().use {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 60, it)
+                }
+                bitmap.recycle()
+                context.runOnUiThread {
+                    callback(path)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return true
+    }
+
+    //region Helper drawing
+    private fun createView(context: Context, classes: Int, layer: Int): Triple<View, Int, Int> {
+        with(context) {
             val headerRowHeight = dip(30)
             val defaultCellMargin = dip(1)
             val standardColumnWidth = screenSize.x / 6
+
+            val width = standardColumnWidth * classes + (defaultCellMargin * classes - 1) + dip(5)
+            val height = screenSize.y
+
             val layerText = stringArrayRes(R.array.layers)[layer - 9]
 
-           return UI {
+            val view =  UI {
                 linearLayout {
                     gravity = Gravity.RIGHT
                     orientation = LinearLayout.VERTICAL
@@ -77,40 +106,27 @@ object LayerChangesGenerator {
                     }
                 }
             }.view
+            return Triple(view, width, height)
         }
     }
 
-    fun generateLayerChanges(context: Context, changes: List<Change>, classes: Int, layer: Int, path: File, callback: (File) -> Unit): Boolean {
-        if (changes.isEmpty()) return false
-        doAsync {
-            with(context) {
-                val defaultCellMargin = dip(1)
-                val screenSize = screenSize
-                val standardColumnWidth = screenSize.x / 6
-                val width = standardColumnWidth * classes + (defaultCellMargin * classes - 1) + dip(5)
-                val height = screenSize.y - (dip(56) + dimen(R.dimen.statusBarHeight)) // FIXME
-
-                val view = createView(context, classes, layer)
-                val rows = view.childrenSequence().drop(1).map { it as LinearLayout }.toList()
-                fillTable(changes, classes, rows)
-
-                try {
-                    val bitmap = takeScreenShot(view, width, height)
-                    path.outputStream().use {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, it)
-                    }
-                    runOnUiThread {
-                        callback(path)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
+    private fun ViewGroup.MarginLayoutParams.marginize(clazz: Int, maxClasses: Int, hour: Int, maxHours: Int, margin: Int) {
+        if (hour != 0) {
+            topMargin = margin
         }
-        return true
+        if (hour != maxHours - 1) {
+            bottomMargin = margin
+        }
+
+        if (clazz != maxClasses) {
+            leftMargin = margin
+        }
+        if (clazz != 0) {
+            rightMargin = margin
+        }
     }
 
-    fun fillTable(changes: List<Change>, classes: Int, rows: List<LinearLayout>, shouldClean: Boolean = false) {
+    private fun fillTable(changes: List<Change>, classes: Int, rows: List<LinearLayout>, shouldClean: Boolean = false) {
         if (shouldClean) {
             rows.forEachIndexed { hour, row ->
                 row.childrenSequence().forEach {
@@ -128,23 +144,6 @@ object LayerChangesGenerator {
             }
         }
     }
-
-    //region Helper drawing
-    private fun ViewGroup.MarginLayoutParams.marginize(clazz: Int, maxClasses: Int, hour: Int, maxHours: Int, margin: Int) {
-        if (hour != 0) {
-            topMargin = margin
-        }
-        if (hour != maxHours - 1) {
-            bottomMargin = margin
-        }
-
-        if (clazz != maxClasses) {
-            leftMargin = margin
-        }
-        if (clazz != 0) {
-            rightMargin = margin
-        }
-    }
     //endregion
 
     private fun takeScreenShot(view: View, width: Int, height: Int): Bitmap {
@@ -152,7 +151,7 @@ object LayerChangesGenerator {
     }
 
     fun getBitmapFromView(view: View, totalHeight: Int, totalWidth: Int): Bitmap {
-        val returnedBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.ARGB_8888)
+        val returnedBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.RGB_565)
         val canvas = Canvas(returnedBitmap)
         val bgDrawable = view.background
         if (bgDrawable != null)

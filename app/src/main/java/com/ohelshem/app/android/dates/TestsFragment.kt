@@ -32,6 +32,7 @@ import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.dates.calendar.DatesCalendarFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
+import com.ohelshem.app.android.dates.list.HolidaysListFragment
 import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
@@ -59,6 +60,15 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
         initFragments()
     }
 
+    private fun initTabs() {
+        val tabs = screenManager.inlineTabs
+        tabs.setupWithViewPager(pager)
+        tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
+        tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_calendar)
+        tabs.getTabAt(2)!!.icon = drawableRes(R.drawable.ic_beach)
+
+    }
+
     private fun initPager() {
         // portrait
         if (pager != null) {
@@ -66,16 +76,13 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
             pager.onPageChangeListener {
                 onPageSelected {
                     if (it == 1 && !isTablet) {
-                        appBarLayout.setExpanded(false, true)
+                        appBarLayout?.setExpanded(false, true)
                     } else if (it == 0 && !isTablet) {
-                        appBarLayout.setExpanded(true, true)
+                        appBarLayout?.setExpanded(true, true)
                     }
                 }
             }
-            val tabs = screenManager.inlineTabs
-            tabs.setupWithViewPager(pager)
-            tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
-            tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_calendar)
+            initTabs()
         }
     }
 
@@ -110,13 +117,19 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
 
     }
 
+    override fun onBecomingVisible() {
+        if (pager != null)
+            initTabs()
+    }
+
     class DatesFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
         override fun getItem(position: Int): Fragment {
             return if (position == 0) DatesListFragment()
+            else if (position == 2) HolidaysListFragment()
             else DatesCalendarFragment()
         }
 
-        override fun getCount(): Int = 2
+        override fun getCount(): Int = 3
 
     }
 

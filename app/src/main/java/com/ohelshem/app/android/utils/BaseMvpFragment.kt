@@ -46,6 +46,10 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
         }
     }
 
+    open fun onBecomingVisible() {
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(layoutId, container, false)
     }

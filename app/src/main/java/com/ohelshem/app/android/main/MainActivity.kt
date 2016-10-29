@@ -20,7 +20,6 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.App
 import com.ohelshem.app.android.changes.ChangesFragment
-import com.ohelshem.app.android.changes.LayerChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.TestsFragment
@@ -32,7 +31,9 @@ import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
+import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
+import com.ohelshem.app.android.utils.EmptyFragment
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfoImpl
 import com.ohelshem.app.controller.storage.DeveloperOptions
@@ -46,7 +47,7 @@ import io.palaima.debugdrawer.commons.DeviceModule
 import io.palaima.debugdrawer.commons.NetworkModule
 import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
-import me.tabak.fragmentswitcher.FragmentStateArrayPagerAdapter
+import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
 import java.io.File
 import java.io.FileOutputStream
@@ -181,13 +182,13 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private fun initNavigation() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
-        fragmentSwitcher.adapter = FragmentStateArrayPagerAdapter<Fragment>(supportFragmentManager).apply {
+        fragmentSwitcher.adapter = FragmentArrayPagerAdapter<Fragment>(supportFragmentManager).apply {
             addAll(
                     DashboardFragment(),
                     TimetableFragment(),
                     ChangesFragment(),
                     TestsFragment(),
-                    LayerChangesFragment()
+                    EmptyFragment()
             )
 
         }
@@ -211,6 +212,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun setScreenInternal(screen: ScreenType) {
         fragmentSwitcher.currentItem = fragmentPosition[screen]!!
+        (fragmentSwitcher.currentFragment as? BaseMvpFragment<*,*>)?.onBecomingVisible()
     }
 
     private fun setSelected(screen: ScreenType) {
@@ -304,6 +306,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             navigationSpinner.hide()
             toolbar.title = ""
             supportActionBar?.setDisplayShowTitleEnabled(false)
+            tabs.removeAllTabs()
             tabs.show()
             return tabs
         }
@@ -411,7 +414,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     companion object {
         private const val CallbackId = 75
         private val RegulationFilename = "regulation.pdf"
-        private val SharingFolder = "sharing"
+        val SharingFolder = "sharing"
         private const val Key_Fragment = "key_fragment"
 
         private const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"

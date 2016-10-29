@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android.changes.adapter
+package com.ohelshem.app.android.changes.clazz
 
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar

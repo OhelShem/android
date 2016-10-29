@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.android.changes.clazz.ClassChangesFragment
+import com.ohelshem.app.android.changes.layer.LayerChangesFragment
+import com.ohelshem.app.android.changes.layer.LayerChangesPresenter
 import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -89,6 +92,9 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
         }
     }
 
+    override fun onBecomingVisible() {
+        initTabs()
+    }
 
     override fun setData(changes: List<Change>) {
         initTabs()

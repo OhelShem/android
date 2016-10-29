@@ -22,7 +22,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.ohelshem.app.model.VisibleItem
-import java.util.*
 
 abstract class HeaderAdapter<K : Any>(context: Context, val items: MutableList<VisibleItem<K>>, private val callback: (K) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -59,29 +58,10 @@ abstract class HeaderAdapter<K : Any>(context: Context, val items: MutableList<V
         private val TypeData: Int = 0
 
         fun <K : Any> split(data: List<K>, firstTitle: String, secondTitle: String, rule: K.() -> Boolean): MutableList<VisibleItem<K>> {
-            var oldPosition = -1
-            for (i in 0..data.size - 1) {
-                if (data[i].rule()) {
-                    oldPosition = i
-                    break
-                }
-            }
-            if (oldPosition == -1 || oldPosition == 0) {
-                val list = ArrayList<VisibleItem<K>>(data.size)
-                for (i in 0 until data.size)
-                    list += VisibleItem(data[i])
-                return list
-            } else {
-                val list = ArrayList<VisibleItem<K>>(data.size + 2)
-               repeat(data.size) { i ->
-                    list +=
-                            if (i == 0) VisibleItem<K>(firstTitle)
-                            else if (i == oldPosition + 1) VisibleItem<K>(secondTitle)
-                            else if (i < oldPosition + 1) VisibleItem(data[i - 1])
-                            else VisibleItem(data[i - 2])
-                }
-                return list
-            }
+            val transform: List<K>.() -> MutableList<VisibleItem<K>> = { map { VisibleItem(it) }.toMutableList()}
+            val before = data.takeWhile { !rule(it) }
+            if (before.size == 0) return data.transform()
+            return (sequenceOf(VisibleItem<K>(firstTitle)) + before.transform() + VisibleItem<K>(secondTitle) + data.drop(before.size).transform()).toMutableList()
         }
     }
 }

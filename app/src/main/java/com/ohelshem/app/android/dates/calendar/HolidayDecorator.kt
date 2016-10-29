@@ -1,4 +1,4 @@
-package com.ohelshem.app.android.holidays.calendar
+package com.ohelshem.app.android.dates.calendar
 
 import android.content.Context
 import android.graphics.drawable.Drawable

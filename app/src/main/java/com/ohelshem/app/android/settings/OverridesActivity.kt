@@ -146,13 +146,13 @@ class OverridesActivity : AppThemedActivity() {
                 val name = BackupFileName()
                 val file = File(Environment.getExternalStorageDirectory(), name)
                 if (storage.exportOverrideFile(file))
-                    Snackbar.make(coordinatorLayout, file.absolutePath, Snackbar.LENGTH_LONG).setAction(R.string.share_backup) {
+                    Snackbar.make(coordinatorLayout, file.absolutePath, Snackbar.LENGTH_LONG).setAction(R.string.share) {
                         val intent = Intent(Intent.ACTION_SEND)
                                 .setType("application/octet-stream")
                                 .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
                                 .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.backup_file_name))
                                 .putExtra(Intent.EXTRA_TEXT, "")
-                        startActivity(Intent.createChooser(intent, getString(R.string.share_backup)))
+                        startActivity(Intent.createChooser(intent, getString(R.string.share)))
 
                     }.show()
                 else

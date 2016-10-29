@@ -22,7 +22,7 @@ import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.dates.TestsPresenter
 import com.ohelshem.app.android.dates.TestsView
-import com.ohelshem.app.android.holidays.calendar.HolidayDecorator
+import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.utils.BaseMvpFragment
