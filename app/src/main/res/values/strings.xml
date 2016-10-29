@@ -93,6 +93,8 @@
     <string name="total_tests">מבחנים השנה</string>
     <string name="days_left_to_next_test">ימים למבחן הבא</string>
     <string name="old_test">מבחנים ישנים</string>
+    <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
+
 
     <!-- Notifications -->
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>
@@ -118,7 +120,6 @@
     <string name="holiday_today">חופש היום</string>
     <string name="holiday_today_subtitle">לך, לך לישון</string>
     <string name="today_plan">המערכת להיום</string>
-    <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
     <string name="see_more">ראה הכל</string>
     <string name="no_tests_next_week">אין מבחנים בשבוע הקרוב</string>
     <string name="no_overrides">אין שינוים למערכת השעות</string>
@@ -207,9 +208,6 @@
     <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>
     <string name="intro_overrides_primary_text">חשוב לגבות</string>
     <string name="intro_overrides_secondary_text">מי יודע מה צופן העתיד? רעידת אדמה עלולה להשמיד עיר שלמה באפריקה. אז כדאי שתגבה את העריכות שעשית ליתר ביטחון.</string>
-
-    <!-- Apache zone -->
-    <string name="apache_menu">איזור למסוקי תקיפה</string>
 
     <!-- Yoav Sternberg -->
     <string name="yoav_sternberg">יואב שטרנברג</string>

@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@android:color/white"
-                    android:textSize="32sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     tools:text="4" />
 
@@ -38,7 +38,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/days_left"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -55,7 +55,7 @@
                     android:layout_weight="1"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@android:color/white"
-                    android:textSize="28sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     tools:text="מקבצים"
                     tools:ignore="NestedWeights" />
@@ -64,9 +64,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/days_left_to_next_test"
+                    android:text="@string/test_in"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@android:color/white"
-                    android:textSize="32sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     tools:text="4" />
 
@@ -92,7 +92,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/days_left_to_next_test"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

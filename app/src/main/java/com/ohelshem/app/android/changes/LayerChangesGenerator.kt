@@ -88,7 +88,7 @@ object LayerChangesGenerator {
                 val screenSize = screenSize
                 val standardColumnWidth = screenSize.x / 6
                 val width = standardColumnWidth * classes + (defaultCellMargin * classes - 1) + dip(5)
-                val height = screenSize.y - dip(56 + 25) // FIXME
+                val height = screenSize.y - (dip(56) + dimen(R.dimen.statusBarHeight)) // FIXME
 
                 val view = createView(context, classes, layer)
                 val rows = view.childrenSequence().drop(1).map { it as LinearLayout }.toList()
@@ -110,8 +110,17 @@ object LayerChangesGenerator {
         return true
     }
 
-    //region Helper drawing
-    fun fillTable(changes: List<Change>, classes: Int, rows: List<LinearLayout>) {
+    fun fillTable(changes: List<Change>, classes: Int, rows: List<LinearLayout>, shouldClean: Boolean = false) {
+        if (shouldClean) {
+            rows.forEachIndexed { hour, row ->
+                row.childrenSequence().forEach {
+                    it as TextView
+                    it.backgroundColor = NoChangesColors[hour % 2]
+                    it.text = ""
+                }
+            }
+        }
+
         changes.forEach {
             (rows[it.hour - 1][classes - it.clazz] as TextView).apply {
                 backgroundColor = it.color
@@ -120,6 +129,7 @@ object LayerChangesGenerator {
         }
     }
 
+    //region Helper drawing
     private fun ViewGroup.MarginLayoutParams.marginize(clazz: Int, maxClasses: Int, hour: Int, maxHours: Int, margin: Int) {
         if (hour != 0) {
             topMargin = margin
