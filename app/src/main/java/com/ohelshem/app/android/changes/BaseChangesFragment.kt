@@ -23,12 +23,8 @@ import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
-import com.ohelshem.app.getDay
-import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.list_fragment.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, BaseMvpFragment<ChangesView, K>() {
     override val layoutId: Int = R.layout.list_fragment
@@ -38,41 +34,17 @@ abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, Base
 
     override final fun setData(changes: List<Change>) {
         progressActivity.showContent()
-        setTitle()
         showData(changes)
     }
 
     abstract fun showData(changes: List<Change>)
 
-    override fun onError(error: UpdateError) {
-        recyclerView?.adapter = null
-        screenManager.screenTitle = getString(R.string.changes)
-        when (error) {
-            UpdateError.NoData -> {
-                progressActivity.showError(drawableRes(R.drawable.ic_sync_problem), getString(R.string.no_data), getString(R.string.no_data_subtitle),
-                        getString(R.string.refresh)) {
-                    presenter.refresh(screenManager)
-                }
-            }
-            UpdateError.Connection -> {
-                progressActivity.showError(drawableRes(R.drawable.ic_sync_problem), getString(R.string.no_connection), getString(R.string.no_connection_subtitle),
-                        getString(R.string.try_again)) {
-                    presenter.refresh(screenManager)
-                }
-            }
-            else -> {
-                progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.general_error), getString(R.string.try_again), getString(R.string.try_again)) {
-                    presenter.refresh(screenManager)
-                }
-            }
-        }
-    }
+    override fun onError(error: UpdateError) = Unit
 
     override fun onEmptyData(dayType: DayType) {
         recyclerView?.adapter = null
         if (progressActivity.isError)
             progressActivity.showContent()
-        setTitle()
         if (dayType == DayType.Holiday || dayType == DayType.Summer) {
             progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.holiday_today), getString(R.string.holiday_today_subtitle))
         } else {
@@ -87,16 +59,6 @@ abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, Base
         }
     }
 
-    protected fun setTitle() {
-        val data = presenter.changesDate
-        screenManager.screenTitle = day + " " + weekDays[data.toCalendar().getDay() - 1] + " " + ChangesDataFormat.format(Date(data))
-    }
-
     override val isShowingData: Boolean
         get() = progressActivity?.isContent ?: false
-
-
-    companion object {
-        private val ChangesDataFormat = SimpleDateFormat("dd/MM")
-    }
 }

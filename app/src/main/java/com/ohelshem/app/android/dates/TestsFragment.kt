@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android.tests
+package com.ohelshem.app.android.dates
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -30,22 +30,26 @@ import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
+import com.ohelshem.app.android.dates.calendar.DatesCalendarFragment
+import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.drawableRes
-import com.ohelshem.app.android.tests.calendar.TestsCalendarFragment
-import com.ohelshem.app.android.tests.list.TestsListFragment
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
+import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.daysBetween
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
-import kotlinx.android.synthetic.main.tests_fragment.*
+import kotlinx.android.synthetic.main.dates_fragment.*
 import org.jetbrains.anko.support.v4.onPageChangeListener
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
-    override val layoutId: Int = R.layout.tests_fragment
+    override val layoutId: Int = R.layout.dates_fragment
     override var menuId: Int = R.menu.tests
     override fun createPresenter(): TestsPresenter = with(kodein()) { TestsPresenter(instance()) }
+
+    private val isTablet by lazy { resources.getBoolean(R.bool.isTablet) }
 
     override fun init() {
         screenManager.setToolbarElevation(false)
@@ -58,14 +62,17 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     private fun initPager() {
         // portrait
         if (pager != null) {
-            pager.adapter = TestsFragmentAdapter(childFragmentManager)
+            pager.adapter = DatesFragmentAdapter(childFragmentManager)
             pager.onPageChangeListener {
                 onPageSelected {
-                    if (it == 1) {
+                    if (it == 1 && !isTablet) {
                         appBarLayout.setExpanded(false, true)
+                    } else if (it == 0 && !isTablet) {
+                        appBarLayout.setExpanded(true, true)
                     }
                 }
             }
+            val tabs = screenManager.inlineTabs
             tabs.setupWithViewPager(pager)
             tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
             tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_calendar)
@@ -74,14 +81,8 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
 
     private fun initFragments() {
         // landscape
-        if (mainFragment != null) {
-            val adapter = TestsFragmentAdapter(childFragmentManager)
-            childFragmentManager.beginTransaction()
-                    .replace(R.id.mainFragment, adapter.getItem(0))
-                    .commit()
-        }
         if (leftFragment != null) {
-            val adapter = TestsFragmentAdapter(childFragmentManager)
+            val adapter = DatesFragmentAdapter(childFragmentManager)
             childFragmentManager.beginTransaction()
                     .replace(R.id.leftFragment, adapter.getItem(0))
                     .replace(R.id.rightFragment, adapter.getItem(1))
@@ -98,12 +99,21 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
             totalTests?.text = tests.size.toString()
         }
 
+        val nextHoliday = TimetableController.Holidays.find { it.startTime >= now }
+        if (nextHoliday == null)
+            daysToHoliday?.text = TimeUnit.MILLISECONDS.toDays(TimetableController.Summer.startTime - now).toString()
+        else {
+            var days = TimeUnit.MILLISECONDS.toDays(nextHoliday.startTime - now)
+            if (days < 0) days = 0
+            daysToHoliday?.text = days.toString()
+        }
+
     }
 
-    class TestsFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+    class DatesFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
         override fun getItem(position: Int): Fragment {
-            return if (position == 0) TestsListFragment()
-            else TestsCalendarFragment()
+            return if (position == 0) DatesListFragment()
+            else DatesCalendarFragment()
         }
 
         override fun getCount(): Int = 2
@@ -112,31 +122,33 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {
-            val intent = activity.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")
-            if (isGraderInstalled() && intent != null) {
-                intent.addCategory(Intent.CATEGORY_LAUNCHER)
-                activity.startActivity(intent)
-            } else {
-                MaterialStyledDialog.Builder(activity)
-                        .setTitle(R.string.grader_dialog_title)
-                        .setDescription(R.string.grader_dialog_description)
-                        .setStyle(Style.HEADER_WITH_ICON)
-                        .setIcon(R.drawable.mashov)
-                        .autoDismiss(true)
-                        .setPositiveText(R.string.download)
-                        .onPositive { materialDialog, dialogAction ->
-                            materialDialog.cancel()
-                            launchPlayStore("com.yoavst.mashov")
-                        }
-                        .setNegativeText(R.string.no_thanks)
-                        .onNegative { materialDialog, dialogAction ->
-                            materialDialog.cancel()
-                        }
-                        .show()
+        if (isTablet) menu.findItem(R.id.menu_mashov).isVisible = false
+        else
+            menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {
+                val intent = activity.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")
+                if (isGraderInstalled() && intent != null) {
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                    activity.startActivity(intent)
+                } else {
+                    MaterialStyledDialog.Builder(activity)
+                            .setTitle(R.string.grader_dialog_title)
+                            .setDescription(R.string.grader_dialog_description)
+                            .setStyle(Style.HEADER_WITH_ICON)
+                            .setIcon(R.drawable.mashov)
+                            .autoDismiss(true)
+                            .setPositiveText(R.string.download)
+                            .onPositive { materialDialog, dialogAction ->
+                                materialDialog.cancel()
+                                launchPlayStore("com.yoavst.mashov")
+                            }
+                            .setNegativeText(R.string.no_thanks)
+                            .onNegative { materialDialog, dialogAction ->
+                                materialDialog.cancel()
+                            }
+                            .show()
+                }
+                true
             }
-            true
-        }
     }
 
     private fun isGraderInstalled(): Boolean {

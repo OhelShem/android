@@ -27,8 +27,6 @@ class ClassChangesFragment : BaseChangesFragment<ClassChangesPresenter>() {
     override fun createPresenter(): ClassChangesPresenter = with(kodein()) { ClassChangesPresenter(instance(), instance()) }
 
     override fun init() {
-        screenManager.setToolbarElevation(true)
-
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
     }

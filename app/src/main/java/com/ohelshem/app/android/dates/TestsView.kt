@@ -15,11 +15,11 @@
  *
  */
 
-package com.ohelshem.app.android.holidays
+package com.ohelshem.app.android.dates
 
 import com.hannesdorfmann.mosby.mvp.MvpView
-import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
+import com.ohelshem.api.model.Test
 
-interface HolidaysView: MvpView {
-    fun showHolidays(holidays: Array<Holiday>, summer: Holiday)
+interface TestsView: MvpView {
+    fun update(tests: List<Test>)
 }

@@ -25,6 +25,7 @@ import com.ohelshem.app.android.utils.view.AutoResizeTextView
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.inputMethodManager
+import org.jetbrains.anko.windowManager
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -135,6 +136,13 @@ inline fun ViewManager.autoResizeTextView(theme: Int = 0, init: AutoResizeTextVi
 
 operator fun View.get(index: Int): View = (this as ViewGroup).getChildAt(index)
 
+val Context.screenSize: Point
+    get() {
+        val screen = windowManager.defaultDisplay
+        val size = Point()
+        screen.getSize(size)
+        return size
+    }
 val Fragment.screenSize: Point
     get() {
         val screen = activity.windowManager.defaultDisplay

@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.main
 
+import android.support.design.widget.TabLayout
 import android.widget.Spinner
 
 interface TopNavigationScreenManager: ScreenManager {
@@ -24,4 +25,9 @@ interface TopNavigationScreenManager: ScreenManager {
      * returns the top navigation view, currently a spinner.
      */
     val topNavigationElement: Spinner
+
+    /**
+     * returns the top navigation view, currently a spinner.
+     */
+    val inlineTabs: TabLayout
 }

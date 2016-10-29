@@ -15,23 +15,26 @@
  *
  */
 
-package com.ohelshem.app.android.tests.list
+package com.ohelshem.app.android.dates.list
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
-import com.ohelshem.app.android.tests.TestsPresenter
-import com.ohelshem.app.android.tests.TestsView
+import com.ohelshem.app.android.dates.TestsPresenter
+import com.ohelshem.app.android.dates.TestsView
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.adapter.HeaderAdapter
 import com.ohelshem.app.clearTime
+import com.ohelshem.app.model.VisibleItem
 import com.yoavst.changesystemohelshem.R
 import java.util.*
 
-class TestsListFragment: BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
+class DatesListFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     override val layoutId: Int = R.layout.list
     override fun createPresenter(): TestsPresenter = with(kodein()) { TestsPresenter(instance()) }
+
+    private val oldTests by lazy { getString(R.string.old_test) }
 
     lateinit var list: RecyclerView
 
@@ -44,7 +47,12 @@ class TestsListFragment: BaseMvpFragment<TestsView, TestsPresenter>(), TestsView
 
     override fun update(tests: List<Test>) {
         val time = Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
-        val items = HeaderAdapter.split(tests, getString(R.string.close_week), getString(R.string.later)) { date <= time }
+        val now = Calendar.getInstance().clearTime().timeInMillis
+        val indexOfNew = tests.indexOfFirst { it.date > now }
+        val items = if (indexOfNew == -1 || indexOfNew == tests.lastIndex) tests.map { VisibleItem(it) }
+        else listOf(VisibleItem<Test>(oldTests)) +
+                tests.take(indexOfNew).map { VisibleItem(it) } +
+                HeaderAdapter.split(tests.drop(indexOfNew), getString(R.string.close_week), getString(R.string.later)) { date >= time }
         list.adapter = TestsAdapter(activity, items) {}
     }
 }

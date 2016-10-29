@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android.tests.list
+package com.ohelshem.app.android.dates.list
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -32,7 +32,7 @@ import java.util.*
 /**
  * An adapter for showing tests
  */
-class TestsAdapter(context: Context, items: MutableList<VisibleItem<Test>>, callback: (Test) -> Unit) : SimpleHeaderAdapter<Test>(context, items, callback) {
+class TestsAdapter(context: Context, items: List<VisibleItem<Test>>, callback: (Test) -> Unit) : SimpleHeaderAdapter<Test>(context, items.toMutableList(), callback) {
     override val layout: Int = R.layout.item_1_line
     private val now = Date().time
 

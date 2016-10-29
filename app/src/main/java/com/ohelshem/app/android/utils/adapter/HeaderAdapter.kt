@@ -75,8 +75,8 @@ abstract class HeaderAdapter<K : Any>(context: Context, val items: MutableList<V
                 val list = ArrayList<VisibleItem<K>>(data.size + 2)
                repeat(data.size) { i ->
                     list +=
-                            if (i == 0) VisibleItem<K>(title = firstTitle)
-                            else if (i == oldPosition + 1) VisibleItem<K>(title = secondTitle)
+                            if (i == 0) VisibleItem<K>(firstTitle)
+                            else if (i == oldPosition + 1) VisibleItem<K>(secondTitle)
                             else if (i < oldPosition + 1) VisibleItem(data[i - 1])
                             else VisibleItem(data[i - 2])
                 }

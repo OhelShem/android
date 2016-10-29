@@ -92,6 +92,7 @@
     <!-- Tests -->
     <string name="total_tests">מבחנים השנה</string>
     <string name="days_left_to_next_test">ימים למבחן הבא</string>
+    <string name="old_test">מבחנים ישנים</string>
 
     <!-- Notifications -->
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>

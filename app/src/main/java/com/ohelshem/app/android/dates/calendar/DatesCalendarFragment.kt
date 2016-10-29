@@ -15,16 +15,16 @@
  *
  */
 
-package com.ohelshem.app.android.tests.calendar
+package com.ohelshem.app.android.dates.calendar
 
 import android.content.res.Configuration
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
+import com.ohelshem.app.android.dates.TestsPresenter
+import com.ohelshem.app.android.dates.TestsView
 import com.ohelshem.app.android.holidays.calendar.HolidayDecorator
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
-import com.ohelshem.app.android.tests.TestsPresenter
-import com.ohelshem.app.android.tests.TestsView
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.view.OneDayDecorator
 import com.ohelshem.app.controller.timetable.TimetableController
@@ -38,7 +38,7 @@ import kotlinx.android.synthetic.main.calendar_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TestsCalendarFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
+class DatesCalendarFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     override val layoutId: Int = R.layout.calendar_fragment
     override fun createPresenter(): TestsPresenter = with(kodein()) { TestsPresenter(instance()) }
 
@@ -100,6 +100,11 @@ class TestsCalendarFragment : BaseMvpFragment<TestsView, TestsPresenter>(), Test
                 extra.text = holiday.start
             else
                 extra.text = holiday.start + " - " + holiday.end
+
+            if (now > holiday.startTime)
+                indicator.text = "✓"
+            else
+                indicator.text = ""
         } else clear()
     }
 

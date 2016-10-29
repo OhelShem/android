@@ -26,6 +26,13 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:tabMode="fixed" />
         </android.support.v7.widget.Toolbar>
 
         <ImageView
@@ -67,8 +74,8 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment"
+        <me.tabak.fragmentswitcher.FragmentSwitcher
+            android:id="@+id/fragmentSwitcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

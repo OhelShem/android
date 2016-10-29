@@ -42,14 +42,14 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 val clazz = userData.clazz
                 val day = changesDate.toCalendar()[Calendar.DAY_OF_WEEK]
                 val timetable = timetable ?: return emptyList()
-                if (day > timetable.size || timetable[day - 1].size == 0) return emptyList()
+                val size = if (day > timetable.size || timetable[day - 1].size == 0) 10 else timetable[day - 1].size
 
                 var c = 0
 
                 // change every 2nd hour for the user's class. Helps to test the class changes view.
                 var skip = false
                 val changes = mutableListOf<Change>()
-                repeat(timetable[day - 1].size) {
+                repeat(size) {
                     if (it + 1 <= 10) {
                         if (!skip) {
                             changes += Change(clazz, it + 1, "שינוי מזויף", fakingChangesColors[c])

@@ -15,7 +15,7 @@
  *
  */
 
-package com.ohelshem.app.android.tests
+package com.ohelshem.app.android.dates
 
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.yoavst.changesystemohelshem"
@@ -42,7 +42,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$androidSupportLibrary"
     compile "com.android.support:design:$androidSupportLibrary"
     compile "com.android.support:percent:$androidSupportLibrary"
-
     // Firebase
     compile "com.google.firebase:firebase-core:$firebase"
     compile "com.google.firebase:firebase-messaging:$firebase"
@@ -70,6 +69,7 @@ dependencies {
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.vlonjatg.android:progress-activity:1.1.1'
     compile 'com.github.kevinthecity:BottomBar:-SNAPSHOT'
+    compile 'com.timehop.fragmentswitcher:library:1.1.2'
     // debug
     compile 'io.palaima.debugdrawer:debugdrawer:0.7.0'
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.0'

@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
@@ -17,19 +19,22 @@ import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.App
-import com.ohelshem.app.android.changes.ClassChangesFragment
+import com.ohelshem.app.android.changes.ChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesFragment
+import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.dashboard.DashboardFragment
+import com.ohelshem.app.android.dates.TestsFragment
+import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.show
-import com.ohelshem.app.android.tests.TestsFragment
 import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.api.ApiController
+import com.ohelshem.app.controller.info.SchoolInfoImpl
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
@@ -41,6 +46,7 @@ import io.palaima.debugdrawer.commons.DeviceModule
 import io.palaima.debugdrawer.commons.NetworkModule
 import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
+import me.tabak.fragmentswitcher.FragmentStateArrayPagerAdapter
 import org.jetbrains.anko.*
 import java.io.File
 import java.io.FileOutputStream
@@ -83,7 +89,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             if (extraFragment != null)
                 supportFragmentManager.beginTransaction().replace(R.id.extraFragment, DashboardFragment()).commit()
             if (secondaryExtraFragment != null)
-                supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, TestsFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, DatesListFragment()).commit()
 
             debug()
 
@@ -120,7 +126,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(Key_Fragment, fragmentStack.peek().ordinal)
+        outState.putInt(Key_Fragment, fragmentPosition[fragmentStack.peek()]!!)
     }
 
     override fun onBackPressed() {
@@ -171,9 +177,20 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     //endregion
 
     //region Navigation
+    private val fragmentPosition: Map<ScreenType, Int> = mapOf(ScreenType.Dashboard to 0,ScreenType.Timetable to 1, ScreenType.Changes to 2, ScreenType.Dates to 3, ScreenType.Contacts to 4)
     private fun initNavigation() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
+        fragmentSwitcher.adapter = FragmentStateArrayPagerAdapter<Fragment>(supportFragmentManager).apply {
+            addAll(
+                    DashboardFragment(),
+                    TimetableFragment(),
+                    ChangesFragment(),
+                    TestsFragment(),
+                    LayerChangesFragment()
+            )
+
+        }
         bottomBar.setOnTabSelectListener { id ->
             when (id) {
                 R.id.dashboard -> setScreenInternal(ScreenType.Dashboard)
@@ -193,19 +210,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     private fun setScreenInternal(screen: ScreenType) {
-        val fragment: Fragment = when (screen) {
-            ScreenType.Dashboard -> DashboardFragment()
-            ScreenType.Changes -> ClassChangesFragment()
-            ScreenType.Timetable -> TimetableFragment()
-            ScreenType.Dates -> TestsFragment()
-            ScreenType.Contacts -> LayerChangesFragment()
-            else -> DashboardFragment()
-        }
-        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit()
+        fragmentSwitcher.currentItem = fragmentPosition[screen]!!
     }
 
-    private fun setSelected(type: ScreenType) {
-        bottomBar.selectTabAtPosition(type.ordinal)
+    private fun setSelected(screen: ScreenType) {
+        bottomBar.selectTabAtPosition(fragmentPosition[screen]!!)
     }
 
     private fun openSettings() {
@@ -273,18 +282,31 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         set(value) {
             navigationSpinner.adapter = null
             navigationSpinner.hide()
+            tabs.removeAllTabs()
+            tabs.hide()
             supportActionBar?.setDisplayShowTitleEnabled(true)
             toolbar.title = value
         }
 
     override val topNavigationElement: Spinner
         get() {
+            tabs.removeAllTabs()
+            tabs.hide()
             toolbar.title = ""
             supportActionBar?.setDisplayShowTitleEnabled(false)
             navigationSpinner.show()
             return navigationSpinner
         }
 
+    override val inlineTabs: TabLayout
+        get() {
+            navigationSpinner.adapter = null
+            navigationSpinner.hide()
+            toolbar.title = ""
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+            tabs.show()
+            return tabs
+        }
 
     override fun setToolbarElevation(enabled: Boolean) {
         doFromSdk(Build.VERSION_CODES.LOLLIPOP) {
@@ -310,7 +332,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         get() {
             @Suppress("UNCHECKED_CAST")
             return listOf(
-                    (supportFragmentManager.findFragmentById(R.id.fragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
+                    (fragmentSwitcher.currentFragment as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
                     (supportFragmentManager.findFragmentById(R.id.extraFragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
                     (supportFragmentManager.findFragmentById(R.id.secondaryExtraFragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback)
                     .filterNotNull()
@@ -352,8 +374,15 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 }
             }
 
+            val generateChangesDrawableAction = ButtonAction("Generate cache bitmap") {
+                LayerChangesGenerator.generateLayerChanges(this, storage.changes.orEmpty(), SchoolInfoImpl[storage.userData.layer], storage.userData.layer,
+                        File(Environment.getExternalStorageDirectory(), "image.jpeg")) {
+                    toast("Done!")
+                }
+            }
+
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, shareFirebaseTokenAction),
+                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, generateChangesDrawableAction, shareFirebaseTokenAction),
                     DeviceModule(this),
                     BuildModule(this),
                     NetworkModule(this),

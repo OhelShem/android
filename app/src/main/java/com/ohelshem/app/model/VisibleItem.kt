@@ -20,4 +20,7 @@ package com.ohelshem.app.model
 /**
  * Represent an item in complex header adapter.
  */
-data class VisibleItem<out K : Any>(val data: K? = null, val title: String? = null)
+data class VisibleItem<out K : Any>(val data: K?, val title: String?) {
+    constructor(data: K): this(data, null)
+    constructor(title: String): this(null, title)
+}

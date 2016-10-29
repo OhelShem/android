@@ -32,6 +32,8 @@ import com.ohelshem.app.isTomorrow
 import com.ohelshem.app.toCalendar
 
 abstract class BaseChangesPresenter(protected val storage: Storage, protected val timetableController: TimetableController) : BasePresenter<ChangesView>(), ApiController.Callback {
+    private var lastChanges: List<Change>? = null
+
     override fun onCreate() {
         update()
     }
@@ -41,10 +43,16 @@ abstract class BaseChangesPresenter(protected val storage: Storage, protected va
     fun update() {
         if (areChangesUpdated()) {
             val changes = storage.changes
-            if (changes == null || !changes.isConsideredAsChanges())
+            if (changes == null || !changes.isConsideredAsChanges()) {
+                lastChanges = null
                 view?.onEmptyData(TimetableController.getDayType(changesDate.toCalendar(), timetableController.learnsOnFriday))
-            else
-                view?.setData(changes.filterNeeded())
+            }
+            else {
+                changes.filterNeeded().let {
+                    lastChanges = it
+                    view?.setData(it)
+                }
+            }
         } else view?.onError(UpdateError.NoData)
     }
 
@@ -73,6 +81,9 @@ abstract class BaseChangesPresenter(protected val storage: Storage, protected va
         get() = storage.changesDate
 
     protected fun areChangesUpdated() = changesDate.toCalendar().let { (it.isToday() && getHour() < 21) || it.isTomorrow() }
+
+    val hasData: Boolean
+        get() = lastChanges?.isNotEmpty() ?: false
 
     abstract fun List<Change>.isConsideredAsChanges(): Boolean
 
