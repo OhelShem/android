@@ -30,27 +30,26 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.ohelshem.app.android.utils.view.AutoResizeTextView
-                    android:id="@+id/testName"
+                <TextView
+                    android:id="@+id/daysToHoliday"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/next_holiday_color"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    tools:ignore="NestedWeights"
-                    tools:text="מקבצים" />
+                    tools:text="4" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/test_in"
+                    android:text="@string/days_left"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -62,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/next_test_color"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     tools:text="4" />
@@ -72,32 +71,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/days_left_to_next_test"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/daysToHoliday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    tools:text="4" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/days_left"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />

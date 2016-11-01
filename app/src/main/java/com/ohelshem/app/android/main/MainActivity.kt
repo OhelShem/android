@@ -62,6 +62,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private var debugDrawer: DebugDrawer? = null
 
+    private var firstUpdate: Boolean = true
+
     //region Activity events
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -178,17 +180,18 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     //endregion
 
     //region Navigation
-    private val fragmentPosition: Map<ScreenType, Int> = mapOf(ScreenType.Dashboard to 0,ScreenType.Timetable to 1, ScreenType.Changes to 2, ScreenType.Dates to 3, ScreenType.Contacts to 4)
+    private val fragmentPosition: Map<ScreenType, Int> = mapOf(ScreenType.Dashboard to 4,ScreenType.Timetable to 3, ScreenType.Changes to 2, ScreenType.Dates to 1, ScreenType.Contacts to 0)
+    //positions are flipped to allow RTL bottom bar layout
     private fun initNavigation() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
         fragmentSwitcher.adapter = FragmentArrayPagerAdapter<Fragment>(supportFragmentManager).apply {
             addAll(
-                    DashboardFragment(),
-                    TimetableFragment(),
-                    ChangesFragment(),
+                    EmptyFragment(),
                     TestsFragment(),
-                    EmptyFragment()
+                    ChangesFragment(),
+                    TimetableFragment(),
+                    DashboardFragment()
             )
 
         }
@@ -264,7 +267,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
         runOnUiThread {
-            toast(R.string.refreshed)
+            if (!firstUpdate) {
+                toast(R.string.refreshed)
+            } else {
+                firstUpdate = false
+            }
             updatables.forEach { it.onSuccess(apis) }
             updateBadges()
         }
@@ -273,11 +280,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     override fun onFail(error: UpdateError) {
         if (error == UpdateError.Login)
             logout()
-        else {
-            if (error == UpdateError.Connection)
-                toast(R.string.no_connection)
+        else if (error == UpdateError.Connection) {
+            toast(R.string.no_connection)
             updatables.forEach { it.onFail(error) }
-        }
+        } else
+            toast(R.string.refresh_fail)
     }
 
 

@@ -57,34 +57,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.ohelshem.app.android.utils.view.AutoResizeTextView
-                    android:id="@+id/testName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/white"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    tools:text="מקבצים"
-                    tools:ignore="NestedWeights" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/test_in"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/daysToTest"
                     android:layout_width="wrap_content"

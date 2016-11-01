@@ -102,7 +102,6 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
         val nextTest = tests.firstOrNull { now <= it.date }
         if (nextTest != null) {
             daysToTest?.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
-            testName?.text = nextTest.content
             totalTests?.text = tests.size.toString()
         }
 
