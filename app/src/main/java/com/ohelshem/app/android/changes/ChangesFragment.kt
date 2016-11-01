@@ -1,8 +1,12 @@
 package com.ohelshem.app.android.changes
 
+import android.content.Intent
+import android.net.Uri
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.view.Menu
+import android.view.MenuInflater
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.UpdateError
@@ -10,6 +14,7 @@ import com.ohelshem.app.android.changes.clazz.ClassChangesFragment
 import com.ohelshem.app.android.changes.layer.LayerChangesFragment
 import com.ohelshem.app.android.changes.layer.LayerChangesPresenter
 import com.ohelshem.app.android.drawableRes
+import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
@@ -17,6 +22,8 @@ import com.ohelshem.app.getDay
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.changes_fragment.*
+import org.jetbrains.anko.support.v4.toast
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,6 +32,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
     private val weekDays by lazy { resources.getStringArray(R.array.week_days) }
 
     override val layoutId: Int = R.layout.changes_fragment
+    override var menuId: Int = R.menu.changes
 
     override fun createPresenter(): LayerChangesPresenter = with(kodein()) { LayerChangesPresenter(instance(), instance(), instance()) }
 
@@ -113,6 +121,33 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
         screenManager.screenTitle = day + " " + weekDays[data.toCalendar().getDay() - 1] + " " + ChangesDataFormat.format(Date(data))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.share).setOnMenuItemClickListener {
+            if (isShowingData && presenter.lastChanges != null) {
+                if (!isSharing) {
+                    isSharing = true
+                    val file = File(File(context.filesDir, MainActivity.SharingFolder).apply { mkdirs() }, SharingFilename)
+                    val uri = Uri.parse("content://${context.packageName}/${MainActivity.SharingFolder}/$SharingFilename")
+                    toast(R.string.generating_data)
+                    LayerChangesGenerator.generateLayerChanges(context, presenter.lastChanges!!, presenter.classesAtLayer, presenter.userLayer, file) {
+                        val shareIntent = Intent(Intent.ACTION_SEND)
+                                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                .setDataAndType(uri, "image/png")
+                                .putExtra(Intent.EXTRA_STREAM, uri)
+                        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
+                        isSharing = false
+                    }
+                }
+            } else {
+                toast(R.string.no_changes)
+            }
+            true
+        }
+    }
+
+    private var isSharing: Boolean = false
+
     class ChangesFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
         override fun getItem(position: Int): Fragment {
             return if (position == 0) ClassChangesFragment()
@@ -125,5 +160,6 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
 
     companion object {
         private val ChangesDataFormat = SimpleDateFormat("dd/MM")
+        private const val SharingFilename = "layer_changes.png"
     }
 }

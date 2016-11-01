@@ -17,29 +17,20 @@
 
 package com.ohelshem.app.android.changes.layer
 
-import android.content.Intent
-import android.net.Uri
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuInflater
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.changes.BaseChangesFragment
-import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.drawableRes
-import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.stringArrayRes
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.list_fragment.*
 import org.jetbrains.anko.padding
-import org.jetbrains.anko.support.v4.toast
-import java.io.File
 
 class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
     override val layoutId: Int = R.layout.layer_changes_fragment
-    override var menuId: Int = R.menu.changes
 
     override fun createPresenter(): LayerChangesPresenter = with(kodein()) { LayerChangesPresenter(instance(), instance(), instance()) }
 
@@ -55,35 +46,7 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
         recyclerView.scrollToPosition(0)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.share).setOnMenuItemClickListener {
-            if (isShowingData) {
-                if (!isSharing) {
-                    isSharing = true
-                    val file = File(File(context.filesDir, MainActivity.SharingFolder).apply { mkdirs() }, SharingFilename)
-                    val uri = Uri.parse("content://${context.packageName}/${MainActivity.SharingFolder}/$SharingFilename")
-                    toast(R.string.generating_data)
-                    LayerChangesGenerator.generateLayerChanges(context, (recyclerView.adapter as LayerChangesAdapter).changes, presenter.classesAtLayer, presenter.userLayer, file) {
-                        val shareIntent = Intent(Intent.ACTION_SEND)
-                                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                .setDataAndType(uri, "image/png")
-                                .putExtra(Intent.EXTRA_STREAM, uri)
-                        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
-                        isSharing = false
-                    }
-                }
-            } else {
-                toast(R.string.no_changes)
-            }
-            true
-        }
-    }
-
-    private var isSharing: Boolean = false
-
     companion object {
-        private const val SharingFilename = "layer_changes.png"
         private const val MaxChangesHours = 11
     }
 }

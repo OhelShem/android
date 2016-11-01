@@ -158,6 +158,10 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         recyclerView.hide()
     }
 
+    override fun onReselected() {
+        presenter.onReselected()
+    }
+
     private fun initTimetable(data: Array<Array<Hour>>) {
         hasInitAllWeek = true
         val max = data.map { it.size }.max()!!

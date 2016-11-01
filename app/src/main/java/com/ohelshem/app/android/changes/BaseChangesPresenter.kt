@@ -32,7 +32,7 @@ import com.ohelshem.app.isTomorrow
 import com.ohelshem.app.toCalendar
 
 abstract class BaseChangesPresenter(protected val storage: Storage, protected val timetableController: TimetableController) : BasePresenter<ChangesView>(), ApiController.Callback {
-    private var lastChanges: List<Change>? = null
+    var lastChanges: List<Change>? = null
 
     override fun onCreate() {
         update()

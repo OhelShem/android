@@ -123,4 +123,11 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
         get() {
             return timetableController.getHourData().hour.day
         }
+
+    fun onReselected() {
+        if (currentDay == 0)
+            setDay(today)
+        else
+            setDay(0)
+    }
 }

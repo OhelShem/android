@@ -201,6 +201,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 R.id.contacts -> setScreenInternal(ScreenType.Contacts)
             }
         }
+        bottomBar.setOnTabReselectListener {
+            notifyFragmentOnReselect()
+        }
     }
 
     override fun setScreen(screen: ScreenType, backStack: Boolean) {
@@ -329,6 +332,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         if (count == 0)
             changesTab.removeBadge()
         else changesTab.setBadgeCount(count)
+    }
+
+    fun notifyFragmentOnReselect() {
+        (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onReselected()
     }
 
     val updatables: List<ApiController.Callback>
