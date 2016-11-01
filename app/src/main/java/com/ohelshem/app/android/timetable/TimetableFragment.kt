@@ -229,7 +229,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         screenManager.topNavigationElement.setSelection(day, false)
         if (day == 0) {
             screenManager.setToolbarElevation(false)
-            if (!hasInitAllWeek)
+            if (!hasInitAllWeek || table.childCount == 0)
                 initTimetable(data)
         } else {
             screenManager.setToolbarElevation(true)
