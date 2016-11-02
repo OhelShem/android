@@ -6,14 +6,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v7.app.NotificationCompat
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.widget.RemoteViews
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.app.android.main.MainActivity
-import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.getDay
@@ -65,24 +67,31 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             context.startService<OngoingNotificationService>()
         }
 
+        fun toBold(text: String): SpannableString {
+            val s = SpannableString(text)
+            s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
+            return s
+        }
+
         private fun Context.createNotification(lesson: String, hours: String, nextLesson: String? = null, progress: Int?=null): Notification {
 
             val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
-            contentView.setTextColor(R.id.timeLeft, Color.GRAY)
-            contentView.setTextColor(R.id.lessonName, Color.BLACK)
-            contentView.setTextColor(R.id.nextLessonName, Color.BLACK)
 
-            contentView.setTextViewText(R.id.timeLeft, hours)
-            contentView.setTextViewText(R.id.lessonName, lesson)
-            contentView.setTextViewText(R.id.nextLessonName, nextLesson)
+            contentView.setTextColor(R.id.timeLeft, Color.WHITE)
+            contentView.setTextColor(R.id.lessonName, Color.WHITE)
+            contentView.setTextColor(R.id.nextLessonName, Color.WHITE)
+
+            contentView.setTextViewText(R.id.timeLeft, toBold(hours))
+            contentView.setTextViewText(R.id.lessonName, toBold(lesson))
+            contentView.setTextViewText(R.id.nextLessonName, toBold(nextLesson!!))
 
             contentView.setFloat(R.id.timeLeft, "setTextSize", 14f)
             contentView.setFloat(R.id.lessonName, "setTextSize", 14f)
             contentView.setFloat(R.id.nextLessonName, "setTextSize", 14f)
 
-            contentView.setInt(R.id.progress, "setBackgroundColor", Color.GRAY)
-            contentView.setInt(R.id.mainNotifView, "setBackgroundColor", primaryColor)
+            contentView.setInt(R.id.mainNotifView, "setBackgroundColor", Color.parseColor("#03A9F4"))
 
+            contentView.setImageViewResource(R.id.notifLogo, R.drawable.logo)
             contentView.setImageViewResource(R.id.hourIcon, R.drawable.ic_alarm)
             contentView.setImageViewResource(R.id.nextHourIcon, R.drawable.ic_arrow_forward)
 
@@ -98,7 +107,8 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentIntent(pIntent)
                     .setCustomBigContentView(contentView)
-                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                    .setVisibility(Notification.VISIBILITY_SECRET)
+                    .setPriority(Notification.PRIORITY_MAX)
                     .build()
         }
     }

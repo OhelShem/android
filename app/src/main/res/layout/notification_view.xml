@@ -6,6 +6,13 @@
               android:layout_height="match_parent"
               android:id="@+id/mainNotifView">
 
+    <ImageView
+        android:id="@+id/notifLogo"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo" />
+
     <LinearLayout
         android:id="@+id/currentLesson"
         android:layout_width="match_parent"
