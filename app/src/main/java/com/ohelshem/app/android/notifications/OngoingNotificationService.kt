@@ -34,7 +34,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val cal = Calendar.getInstance()
         val day = cal.getDay()
         if (storage.isSetup()) {
-            if (storage.notificationsForTimetable && day != Calendar.SATURDAY) {
+            if (storage.notificationsForTimetable && day != Calendar.SATURDAY && cal[Calendar.HOUR_OF_DAY] >= 8) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
