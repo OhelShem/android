@@ -35,25 +35,32 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val day = cal.getDay()
         if (storage.isSetup()) {
             if (storage.notificationsForTimetable && day != Calendar.SATURDAY) {
-                var data = timetableController.getHourData(day)
+                val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
                     notificationManager.cancel(NotificationId)
                 } else {
-                    if ((data.isBefore || data.timeToHour <= 5) && cal[Calendar.HOUR_OF_DAY] >= 8) {
-                        cal.add(Calendar.MINUTE, data.timeToHour + 1)
-                        data = timetableController.getHourData(day, cal[Calendar.HOUR_OF_DAY], cal[Calendar.MINUTE])
-                    }
                     if (data.hour.day != day) {
                         // Day has ended
                         notificationManager.cancel(NotificationId)
                     } else {
-                        val hours = TimetableController.DayHours[data.hour.hourOfDay * 2] + " - " + TimetableController.DayHours[data.hour.hourOfDay * 2 + 1]
-                        val name = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
-                        if (data.nextHour.day != day || TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day]))
-                            notificationManager.notify(NotificationId, createNotification(name, hours, getString(R.string.end_of_day)))
-                        else notificationManager.notify(NotificationId,
-                                createNotification(name, hours, if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name, if (data.nextHour.isEmpty()) 0 else data.progress))
+
+                        val lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                        val progress = data.progress
+                        var nextLesson = ""
+                        val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
+                        var timeLeft = ""
+                        if (isEndOfDay)
+                            nextLesson = getString(R.string.end_of_day)
+                        else nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+
+                        if (data.isBefore)
+                            timeLeft = data.timeToHour.toString() + " " + getString(R.string.short_minute) + " " + getString(R.string.to_start)
+                        else
+                            timeLeft = data.timeToHour.toString() + " " + getString(R.string.short_minute) + " " + getString(R.string.left)
+
+                        notificationManager.notify(NotificationId, createNotification(lessonName, timeLeft, nextLesson, progress))
+
                     }
                 }
             } else notificationManager.cancel(NotificationId)
@@ -102,8 +109,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             val intent = Intent(applicationContext, MainActivity::class.java)
             val pIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
             return NotificationCompat.Builder(this)
+                    .setOngoing(true)
                     .setAutoCancel(false)
                     .setContentTitle(lesson)
+                    .setProgress(45, progress ?: 0, false)
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentIntent(pIntent)
                     .setCustomBigContentView(contentView)
