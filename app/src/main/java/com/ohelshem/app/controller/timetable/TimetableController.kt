@@ -58,7 +58,7 @@ interface TimetableController {
          * Hours for alarm, the first int is hour and the second is minute.
          */
         val AlarmHours: Array<Pair<Int, Int>> = arrayOf(
-                7 to 55,
+                8 to 0,
                 8 to 45,
                 9 to 35,
                 10 to 35,
