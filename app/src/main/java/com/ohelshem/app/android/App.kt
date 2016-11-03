@@ -104,7 +104,7 @@ class App : Application(), KodeinAware {
                 cal.set(Calendar.MINUTE, minute)
 
                 context.alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        cal.timeInMillis, 1000*60, pendingIntent)
+                        cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
             }
             OngoingNotificationService.update(context)
         }
