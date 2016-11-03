@@ -46,20 +46,15 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                     } else {
 
                         val lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
-                        val progress = data.progress
                         var nextLesson = ""
                         val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
-                        var timeLeft = ""
                         if (isEndOfDay)
                             nextLesson = getString(R.string.end_of_day)
                         else nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
 
-                        if (data.isBefore)
-                            timeLeft = data.timeToHour.toString() + " " + getString(R.string.short_minute) + " " + getString(R.string.to_start)
-                        else
-                            timeLeft = data.timeToHour.toString() + " " + getString(R.string.short_minute) + " " + getString(R.string.left)
+                        val hours = TimetableController.DayHours[data.hour.hourOfDay * 2] + " - " + TimetableController.DayHours[data.hour.hourOfDay * 2 + 1]
 
-                        notificationManager.notify(NotificationId, createNotification(lessonName, timeLeft, nextLesson, progress))
+                        notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson))
 
                     }
                 }
@@ -80,11 +75,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             return s
         }
 
-        private fun Context.createNotification(lesson: String, hours: String, nextLesson: String? = null, progress: Int?=null): Notification {
+        private fun Context.createNotification(lesson: String, hours: String, nextLesson: String? = null): Notification {
 
             val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
 
-            contentView.setTextColor(R.id.timeLeft, Color.WHITE)
             contentView.setTextColor(R.id.lessonName, Color.WHITE)
             contentView.setTextColor(R.id.nextLessonName, Color.WHITE)
 
@@ -102,17 +96,12 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             contentView.setImageViewResource(R.id.hourIcon, R.drawable.ic_alarm)
             contentView.setImageViewResource(R.id.nextHourIcon, R.drawable.ic_arrow_forward)
 
-            if (progress!=null)
-                contentView.setProgressBar(R.id.progress, 45, progress, false)
-
-
             val intent = Intent(applicationContext, MainActivity::class.java)
             val pIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
             return NotificationCompat.Builder(this)
                     .setOngoing(true)
                     .setAutoCancel(false)
                     .setContentTitle(lesson)
-                    .setProgress(45, progress ?: 0, false)
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentIntent(pIntent)
                     .setCustomBigContentView(contentView)
