@@ -116,7 +116,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentIntent(pIntent)
                     .setCustomBigContentView(contentView)
-                    .setVisibility(Notification.VISIBILITY_SECRET)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC)
                     .setPriority(Notification.PRIORITY_MAX)
                     .build()
         }

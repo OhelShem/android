@@ -58,18 +58,18 @@ interface TimetableController {
          * Hours for alarm, the first int is hour and the second is minute.
          */
         val AlarmHours: Array<Pair<Int, Int>> = arrayOf(
-                7 to 0,
-                8 to 43,
-                9 to 33,
-                10 to 33,
-                11 to 23,
-                12 to 28,
-                13 to 18,
-                14 to 13,
-                15 to 3,
-                15 to 53,
-                16 to 43,
-                17 to 33
+                7 to 55,
+                8 to 40,
+                9 to 30,
+                10 to 30,
+                11 to 20,
+                12 to 25,
+                13 to 15,
+                14 to 10,
+                15 to 0,
+                15 to 50,
+                16 to 40,
+                17 to 30
         )
 
         val Holidays = arrayOf(
