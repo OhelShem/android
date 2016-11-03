@@ -32,18 +32,6 @@
                 android:layout_height="46dp">
 
                 <TextView
-                    android:id="@+id/timeLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="right"
-                    android:maxLines="1"
-                    android:textSize="14sp"
-                    tools:ignore="RtlHardcoded"
-                    tools:text="35 דקות" />
-
-                <TextView
                     android:id="@+id/lessonName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,21 +42,6 @@
                     android:textSize="14sp"
                     tools:text="חנג בנים, חנג בנות ימפולסקי ל, נאור מלי" />
             </RelativeLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights">
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center"
-                    android:max="45" />
-            </FrameLayout>
         </LinearLayout>
 
         <ImageView
