@@ -52,7 +52,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                             nextLesson = getString(R.string.end_of_day)
                         else nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
 
-                        val hours = TimetableController.DayHours[data.hour.hourOfDay * 2] + " - " + TimetableController.DayHours[data.hour.hourOfDay * 2 + 1]
+                        val hours = TimetableController.DayHours[data.hour.hourOfDay*2] + " - " + TimetableController.DayHours[data.hour.hourOfDay*2+1]
 
                         notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson))
 
@@ -79,6 +79,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
             val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
 
+            contentView.setTextColor(R.id.timeLeft, Color.WHITE)
             contentView.setTextColor(R.id.lessonName, Color.WHITE)
             contentView.setTextColor(R.id.nextLessonName, Color.WHITE)
 
