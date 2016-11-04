@@ -138,6 +138,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     override fun init() {
         val spinner = screenManager.topNavigationElement
         spinner.adapter = DaySpinnerAdapter(activity, presenter.weekDays)
+        spinner.gravity = Gravity.RIGHT
         spinner.post {
             spinner.onItemSelectedListener {
                 onItemSelected { adapterView, view, position, id ->

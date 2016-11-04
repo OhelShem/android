@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -40,6 +41,7 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
+import org.jetbrains.anko.textColor
 import org.jetbrains.anko.textResource
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,6 +56,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val toStart by stringResource(R.string.to_start)
     private val left by stringResource(R.string.left)
     private val endOfDay by stringResource(R.string.end_of_day)
+    private val instead by stringResource(R.string.instead)
     private val with by lazy { " " + getString(R.string.with) + " " }
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days)}
     val storage: Storage by kodein.instance()
@@ -112,8 +115,12 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (!isFuture) {
                 storage.changes?.forEach {
                     if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
-                        lessonName.text = ("<b>" + it.content + "</b>").fromHtml()
-                        lessonName.backgroundColor = it.color
+                        lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
+                        currentLesson.backgroundColor = it.color
+                        lessonName.textColor = Color.WHITE
+                        timeLeft.textColor = Color.WHITE
+                        hourIcon.setColorFilter(Color.WHITE)
+                        firstSpace.backgroundColor = it.color
                         isChange = true
                     }
                 }
@@ -128,8 +135,10 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 if (!isFuture) {
                     storage.changes?.forEach {
                         if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
-                            nextLessonName.text = ("<b>" + it.content + "</b>").fromHtml()
-                            nextLessonName.backgroundColor = it.color
+                            nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
+                            next_lesson.backgroundColor = it.color
+                            nextLessonName.textColor = Color.WHITE
+                            nextHourIcon.setColorFilter(Color.WHITE)
                             isNextChange = true
                         }
                     }
