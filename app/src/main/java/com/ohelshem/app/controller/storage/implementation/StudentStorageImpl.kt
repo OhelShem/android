@@ -54,6 +54,8 @@ class StudentStorageImpl(private val offsetDataController: OffsetDataController)
                 repeat(data.size) { i ->
                     list += data[i].split(InnerSeparator, limit = 3).let { Test(it[0].toLong(), it[1]) }
                 }
+                TestsDataFileV4.delete()
+                TestsOffsetFileV4.delete()
                 this.tests = list
             }
             // Migrate changes
@@ -63,6 +65,8 @@ class StudentStorageImpl(private val offsetDataController: OffsetDataController)
                 repeat(data.size) { i ->
                     list += data[i].split(InnerSeparator, limit = 4).let { Change(it[0].toInt(), it[1].toInt(), it[2], it[3].toInt()) }
                 }
+                ChangesDataFileV4.delete()
+                ChangesOffsetFileV4.delete()
                 this.changes = list
             }
         }
