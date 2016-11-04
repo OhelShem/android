@@ -2,7 +2,7 @@
 <resources>
     <string-array name="changesFilters">
         <item>מבוטל</item>
-        <item>בספריה</item>
+        <item>ספריה</item>
         <item>יום שבת</item>
         <item>סיור</item>
         <item>חנ</item>

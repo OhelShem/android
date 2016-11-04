@@ -45,16 +45,46 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                         notificationManager.cancel(NotificationId)
                     } else {
 
-                        val lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                        var color: Int? = null
+                        var nextColor: Int? = null
+
+                        var lessonName = ""
+                        var isChange = false
+                        storage.changes?.forEach {
+                            if (it.clazz==storage.userData.clazz && it.hour-1 == data.hour.hourOfDay) {
+                                lessonName = it.content
+                                color = it.color
+                                isChange = true
+                            }
+                        }
+                        if (!isChange)
+                            lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+
+
                         var nextLesson = ""
                         val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
-                        if (isEndOfDay)
-                            nextLesson = getString(R.string.end_of_day)
-                        else nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                        var isNextChange = false
+                        storage.changes?.forEach {
+                            if (it.clazz == storage.userData.clazz && it.hour-1 == data.nextHour.hourOfDay) {
+                                nextLesson = it.content
+                                nextColor = it.color
+                                isNextChange = true
+                            }
+                        }
+                        if (!isNextChange) {
+                            if (isEndOfDay)
+                                nextLesson = getString(R.string.end_of_day)
+                            else
+                                nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                        }
 
                         val hours = TimetableController.DayHours[data.hour.hourOfDay*2] + " - " + TimetableController.DayHours[data.hour.hourOfDay*2+1]
 
-                        notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson))
+                        try {
+                            notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson, color, nextColor))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
 
                     }
                 }
@@ -75,7 +105,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             return s
         }
 
-        private fun Context.createNotification(lesson: String, hours: String, nextLesson: String? = null): Notification {
+        private fun Context.createNotification(lesson: String, hours: String, nextLesson: String? = null, color: Int? = null, nextColor: Int? = null): Notification {
 
             val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
 
@@ -92,6 +122,12 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             contentView.setFloat(R.id.nextLessonName, "setTextSize", 14f)
 
             contentView.setInt(R.id.mainNotifView, "setBackgroundColor", Color.parseColor("#03A9F4"))
+
+            if (color!=null)
+                contentView.setInt(R.id.lessonName, "setBackgroundColor", color)
+            if (nextColor!=null)
+                contentView.setInt(R.id.nextLessonName, "setBackgroundColor", nextColor)
+
 
             contentView.setImageViewResource(R.id.notifLogo, R.drawable.logo)
             contentView.setImageViewResource(R.id.hourIcon, R.drawable.ic_alarm)

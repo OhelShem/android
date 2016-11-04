@@ -32,11 +32,13 @@ import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
+import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.textResource
 import java.text.SimpleDateFormat
@@ -54,6 +56,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val endOfDay by stringResource(R.string.end_of_day)
     private val with by lazy { " " + getString(R.string.with) + " " }
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days)}
+    val storage: Storage by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -103,11 +106,35 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean) {
         try {
-            lessonName.text = if (data.hour.isEmpty()) windowLesson else ("<b>" + data.hour.name + "</b>" + with + data.hour.teacher).fromHtml()
             progress.progress = data.progress
+
+            var isChange = false
+            storage.changes?.forEach {
+                if (it.clazz==storage.userData.clazz && it.hour-1 == data.hour.hourOfDay) {
+                    lessonName.text = ("<b>"+it.content+"</b>").fromHtml()
+                    lessonName.backgroundColor = it.color
+                    isChange = true
+                }
+            }
+            if (!isChange)
+                lessonName.text = if (data.hour.isEmpty()) windowLesson else ("<b>" + data.hour.name + "</b>" + with + data.hour.teacher).fromHtml()
+
             if (isEndOfDay)
                 nextLessonName.text = ("<b>$endOfDay</b>").fromHtml()
-            else nextLessonName.text = if (data.nextHour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.nextHour.name + "</b>" + with + data.nextHour.teacher).fromHtml()
+            else {
+
+                var isNextChange = false
+                storage.changes?.forEach {
+                    if (it.clazz == storage.userData.clazz && it.hour-1 == data.nextHour.hourOfDay) {
+                        nextLessonName.text = ("<b>"+it.content+"</b>").fromHtml()
+                        nextLessonName.backgroundColor = it.color
+                        isNextChange = true
+                    }
+                }
+
+                if (!isNextChange)
+                    nextLessonName.text = if (data.nextHour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.nextHour.name + "</b>" + with + data.nextHour.teacher).fromHtml()
+            }
             if (isFuture)
                 timeLeft.text = daysOfWeek[data.hour.day-1]
             else if (isTomorrow)
