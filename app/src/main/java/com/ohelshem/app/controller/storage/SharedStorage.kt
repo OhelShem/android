@@ -34,9 +34,9 @@ interface SharedStorage : IStorage {
     fun attachTimetableListener(id: Int, listener: (Array<Array<Hour>>) -> Unit)
     fun removeTimetableListener(id: Int)
 
-    var overrides: Array<OverrideData>
+    var overrides: List<OverrideData>
 
-    fun attachOverridesListener(id: Int, listener: (Array<OverrideData>) -> Unit)
+    fun attachOverridesListener(id: Int, listener: (List<OverrideData>) -> Unit)
     fun removeOverrideListener(id: Int)
 
     fun importOverrideFile(file: File)

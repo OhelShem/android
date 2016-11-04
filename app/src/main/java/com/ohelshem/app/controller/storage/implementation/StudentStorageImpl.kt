@@ -3,6 +3,7 @@ package com.ohelshem.app.controller.storage.implementation
 import com.chibatching.kotpref.KotprefModel
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
+import com.ohelshem.app.controller.serialization.*
 import com.ohelshem.app.controller.storage.IStorage.Companion.EmptyData
 import com.ohelshem.app.controller.storage.StudentStorage
 import com.ohelshem.app.controller.utils.OffsetDataController
@@ -12,62 +13,65 @@ import java.util.*
 class StudentStorageImpl(private val offsetDataController: OffsetDataController) : StudentStorage, KotprefModel() {
     override var version: Int by intPrefVar(EmptyData)
 
+    private val changesSerialization = ChangeSerialization.ofList()
     override var changes: List<Change>?
         get() {
-            if (!ChangesDataFile.exists() || !ChangesOffsetFile.exists()) return null
-            val data = offsetDataController.read(ChangesOffsetFile, ChangesDataFile, OffsetDataController.AllFile)
-            val list = ArrayList<Change>(data.size)
-            for (i in 0 until data.size) {
-                list += data[i].split(InnerSeparator, limit = 4).let { Change(it[0].toInt(), it[1].toInt(), it[2], it[3].toInt()) }
-            }
-            return list
+            if (!ChangesDataFile.exists()) return null
+            return ChangesDataFile.simpleReader().use { reader -> changesSerialization.deserialize(reader) }
         }
         set(value) {
             if (value == null || value.isEmpty()) {
                 ChangesDataFile.delete()
-                ChangesOffsetFile.delete()
             } else {
                 prepare()
-                value.asSequence().map { it.clazz.toString() + InnerSeparator + it.hour.toString() + InnerSeparator + it.content + InnerSeparator + it.color.toString() }.let {
-                    offsetDataController.write(ChangesOffsetFile, ChangesDataFile, it)
-                }
+                ChangesDataFile.simpleWriter().use { writer -> changesSerialization.serialize(writer, value) }
             }
         }
-
+    private val testsDeserialization = TestSerialization.ofList()
     override var tests: List<Test>?
         get() {
-            if (!TestsDataFile.exists() || !TestsOffsetFile.exists()) return null
-            val data = offsetDataController.read(TestsOffsetFile, TestsDataFile, OffsetDataController.AllFile)
-            val list = ArrayList<Test>(data.size)
-            for (i in 0 until data.size) {
-                list += data[i].split(InnerSeparator, limit = 3).let { Test(it[0].toLong(), it[1]) }
-            }
-            return list
+            if (!TestsDataFile.exists()) return null
+            return TestsDataFile.simpleReader().use { reader -> testsDeserialization.deserialize(reader) }
         }
         set(value) {
-            if (value == null) {
+            if (value == null || value.isEmpty()) {
                 TestsDataFile.delete()
-                TestsOffsetFile.delete()
             } else {
                 prepare()
-                value.asSequence().map { it.date.toString() + InnerSeparator + it.content.toString() }.let {
-                    offsetDataController.write(TestsOffsetFile, TestsDataFile, it)
-                }
+                TestsDataFile.simpleWriter().use { writer -> testsDeserialization.serialize(writer, value) }
             }
         }
-
-
 
     override fun migration() {
         if (version == EmptyData) {
             tests = emptyList()
-            version = 4
+            version = LatestVersion
+        } else if (version == 4) {
+            // Migrate tests
+            if (TestsDataFileV4.exists() && TestsOffsetFileV4.exists()) {
+                val data = offsetDataController.read(TestsOffsetFileV4, TestsDataFileV4, OffsetDataController.AllFile)
+                val list = ArrayList<Test>(data.size)
+                repeat(data.size) { i ->
+                    list += data[i].split(InnerSeparator, limit = 3).let { Test(it[0].toLong(), it[1]) }
+                }
+                this.tests = list
+            }
+            // Migrate changes
+            if (ChangesDataFileV4.exists() && ChangesOffsetFileV4.exists()) {
+                val data = offsetDataController.read(ChangesOffsetFileV4, ChangesDataFileV4, OffsetDataController.AllFile)
+                val list = ArrayList<Change>(data.size)
+                repeat(data.size) { i ->
+                    list += data[i].split(InnerSeparator, limit = 4).let { Change(it[0].toInt(), it[1].toInt(), it[2], it[3].toInt()) }
+                }
+                this.changes = list
+            }
         }
+        version = LatestVersion
     }
 
     override fun clean() {
         clear()
-        version = 4
+        version = LatestVersion
         Files.forEach { it.delete() }
     }
 
@@ -76,18 +80,25 @@ class StudentStorageImpl(private val offsetDataController: OffsetDataController)
             FilesFolder.mkdir()
     }
 
-    private val Files: Array<File> by lazy { arrayOf(ChangesDataFile, ChangesOffsetFile, TestsDataFile, TestsOffsetFile) }
+    private val Files: Array<File> by lazy { arrayOf(ChangesDataFileV4, ChangesOffsetFileV4, TestsDataFileV4, TestsOffsetFileV4) }
 
     private val FilesFolder: File by lazy { context.filesDir }
 
-    private val ChangesDataFile: File by lazy { File(FilesFolder, "changes4.bin") }
-    private val ChangesOffsetFile: File by lazy { File(FilesFolder, "changes4_offsets.bin") }
+    private val ChangesDataFile: File by lazy { File(FilesFolder, "changes5.bin") }
+    private val TestsDataFile: File by lazy { File(FilesFolder, "tests5.bin") }
 
-    private val TestsDataFile: File by lazy { File(FilesFolder, "tests4.bin") }
-    private val TestsOffsetFile: File by lazy { File(FilesFolder, "tests4_offsets.bin") }
+
+    //region compatibility
+    private val ChangesDataFileV4: File by lazy { File(FilesFolder, "changes4.bin") }
+    private val ChangesOffsetFileV4: File by lazy { File(FilesFolder, "changes4_offsets.bin") }
+    private val TestsDataFileV4: File by lazy { File(FilesFolder, "tests4.bin") }
+    private val TestsOffsetFileV4: File by lazy { File(FilesFolder, "tests4_offsets.bin") }
+    //endregion
 
     companion object {
         private const val InnerSeparator: Char = '\u2004'
+
+        private const val LatestVersion = 5
     }
 
 }

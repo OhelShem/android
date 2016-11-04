@@ -68,9 +68,9 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
         if (!editAll) {
             storage.overrides = storage.overrides.toMutableList().apply {
                 removeAtIfPositive(indexOfFirst { it.day == day && it.hour == position })
-            }.toTypedArray()
+            }
         } else {
-            storage.overrides = storage.overrides.toMutableList().apply { removeAll { it.newName == hour.name } }.toTypedArray()
+            storage.overrides = storage.overrides.toMutableList().apply { removeAll { it.newName == hour.name } }
         }
         view?.flush()
         setDay(currentDay)
@@ -79,10 +79,10 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
     fun edit(hour: Hour, day: Int, position: Int, newLesson: String, newTeacher: String, editAll: Boolean) {
         if (newLesson.isNotEmpty() || newTeacher.isNotEmpty()) {
             if (!editAll) {
-                var overrides = storage.overrides
+                val overrides = storage.overrides.toMutableList()
                 val index = overrides.indexOfFirst { it.day == day && it.hour == position }
                 val override = OverrideData(day, position, newLesson.or(hour.name), newTeacher.or(hour.teacher))
-                if (index < 0) overrides += override
+                if (index < 0) overrides.add(override)
                 else overrides[index] = override
                 storage.overrides = overrides
             } else {
@@ -98,7 +98,7 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
                         }
                     }
                 }
-                storage.overrides = overrides.toTypedArray()
+                storage.overrides = overrides
             }
         }
         view?.flush()

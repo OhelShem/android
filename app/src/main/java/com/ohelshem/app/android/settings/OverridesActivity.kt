@@ -82,7 +82,7 @@ class OverridesActivity : AppThemedActivity() {
             true
         }
         clearAll.onClick {
-            storage.overrides = emptyArray()
+            storage.overrides = emptyList()
             updateUI()
             updateNotification()
         }
@@ -191,7 +191,7 @@ class OverridesActivity : AppThemedActivity() {
                         clearAll.callOnClick()
                     else {
                         overrides.removeAtIfPositive(overrides.indexOf(adapterItems[position].data!!.first))
-                        storage.overrides = overrides.toTypedArray()
+                        storage.overrides = overrides
                         if (!adapterItems[position - 1].title.isNullOrEmpty() && (adapterItems.size <= position + 1 || !adapterItems[position + 1].title.isNullOrEmpty())) {
                             adapterItems.removeAt(viewHolder.adapterPosition - 1) // remove title
                             adapterItems.removeAt(viewHolder.adapterPosition - 1) // remove the item itself, that was pushed one back

@@ -6,6 +6,10 @@ import com.ohelshem.api.Role
 import com.ohelshem.api.controller.implementation.ApiParserImpl
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.UserData
+import com.ohelshem.app.controller.serialization.HourSerialization
+import com.ohelshem.app.controller.serialization.ofList
+import com.ohelshem.app.controller.serialization.simpleReader
+import com.ohelshem.app.controller.serialization.simpleWriter
 import com.ohelshem.app.controller.storage.IStorage.Companion.EmptyData
 import com.ohelshem.app.controller.storage.SharedStorage
 import com.ohelshem.app.controller.storage.SharedStorage.Theme
@@ -85,16 +89,19 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
         timetableListeners.keys -= id
     }
 
+    private val hourSerialization = HourSerialization.ofList()
     override var timetable: Array<Array<Hour>>?
         get() {
-            if (!TimetableDataFile.exists() || !TimetableOffsetFile.exists()) return null
+            if (!TimetableDataFile.exists()) return null
             try {
-                val data = offsetDataController.read(TimetableOffsetFile, TimetableDataFile, OffsetDataController.AllFile)
-                val hours = ApiParserImpl.MaxHoursADay
-                return Array(data.size / hours) { day ->
-                    val offset = day * hours
-                    Array(hours) { hour ->
-                        data[offset + hour].split(InnerSeparator, limit = 3).let { Hour(it[0], it[1], it[2].toInt()) }
+                TimetableDataFile.simpleReader().use { reader ->
+                    val data = hourSerialization.deserialize(reader)
+                    val hours = ApiParserImpl.MaxHoursADay
+                    return Array(data.size / hours) { day ->
+                        val offset = day * hours
+                        Array(hours) { hour ->
+                            data[offset + hour]
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -105,12 +112,11 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
         set(value) {
             if (value == null || value.isEmpty()) {
                 TimetableDataFile.delete()
-                TimetableOffsetFile.delete()
                 timetableListeners.values.forEach { it(emptyArray()) }
             } else {
                 prepare()
-                value.asSequence().flatMap { it.asSequence() }.map { it.name + InnerSeparator + it.teacher + InnerSeparator + it.color.toString() }.let {
-                    offsetDataController.write(TimetableOffsetFile, TimetableDataFile, it)
+                TimetableDataFile.simpleWriter().use { writer ->
+                    hourSerialization.serialize(writer, value.flatMap { it.toList() })
                 }
                 timetableListeners.values.forEach { it(value) }
             }
@@ -118,9 +124,9 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     //endregion
 
     //region Overrides
-    private val overridesListeners: MutableMap<Int, (Array<OverrideData>) -> Unit> = HashMap(1)
+    private val overridesListeners: MutableMap<Int, (List<OverrideData>) -> Unit> = HashMap(1)
 
-    override fun attachOverridesListener(id: Int, listener: (Array<OverrideData>) -> Unit) {
+    override fun attachOverridesListener(id: Int, listener: (List<OverrideData>) -> Unit) {
         overridesListeners[id] = listener
     }
 
@@ -128,14 +134,14 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
         overridesListeners.keys -= id
     }
 
-    override var overrides: Array<OverrideData>
+    override var overrides: List<OverrideData>
         get() {
             try {
-                return readOverrides()
+                return Overrides.read(LatestVersion, TimetableOverridesFile)
             } catch(e: Exception) {
                 e.printStackTrace()
                 TimetableOverridesFile.delete()
-                return emptyArray()
+                return emptyList()
             }
         }
         set(value) {
@@ -143,33 +149,10 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             overridesListeners.values.forEach { it(value) }
         }
 
-
-    private fun readOverrides(): Array<OverrideData> {
-        if (!TimetableOverridesFile.exists()) return emptyArray()
-        val data = TimetableOverridesFile.readLines()
-        return Array(data.size) { i ->
-            data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3]) }
-        }
-    }
-
-    private fun setOverridesSilently(value: Array<OverrideData>) {
+    private fun setOverridesSilently(value: List<OverrideData>) {
         prepare()
         TimetableOverridesFile.createNewFile()
-        TimetableOverridesFile.writeText("")
-        value.forEach { TimetableOverridesFile.appendText("${it.day}^${it.hour}^${it.newName}^${it.newTeacher}\n") }
-    }
-
-    fun readOverridesOldWay(): Array<OverrideData> {
-        if (!TimetableOverridesFile.exists()) return emptyArray()
-        val data = TimetableOverridesFile.readLines()
-        try {
-            return Array(data.size) { i ->
-                data[i].split(',').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], "") }
-            }
-        } catch(e: Exception) {
-            TimetableOverridesFile.delete()
-            return emptyArray()
-        }
+        Overrides.write(TimetableOverridesFile, value)
     }
 
     override fun importOverrideFile(file: File) {
@@ -179,22 +162,24 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             TimetableOverridesFile.copyTo(TimetableOverridesFileBackup, overwrite = true)
         } else TimetableOverridesFile.createNewFile()
         file.copyTo(TimetableOverridesFile, overwrite = true)
-        val data: Array<OverrideData> = try {
-            readOverrides()
-        } catch (e: Exception) {
+
+        var data: List<OverrideData>? = null
+        for (version in Overrides.Versions) {
             try {
-                readOverridesOldWay().apply {
-                    setOverridesSilently(this)
-                }
-            } catch (e: Exception) {
-                if (TimetableOverridesFileBackup.exists())
-                    TimetableOverridesFileBackup.copyTo(TimetableOverridesFile, overwrite = true)
-                throw IllegalArgumentException()
-            }
-        } finally {
-            TimetableOverridesFileBackup.delete()
+                data = Overrides.read(version, TimetableOverridesFile)
+                break
+            } catch (e: Exception) {}
         }
-        overridesListeners.values.forEach { it(data) }
+        if (data != null) {
+            setOverridesSilently(data)
+            for (listener in overridesListeners.values) {
+                listener(data)
+            }
+        } else {
+            if (TimetableOverridesFileBackup.exists())
+                TimetableOverridesFileBackup.copyTo(TimetableOverridesFileV4, overwrite = true)
+        }
+        TimetableOverridesFileBackup.delete()
     }
 
     override fun exportOverrideFile(file: File): Boolean {
@@ -213,7 +198,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
 
     override fun clean() {
         clear()
-        version = 4
+        version = LatestVersion
         appVersion = BuildConfig.VERSION_CODE
         Files.forEach { it.delete() }
     }
@@ -248,12 +233,39 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
                     serverUpdateDate = 0
 
                     timetable = oldTimetable
-                    overrides = old.overrides
+                    overrides = old.overrides.toList()
                 }
             }
             old.clearData()
         }
-        version = 4
+        if (version == 4) {
+            // Migrate overrides
+            if (TimetableOverridesFileV4.exists()) {
+                val data = TimetableOverridesFileV4.readLines()
+                val overrides = (0 until data.size).map { i ->
+                    data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3]) }
+                }
+                this.overrides = overrides
+                TimetableOverridesFileV4.delete()
+            }
+            // Migrate timetable
+            if (TimetableDataFileV4.exists() && TimetableOffsetFileV4.exists()) {
+                try {
+                    val data = offsetDataController.read(TimetableOffsetFileV4, TimetableDataFileV4, OffsetDataController.AllFile)
+                    val hours = ApiParserImpl.MaxHoursADay
+                    val timetable = Array(data.size / hours) { day ->
+                        val offset = day * hours
+                        Array(hours) { hour ->
+                            data[offset + hour].split(InnerSeparator, limit = 3).let { Hour(it[0], it[1], it[2].toInt()) }
+                        }
+                    }
+                    this.timetable = timetable
+                    TimetableOffsetFileV4.delete()
+                    TimetableDataFileV4.delete()
+                } catch (e: Exception) {}
+            }
+        }
+        version = LatestVersion
     }
 
     override fun prepare() {
@@ -261,17 +273,25 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             FilesFolder.mkdir()
     }
 
-    private val Files: Array<File> by lazy { arrayOf(TimetableDataFile, TimetableOffsetFile, TimetableOverridesFile, TimetableOverridesFileBackup) }
+    private val Files: Array<File> by lazy { arrayOf(TimetableDataFile, TimetableDataFile, TimetableOverridesFileV4, TimetableOverridesFileBackup) }
 
     private val FilesFolder: File by lazy { context.filesDir }
 
-    private val TimetableDataFile: File by lazy { File(FilesFolder, "timetable4.bin") }
-    private val TimetableOffsetFile: File by lazy { File(FilesFolder, "timetable4_offsets.bin") }
+    private val TimetableDataFile: File by lazy { File(FilesFolder, "timetable5.bin") }
 
-    private val TimetableOverridesFile: File by lazy { File(FilesFolder, "timetable4_overrides.csv") }
-    private val TimetableOverridesFileBackup: File by lazy { File(FilesFolder, "timetable4_overrides_backup.csv") }
+    private val TimetableOverridesFile: File by lazy { File(FilesFolder, "timetable5_overrides.bin") }
+    private val TimetableOverridesFileBackup: File by lazy { File(FilesFolder, "timetable5_overrides_backup.bin") }
+
+    //region compatibility
+    private val TimetableDataFileV4: File by lazy { File(FilesFolder, "timetable4.bin") }
+    private val TimetableOffsetFileV4: File by lazy { File(FilesFolder, "timetable4_offsets.bin") }
+    private val TimetableOverridesFileV4: File by lazy { File(FilesFolder, "timetable4_overrides.csv") }
+    //endregion
+
 
     companion object : KLogging() {
         private const val InnerSeparator: Char = '\u2004'
+
+        private const val LatestVersion = 5
     }
 }
