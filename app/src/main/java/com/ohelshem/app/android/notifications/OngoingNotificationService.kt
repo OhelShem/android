@@ -61,22 +61,24 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                             lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
 
 
+
                         var nextLesson = ""
                         val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
-                        var isNextChange = false
-                        storage.changes?.forEach {
-                            if (it.clazz == storage.userData.clazz && it.hour-1 == data.nextHour.hourOfDay) {
-                                nextLesson = it.content
-                                nextColor = it.color
-                                isNextChange = true
+                        if (isEndOfDay) {
+                            nextLesson = getString(R.string.end_of_day)
+                        } else {
+                            var isNextChange = false
+                            storage.changes?.forEach {
+                                if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
+                                    nextLesson = it.content
+                                    nextColor = it.color
+                                    isNextChange = true
+                                }
                             }
-                        }
-                        if (!isNextChange) {
-                            if (isEndOfDay)
-                                nextLesson = getString(R.string.end_of_day)
-                            else
+                            if (!isNextChange)
                                 nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
                         }
+
 
                         val hours = TimetableController.DayHours[data.hour.hourOfDay*2] + " - " + TimetableController.DayHours[data.hour.hourOfDay*2+1]
 

@@ -109,11 +109,13 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             progress.progress = data.progress
 
             var isChange = false
-            storage.changes?.forEach {
-                if (it.clazz==storage.userData.clazz && it.hour-1 == data.hour.hourOfDay) {
-                    lessonName.text = ("<b>"+it.content+"</b>").fromHtml()
-                    lessonName.backgroundColor = it.color
-                    isChange = true
+            if (!isFuture) {
+                storage.changes?.forEach {
+                    if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
+                        lessonName.text = ("<b>" + it.content + "</b>").fromHtml()
+                        lessonName.backgroundColor = it.color
+                        isChange = true
+                    }
                 }
             }
             if (!isChange)
@@ -122,19 +124,26 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (isEndOfDay)
                 nextLessonName.text = ("<b>$endOfDay</b>").fromHtml()
             else {
-
                 var isNextChange = false
-                storage.changes?.forEach {
-                    if (it.clazz == storage.userData.clazz && it.hour-1 == data.nextHour.hourOfDay) {
-                        nextLessonName.text = ("<b>"+it.content+"</b>").fromHtml()
-                        nextLessonName.backgroundColor = it.color
-                        isNextChange = true
+                if (!isFuture) {
+                    storage.changes?.forEach {
+                        if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
+                            nextLessonName.text = ("<b>" + it.content + "</b>").fromHtml()
+                            nextLessonName.backgroundColor = it.color
+                            isNextChange = true
+                        }
                     }
                 }
 
-                if (!isNextChange)
+                if (!isNextChange) {
                     nextLessonName.text = if (data.nextHour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.nextHour.name + "</b>" + with + data.nextHour.teacher).fromHtml()
+
+                }
+
             }
+
+
+
             if (isFuture)
                 timeLeft.text = daysOfWeek[data.hour.day-1]
             else if (isTomorrow)
