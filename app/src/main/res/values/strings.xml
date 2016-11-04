@@ -17,6 +17,7 @@
     <string name="changes">שינויים</string>
     <string name="refreshing">מעדכן מידע</string>
     <string name="timetable">מערכת שעות</string>
+    <string name="timetable_notif">סדר יום</string>
     <string name="dates">מועדים</string>
     <string name="contacts">אנשי קשר</string>
     <string name="tests">מבחנים</string>

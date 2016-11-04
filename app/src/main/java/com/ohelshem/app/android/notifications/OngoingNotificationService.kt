@@ -119,9 +119,9 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             contentView.setTextViewText(R.id.lessonName, toBold(lesson))
             contentView.setTextViewText(R.id.nextLessonName, toBold(nextLesson!!))
 
-            contentView.setFloat(R.id.timeLeft, "setTextSize", 14f)
-            contentView.setFloat(R.id.lessonName, "setTextSize", 14f)
-            contentView.setFloat(R.id.nextLessonName, "setTextSize", 14f)
+            contentView.setFloat(R.id.timeLeft, "setTextSize", 14.5f)
+            contentView.setFloat(R.id.lessonName, "setTextSize", 14.5f)
+            contentView.setFloat(R.id.nextLessonName, "setTextSize", 14.5f)
 
             contentView.setInt(R.id.mainNotifView, "setBackgroundColor", Color.parseColor("#03A9F4"))
 

@@ -48,6 +48,10 @@ class SettingsActivity : AppThemedActivity() {
 
     private fun initLayout() {
         notificationsList.apply {
+            settingsItem(getString(R.string.timetable_notif), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
+                storage.notificationsForTimetable = it
+                OngoingNotificationService.update(this@SettingsActivity)
+            }
             settingsItem(getString(R.string.changes), showCheckBox = true, isChecked = storage.notificationsForChanges) {
                 storage.notificationsForChanges = it
             }
@@ -56,10 +60,6 @@ class SettingsActivity : AppThemedActivity() {
             }
             settingsItem(getString(R.string.holidays), showCheckBox = true, isChecked = storage.notificationsForHolidays) {
                 storage.notificationsForHolidays = it
-            }
-            settingsItem(getString(R.string.timetable), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
-                storage.notificationsForTimetable = it
-                OngoingNotificationService.update(this@SettingsActivity)
             }
         }
 
