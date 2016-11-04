@@ -1,9 +1,6 @@
 package com.ohelshem.app.controller.serialization
 
-import java.io.Closeable
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.File
+import java.io.*
 import java.util.*
 
 interface Deserializer<out T : Any> {
@@ -19,6 +16,7 @@ interface Serialization<T: Any> : Serializer<T>, Deserializer<T>
 interface SimpleWriter: Closeable {
     fun writeInt(value: Int)
     fun writeBool(value: Boolean)
+    fun writeByte(value: Int)
     fun writeString(value: String)
     fun writeLong(value: Long)
 }
@@ -26,6 +24,7 @@ interface SimpleWriter: Closeable {
 interface SimpleReader: Closeable {
     fun readInt(): Int
     fun readBool(): Boolean
+    fun readByte(): Byte
     fun readString(): String
     fun readLong(): Long
 }
@@ -67,6 +66,8 @@ fun <K : Any> Serialization<K>.ofList(): Serialization<List<K>> {
 class DataOutputStreamWriter(private val stream: DataOutputStream) : SimpleWriter {
     override fun writeInt(value: Int) = stream.writeInt(value)
 
+    override fun writeByte(value: Int) = stream.writeByte(value)
+
     override fun writeBool(value: Boolean) = stream.writeBoolean(value)
 
     override fun writeString(value: String) = stream.writeUTF(value)
@@ -79,6 +80,8 @@ class DataOutputStreamWriter(private val stream: DataOutputStream) : SimpleWrite
 class DataOutputStreamReader(private val stream: DataInputStream) : SimpleReader {
     override fun readInt(): Int = stream.readInt()
 
+    override fun readByte(): Byte = stream.readByte()
+
     override fun readBool(): Boolean = stream.readBoolean()
 
     override fun readString(): String = stream.readUTF()
@@ -90,3 +93,4 @@ class DataOutputStreamReader(private val stream: DataInputStream) : SimpleReader
 
 fun File.simpleWriter() = DataOutputStreamWriter(DataOutputStream(outputStream()))
 fun File.simpleReader() = DataOutputStreamReader(DataInputStream(inputStream()))
+fun InputStream.simpleReader() = DataOutputStreamReader(DataInputStream(this))

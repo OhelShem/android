@@ -14,6 +14,7 @@ import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.controller.storage.implementation.Contacts
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.injection.Modules
 import com.yoavst.changesystemohelshem.BuildConfig
@@ -37,6 +38,7 @@ class App : Application(), KodeinAware {
         instance = this
 
         Kotpref.init(this)
+        Contacts.init(this)
 
         initApi()
         initStorage()
