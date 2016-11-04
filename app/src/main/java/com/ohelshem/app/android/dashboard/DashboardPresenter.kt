@@ -32,6 +32,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DashboardPresenter(private val storage: Storage, private val timetableController: TimetableController) : BasePresenter<DashboardView>(), ApiController.Callback {
+    private val userClazz = storage.userData.clazz
     override fun onCreate() {
         update()
     }
@@ -40,13 +41,14 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
 
     fun update() {
         view?.apply {
+            val clazz = userClazz
             val hourData = timetableController.getHourData()
             showLessonInfo(hourData,
                     isEndOfDay = TimetableController.isEndOfDay(hourData.hour.hourOfDay, timetableController[hourData.hour.day - 1]),
                     isTomorrow = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
                             Calendar.getInstance().clearTime().timeInMillis,
                     isFuture = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis)
+                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = storage.changes?.filter { it.clazz == clazz })
             showTests(testsForWeek)
         }
     }

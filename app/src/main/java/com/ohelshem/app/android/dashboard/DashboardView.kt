@@ -18,11 +18,12 @@
 package com.ohelshem.app.android.dashboard
 
 import com.hannesdorfmann.mosby.mvp.MvpView
+import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.model.HourData
 
 interface DashboardView : MvpView {
-    fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean)
+    fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?)
 
     fun showTests(tests: List<Test>)
 }

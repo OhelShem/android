@@ -1,10 +1,7 @@
 package com.ohelshem.app.controller.storage.implementation
 
 import android.content.Context
-import com.ohelshem.app.controller.serialization.ContactSerialization
-import com.ohelshem.app.controller.serialization.SimpleReader
-import com.ohelshem.app.controller.serialization.ofList
-import com.ohelshem.app.controller.serialization.simpleReader
+import com.ohelshem.app.controller.serialization.*
 import com.ohelshem.app.controller.storage.ContactsProvider
 import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
@@ -35,7 +32,7 @@ object Contacts : ContactsProvider {
             if (clazz == -1) {
                 return serialization.deserialize(reader)
             } else {
-                return serialization.deserialize(reader).filter { it.clazz == clazz } // TODO improve performance
+                return serialization.filter { it.clazz == clazz }.deserialize(reader)
             }
         }
     }

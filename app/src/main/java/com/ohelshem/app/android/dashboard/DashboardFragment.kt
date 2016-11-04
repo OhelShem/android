@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
+import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.fromHtml
 import com.ohelshem.app.android.hide
@@ -33,7 +34,6 @@ import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
-import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
@@ -59,7 +59,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val instead by stringResource(R.string.instead)
     private val with by lazy { " " + getString(R.string.with) + " " }
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days)}
-    val storage: Storage by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -107,14 +106,14 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
 
 
-    override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean) {
+    override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
         try {
             progress.progress = data.progress
 
             var isChange = false
             if (!isFuture) {
-                storage.changes?.forEach {
-                    if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
+                changes?.forEach {
+                    if (it.hour - 1 == data.hour.hourOfDay) {
                         lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
                         currentLesson.backgroundColor = it.color
                         lessonName.textColor = Color.WHITE
@@ -133,8 +132,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             else {
                 var isNextChange = false
                 if (!isFuture) {
-                    storage.changes?.forEach {
-                        if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
+                    changes?.forEach {
+                        if (it.hour - 1 == data.nextHour.hourOfDay) {
                             nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
                             next_lesson.backgroundColor = it.color
                             nextLessonName.textColor = Color.WHITE
@@ -146,7 +145,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
                 if (!isNextChange) {
                     nextLessonName.text = if (data.nextHour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.nextHour.name + "</b>" + with + data.nextHour.teacher).fromHtml()
-
                 }
 
             }

@@ -11,9 +11,9 @@ interface Serializer<in T : Any> {
     fun serialize(writer: SimpleWriter, data: T)
 }
 
-interface Serialization<T: Any> : Serializer<T>, Deserializer<T>
+interface Serialization<T : Any> : Serializer<T>, Deserializer<T>
 
-interface SimpleWriter: Closeable {
+interface SimpleWriter : Closeable {
     fun writeInt(value: Int)
     fun writeBool(value: Boolean)
     fun writeByte(value: Int)
@@ -21,7 +21,7 @@ interface SimpleWriter: Closeable {
     fun writeLong(value: Long)
 }
 
-interface SimpleReader: Closeable {
+interface SimpleReader : Closeable {
     fun readInt(): Int
     fun readBool(): Boolean
     fun readByte(): Byte
@@ -52,16 +52,35 @@ inline fun <K> SimpleReader.readList(reading: () -> K): List<K> {
     return list
 }
 
-class ListSerialization<K : Any>(val serializer: Serializer<K>, val deserializer: Deserializer<K>) : Serialization<List<K>> {
+inline fun <K> SimpleReader.readListFiltered(reading: () -> K, filter: (K) -> Boolean): List<K> {
+    val length = readInt()
+    val list = ArrayList<K>(length / 10)
+    repeat(length) {
+        val value = reading()
+        if (filter(value))
+            list += value
+    }
+    return list
+}
+
+open class ListSerialization<K : Any>(val serializer: Serializer<K>, val deserializer: Deserializer<K>) : Serialization<List<K>> {
     override fun serialize(writer: SimpleWriter, data: List<K>) = writer.writeList(data) { serializer.serialize(writer, it) }
 
     override fun deserialize(reader: SimpleReader): List<K> = reader.readList { deserializer.deserialize(reader) }
 }
 
-fun <K : Any> Serialization<K>.ofList(): Serialization<List<K>> {
+class FilterListSerialization<K : Any>(val serialization: ListSerialization<K>, val filter: (K) -> Boolean) : Serialization<List<K>> by serialization {
+    override fun deserialize(reader: SimpleReader): List<K> {
+        return reader.readListFiltered({ serialization.deserializer.deserialize(reader) }, filter)
+    }
+}
+
+fun <K : Any> Serialization<K>.ofList(): ListSerialization<K> {
     @Suppress("UNCHECKED_CAST")
     return ListSerialization(this, this)
 }
+
+fun <K : Any> ListSerialization<K>.filter(filter: (K) -> Boolean) = FilterListSerialization(this, filter)
 
 class DataOutputStreamWriter(private val stream: DataOutputStream) : SimpleWriter {
     override fun writeInt(value: Int) = stream.writeInt(value)
