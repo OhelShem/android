@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingRight="?listPreferredItemPaddingRight"
+    android:paddingLeft="4dp"
+    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/more"
+        android:padding="4dp"
+        android:src="@drawable/ic_menu"
+        android:tint="?colorAccent"
+        tools:ignore="RtlHardcoded" />
+
+    <ImageView
+        android:id="@+id/dial"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/call"
+        android:padding="4dp"
+        android:src="@drawable/ic_call"
+        android:tint="?colorAccent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="יואב שטרנברג" />
+
+        <TextView
+            android:id="@+id/birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="right"
+            android:maxLines="1"
+            android:textSize="14sp"
+            tools:text="18/05/1999"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+</LinearLayout>

@@ -47,13 +47,15 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
     }
 
     private fun initTabs() {
-        val tabs = screenManager.inlineTabs
+        if (isShowingData) {
+            val tabs = screenManager.inlineTabs
 
-        if (tabs.tabCount == 0) {
-            tabs.setupWithViewPager(pager)
-            tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
-            tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_table)
-        }
+            if (tabs.tabCount == 0) {
+                tabs.setupWithViewPager(pager)
+                tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
+                tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_table)
+            }
+        } else setTitle()
     }
 
     override fun onError(error: UpdateError) {
