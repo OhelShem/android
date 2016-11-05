@@ -115,9 +115,10 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                     MaterialTapTargetPrompt.Builder(activity)
                             .setPrimaryText(R.string.intro_dashboard_primary_text)
                             .setSecondaryText(R.string.intro_dashboard_secondary_text)
-                            .setTarget(logoView)
+                            .setTarget(activity.bottomBar.getTabWithId(R.id.dashboard))
                             .setBackgroundColour(act.primaryColor)
                             .setAutoFinish(true)
+                            .setIcon(R.drawable.ic_home)
                             .setIconDrawableColourFilter(act.primaryDarkColor)
                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
                                 override fun onHidePromptComplete() {
