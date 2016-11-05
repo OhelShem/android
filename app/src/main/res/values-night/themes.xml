@@ -5,9 +5,7 @@
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
 
-        <item name="textColorPrimary" tools:ignore="PrivateResource">
-            @color/abc_primary_text_material_dark
-        </item>
+        <item name="textColorPrimary" tools:ignore="PrivateResource">@color/primary_text_default_material_light</item>
         <item name="cardColor">@color/cardview_dark_background</item>
         <item name="itemColor">#b900acc1</item>
     </style>

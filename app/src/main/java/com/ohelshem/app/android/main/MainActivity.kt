@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.design.widget.TabLayout
+import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
@@ -535,7 +536,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 .setPrimaryText(R.string.intro_menu_primary_text)
                 .setSecondaryText(R.string.intro_menu_secondary_text)
                 .setTarget(menuItem)
-                .setIcon(R.drawable.abc_ic_menu_overflow_material)
+                .setIconDrawable(VectorDrawableCompat.create(resources, R.drawable.abc_ic_menu_overflow_material, theme))
                 .setBackgroundColour(act.primaryColor)
                 .setAutoDismiss(false)
                 .setIconDrawableColourFilter(act.primaryDarkColor)
