@@ -28,6 +28,7 @@ import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.login.LoginActivity
+import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.TimetableFragment
@@ -273,6 +274,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 firstUpdate = false
             }
             updatables.forEach { it.onSuccess(apis) }
+            OngoingNotificationService.update(applicationContext)
             updateBadges()
         }
     }

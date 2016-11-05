@@ -22,7 +22,6 @@ import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.dates.TestsPresenter
 import com.ohelshem.app.android.dates.TestsView
-import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -64,6 +63,7 @@ class DatesCalendarFragment : BaseMvpFragment<TestsView, TestsPresenter>(), Test
                 }
             }
             if (!hasFound) {
+                clear()
                 for (holiday in TimetableController.Holidays) {
                     if (holiday.isOneDay()) {
                         if (time == holiday.startTime) {
@@ -89,7 +89,7 @@ class DatesCalendarFragment : BaseMvpFragment<TestsView, TestsPresenter>(), Test
                 indicator.text = "✓"
             else
                 indicator.text = ""
-        } else clear()
+        }
     }
 
     private fun update(holiday: Holiday?) {
