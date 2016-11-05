@@ -17,6 +17,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
 
     override fun init() {
         screenManager.screenTitle = ""
+        screenManager.setToolbarElevation(false)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
     }
