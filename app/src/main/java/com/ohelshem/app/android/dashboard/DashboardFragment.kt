@@ -23,15 +23,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
-import com.ohelshem.app.android.fromHtml
-import com.ohelshem.app.android.hide
-import com.ohelshem.app.android.show
-import com.ohelshem.app.android.stringResource
+import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.timetable.TimetableController
@@ -39,10 +37,13 @@ import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holid
 import com.ohelshem.app.model.HourData
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
+import kotlinx.android.synthetic.main.main.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.textResource
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -102,6 +103,109 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.text  = holiday.name
             holidayDate.text = if (holiday.isOneDay()) holiday.start.substring(0,5) else holiday.start.substring(0,5) + " - " + holiday.end.substring(0,5)
         }
+
+        try {
+
+            val logoView = dashboardLogo
+            logoView?.post {
+                if (true) { //TODO: firstTimeInDashboard
+                    MaterialTapTargetPrompt.Builder(activity)
+                            .setPrimaryText(R.string.intro_dashboard_primary_text)
+                            .setSecondaryText(R.string.intro_dashboard_secondary_text)
+                            .setTarget(logoView)
+                            .setBackgroundColour(act.primaryColor)
+                            .setAutoFinish(true)
+                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+                                override fun onHidePromptComplete() {
+
+                                }
+
+                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                    MaterialTapTargetPrompt.Builder(activity)
+                                            .setPrimaryText(R.string.intro_bottombar_timetable_primary_text)
+                                            .setSecondaryText(R.string.intro_bottombar_timetable_secondary_text)
+                                            .setTarget(activity.bottomBar.getTabWithId(R.id.timetable))
+                                            .setIcon(R.drawable.ic_timetable_blue)
+                                            .setBackgroundColour(act.primaryColor)
+                                            .setAutoFinish(true)
+                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                                                override fun onHidePromptComplete() {
+                                                }
+
+                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+
+                                                    MaterialTapTargetPrompt.Builder(activity)
+                                                            .setPrimaryText(R.string.intro_bottombar_changes_primary_text)
+                                                            .setSecondaryText(R.string.intro_bottombar_changes_secondary_text)
+                                                            .setTarget(activity.bottomBar.getTabWithId(R.id.changes))
+                                                            .setIcon(R.drawable.ic_track_changes_blue)
+                                                            .setBackgroundColour(act.primaryColor)
+                                                            .setAutoFinish(true)
+                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                                                                override fun onHidePromptComplete() {
+                                                                }
+
+                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+
+                                                                    MaterialTapTargetPrompt.Builder(activity)
+                                                                            .setPrimaryText(R.string.intro_bottombar_dates_primary_text)
+                                                                            .setSecondaryText(R.string.intro_bottombar_dates_secondary_text)
+                                                                            .setTarget(activity.bottomBar.getTabWithId(R.id.dates))
+                                                                            .setIcon(R.drawable.ic_calendar_blue)
+                                                                            .setBackgroundColour(act.primaryColor)
+                                                                            .setAutoFinish(true)
+                                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                                                                                override fun onHidePromptComplete() {
+                                                                                }
+
+                                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+
+                                                                                    MaterialTapTargetPrompt.Builder(activity)
+                                                                                            .setPrimaryText(R.string.intro_menu_primary_text)
+                                                                                            .setSecondaryText(R.string.intro_menu_secondary_text)
+                                                                                            .setTarget(activity.toolbar.getChildAt(2))
+                                                                                            .setIcon(R.drawable.abc_ic_menu_overflow_material)
+                                                                                            .setBackgroundColour(act.primaryColor)
+                                                                                            .setAutoFinish(true)
+                                                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                                                                                                override fun onHidePromptComplete() {
+                                                                                                }
+
+                                                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                                                                                    //TODO: firstTimeInDashboard = false
+                                                                                                }
+                                                                                            })
+                                                                                            .show()
+
+                                                                                }
+                                                                            })
+                                                                            .show()
+
+
+
+                                                                }
+                                                            })
+                                                            .show()
+
+                                                }
+                                            })
+                                            .show()
+                                }
+
+                            }).show()
+
+                }
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+
     }
 
 

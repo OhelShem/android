@@ -206,10 +206,27 @@
     </string-array>
 
     <!-- Intro -->
-    <string name="intro_drawer_primary_text">הכל נמצא כאן</string>
-    <string name="intro_drawer_secondary_text">מערכת שינויים אישית ושכבתית, מערכת שעות, מבחנים, חגים ומועדים, התקנון וההגדרות. הכל נמצא כאן.</string>
+    <string name="intro_dashboard_primary_text">חידשנו כאן!</string>
+    <string name="intro_dashboard_secondary_text">אבודים קצת? בואו נחזיר אתכם לעניינים</string>
+
+    <string name="intro_bottombar_timetable_primary_text">מערכת שעות</string>
+    <string name="intro_bottombar_timetable_secondary_text">לחצו פעם אחת למערכת השעות הרגילה, ופעמיים למערכת השבועית</string>
+
+    <string name="intro_bottombar_changes_primary_text">שינויים</string>
+    <string name="intro_bottombar_changes_secondary_text">מעכשיו ניתן לשתף את השינויים השכבתיים כתמונה</string> <!--TODO find a better message for changes-->
+
+    <string name="intro_bottombar_dates_primary_text">חדש: מועדים</string>
+    <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
+
+    <string name="intro_bottombar_contacts_primary_text">חדש: אנשי קשר</string>
+    <string name="intro_bottombar_contacts_secondary_text"></string> <!--TODO add text to contacts intro-->
+
+    <string name="intro_menu_primary_text">רגע, זה לא הכל!</string>
+    <string name="intro_menu_secondary_text">הגדרות ומידע נוסף אפשר למצוא פה</string>
+
     <string name="intro_timetable_primary_text">הכוח בידך</string>
     <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>
+
     <string name="intro_overrides_primary_text">חשוב לגבות</string>
     <string name="intro_overrides_secondary_text">מי יודע מה צופן העתיד? רעידת אדמה עלולה להשמיד עיר שלמה באפריקה. אז כדאי שתגבה את העריכות שעשית ליתר ביטחון.</string>
 

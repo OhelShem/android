@@ -11,14 +11,11 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Spinner
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
-import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.instance
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
-import com.ohelshem.app.android.App
 import com.ohelshem.app.android.changes.ChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.dashboard.DashboardFragment
@@ -414,7 +411,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         if (storage.firstTimeInApp) {
             // FIXME
         }
-        if (App.updatedFromVersion != -1) {
+        /*if (App.updatedFromVersion != -1) {
             App.updatedFromVersion = -1
             MaterialStyledDialog.Builder(this)
                     .setStyle(Style.HEADER_WITH_TITLE)
@@ -422,7 +419,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
                     .setPositiveText(android.R.string.ok)
                     .show()
-        }
+        }*/
     }
 
     private val RegulationFile by lazy { File(File(filesDir, SharingFolder).apply { mkdirs() }, RegulationFilename) }
