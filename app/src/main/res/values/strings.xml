@@ -226,10 +226,10 @@
     <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
 
     <string name="intro_bottombar_contacts_primary_text">חדש: הכיתה שלי</string>
-    <string name="intro_bottombar_contacts_secondary_text">מספרי טלפון, ימי הולדת ועוד</string> <!--TODO find a better message for contacts-->
+    <string name="intro_bottombar_contacts_secondary_text">מספרי טלפון, ימי הולדת ועוד</string>
 
     <string name="intro_menu_primary_text">רגע, זה לא הכל!</string>
-    <string name="intro_menu_secondary_text">הגדרות ומידע נוסף אפשר למצוא פה</string> <!--TODO find a better message for menu-->
+    <string name="intro_menu_secondary_text">ערכות נושא צבעוניות, הגדרות ומידע נוסף אפשר למצוא פה</string>
 
     <string name="intro_timetable_primary_text">הכוח בידך</string>
     <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>
