@@ -30,6 +30,7 @@ import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
+import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.UIStorage
@@ -60,6 +61,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val instead by stringResource(R.string.instead)
     private val with by lazy { " " + getString(R.string.with) + " " }
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
+
+    private val defaultTextColor by lazy { AttributeExtractor.extractPrimaryTextColorFrom(context) }
 
     private val storage: UIStorage by kodein.instance()
 
@@ -137,16 +140,16 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             progress.progress = data.progress
 
             //reset colors
-            currentLesson.backgroundColor = Color.WHITE
-            lessonName.textColor = lessonName.textColors.defaultColor
-            timeLeft.textColor = timeLeft.textColors.defaultColor //TODO fixme
-            hourIcon.setColorFilter(Color.BLACK)
+            currentLesson.backgroundColor = Color.TRANSPARENT
+            lessonName.textColor = defaultTextColor
+            timeLeft.textColor = defaultTextColor
+            hourIcon.setColorFilter(defaultTextColor)
 
             firstSpace.backgroundColor = Color.parseColor("#e0e0e0")
 
-            next_lesson.backgroundColor = Color.WHITE
-            nextLessonName.textColor = nextLessonName.textColors.defaultColor
-            nextHourIcon.setColorFilter(Color.BLACK)
+            next_lesson.backgroundColor = Color.TRANSPARENT
+            nextLessonName.textColor = defaultTextColor
+            nextHourIcon.setColorFilter(defaultTextColor)
 
 
             var isChange = false

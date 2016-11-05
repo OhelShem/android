@@ -19,7 +19,7 @@
     <string name="timetable">מערכת שעות</string>
     <string name="timetable_notif">סדר יום</string>
     <string name="dates">מועדים</string>
-    <string name="contacts">הכיתה שלך</string>
+    <string name="contacts">הכיתה שלי</string>
     <string name="tests">מבחנים</string>
     <string name="messages">הודעות</string>
     <string name="help">עזרה</string>
@@ -97,6 +97,7 @@
     <string name="days_left_to_next_test">ימים למבחן הבא</string>
     <string name="old_test">מבחנים ישנים</string>
     <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
+    <string name="ok">OK</string>
     
     <!-- Contacts -->
     <string name="students">תלמידים</string>
@@ -224,7 +225,7 @@
     <string name="intro_bottombar_dates_primary_text">חדש: מועדים</string>
     <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
 
-    <string name="intro_bottombar_contacts_primary_text">חדש: הכיתה שלך</string>
+    <string name="intro_bottombar_contacts_primary_text">חדש: הכיתה שלי</string>
     <string name="intro_bottombar_contacts_secondary_text">מספרי טלפון, ימי הולדת ועוד</string> <!--TODO find a better message for contacts-->
 
     <string name="intro_menu_primary_text">רגע, זה לא הכל!</string>

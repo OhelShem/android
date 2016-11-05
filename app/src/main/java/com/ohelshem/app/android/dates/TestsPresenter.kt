@@ -17,13 +17,14 @@
 
 package com.ohelshem.app.android.dates
 
+import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
 
-class TestsPresenter(val storage: Storage) : BasePresenter<TestsView>(), ApiController.Callback {
+class TestsPresenter(private val storage: Storage) : BasePresenter<TestsView>(), ApiController.Callback {
     override fun onSuccess(apis: Set<UpdatedApi>) {
         if (UpdatedApi.Tests in apis)
             load()
@@ -34,8 +35,11 @@ class TestsPresenter(val storage: Storage) : BasePresenter<TestsView>(), ApiCont
     }
 
     private fun load() {
-        view?.update(storage.tests ?: emptyList())
+        view?.update(tests)
     }
+
+    val tests: List<Test>
+        get() = storage.tests ?: emptyList()
 
     override fun onDestroy() = Unit // ignored
 

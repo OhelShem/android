@@ -24,24 +24,36 @@ import android.net.Uri
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuInflater
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.instance
 import com.ohelshem.api.model.Test
-import com.ohelshem.app.android.dates.calendar.DatesCalendarFragment
+import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.dates.list.HolidaysListFragment
 import com.ohelshem.app.android.drawableRes
+import com.ohelshem.app.android.primaryColor
+import com.ohelshem.app.android.show
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.android.utils.view.OneDayDecorator
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.timetable.TimetableController
+import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.daysBetween
 import com.ohelshem.app.toCalendar
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import com.yoavst.changesystemohelshem.R
+import kotlinx.android.synthetic.main.calendar_fragment.view.*
 import kotlinx.android.synthetic.main.dates_fragment.*
-import org.jetbrains.anko.support.v4.onPageChangeListener
+import org.jetbrains.anko.onClick
+import org.jetbrains.anko.support.v4.act
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -52,20 +64,25 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
 
     private val isTablet by lazy { resources.getBoolean(R.bool.isTablet) }
 
+    private var dialog: AlertDialog? = null
+
     override fun init() {
         screenManager.setToolbarElevation(false)
         screenManager.screenTitle = getString(R.string.tests)
 
         initPager()
         initFragments()
+
+        calendar.onClick {
+            openCalendarView()
+        }
     }
 
     private fun initTabs() {
         val tabs = screenManager.inlineTabs
         tabs.setupWithViewPager(pager)
         tabs.getTabAt(0)!!.icon = drawableRes(R.drawable.ic_list)
-        tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_calendar)
-        tabs.getTabAt(2)!!.icon = drawableRes(R.drawable.ic_beach)
+        tabs.getTabAt(1)!!.icon = drawableRes(R.drawable.ic_beach)
 
     }
 
@@ -73,15 +90,6 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
         // portrait
         if (pager != null) {
             pager.adapter = DatesFragmentAdapter(childFragmentManager)
-            pager.onPageChangeListener {
-                onPageSelected {
-                    if (it == 1 && !isTablet) {
-                        appBarLayout?.setExpanded(false, true)
-                    } else if (it == 0 && !isTablet) {
-                        appBarLayout?.setExpanded(true, true)
-                    }
-                }
-            }
             initTabs()
         }
     }
@@ -122,13 +130,13 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
     }
 
     class DatesFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+
         override fun getItem(position: Int): Fragment {
             return if (position == 0) DatesListFragment()
-            else if (position == 2) HolidaysListFragment()
-            else DatesCalendarFragment()
+            else HolidaysListFragment()
         }
 
-        override fun getCount(): Int = 3
+        override fun getCount(): Int = 2
 
     }
 
@@ -163,6 +171,96 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
             }
     }
 
+    override fun onPause() {
+        super.onPause()
+        dialog?.dismiss()
+        dialog = null
+    }
+
+    private val TestsDateFormat = SimpleDateFormat("dd/MM/yy")
+    private fun openCalendarView() {
+        val tests = presenter.tests
+        val view = act.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
+        val calendarView = view.calendarView
+        val title = view.title
+        val extra = view.extra
+        val indicator = view.indicator
+        val data = view.data
+        val now = System.currentTimeMillis()
+
+        fun update(test: Test) {
+            data.show()
+            title.text = test.content
+            extra.text = TestsDateFormat.format(Date(test.date))
+            if (now > test.date)
+                indicator.text = "✓"
+            else
+                indicator.text = ""
+        }
+
+        fun update(holiday: Holiday) {
+            data.show()
+            title.text = holiday.name
+            if (holiday.isOneDay())
+                extra.text = holiday.start
+            else
+                extra.text = holiday.start + " - " + holiday.end
+
+            if (now > holiday.startTime)
+                indicator.text = "✓"
+            else
+                indicator.text = ""
+        }
+
+        fun clear() {
+            title.text = ""
+            extra.text = ""
+            indicator.text = ""
+        }
+
+        calendarView.currentDate = CalendarDay.today()
+        calendarView.state().edit().apply {
+            setMinimumDate(CalendarDay.from(TimetableController.StartOfTheYear))
+            setMaximumDate(CalendarDay.from(Date(TimetableController.Summer.endTime)))
+        }.commit()
+        calendarView.setOnDateChangedListener { materialCalendarView, calendarDay, selected ->
+            var hasFound = false
+            val time = calendarDay.date.time
+            for (test in tests) {
+                if (test.date == time) {
+                    update(test)
+                    hasFound = true
+                    break
+                }
+            }
+            if (!hasFound) {
+                clear()
+                for (holiday in TimetableController.Holidays) {
+                    if (holiday.isOneDay()) {
+                        if (time == holiday.startTime) {
+                            update(holiday)
+                            break
+                        }
+                    } else {
+                        if (time >= holiday.startTime && time <= holiday.endTime) {
+                            update(holiday)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        calendarView.addDecorator(HolidayDecorator.generate(context, TimetableController.Holidays))
+        calendarView.addDecorator(TestDecorator(context.primaryColor, tests))
+        calendarView.addDecorator(OneDayDecorator())
+
+
+        dialog = AlertDialog.Builder(context)
+                .setNeutralButton(R.string.ok) { dialog, id -> dialog.dismiss() }
+                .setView(view)
+                .show()
+    }
+
     private fun isGraderInstalled(): Boolean {
         try {
             context.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
@@ -178,6 +276,18 @@ class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
+        }
+    }
+
+    private class TestDecorator(private val color: Int, val tests: List<Test>) : DayViewDecorator {
+
+        override fun shouldDecorate(day: CalendarDay): Boolean {
+            val time = day.date.time
+            return tests.any { it.date == time }
+        }
+
+        override fun decorate(view: DayViewFacade) {
+            view.addSpan(DotSpan(10f, color))
         }
     }
 }

@@ -13,6 +13,7 @@ object AttributeExtractor {
     private val PRIMARY = intArrayOf(R.attr.colorPrimary)
     private val ACCENT = intArrayOf(R.attr.colorAccent)
     private val RIPPLE = intArrayOf(R.attr.rippleColor)
+    private val PRIMARY_TEXT_COLOR = intArrayOf(R.attr.textColorPrimary)
 
     /**
      * Extracts the colorPrimary color attribute of the passing Context's theme
@@ -36,6 +37,14 @@ object AttributeExtractor {
     @ColorInt
     fun extractPrimaryLightColorFrom(context: Context): Int {
         return extractIntAttribute(context, PRIMARY_LIGHT)
+    }
+
+    /**
+     * Extracts the textColorPrimary color attribute of the passing Context's theme
+     */
+    @ColorInt
+    fun extractPrimaryTextColorFrom(context: Context): Int {
+        return extractIntAttribute(context, PRIMARY_TEXT_COLOR)
     }
 
 
