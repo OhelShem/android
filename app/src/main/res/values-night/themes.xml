@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Theme.Base" parent="Theme.Base.Api">
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
 
-        <item name="textColorPrimary">@android:color/white</item>
+        <item name="textColorPrimary" tools:ignore="PrivateResource">
+            @color/abc_primary_text_material_dark
+        </item>
         <item name="cardColor">@color/cardview_dark_background</item>
         <item name="itemColor">#b900acc1</item>
     </style>

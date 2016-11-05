@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_calendar"
-        app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom|left|start" />
+        android:layout_gravity="center_horizontal|bottom" />
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
