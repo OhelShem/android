@@ -54,7 +54,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
     }
 
     override fun onSuccess(apis: Set<UpdatedApi>) {
-        if (UpdatedApi.Tests in apis || UpdatedApi.Timetable in apis) update()
+        if (UpdatedApi.Tests in apis || UpdatedApi.Timetable in apis || UpdatedApi.Changes in apis) update()
     }
 
     override fun onFail(error: UpdateError) = Unit // Ignored

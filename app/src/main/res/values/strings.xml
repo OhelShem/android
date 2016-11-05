@@ -101,6 +101,8 @@
     <!-- Contacts -->
     <string name="students">תלמידים</string>
     <string name="call">התקשר</string>
+    <string name="add_to_contacts">הוסף לאנשי הקשר</string>
+    <string name="send_sms">שלח הודעה</string>
     <string name="more">עוד אפשרויות</string>
 
 

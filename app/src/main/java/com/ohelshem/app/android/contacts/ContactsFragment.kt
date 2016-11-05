@@ -24,7 +24,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     override fun showContacts(layer: Int, clazz: Int, contacts: List<Contact>) {
         studentsInClass.text = contacts.size.toString()
         classname.text = stringArrayRes(R.array.layers)[layer - 9] + clazz
-        recyclerView.adapter = ContactsAdapter(contacts) {
+        recyclerView.adapter = ContactsAdapter(activity, contacts) {
             makeCall(it.phone)
         }
     }
