@@ -18,6 +18,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.changes.ChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesGenerator
+import com.ohelshem.app.android.contacts.ContactsFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.TestsFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
@@ -31,7 +32,6 @@ import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
-import com.ohelshem.app.android.utils.EmptyFragment
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfoImpl
 import com.ohelshem.app.controller.storage.DeveloperOptions
@@ -185,7 +185,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         setSupportActionBar(toolbar)
         fragmentSwitcher.adapter = FragmentArrayPagerAdapter<Fragment>(supportFragmentManager).apply {
             addAll(
-                    EmptyFragment(),
+                    ContactsFragment(),
                     TestsFragment(),
                     ChangesFragment(),
                     TimetableFragment(),
