@@ -273,7 +273,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             FilesFolder.mkdir()
     }
 
-    private val Files: Array<File> by lazy { arrayOf(TimetableDataFile, TimetableDataFile, TimetableOverridesFileV4, TimetableOverridesFileBackup) }
+    private val Files: Array<File> by lazy { arrayOf(TimetableDataFile, TimetableDataFile, TimetableOverridesFile, TimetableOverridesFileBackup) }
 
     private val FilesFolder: File by lazy { context.filesDir }
 

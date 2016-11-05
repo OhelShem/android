@@ -30,4 +30,6 @@ interface TopNavigationScreenManager: ScreenManager {
      * returns the top navigation view, currently a spinner.
      */
     val inlineTabs: TabLayout
+
+    fun startTour()
 }

@@ -10,12 +10,16 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.widget.Spinner
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
+import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.instance
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.android.*
 import com.ohelshem.app.android.changes.ChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.contacts.ContactsFragment
@@ -23,11 +27,9 @@ import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.TestsFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
-import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
-import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -47,6 +49,7 @@ import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
 import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -178,7 +181,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     //endregion
 
     //region Navigation
-    private val fragmentPosition: Map<ScreenType, Int> = mapOf(ScreenType.Dashboard to 4,ScreenType.Timetable to 3, ScreenType.Changes to 2, ScreenType.Dates to 1, ScreenType.Contacts to 0)
+    private val fragmentPosition: Map<ScreenType, Int> = mapOf(ScreenType.Dashboard to 4, ScreenType.Timetable to 3, ScreenType.Changes to 2, ScreenType.Dates to 1, ScreenType.Contacts to 0)
+
     //positions are flipped to allow RTL bottom bar layout
     private fun initNavigation() {
         toolbar.title = ""
@@ -216,7 +220,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun setScreenInternal(screen: ScreenType) {
         fragmentSwitcher.currentItem = fragmentPosition[screen]!!
-        (fragmentSwitcher.currentFragment as? BaseMvpFragment<*,*>)?.onBecomingVisible()
+        (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onBecomingVisible()
     }
 
     private fun setSelected(screen: ScreenType) {
@@ -407,11 +411,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
     //endregion
 
+    //region Intro
     private fun showIntro() {
-        if (storage.firstTimeInApp) {
-            // FIXME
-        }
-        /*if (App.updatedFromVersion != -1) {
+        if (App.updatedFromVersion != -1) {
             App.updatedFromVersion = -1
             MaterialStyledDialog.Builder(this)
                     .setStyle(Style.HEADER_WITH_TITLE)
@@ -419,10 +421,143 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
                     .setPositiveText(android.R.string.ok)
                     .show()
-        }*/
+        }
     }
 
-    private val RegulationFile by lazy { File(File(filesDir, SharingFolder).apply { mkdirs() }, RegulationFilename) }
+    override fun startTour() {
+        introTimetable()
+    }
+
+    private fun introTimetable() {
+        var prompt: MaterialTapTargetPrompt? = null
+        prompt = MaterialTapTargetPrompt.Builder(this)
+                .setPrimaryText(R.string.intro_bottombar_timetable_primary_text)
+                .setSecondaryText(R.string.intro_bottombar_timetable_secondary_text)
+                .setTarget(bottomBar.getTabWithId(R.id.timetable))
+                .setIcon(R.drawable.ic_timetable_blue)
+                .setBackgroundColour(act.primaryColor)
+                .setCaptureTouchEventOutsidePrompt(true)
+                .setAutoDismiss(false)
+                .setIconDrawableColourFilter(act.primaryDarkColor)
+                .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                    override fun onHidePromptComplete() {
+                        introChanges()
+                    }
+
+                    override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                        if (tappedTarget) {
+                            prompt?.finish()
+                        }
+                    }
+                }).show()
+    }
+
+    private fun introChanges() {
+        var prompt: MaterialTapTargetPrompt? = null
+        prompt = MaterialTapTargetPrompt.Builder(this)
+                .setPrimaryText(R.string.intro_bottombar_changes_primary_text)
+                .setSecondaryText(R.string.intro_bottombar_changes_secondary_text)
+                .setTarget(bottomBar.getTabWithId(R.id.changes))
+                .setIcon(R.drawable.ic_track_changes_blue)
+                .setBackgroundColour(act.primaryColor)
+                .setCaptureTouchEventOutsidePrompt(true)
+                .setAutoDismiss(false)
+                .setIconDrawableColourFilter(act.primaryDarkColor)
+                .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                    override fun onHidePromptComplete() {
+                        introDates()
+                    }
+
+                    override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                        if (tappedTarget) {
+                            prompt?.finish()
+                        }
+                    }
+                }).show()
+    }
+
+    private fun introDates() {
+        var prompt: MaterialTapTargetPrompt? = null
+        prompt = MaterialTapTargetPrompt.Builder(this)
+                .setPrimaryText(R.string.intro_bottombar_dates_primary_text)
+                .setSecondaryText(R.string.intro_bottombar_dates_secondary_text)
+                .setTarget(bottomBar.getTabWithId(R.id.dates))
+                .setIcon(R.drawable.ic_calendar_blue)
+                .setBackgroundColour(act.primaryColor)
+                .setCaptureTouchEventOutsidePrompt(true)
+                .setAutoDismiss(false)
+                .setIconDrawableColourFilter(act.primaryDarkColor)
+                .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                    override fun onHidePromptComplete() {
+                        introContacts()
+                    }
+
+                    override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                        if (tappedTarget) {
+                            prompt?.finish()
+                        }
+                    }
+                }).show()
+    }
+
+    private fun introContacts() {
+        var prompt: MaterialTapTargetPrompt? = null
+        prompt = MaterialTapTargetPrompt.Builder(this)
+                .setPrimaryText(R.string.intro_bottombar_contacts_primary_text)
+                .setSecondaryText(R.string.intro_bottombar_contacts_secondary_text)
+                .setTarget(bottomBar.getTabWithId(R.id.contacts))
+                .setIcon(R.drawable.ic_contacts)
+                .setBackgroundColour(act.primaryColor)
+                .setCaptureTouchEventOutsidePrompt(true)
+                .setAutoDismiss(false)
+                .setIconDrawableColourFilter(act.primaryDarkColor)
+                .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                    override fun onHidePromptComplete() {
+                        introMenu()
+                    }
+
+                    override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                        if (tappedTarget) {
+                            prompt?.finish()
+                        }
+                    }
+                }).show()
+    }
+
+    private fun introMenu() {
+        val menuItem = toolbar.getChildAt(2).childrenSequence().last()
+        var prompt: MaterialTapTargetPrompt? = null
+        prompt = MaterialTapTargetPrompt.Builder(this)
+                .setPrimaryText(R.string.intro_menu_primary_text)
+                .setSecondaryText(R.string.intro_menu_secondary_text)
+                .setTarget(menuItem)
+                .setIcon(R.drawable.abc_ic_menu_overflow_material)
+                .setBackgroundColour(act.primaryColor)
+                .setAutoDismiss(false)
+                .setIconDrawableColourFilter(act.primaryDarkColor)
+                .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                    override fun onHidePromptComplete() {
+                    }
+
+                    override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                        if (tappedTarget) {
+                            prompt?.finish()
+                            storage.firstTimeInApp = false
+                        }
+                    }
+                })
+                .show()
+    }
+
+//endregion
+
+    private
+    val RegulationFile by lazy { File(File(filesDir, SharingFolder).apply { mkdirs() }, RegulationFilename) }
 
     companion object {
         private const val CallbackId = 75

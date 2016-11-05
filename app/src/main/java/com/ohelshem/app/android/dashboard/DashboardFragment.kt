@@ -32,13 +32,12 @@ import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
-import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
-import kotlinx.android.synthetic.main.main.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.support.v4.act
@@ -60,9 +59,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val endOfDay by stringResource(R.string.end_of_day)
     private val instead by stringResource(R.string.instead)
     private val with by lazy { " " + getString(R.string.with) + " " }
-    private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days)}
+    private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
 
-    private val storage: Storage by kodein.instance()
+    private val storage: UIStorage by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -103,137 +102,34 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (holiday == null) holiday = TimetableController.Holidays.firstOrNull { it.startTime > time }
             if (holiday == null) holiday = TimetableController.Summer
 
-            holidayText.text  = holiday.name
-            holidayDate.text = if (holiday.isOneDay()) holiday.start.substring(0,5) else holiday.start.substring(0,5) + " - " + holiday.end.substring(0,5)
+            holidayText.text = holiday.name
+            holidayDate.text = if (holiday.isOneDay()) holiday.start.substring(0, 5) else holiday.start.substring(0, 5) + " - " + holiday.end.substring(0, 5)
         }
 
-        try {
+        if (storage.firstTimeInApp)
+            dashboardLogo?.post {
+                var prompt: MaterialTapTargetPrompt? = null
+                prompt = MaterialTapTargetPrompt.Builder(act)
+                        .setPrimaryText(R.string.intro_dashboard_primary_text)
+                        .setSecondaryText(R.string.intro_dashboard_secondary_text)
+                        .setTarget(dashboardLogo)
+                        .setBackgroundColour(act.primaryColor)
+                        .setCaptureTouchEventOutsidePrompt(true)
+                        .setAutoFinish(false)
+                        .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+                            override fun onHidePromptComplete() {
+                                screenManager.startTour()
+                            }
 
-            val logoView = dashboardLogo
-            logoView?.post {
-                if (storage.firstTimeInDashboard) {
-                    MaterialTapTargetPrompt.Builder(activity)
-                            .setPrimaryText(R.string.intro_dashboard_primary_text)
-                            .setSecondaryText(R.string.intro_dashboard_secondary_text)
-                            .setTarget(activity.bottomBar.getTabWithId(R.id.dashboard))
-                            .setBackgroundColour(act.primaryColor)
-                            .setAutoFinish(true)
-                            .setIcon(R.drawable.ic_home)
-                            .setIconDrawableColourFilter(act.primaryDarkColor)
-                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-                                override fun onHidePromptComplete() {
-
+                            override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                if (tappedTarget) {
+                                    prompt?.finish()
                                 }
-
-                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-                                    MaterialTapTargetPrompt.Builder(activity)
-                                            .setPrimaryText(R.string.intro_bottombar_timetable_primary_text)
-                                            .setSecondaryText(R.string.intro_bottombar_timetable_secondary_text)
-                                            .setTarget(activity.bottomBar.getTabWithId(R.id.timetable))
-                                            .setIcon(R.drawable.ic_timetable_blue)
-                                            .setBackgroundColour(act.primaryColor)
-                                            .setAutoFinish(true)
-                                            .setIconDrawableColourFilter(act.primaryDarkColor)
-                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-
-                                                override fun onHidePromptComplete() {
-                                                }
-
-                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-
-                                                    MaterialTapTargetPrompt.Builder(activity)
-                                                            .setPrimaryText(R.string.intro_bottombar_changes_primary_text)
-                                                            .setSecondaryText(R.string.intro_bottombar_changes_secondary_text)
-                                                            .setTarget(activity.bottomBar.getTabWithId(R.id.changes))
-                                                            .setIcon(R.drawable.ic_track_changes_blue)
-                                                            .setBackgroundColour(act.primaryColor)
-                                                            .setAutoFinish(true)
-                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
-                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-
-                                                                override fun onHidePromptComplete() {
-                                                                }
-
-                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-
-                                                                    MaterialTapTargetPrompt.Builder(activity)
-                                                                            .setPrimaryText(R.string.intro_bottombar_dates_primary_text)
-                                                                            .setSecondaryText(R.string.intro_bottombar_dates_secondary_text)
-                                                                            .setTarget(activity.bottomBar.getTabWithId(R.id.dates))
-                                                                            .setIcon(R.drawable.ic_calendar_blue)
-                                                                            .setBackgroundColour(act.primaryColor)
-                                                                            .setAutoFinish(true)
-                                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
-                                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-
-                                                                                override fun onHidePromptComplete() {
-                                                                                }
-
-                                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-
-                                                                                    MaterialTapTargetPrompt.Builder(activity)
-                                                                                            .setPrimaryText(R.string.intro_bottombar_contacts_primary_text)
-                                                                                            .setSecondaryText(R.string.intro_bottombar_contacts_secondary_text)
-                                                                                            .setTarget(activity.bottomBar.getTabWithId(R.id.contacts))
-                                                                                            .setIcon(R.drawable.ic_contacts)
-                                                                                            .setBackgroundColour(act.primaryColor)
-                                                                                            .setAutoFinish(true)
-                                                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
-                                                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-
-                                                                                                override fun onHidePromptComplete() {
-                                                                                                }
-
-                                                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-                                                                                                    MaterialTapTargetPrompt.Builder(activity)
-                                                                                                            .setPrimaryText(R.string.intro_menu_primary_text)
-                                                                                                            .setSecondaryText(R.string.intro_menu_secondary_text)
-                                                                                                            .setTarget(activity.toolbar.getChildAt(2))
-                                                                                                            .setIcon(R.drawable.abc_ic_menu_overflow_material)
-                                                                                                            .setBackgroundColour(act.primaryColor)
-                                                                                                            .setAutoFinish(true)
-                                                                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
-                                                                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-
-                                                                                                                override fun onHidePromptComplete() {
-                                                                                                                }
-
-                                                                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-                                                                                                                    storage.firstTimeInDashboard = false
-                                                                                                                }
-                                                                                                            })
-                                                                                                            .show()
-                                                                                                }
-                                                                                            })
-                                                                                            .show()
-
-                                                                                }
-                                                                            })
-                                                                            .show()
-
-
-
-                                                                }
-                                                            })
-                                                            .show()
-
-                                                }
-                                            })
-                                            .show()
-                                }
-
-                            }).show()
-
-                }
+                            }
+                        }).show()
             }
 
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
     }
-
 
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
@@ -282,7 +178,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
 
             if (isFuture)
-                timeLeft.text = daysOfWeek[data.hour.day-1]
+                timeLeft.text = daysOfWeek[data.hour.day - 1]
             else if (isTomorrow)
                 timeLeft.text = tomorrow
             else if (data.isBefore)

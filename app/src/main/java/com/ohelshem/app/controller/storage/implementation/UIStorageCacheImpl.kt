@@ -16,18 +16,7 @@ class UIStorageCacheImpl(private val storage: UIStorage): UIStorage by storage {
             storage.firstTimeInApp = value
         }
 
-    private var _firstTimeInTimetable: Boolean? = null
 
-    override var firstTimeInTimetable: Boolean
-        get() {
-            if (_firstTimeInTimetable == null)
-                _firstTimeInTimetable = storage.firstTimeInTimetable
-            return _firstTimeInTimetable!!
-        }
-        set(value) {
-            _firstTimeInTimetable = value
-            storage.firstTimeInTimetable = value
-        }
 
     private var _firstTimeInOverridesManager: Boolean? = null
 
@@ -44,7 +33,6 @@ class UIStorageCacheImpl(private val storage: UIStorage): UIStorage by storage {
 
     override fun clean() {
         _firstTimeInApp = null
-        _firstTimeInTimetable = null
         _firstTimeInOverridesManager = null
         storage.clean()
     }
