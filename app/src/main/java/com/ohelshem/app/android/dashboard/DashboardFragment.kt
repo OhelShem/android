@@ -32,6 +32,7 @@ import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
@@ -60,6 +61,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val instead by stringResource(R.string.instead)
     private val with by lazy { " " + getString(R.string.with) + " " }
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days)}
+
+    private val storage: Storage by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -108,13 +111,14 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
             val logoView = dashboardLogo
             logoView?.post {
-                if (true) { //TODO: firstTimeInDashboard
+                if (storage.firstTimeInDashboard) {
                     MaterialTapTargetPrompt.Builder(activity)
                             .setPrimaryText(R.string.intro_dashboard_primary_text)
                             .setSecondaryText(R.string.intro_dashboard_secondary_text)
                             .setTarget(logoView)
                             .setBackgroundColour(act.primaryColor)
                             .setAutoFinish(true)
+                            .setIconDrawableColourFilter(act.primaryDarkColor)
                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
                                 override fun onHidePromptComplete() {
 
@@ -128,6 +132,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                                             .setIcon(R.drawable.ic_timetable_blue)
                                             .setBackgroundColour(act.primaryColor)
                                             .setAutoFinish(true)
+                                            .setIconDrawableColourFilter(act.primaryDarkColor)
                                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
                                                 override fun onHidePromptComplete() {
@@ -142,6 +147,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                                                             .setIcon(R.drawable.ic_track_changes_blue)
                                                             .setBackgroundColour(act.primaryColor)
                                                             .setAutoFinish(true)
+                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
                                                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
                                                                 override fun onHidePromptComplete() {
@@ -156,6 +162,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                                                                             .setIcon(R.drawable.ic_calendar_blue)
                                                                             .setBackgroundColour(act.primaryColor)
                                                                             .setAutoFinish(true)
+                                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
                                                                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
                                                                                 override fun onHidePromptComplete() {
@@ -164,19 +171,37 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                                                                                 override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
 
                                                                                     MaterialTapTargetPrompt.Builder(activity)
-                                                                                            .setPrimaryText(R.string.intro_menu_primary_text)
-                                                                                            .setSecondaryText(R.string.intro_menu_secondary_text)
-                                                                                            .setTarget(activity.toolbar.getChildAt(2))
-                                                                                            .setIcon(R.drawable.abc_ic_menu_overflow_material)
+                                                                                            .setPrimaryText(R.string.intro_bottombar_contacts_primary_text)
+                                                                                            .setSecondaryText(R.string.intro_bottombar_contacts_secondary_text)
+                                                                                            .setTarget(activity.bottomBar.getTabWithId(R.id.contacts))
+                                                                                            .setIcon(R.drawable.ic_contacts)
                                                                                             .setBackgroundColour(act.primaryColor)
                                                                                             .setAutoFinish(true)
+                                                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
                                                                                             .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
                                                                                                 override fun onHidePromptComplete() {
                                                                                                 }
 
                                                                                                 override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-                                                                                                    //TODO: firstTimeInDashboard = false
+                                                                                                    MaterialTapTargetPrompt.Builder(activity)
+                                                                                                            .setPrimaryText(R.string.intro_menu_primary_text)
+                                                                                                            .setSecondaryText(R.string.intro_menu_secondary_text)
+                                                                                                            .setTarget(activity.toolbar.getChildAt(2))
+                                                                                                            .setIcon(R.drawable.abc_ic_menu_overflow_material)
+                                                                                                            .setBackgroundColour(act.primaryColor)
+                                                                                                            .setAutoFinish(true)
+                                                                                                            .setIconDrawableColourFilter(act.primaryDarkColor)
+                                                                                                            .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+
+                                                                                                                override fun onHidePromptComplete() {
+                                                                                                                }
+
+                                                                                                                override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                                                                                                                    storage.firstTimeInDashboard = false
+                                                                                                                }
+                                                                                                            })
+                                                                                                            .show()
                                                                                                 }
                                                                                             })
                                                                                             .show()

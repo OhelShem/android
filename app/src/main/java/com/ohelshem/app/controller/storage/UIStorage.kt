@@ -4,4 +4,5 @@ interface UIStorage: IStorage {
     var firstTimeInApp: Boolean
     var firstTimeInTimetable: Boolean
     var firstTimeInOverridesManager: Boolean
+    var firstTimeInDashboard: Boolean
 }
