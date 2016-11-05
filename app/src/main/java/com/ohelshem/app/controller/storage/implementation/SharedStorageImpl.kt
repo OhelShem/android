@@ -169,7 +169,8 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             try {
                 data = Overrides.read(version, TimetableOverridesFile)
                 break
-            } catch (e: Exception) {}
+            } catch (e: Exception) {
+            }
         }
         if (data != null) {
             setOverridesSilently(data)
@@ -240,15 +241,6 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             old.clearData()
         }
         if (version == 4) {
-            // Migrate overrides
-            if (TimetableOverridesFileV4.exists()) {
-                val data = TimetableOverridesFileV4.readLines()
-                val overrides = (0 until data.size).map { i ->
-                    data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3]) }
-                }
-                this.overrides = overrides
-                TimetableOverridesFileV4.delete()
-            }
             // Migrate timetable
             if (TimetableDataFileV4.exists() && TimetableOffsetFileV4.exists()) {
                 try {
@@ -263,7 +255,17 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
                     this.timetable = timetable
                     TimetableOffsetFileV4.delete()
                     TimetableDataFileV4.delete()
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                }
+            }
+            // Migrate overrides
+            if (TimetableOverridesFileV4.exists()) {
+                val data = TimetableOverridesFileV4.readLines()
+                val overrides = (0 until data.size).map { i ->
+                    data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3]) }
+                }
+                this.overrides = overrides
+                TimetableOverridesFileV4.delete()
             }
         }
         version = LatestVersion
