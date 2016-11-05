@@ -28,6 +28,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
 
     override var notificationsForChanges: Boolean by booleanPrefVar()
     override var notificationsForHolidays: Boolean by booleanPrefVar()
+    override var notificationsForBirthdays: Boolean by booleanPrefVar()
     override var notificationsForTests: Boolean by booleanPrefVar()
     override var notificationsForTimetable: Boolean by booleanPrefVar()
 

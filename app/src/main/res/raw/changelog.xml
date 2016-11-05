@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="7.0.0 Beta 4" changeDate="Oct 29, 2016">
+        <changelogtext>[b]New![/b] Contacts screen</changelogtext>
+        <changelogtext>[b]New![/b] Changes in dashboard screen.</changelogtext>
+        <changelogtext>[b]Added:[/b] Intro for the app</changelogtext>
+        <changelogtext>[b]Moved:[/b] The calendar view for dates has moved to a button.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="7.0.0 Beta 3" changeDate="Oct 29, 2016">
         <changelogtext>[b]AMAZING![/b] Switched from Navigation Drawer pattern to Bottom Bars</changelogtext>
         <changelogtext>Migrated Layer Changes and Changes to the same screen.</changelogtext>

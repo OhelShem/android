@@ -61,6 +61,9 @@ class SettingsActivity : AppThemedActivity() {
             settingsItem(getString(R.string.holidays), showCheckBox = true, isChecked = storage.notificationsForHolidays) {
                 storage.notificationsForHolidays = it
             }
+            settingsItem(getString(R.string.birthdays), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
+                storage.notificationsForBirthdays = it
+            }
         }
 
 

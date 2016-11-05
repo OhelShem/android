@@ -20,6 +20,7 @@ interface SharedStorage : IStorage {
     var notificationsForChanges: Boolean
     var notificationsForTests: Boolean
     var notificationsForHolidays: Boolean
+    var notificationsForBirthdays: Boolean
     var notificationsForTimetable: Boolean
 
     var developerMode: Boolean
