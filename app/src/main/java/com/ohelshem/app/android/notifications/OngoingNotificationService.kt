@@ -112,6 +112,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
         val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
 
+        //reset colors
+        contentView.setInt(R.id.currentLesson, "setBackgroundColor", Color.parseColor("#03A9F4"))
+        contentView.setInt(R.id.next_lesson, "setBackgroundColor", Color.parseColor("#03A9F4"))
+
         contentView.setTextColor(R.id.timeLeft, Color.WHITE)
         contentView.setTextColor(R.id.lessonName, Color.WHITE)
         contentView.setTextColor(R.id.nextLessonName, Color.WHITE)

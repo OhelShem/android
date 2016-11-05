@@ -136,6 +136,19 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         try {
             progress.progress = data.progress
 
+            //reset colors
+            currentLesson.backgroundColor = Color.WHITE
+            lessonName.textColor = lessonName.textColors.defaultColor
+            timeLeft.textColor = timeLeft.textColors.defaultColor //TODO fixme
+            hourIcon.setColorFilter(Color.BLACK)
+
+            firstSpace.backgroundColor = Color.parseColor("#e0e0e0")
+
+            next_lesson.backgroundColor = Color.WHITE
+            nextLessonName.textColor = nextLessonName.textColors.defaultColor
+            nextHourIcon.setColorFilter(Color.BLACK)
+
+
             var isChange = false
             if (!isFuture) {
                 changes?.forEach {
@@ -235,7 +248,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         super.onPause()
         activity.unregisterReceiver(timeTick)
     }
-
 
     companion object {
         private val TestDateFormat = SimpleDateFormat("dd/MM/yy")
