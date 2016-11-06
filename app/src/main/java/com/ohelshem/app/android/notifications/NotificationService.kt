@@ -97,8 +97,9 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
 
     private fun notifyBirthdays(contacts: List<Contact>) {
         var text = getString(R.string.bday_msg, if (storage.userData.gender==0) "תשכחי" else "תשכח", contacts[0].name)
-        for(i in 1..contacts.size) {
-            text += " ו" + contacts[i].name
+        if (contacts.size>1) {
+            for (i in 1..contacts.size)
+                text += " ו" + contacts[i].name
         }
         text+="!"
         notificationManager.notify(1005, notification(getString(R.string.bday_title), text, hasChanges = false, action = MainActivity.Shortcut_LaunchDates))
