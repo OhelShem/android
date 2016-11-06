@@ -22,13 +22,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
-import com.google.firebase.iid.FirebaseInstanceId
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
@@ -77,7 +75,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     override fun createPresenter(): DashboardPresenter = with(kodein()) { DashboardPresenter(instance(), instance()) }
 
     override fun init() {
-        Log.d("TAG", FirebaseInstanceId.getInstance().token)
         screenManager.setToolbarElevation(false)
         todayPlan.onClick {
             presenter.launchTodayPlan(screenManager)

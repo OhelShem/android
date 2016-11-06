@@ -96,13 +96,20 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
     }
 
     private fun notifyBirthdays(contacts: List<Contact>) {
-        var text = getString(R.string.bday_msg, if (storage.userData.gender==0) "תשכחי" else "תשכח", contacts[0].name.split(" ")[1] + " " + contacts[0].name.split(" ")[0])
+
+
+        var text = getString(R.string.bday_msg, if (storage.userData.gender==0) "תשכחי" else "תשכח", toFullName(contacts[0].name))
         if (contacts.size>1) {
             for (i in 1..contacts.size)
-                text += " ו" + contacts[i].name.split(" ")[1] + " " + contacts[i].name.split(" ")[0]
+                text += " ו" + toFullName(contacts[i].name)
         }
         text+="!"
         notificationManager.notify(1005, notification(getString(R.string.bday_title), text, hasChanges = false, action = MainActivity.Shortcut_LaunchDates))
+    }
+
+    private fun toFullName(name: String): String {
+        val arr = name.split(" ")
+        return arr[1] + " " + arr[0]
     }
 
     private fun notification(title: String, text: String, hasChanges: Boolean, action: String): Notification? {
