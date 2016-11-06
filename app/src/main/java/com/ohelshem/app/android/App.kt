@@ -10,6 +10,7 @@ import com.github.salomonbrys.kodein.KodeinAware
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.ohelshem.api.ApiFactory
+import com.ohelshem.app.android.notifications.BirthdayNotificationService
 import com.ohelshem.app.android.notifications.NotificationService
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.clearTime
@@ -91,6 +92,7 @@ class App : Application(), KodeinAware {
         fun setAlarm(context: Context) {
             setAlarmForNightNotification(context)
             setAlarmForDayNotification(context)
+            setAlarmForBirthdaysNotification(context)
         }
 
         private fun setAlarmForNightNotification(context: Context) {
@@ -102,6 +104,20 @@ class App : Application(), KodeinAware {
             val cal = GregorianCalendar()
             cal.timeInMillis = System.currentTimeMillis()
             cal.set(Calendar.HOUR_OF_DAY, 21)
+            cal.set(Calendar.MINUTE, 0)
+            context.alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                    cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+        }
+
+        private fun setAlarmForBirthdaysNotification(context: Context) {
+            val intent = context.intentFor<BirthdayNotificationService>()
+            val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
+            // Cancel the current alarm
+            context.alarmManager.cancel(pendingIntent)
+            // Set alarm for 07:00
+            val cal = GregorianCalendar()
+            cal.timeInMillis = System.currentTimeMillis()
+            cal.set(Calendar.HOUR_OF_DAY, 7)
             cal.set(Calendar.MINUTE, 0)
             context.alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                     cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)

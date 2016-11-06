@@ -74,6 +74,10 @@
             android:name="com.ohelshem.app.android.notifications.NotificationService"
             android:exported="false" />
 
+        <service
+            android:name="com.ohelshem.app.android.notifications.BirthdayNotificationService"
+            android:exported="false" />
+
         <receiver
             android:name="com.ohelshem.app.android.notifications.BootReceiver"
             android:exported="false">
