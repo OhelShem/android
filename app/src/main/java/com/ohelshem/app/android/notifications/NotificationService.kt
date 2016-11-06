@@ -17,6 +17,7 @@ import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.getHour
+import com.ohelshem.app.model.Contact
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
@@ -58,7 +59,7 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
             cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month
         }
         if (contacts.isNotEmpty()) {
-            //FIXME
+            notifyBirthdays(contacts)
         }
 
     }
@@ -92,6 +93,15 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
     private fun notifyTestsInAWeek(tests: List<Test>) {
         val text = if (tests.size == 1) tests.first().content else getString(R.string.tests_this_week_subtitle)
         notificationManager.notify(1004, notification(getString(R.string.tests_this_week), text, hasChanges = false, action = MainActivity.Shortcut_LaunchDates))
+    }
+
+    private fun notifyBirthdays(contacts: List<Contact>) {
+        var text = getString(R.string.bday_msg, if (storage.userData.gender==0) "תשכחי" else "תשכח", contacts[0].name)
+        for(i in 1..contacts.size) {
+            text += " ו" + contacts[i].name
+        }
+        text+="!"
+        notificationManager.notify(1005, notification(getString(R.string.bday_title), text, hasChanges = false, action = MainActivity.Shortcut_LaunchDates))
     }
 
     private fun notification(title: String, text: String, hasChanges: Boolean, action: String): Notification? {
