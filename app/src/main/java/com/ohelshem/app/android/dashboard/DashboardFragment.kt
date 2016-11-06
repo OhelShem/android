@@ -22,11 +22,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
+import com.google.firebase.iid.FirebaseInstanceId
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
@@ -75,6 +77,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     override fun createPresenter(): DashboardPresenter = with(kodein()) { DashboardPresenter(instance(), instance()) }
 
     override fun init() {
+        Log.d("TAG", FirebaseInstanceId.getInstance().token)
         screenManager.setToolbarElevation(false)
         todayPlan.onClick {
             presenter.launchTodayPlan(screenManager)
@@ -135,10 +138,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     }
 
 
-    override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
+    override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?, changesDate: Long) {
         try {
             progress.progress = data.progress
-
             //reset colors
             currentLesson.backgroundColor = Color.TRANSPARENT
             lessonName.textColor = defaultTextColor
@@ -151,12 +153,14 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             nextLessonName.textColor = defaultTextColor
             nextHourIcon.setColorFilter(defaultTextColor)
 
+            val changesDateObj = Calendar.getInstance()
+            changesDateObj.timeInMillis = changesDate
 
             var isChange = false
-            if (!isFuture) {
+            if (!isFuture && !(isTomorrow&&changesDateObj[Calendar.DAY_OF_MONTH]==Calendar.getInstance()[Calendar.DAY_OF_MONTH])) { //TODO fixme
                 changes?.forEach {
                     if (it.hour - 1 == data.hour.hourOfDay) {
-                        lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
+                        lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + if (data.hour.isEmpty()) windowLesson else data.hour.name + ")").fromHtml()
                         currentLesson.backgroundColor = it.color
                         lessonName.textColor = Color.WHITE
                         timeLeft.textColor = Color.WHITE
@@ -167,7 +171,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 }
             }
             if (!isChange)
-                lessonName.text = if (data.hour.isEmpty()) windowLesson else ("<b>" + data.hour.name + "</b>" + with + data.hour.teacher).fromHtml()
+                lessonName.text = if (data.hour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.hour.name + "</b>" + with + data.hour.teacher).fromHtml()
 
             if (isEndOfDay)
                 nextLessonName.text = ("<b>$endOfDay</b>").fromHtml()
@@ -176,7 +180,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 if (!isFuture) {
                     changes?.forEach {
                         if (it.hour - 1 == data.nextHour.hourOfDay) {
-                            nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.nextHour.name + ")").fromHtml()
+                            nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + if (data.hour.isEmpty()) windowLesson else data.nextHour.name + ")").fromHtml()
                             next_lesson.backgroundColor = it.color
                             nextLessonName.textColor = Color.WHITE
                             nextHourIcon.setColorFilter(Color.WHITE)

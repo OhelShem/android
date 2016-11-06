@@ -48,7 +48,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
                     isTomorrow = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
                             Calendar.getInstance().clearTime().timeInMillis,
                     isFuture = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = storage.changes?.filter { it.clazz == clazz })
+                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = storage.changes?.filter { it.clazz == clazz }, changesDate = storage.changesDate)
             showTests(testsForWeek)
         }
     }

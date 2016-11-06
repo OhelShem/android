@@ -23,7 +23,7 @@ import com.ohelshem.api.model.Test
 import com.ohelshem.app.model.HourData
 
 interface DashboardView : MvpView {
-    fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?)
+    fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?, changesDate: Long)
 
     fun showTests(tests: List<Test>)
 }
