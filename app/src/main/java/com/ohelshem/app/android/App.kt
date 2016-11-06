@@ -10,6 +10,7 @@ import com.github.salomonbrys.kodein.KodeinAware
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.lazy
 import com.ohelshem.api.ApiFactory
+import com.ohelshem.app.android.notifications.NotificationService
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.api.ApiController
@@ -88,8 +89,24 @@ class App : Application(), KodeinAware {
         var updatedFromVersion: Int = -1
 
         fun setAlarm(context: Context) {
+            setAlarmForNightNotification(context)
             setAlarmForDayNotification(context)
         }
+
+        private fun setAlarmForNightNotification(context: Context) {
+            val intent = context.intentFor<NotificationService>()
+            val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
+            // Cancel the current alarm
+            context.alarmManager.cancel(pendingIntent)
+            // Set alarm for 21:00
+            val cal = GregorianCalendar()
+            cal.timeInMillis = System.currentTimeMillis()
+            cal.set(Calendar.HOUR_OF_DAY, 21)
+            cal.set(Calendar.MINUTE, 0)
+            context.alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                    cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+        }
+
 
         private fun setAlarmForDayNotification(context: Context) {
             val intent = context.intentFor<OngoingNotificationService>()

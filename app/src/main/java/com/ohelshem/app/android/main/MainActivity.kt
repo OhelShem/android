@@ -566,9 +566,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         val SharingFolder = "sharing"
         private const val Key_Fragment = "key_fragment"
 
-        private const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"
-        private const val Shortcut_LaunchTimetable = "com.ohelshem.app.LAUNCH_TIMETABLE"
-        private const val Shortcut_LaunchDates = "com.ohelshem.app.LAUNCH_DATES"
+        const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"
+        const val Shortcut_LaunchTimetable = "com.ohelshem.app.LAUNCH_TIMETABLE"
+        const val Shortcut_LaunchDates = "com.ohelshem.app.LAUNCH_DATES"
 
     }
 }
