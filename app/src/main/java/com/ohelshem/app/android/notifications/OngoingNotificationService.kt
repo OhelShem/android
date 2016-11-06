@@ -40,58 +40,50 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                     // Day has ended
                     notificationManager.cancel(NotificationId)
                 } else {
-                    if (data.hour.day != day) {
-                        // Day has ended
-                        notificationManager.cancel(NotificationId)
+                    var color: Int? = null
+                    var nextColor: Int? = null
+                    var orig: String? = null
+                    var orig2: String? = null
+
+                    var lessonName = ""
+                    var isChange = false
+                    storage.changes?.forEach {
+                        if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
+                            lessonName = it.content
+                            color = it.color
+                            orig = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                            isChange = true
+                        }
+                    }
+                    if (!isChange)
+                        lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+
+
+                    var nextLesson = ""
+                    val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
+                    if (isEndOfDay) {
+                        nextLesson = getString(R.string.end_of_day)
                     } else {
-
-                        var color: Int? = null
-                        var nextColor: Int? = null
-                        var orig: String? = null
-                        var orig2: String? = null
-
-                        var lessonName = ""
-                        var isChange = false
+                        var isNextChange = false
                         storage.changes?.forEach {
-                            if (it.clazz==storage.userData.clazz && it.hour-1 == data.hour.hourOfDay) {
-                                lessonName = it.content
-                                color = it.color
-                                orig = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
-                                isChange = true
+                            if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
+                                nextLesson = it.content
+                                nextColor = it.color
+                                orig2 = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                                isNextChange = true
                             }
                         }
-                        if (!isChange)
-                            lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                        if (!isNextChange)
+                            nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                    }
 
 
+                    val hours = TimetableController.DayHours[data.hour.hourOfDay * 2] + " - " + TimetableController.DayHours[data.hour.hourOfDay * 2 + 1]
 
-                        var nextLesson = ""
-                        val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
-                        if (isEndOfDay) {
-                            nextLesson = getString(R.string.end_of_day)
-                        } else {
-                            var isNextChange = false
-                            storage.changes?.forEach {
-                                if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
-                                    nextLesson = it.content
-                                    nextColor = it.color
-                                    orig2 = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
-                                    isNextChange = true
-                                }
-                            }
-                            if (!isNextChange)
-                                nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
-                        }
-
-
-                        val hours = TimetableController.DayHours[data.hour.hourOfDay*2] + " - " + TimetableController.DayHours[data.hour.hourOfDay*2+1]
-
-                        try {
-                            notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson, color, nextColor, orig, orig2))
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-
+                    try {
+                        notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson, color, nextColor, orig, orig2))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             } else notificationManager.cancel(NotificationId)
@@ -100,7 +92,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     fun toBold(text: String, orig: String? = null): SpannableString {
         val s: SpannableString?
-        if (orig!= null)
+        if (orig != null)
             s = SpannableString(text + " (" + getString(R.string.instead) + " " + orig + ")")
         else
             s = SpannableString(text)
@@ -130,9 +122,9 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
         contentView.setInt(R.id.mainNotifView, "setBackgroundColor", Color.parseColor("#03A9F4"))
 
-        if (color!=null)
+        if (color != null)
             contentView.setInt(R.id.currentLesson, "setBackgroundColor", color)
-        if (nextColor!=null)
+        if (nextColor != null)
             contentView.setInt(R.id.next_lesson, "setBackgroundColor", nextColor)
 
 
