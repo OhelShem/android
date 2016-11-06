@@ -149,7 +149,7 @@
     <string name="never">אף פעם</string>
     <string name="start_playing">התחל לשחק</string>
     <string name="generating_data">מייצר תמונה…</string>
-    <string name="bday_title">יש יום הולדת למישהו מהכיתה שלך!</string>
+    <string name="bday_title">למישהו מהכיתה שלך יש יום הולדת!</string>
     <string name="bday_msg">אל %1$s לאחל היום מזל טוב ל%2$s</string>
 
     <!-- Grader -->

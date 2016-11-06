@@ -35,12 +35,18 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
     }
 
     private fun notifyBirthdays(contacts: List<Contact>) {
-        var text = getString(R.string.bday_msg, if (storage.userData.gender == 0) "תשכחי" else "תשכח", contacts[0].name)
+        var text = getString(R.string.bday_msg, if (storage.userData.gender == 0) "תשכחי" else "תשכח", toFullName(contacts[0].name))
         if (contacts.size > 1) {
             for (i in 1 until contacts.size)
-                text += " ו" + contacts[i].name
+                text += " ו" + toFullName(contacts[i].name)
         }
         text += "!"
         notificationManager.notify(1005, NotificationService.notification(getString(R.string.bday_title), text, action = ""))
     }
+
+    private fun toFullName(name: String): String {
+        val arr = name.split(" ")
+        return arr[1] + " " + arr[0]
+    }
+
 }
