@@ -20,6 +20,7 @@ import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
+import android.widget.TextView
 import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.view.AutoResizeTextView
 import org.jetbrains.anko.connectivityManager
@@ -127,6 +128,13 @@ fun getColorDrawableFromColor(color: Int): ColorDrawable {
 
 @Suppress("DEPRECATION")
 fun String.fromHtml(): CharSequence = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY) else Html.fromHtml(this)
+var TextView.htmlText: String
+    get() = throw IllegalAccessException("Getter should not get called")
+    set(value) {
+        text = value.fromHtml()
+    }
+
+inline fun bold(text: () -> CharSequence) = "<b>${text()}</b>"
 
 fun ViewManager.appCompatSwitch(theme: Int = 0): SwitchCompat = appCompatSwitch(theme) {}
 inline fun ViewManager.appCompatSwitch(theme: Int = 0, init: SwitchCompat.() -> Unit): SwitchCompat = ankoView(::SwitchCompat, theme, init)
