@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.dashboard
 
+import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.main.ScreenManager
@@ -41,16 +42,19 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
 
     fun update() {
         view?.apply {
-            val clazz = userClazz
             val hourData = timetableController.getHourData()
             showLessonInfo(hourData,
                     isEndOfDay = TimetableController.isEndOfDay(hourData.hour.hourOfDay, timetableController[hourData.hour.day - 1]),
                     isTomorrow = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
                             Calendar.getInstance().clearTime().timeInMillis,
                     isFuture = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = storage.changes?.filter { it.clazz == clazz }, changesDate = storage.changesDate)
+                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = generateChanges(hourData.hour.day, userClazz))
             showTests(testsForWeek)
         }
+    }
+
+    private fun generateChanges(day: Int, clazz: Int): List<Change>? {
+       return if (storage.changesDate.toCalendar()[Calendar.DAY_OF_WEEK] == day) storage.changes?.filter { it.clazz == clazz } else null
     }
 
     override fun onSuccess(apis: Set<UpdatedApi>) {

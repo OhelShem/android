@@ -22,13 +22,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.salomonbrys.kodein.instance
-import com.google.firebase.iid.FirebaseInstanceId
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
@@ -39,6 +37,7 @@ import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
+import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
 import org.jetbrains.anko.backgroundColor
@@ -54,16 +53,6 @@ import java.util.*
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
     override val layoutId: Int = R.layout.dashboard_fragment
 
-    private val windowLesson by stringResource(R.string.window_lesson)
-    private val tomorrow by stringResource(R.string.tomorrow)
-    private val shortMinute by stringResource(R.string.short_minute)
-    private val toStart by stringResource(R.string.to_start)
-    private val left by stringResource(R.string.left)
-    private val endOfDay by stringResource(R.string.end_of_day)
-    private val instead by stringResource(R.string.instead)
-    private val with by lazy { " " + getString(R.string.with) + " " }
-    private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
-
     private val defaultTextColor by lazy { AttributeExtractor.extractPrimaryTextColorFrom(context) }
 
     private val storage: UIStorage by kodein.instance()
@@ -77,7 +66,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     override fun createPresenter(): DashboardPresenter = with(kodein()) { DashboardPresenter(instance(), instance()) }
 
     override fun init() {
-        Log.d("TAG", FirebaseInstanceId.getInstance().token)
         screenManager.setToolbarElevation(false)
         todayPlan.onClick {
             presenter.launchTodayPlan(screenManager)
@@ -89,128 +77,138 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         }
         screenManager.screenTitle = ""
 
-        if (holidayData != null) {
-            val time = Calendar.getInstance().clearTime().timeInMillis
-            var holiday: Holiday? = null
-            for (h in TimetableController.Holidays) {
-                if (h.isOneDay()) {
-                    if (time == h.startTime) {
-                        holiday = h
-                        break
-                    }
-                } else {
-                    if (time >= h.startTime && time <= h.endTime) {
-                        holiday = h
-                        break
-                    }
-                }
-            }
-            if (holiday == null) holiday = TimetableController.Holidays.firstOrNull { it.startTime > time }
-            if (holiday == null) holiday = TimetableController.Summer
+        clearCurrentLessonView()
+        clearNextLessonView()
 
-            holidayText.text = holiday.name
-            holidayDate.text = if (holiday.isOneDay()) holiday.start.substring(0, 5) else holiday.start.substring(0, 5) + " - " + holiday.end.substring(0, 5)
+        if (holidayData != null) {
+            showHoliday()
         }
 
         if (storage.firstTimeInApp)
-            dashboardLogo?.post {
-                var prompt: MaterialTapTargetPrompt? = null
-                prompt = MaterialTapTargetPrompt.Builder(act)
-                        .setPrimaryText(R.string.intro_dashboard_primary_text)
-                        .setSecondaryText(R.string.intro_dashboard_secondary_text)
-                        .setTarget(dashboardLogo)
-                        .setBackgroundColour(act.primaryColor)
-                        .setCaptureTouchEventOutsidePrompt(true)
-                        .setAutoFinish(false)
-                        .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-                            override fun onHidePromptComplete() {
-                                screenManager.startTour()
-                            }
+            showIntro()
+    }
 
-                            override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
-                                if (tappedTarget) {
-                                    prompt?.finish()
-                                }
-                            }
-                        }).show()
+    //region Lesson Info
+    private val windowLesson by stringResource(R.string.window_lesson)
+    private val tomorrow by stringResource(R.string.tomorrow)
+    private val shortMinute by stringResource(R.string.short_minute)
+    private val toStart by stringResource(R.string.to_start)
+    private val left by stringResource(R.string.left)
+    private val endOfDay by stringResource(R.string.end_of_day)
+    private val instead by stringResource(R.string.instead)
+    private val with by lazy { " " + getString(R.string.with) + " " }
+    private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
+
+    override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
+        progress.progress = data.progress
+        showCurrentLessonInfo(data, changes)
+        showTimeLeft(data, isFuture, isTomorrow)
+        showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+    }
+
+    private var hasModifiedCurrentLessonView = true
+    private fun showCurrentLessonInfo(data: HourData, changes: List<Change>?) {
+        val change = changes?.firstOrNull { it.hour - 1 == data.hour.hourOfDay }
+        if (change != null) {
+            hasModifiedCurrentLessonView = true
+            lessonName.htmlText = bold { change.content } + " ($instead ${data.hour.represent()})"
+            currentLesson.backgroundColor = change.color
+            firstSpace.backgroundColor = change.color
+            lessonName.textColor = Color.WHITE
+            timeLeft.textColor = Color.WHITE
+            hourIcon.setColorFilter(Color.WHITE)
+        } else {
+            if (hasModifiedCurrentLessonView) {
+                clearCurrentLessonView()
             }
 
+            if (data.hour.isEmpty())
+                lessonName.htmlText = bold { windowLesson }
+            else
+                lessonName.htmlText = bold { data.hour.name } + with + data.hour.teacher
+        }
+    }
+
+    private fun clearCurrentLessonView() {
+        currentLesson.backgroundColor = Color.TRANSPARENT
+        lessonName.textColor = defaultTextColor
+        timeLeft.textColor = defaultTextColor
+        hourIcon.setColorFilter(defaultTextColor)
+        firstSpace.backgroundColor = Color.parseColor("#e0e0e0")
+        hasModifiedCurrentLessonView = false
+    }
+
+    private fun showTimeLeft(data: HourData, isFuture: Boolean, isTomorrow: Boolean) {
+        if (isFuture)
+            timeLeft.text = daysOfWeek[data.hour.day - 1]
+        else if (isTomorrow)
+            timeLeft.text = tomorrow
+        else if (data.isBefore)
+            timeLeft.text = "${data.timeToHour} $shortMinute $toStart"
+        else
+            timeLeft.text = "${data.timeToHour} $shortMinute $left"
+    }
+
+    private var hasModifiedNextLessonView = true
+    private fun showNextLessonInfo(data: HourData, changes: List<Change>?, isEndOfDay: Boolean, isFuture: Boolean) {
+        if (isEndOfDay) {
+            if (hasModifiedNextLessonView)
+                clearNextLessonView()
+
+            nextLessonName.htmlText = bold { endOfDay }
+        } else {
+            val change = changes?.firstOrNull { it.hour - 1 == data.nextHour.hourOfDay }
+            if (!isFuture && change != null) {
+                hasModifiedNextLessonView = true
+                nextLessonName.htmlText = bold { change.content } + " ($instead ${data.nextHour.represent()})"
+                next_lesson.backgroundColor = change.color
+                nextLessonName.textColor = Color.WHITE
+                nextHourIcon.setColorFilter(Color.WHITE)
+            } else {
+                if (hasModifiedNextLessonView)
+                    clearNextLessonView()
+
+                if (data.nextHour.isEmpty())
+                    nextLessonName.htmlText = bold { windowLesson }
+                else
+                    nextLessonName.htmlText = bold { data.nextHour.name } + with + data.nextHour.teacher
+            }
+        }
+    }
+
+    private fun clearNextLessonView() {
+        next_lesson.backgroundColor = Color.TRANSPARENT
+        nextLessonName.textColor = defaultTextColor
+        nextHourIcon.setColorFilter(defaultTextColor)
+        hasModifiedNextLessonView = false
     }
 
 
-    override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?, changesDate: Long) {
-        try {
-            progress.progress = data.progress
-            //reset colors
-            currentLesson.backgroundColor = Color.TRANSPARENT
-            lessonName.textColor = defaultTextColor
-            timeLeft.textColor = defaultTextColor
-            hourIcon.setColorFilter(defaultTextColor)
+    private fun NumberedHour.represent() = if (isEmpty()) windowLesson else name
+    //endregion
 
-            firstSpace.backgroundColor = Color.parseColor("#e0e0e0")
 
-            next_lesson.backgroundColor = Color.TRANSPARENT
-            nextLessonName.textColor = defaultTextColor
-            nextHourIcon.setColorFilter(defaultTextColor)
-
-            val changesDateObj = Calendar.getInstance()
-            changesDateObj.timeInMillis = changesDate
-
-            var isChange = false
-            if (!isFuture && !(isTomorrow&&changesDateObj[Calendar.DAY_OF_MONTH]==Calendar.getInstance()[Calendar.DAY_OF_MONTH])) { //TODO fixme
-                changes?.forEach {
-                    if (it.hour - 1 == data.hour.hourOfDay) {
-                        lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + if (data.hour.isEmpty()) windowLesson else data.hour.name + ")").fromHtml()
-                        currentLesson.backgroundColor = it.color
-                        lessonName.textColor = Color.WHITE
-                        timeLeft.textColor = Color.WHITE
-                        hourIcon.setColorFilter(Color.WHITE)
-                        firstSpace.backgroundColor = it.color
-                        isChange = true
-                    }
-                }
-            }
-            if (!isChange)
-                lessonName.text = if (data.hour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.hour.name + "</b>" + with + data.hour.teacher).fromHtml()
-
-            if (isEndOfDay)
-                nextLessonName.text = ("<b>$endOfDay</b>").fromHtml()
-            else {
-                var isNextChange = false
-                if (!isFuture) {
-                    changes?.forEach {
-                        if (it.hour - 1 == data.nextHour.hourOfDay) {
-                            nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + if (data.hour.isEmpty()) windowLesson else data.nextHour.name + ")").fromHtml()
-                            next_lesson.backgroundColor = it.color
-                            nextLessonName.textColor = Color.WHITE
-                            nextHourIcon.setColorFilter(Color.WHITE)
-                            isNextChange = true
+    private fun showIntro() {
+        dashboardLogo?.post {
+            var prompt: MaterialTapTargetPrompt? = null
+            prompt = MaterialTapTargetPrompt.Builder(act)
+                    .setPrimaryText(R.string.intro_dashboard_primary_text)
+                    .setSecondaryText(R.string.intro_dashboard_secondary_text)
+                    .setTarget(dashboardLogo)
+                    .setBackgroundColour(act.primaryColor)
+                    .setCaptureTouchEventOutsidePrompt(true)
+                    .setAutoFinish(false)
+                    .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
+                        override fun onHidePromptComplete() {
+                            screenManager.startTour()
                         }
-                    }
-                }
 
-                if (!isNextChange) {
-                    nextLessonName.text = if (data.nextHour.isEmpty()) ("<b>$windowLesson</b>").fromHtml() else ("<b>" + data.nextHour.name + "</b>" + with + data.nextHour.teacher).fromHtml()
-                }
-
-            }
-
-
-
-            if (isFuture)
-                timeLeft.text = daysOfWeek[data.hour.day - 1]
-            else if (isTomorrow)
-                timeLeft.text = tomorrow
-            else if (data.isBefore)
-                timeLeft.text = data.timeToHour.toString() + " " + shortMinute + " " + toStart
-            else
-                timeLeft.text = data.timeToHour.toString() + " " + shortMinute + " " + left
-        } catch (e: Exception) {
-            e.printStackTrace()
-            timeLeft.text = ""
-            progress.progress = 45
-            lessonName.textResource = R.string.error
-            nextLessonName.text = ""
+                        override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
+                            if (tappedTarget) {
+                                prompt?.finish()
+                            }
+                        }
+                    }).show()
         }
     }
 
@@ -243,6 +241,16 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 }
             }
         }
+    }
+
+    private fun showHoliday() {
+        val time = Calendar.getInstance().clearTime().timeInMillis
+        var holiday: Holiday? = TimetableController.Holidays.firstOrNull { if (it.isOneDay()) it.startTime == time else time >= it.startTime && time <= it.endTime }
+        if (holiday == null) holiday = TimetableController.Holidays.firstOrNull { it.startTime > time }
+        if (holiday == null) holiday = TimetableController.Summer
+
+        holidayText.text = holiday.name
+        holidayDate.text = if (holiday.isOneDay()) holiday.start.substring(0, 5) else holiday.start.substring(0, 5) + " - " + holiday.end.substring(0, 5)
     }
 
     override fun onResume() {
