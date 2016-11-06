@@ -156,7 +156,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (!isFuture) {
                 changes?.forEach {
                     if (it.hour - 1 == data.hour.hourOfDay) {
-                        lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.nextHour.name + ")").fromHtml()
+                        lessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
                         currentLesson.backgroundColor = it.color
                         lessonName.textColor = Color.WHITE
                         timeLeft.textColor = Color.WHITE
@@ -176,7 +176,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 if (!isFuture) {
                     changes?.forEach {
                         if (it.hour - 1 == data.nextHour.hourOfDay) {
-                            nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.hour.name + ")").fromHtml()
+                            nextLessonName.text = ("<b>" + it.content + "</b> (" + instead + " " + data.nextHour.name + ")").fromHtml()
                             next_lesson.backgroundColor = it.color
                             nextLessonName.textColor = Color.WHITE
                             nextHourIcon.setColorFilter(Color.WHITE)
