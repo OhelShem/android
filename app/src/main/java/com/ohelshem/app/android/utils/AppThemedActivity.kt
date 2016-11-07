@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatDelegate
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.storage.SharedStorage
 import com.ohelshem.app.controller.storage.Storage

@@ -2,9 +2,10 @@ package com.ohelshem.app.injection
 
 import android.content.Context
 import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.factory
-import com.github.salomonbrys.kodein.instance
-import com.github.salomonbrys.kodein.singleton
+import com.github.salomonbrys.kodein.erased.bind
+import com.github.salomonbrys.kodein.erased.factory
+import com.github.salomonbrys.kodein.erased.instance
+import com.github.salomonbrys.kodein.erased.singleton
 import com.ohelshem.api.ApiFactory
 import com.ohelshem.api.controller.declaration.ApiEngine
 import com.ohelshem.api.controller.declaration.ColorProvider

@@ -3,7 +3,7 @@ package com.ohelshem.app.android.contacts
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.model.Contact

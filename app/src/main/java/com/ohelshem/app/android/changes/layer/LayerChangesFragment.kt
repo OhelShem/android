@@ -20,7 +20,7 @@ package com.ohelshem.app.android.changes.layer
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.changes.BaseChangesFragment
 import com.ohelshem.app.android.drawableRes

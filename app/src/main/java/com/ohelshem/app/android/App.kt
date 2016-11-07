@@ -7,7 +7,7 @@ import android.content.Context
 import com.chibatching.kotpref.Kotpref
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.KodeinAware
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.github.salomonbrys.kodein.lazy
 import com.ohelshem.api.ApiFactory
 import com.ohelshem.app.android.notifications.BirthdayNotificationService

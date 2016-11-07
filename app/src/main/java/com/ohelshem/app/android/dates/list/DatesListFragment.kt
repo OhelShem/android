@@ -19,10 +19,10 @@ package com.ohelshem.app.android.dates.list
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Test
-import com.ohelshem.app.android.dates.TestsPresenter
-import com.ohelshem.app.android.dates.TestsView
+import com.ohelshem.app.android.dates.DatesPresenter
+import com.ohelshem.app.android.dates.DatesView
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.adapter.HeaderAdapter
 import com.ohelshem.app.clearTime
@@ -30,9 +30,9 @@ import com.ohelshem.app.model.VisibleItem
 import com.yoavst.changesystemohelshem.R
 import java.util.*
 
-class DatesListFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
+class DatesListFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     override val layoutId: Int = R.layout.list
-    override fun createPresenter(): TestsPresenter = with(kodein()) { TestsPresenter(instance()) }
+    override fun createPresenter(): DatesPresenter = with(kodein()) { DatesPresenter(instance()) }
 
     private val oldTests by lazy { getString(R.string.old_test) }
 

@@ -8,7 +8,7 @@ import android.support.v7.app.NotificationCompat
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.App
 import com.ohelshem.app.android.main.MainActivity

@@ -20,6 +20,6 @@ package com.ohelshem.app.android.dates
 import com.hannesdorfmann.mosby.mvp.MvpView
 import com.ohelshem.api.model.Test
 
-interface TestsView: MvpView {
+interface DatesView : MvpView {
     fun update(tests: List<Test>)
 }

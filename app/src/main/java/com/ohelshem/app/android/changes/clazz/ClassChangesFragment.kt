@@ -18,7 +18,7 @@
 package com.ohelshem.app.android.changes.clazz
 
 import android.support.v7.widget.LinearLayoutManager
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.changes.BaseChangesFragment
 import kotlinx.android.synthetic.main.list_fragment.*

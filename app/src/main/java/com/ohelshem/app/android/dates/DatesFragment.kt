@@ -29,7 +29,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.dates.list.DatesListFragment
@@ -57,10 +57,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class TestsFragment : BaseMvpFragment<TestsView, TestsPresenter>(), TestsView {
+class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     override val layoutId: Int = R.layout.dates_fragment
     override var menuId: Int = R.menu.tests
-    override fun createPresenter(): TestsPresenter = with(kodein()) { TestsPresenter(instance()) }
+    override fun createPresenter(): DatesPresenter = with(kodein()) { DatesPresenter(instance()) }
 
     private val isTablet by lazy { resources.getBoolean(R.bool.isTablet) }
 

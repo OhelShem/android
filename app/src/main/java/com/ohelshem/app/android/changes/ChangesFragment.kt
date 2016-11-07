@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.Menu
 import android.view.MenuInflater
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.changes.clazz.ClassChangesFragment

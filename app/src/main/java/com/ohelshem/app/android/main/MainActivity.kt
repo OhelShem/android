@@ -15,7 +15,7 @@ import android.view.MotionEvent
 import android.widget.Spinner
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
-import com.github.salomonbrys.kodein.instance
+import com.github.salomonbrys.kodein.erased.instance
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -25,7 +25,7 @@ import com.ohelshem.app.android.changes.ChangesFragment
 import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.contacts.ContactsFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
-import com.ohelshem.app.android.dates.TestsFragment
+import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.login.LoginActivity
@@ -191,7 +191,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         fragmentSwitcher.adapter = FragmentArrayPagerAdapter<Fragment>(supportFragmentManager).apply {
             addAll(
                     ContactsFragment(),
-                    TestsFragment(),
+                    DatesFragment(),
                     ChangesFragment(),
                     TimetableFragment(),
                     DashboardFragment()

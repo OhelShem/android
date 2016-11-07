@@ -24,7 +24,7 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
 
-class TestsPresenter(private val storage: Storage) : BasePresenter<TestsView>(), ApiController.Callback {
+class DatesPresenter(private val storage: Storage) : BasePresenter<DatesView>(), ApiController.Callback {
     override fun onSuccess(apis: Set<UpdatedApi>) {
         if (UpdatedApi.Tests in apis)
             load()
