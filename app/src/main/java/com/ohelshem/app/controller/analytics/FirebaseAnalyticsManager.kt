@@ -37,7 +37,7 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         const val LayerProperty = "layer"
         const val ClassProperty = "class"
 
-        private fun sha1(toHash: String): String? {
+        fun sha1(toHash: String): String? {
             var hash: String? = null
             try {
                 val digest = MessageDigest.getInstance("SHA-1")
