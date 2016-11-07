@@ -16,15 +16,15 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
     }
 
     override fun onLogin() {
-//        firebaseAnalytics.setUserId(sha1(storage.id + Salt))
-//        firebaseAnalytics.setUserProperty(LayerProperty, storage.userData.layer.toString())
-//        firebaseAnalytics.setUserProperty(ClassProperty, storage.userData.clazz.toString())
+        firebaseAnalytics.setUserId(sha1(storage.id + Salt))
+        firebaseAnalytics.setUserProperty(LayerProperty, storage.userData.layer.toString())
+        firebaseAnalytics.setUserProperty(ClassProperty, storage.userData.clazz.toString())
     }
 
     override fun onLogout() {
-//        firebaseAnalytics.setUserId(null)
-//        firebaseAnalytics.setUserProperty(LayerProperty, null)
-//        firebaseAnalytics.setUserProperty(ClassProperty, null)
+        firebaseAnalytics.setUserId(null)
+        firebaseAnalytics.setUserProperty(LayerProperty, null)
+        firebaseAnalytics.setUserProperty(ClassProperty, null)
     }
 
     override fun logEvent(type: String, info: Map<String, Any>) {
