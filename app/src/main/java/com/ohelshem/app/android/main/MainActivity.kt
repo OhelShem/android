@@ -16,7 +16,6 @@ import android.widget.Spinner
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -36,7 +35,7 @@ import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
-import com.ohelshem.app.controller.analytics.FirebaseAnalyticsManager
+import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfoImpl
 import com.ohelshem.app.controller.storage.DeveloperOptions
@@ -67,6 +66,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private var debugDrawer: DebugDrawer? = null
 
     private var firstUpdate: Boolean = true
+
+    private val analyticsManager: Analytics by kodein.instance()
 
     //region Activity events
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,9 +100,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, DatesListFragment()).commit()
 
             debug()
-            FirebaseAnalytics.getInstance(this).setUserId(FirebaseAnalyticsManager.sha1(storage.id + FirebaseAnalyticsManager.Salt))
-            FirebaseAnalytics.getInstance(this).setUserProperty(FirebaseAnalyticsManager.LayerProperty, storage.userData.layer.toString())
-            FirebaseAnalytics.getInstance(this).setUserProperty(FirebaseAnalyticsManager.ClassProperty, storage.userData.clazz.toString())
+            analyticsManager.onLogin()
             showIntro()
         }
     }
