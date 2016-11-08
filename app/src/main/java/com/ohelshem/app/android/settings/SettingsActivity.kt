@@ -63,14 +63,14 @@ class SettingsActivity : AppThemedActivity() {
                 else
                     analyticsManager.unsubscribe()
             }
+            settingsItem(getString(R.string.birthdays), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
+                storage.notificationsForBirthdays = it
+            }
             settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
                 storage.notificationsForTests = it
             }
             settingsItem(getString(R.string.holidays), showCheckBox = true, isChecked = storage.notificationsForHolidays) {
                 storage.notificationsForHolidays = it
-            }
-            settingsItem(getString(R.string.birthdays), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
-                storage.notificationsForBirthdays = it
             }
         }
 

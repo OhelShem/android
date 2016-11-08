@@ -224,7 +224,7 @@
     <string name="intro_bottombar_timetable_secondary_text">לחצו פעם אחת למערכת השעות הרגילה, ופעמיים למערכת השבועית</string>
 
     <string name="intro_bottombar_changes_primary_text">שינויים</string>
-    <string name="intro_bottombar_changes_secondary_text">מעכשיו ניתן לשתף את השינויים השכבתיים כתמונה</string> <!--TODO find a better message for changes-->
+    <string name="intro_bottombar_changes_secondary_text">מעכשיו ניתן לשתף את השינויים השכבתיים כתמונה</string>
 
     <string name="intro_bottombar_dates_primary_text">חדש: מועדים</string>
     <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
@@ -233,7 +233,7 @@
     <string name="intro_bottombar_contacts_secondary_text">מספרי טלפון, ימי הולדת בבית הספר ועוד</string>
 
     <string name="intro_menu_primary_text">רגע, זה לא הכל!</string>
-    <string name="intro_menu_secondary_text">ערכות נושא צבעוניות, הגדרות ומידע נוסף אפשר למצוא פה</string>
+    <string name="intro_menu_secondary_text">ערכות נושא, התראות, הגדרות ומידע נוסף אפשר למצוא פה</string>
 
     <string name="intro_timetable_primary_text">הכוח בידך</string>
     <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>

@@ -26,7 +26,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
-        holder.name.text = contact.name
+        holder.name.text = toFullName(contact.name)
         holder.birthday.text = dateFormat.format(Date(contact.birthday))
         if (contact.phone.isEmpty()) {
             holder.dial.hide()
@@ -80,6 +80,12 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
         val name: TextView = itemView.name
         val birthday: TextView = itemView.birthday
 
+    }
+
+    private fun toFullName(name: String): String {
+        val arr = name.split(" ")
+        if (arr.size>2) return name
+        return arr[1] + " " + arr[0]
     }
 
     val dateFormat = SimpleDateFormat("dd/MM/yy")
