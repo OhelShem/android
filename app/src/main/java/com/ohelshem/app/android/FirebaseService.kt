@@ -12,8 +12,8 @@ import org.jetbrains.anko.notificationManager
 
 class FirebaseService: FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        if (remoteMessage.notification != null)
-            sendNotification(remoteMessage.notification.title, remoteMessage.notification.body)
+        if (remoteMessage.data["title"] != null)
+            sendNotification(remoteMessage.data["title"].toString(), remoteMessage.data["body"].toString())
     }
 
     /**
