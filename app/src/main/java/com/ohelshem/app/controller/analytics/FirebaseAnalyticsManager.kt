@@ -2,6 +2,7 @@ package com.ohelshem.app.controller.analytics
 
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ohelshem.app.controller.storage.SharedStorage
 import java.io.UnsupportedEncodingException
 import java.security.MessageDigest
@@ -9,6 +10,7 @@ import java.security.NoSuchAlgorithmException
 
 class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : Analytics {
     val firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    val firebaseMessaging: FirebaseMessaging = FirebaseMessaging.getInstance()
 
     init {
         if (storage.isSetup())
@@ -19,12 +21,14 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserId(sha1(storage.id + Salt))
         firebaseAnalytics.setUserProperty(LayerProperty, storage.userData.layer.toString())
         firebaseAnalytics.setUserProperty(ClassProperty, storage.userData.clazz.toString())
+        firebaseMessaging.subscribeToTopic("notifSub")
     }
 
     override fun onLogout() {
         firebaseAnalytics.setUserId(null)
         firebaseAnalytics.setUserProperty(LayerProperty, null)
         firebaseAnalytics.setUserProperty(ClassProperty, null)
+        firebaseMessaging.unsubscribeFromTopic("notifSub")
     }
 
     override fun logEvent(type: String, info: Map<String, Any>) {

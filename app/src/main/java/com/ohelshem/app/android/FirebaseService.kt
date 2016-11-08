@@ -13,9 +13,8 @@ import org.jetbrains.anko.notificationManager
 class FirebaseService: FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         //FIXME
-        if (remoteMessage.notification == null) {
-
-        }
+        if (remoteMessage.notification != null)
+            sendNotification(remoteMessage.notification.title, remoteMessage.notification.body)
     }
 
     /**
@@ -23,7 +22,7 @@ class FirebaseService: FirebaseMessagingService() {
 
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(title: String, messageBody: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -32,7 +31,7 @@ class FirebaseService: FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle(getString(R.string.ohel_shem_notification_title))
+                .setContentTitle(if (title!=getString(R.string.changes_notif_title)) (getString(R.string.ohel_shem_notification_title)) else getString(R.string.changes_notif_title))
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

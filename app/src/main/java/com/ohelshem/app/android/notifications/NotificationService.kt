@@ -13,7 +13,6 @@ import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.App
 import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.clearTime
-import com.ohelshem.app.controller.storage.ContactsProvider
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
@@ -26,7 +25,6 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
     override val kodein = LazyKodein(appKodein)
 
     val storage: Storage by kodein.instance()
-    val contactsProvider: ContactsProvider by kodein.instance()
     val timetableController: TimetableController by kodein.instance()
 
     override fun onHandleIntent(intent: Intent?) {
