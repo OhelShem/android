@@ -14,6 +14,7 @@ interface SharedStorage : IStorage {
     var changesDate: Long
     var updateDate: Long
     var lastNotificationTime: Long
+    var lastNotificationTimeBirthday: Long
 
     var userData: UserData
     var timetable: Array<Array<Hour>>?

@@ -407,10 +407,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
             debugDrawer = DebugDrawer.Builder(this).modules(
                     ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, generateChangesDrawableAction, shareFirebaseTokenAction),
-                    DeviceModule(this),
-                    BuildModule(this),
-                    NetworkModule(this),
-                    SettingsModule(this)).build()
+                    DeviceModule(),
+                    BuildModule(),
+                    NetworkModule(),
+                    SettingsModule()).build()
         }
     }
     //endregion

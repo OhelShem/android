@@ -3,6 +3,7 @@
     <changelogversion versionName="7.0.0 Beta 5" changeDate="Nov 7, 2016">
         <changelogtext>Performance improvements</changelogtext>
         <changelogtext>Bug fixes</changelogtext>
+        <changelogtext>[b]Added:[/b] Round icon for 7.1</changelogtext>
     </changelogversion>
     <changelogversion versionName="7.0.0 Beta 4" changeDate="Nov 5, 2016">
         <changelogtext>[b]New![/b] Contacts screen</changelogtext>

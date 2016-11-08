@@ -71,9 +71,9 @@ dependencies {
     compile 'com.github.kevinthecity:BottomBar:-SNAPSHOT'
     compile 'com.timehop.fragmentswitcher:library:1.1.2'
     // debug
-    compile 'io.palaima.debugdrawer:debugdrawer:0.7.0'
-    compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.0'
-    compile 'io.palaima.debugdrawer:debugdrawer-actions:0.7.0'
+    compile 'io.palaima.debugdrawer:debugdrawer:0.7.1-SNAPSHOT'
+    compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.1-SNAPSHOT'
+    compile 'io.palaima.debugdrawer:debugdrawer-actions:0.7.1-SNAPSHOT'
     //Test
     testCompile 'junit:junit:4.12'
     testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin"
