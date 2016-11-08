@@ -223,8 +223,8 @@
     <string name="intro_bottombar_timetable_primary_text">מערכת שעות</string>
     <string name="intro_bottombar_timetable_secondary_text">לחצו פעם אחת למערכת השעות הרגילה, ופעמיים למערכת השבועית</string>
 
-    <string name="intro_bottombar_changes_primary_text">שינויים</string>
-    <string name="intro_bottombar_changes_secondary_text">מעכשיו ניתן לשתף את השינויים השכבתיים כתמונה</string>
+    <string name="intro_bottombar_changes_primary_text">השעה תשע שייכת לעבר</string>
+    <string name="intro_bottombar_changes_secondary_text">מגירסה זו תוכלו לקבל את השינויים ישר כשהם מתפרסמים! ניתן להפעיל את ההתראה כדי להישאר מעודכנים</string>
 
     <string name="intro_bottombar_dates_primary_text">חדש: מועדים</string>
     <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
