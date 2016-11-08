@@ -5,5 +5,9 @@ interface Analytics {
 
     fun onLogout()
 
+    fun subscribe()
+
+    fun unsubscribe()
+
     fun logEvent(type: String, info: Map<String, Any>)
 }

@@ -21,14 +21,23 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserId(sha1(storage.id + Salt))
         firebaseAnalytics.setUserProperty(LayerProperty, storage.userData.layer.toString())
         firebaseAnalytics.setUserProperty(ClassProperty, storage.userData.clazz.toString())
+        if (storage.notificationsForChanges)
+            subscribe()
+    }
+
+    override fun subscribe() {
         firebaseMessaging.subscribeToTopic("notifSub")
+    }
+
+    override fun unsubscribe() {
+        firebaseMessaging.unsubscribeFromTopic("notifSub")
     }
 
     override fun onLogout() {
         firebaseAnalytics.setUserId(null)
         firebaseAnalytics.setUserProperty(LayerProperty, null)
         firebaseAnalytics.setUserProperty(ClassProperty, null)
-        firebaseMessaging.unsubscribeFromTopic("notifSub")
+        unsubscribe()
     }
 
     override fun logEvent(type: String, info: Map<String, Any>) {

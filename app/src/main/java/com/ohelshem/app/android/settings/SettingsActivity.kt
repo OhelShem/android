@@ -27,11 +27,13 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import android.widget.LinearLayout
+import com.github.salomonbrys.kodein.erased.instance
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.android.utils.AttributeExtractor
+import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.storage.SharedStorage.Theme
 import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
@@ -39,6 +41,8 @@ import kotlinx.android.synthetic.main.settings_activity.*
 import org.jetbrains.anko.*
 
 class SettingsActivity : AppThemedActivity() {
+    private val analyticsManager: Analytics by kodein.instance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
@@ -54,6 +58,10 @@ class SettingsActivity : AppThemedActivity() {
             }
             settingsItem(getString(R.string.changes), showCheckBox = true, isChecked = storage.notificationsForChanges) {
                 storage.notificationsForChanges = it
+                if (it)
+                    analyticsManager.subscribe()
+                else
+                    analyticsManager.unsubscribe()
             }
             settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
                 storage.notificationsForTests = it
