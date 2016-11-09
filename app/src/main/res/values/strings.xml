@@ -97,7 +97,7 @@
     <string name="days_left_to_next_test">ימים למבחן הבא</string>
     <string name="old_test">מבחנים ישנים</string>
     <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
-    <string name="ok">OK</string>
+    <string name="tests_dialog_close">סגור</string>
     
     <!-- Contacts -->
     <string name="students">תלמידים</string>

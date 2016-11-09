@@ -47,6 +47,6 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     }
 
     fun showBirthdaysDialog() {
-
+        //fixme
     }
 }
