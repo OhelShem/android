@@ -572,6 +572,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"
         const val Shortcut_LaunchTimetable = "com.ohelshem.app.LAUNCH_TIMETABLE"
         const val Shortcut_LaunchDates = "com.ohelshem.app.LAUNCH_DATES"
+        const val Action_Notification = "com.ohelshem.app.NOTIFICATION"
 
     }
 }

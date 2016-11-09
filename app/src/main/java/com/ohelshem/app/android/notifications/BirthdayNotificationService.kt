@@ -47,7 +47,7 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
 
     private fun toFullName(name: String): String {
         val arr = name.split(" ")
-        if (arr.size>2) return name
+        if (arr.size > 2) return name
         return arr[1] + " " + arr[0]
     }
 

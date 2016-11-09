@@ -1,9 +1,11 @@
 package com.ohelshem.app.android
 
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
+import android.os.Bundle
 import com.chibatching.kotpref.Kotpref
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.KodeinAware
@@ -47,6 +49,26 @@ class App : Application(), KodeinAware {
 
         setAlarm(this)
 
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityPaused(p0: Activity?) {
+                isForeground = false
+            }
+
+            override fun onActivityResumed(p0: Activity?) {
+                isForeground = true
+            }
+
+            override fun onActivityStarted(p0: Activity?) = Unit
+
+            override fun onActivityDestroyed(p0: Activity?) = Unit
+
+            override fun onActivitySaveInstanceState(p0: Activity?, p1: Bundle?) = Unit
+
+            override fun onActivityStopped(p0: Activity?) = Unit
+
+            override fun onActivityCreated(p0: Activity?, p1: Bundle?) = Unit
+        })
+
     }
 
     private fun initApi() {
@@ -85,6 +107,8 @@ class App : Application(), KodeinAware {
     }
 
     companion object {
+        var isForeground: Boolean = false
+        var messageCallback: ((String, String) -> Unit)? = null
         lateinit var instance: App
 
         var updatedFromVersion: Int = -1
