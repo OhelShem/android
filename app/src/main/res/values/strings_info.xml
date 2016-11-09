@@ -14,6 +14,7 @@
 
     <string name="yes">כן</string>
     <string name="no">לא</string>
+    <string name="accept">אישור</string>
 
     <string-array name="week_days">
         <item>@string/sunday</item>

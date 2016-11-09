@@ -21,12 +21,18 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.data?.isNotEmpty() ?: false) {
-            //FIXME
-        } else if (remoteMessage.notification != null) {
-            if (App.isForeground)
-                App.messageCallback?.invoke(remoteMessage.notification.title, remoteMessage.notification.body)
-            else
-                sendNotification(remoteMessage.notification.title, remoteMessage.notification.body)
+            val data = remoteMessage.data!!
+            if (Notification_TitleField in data) {
+                val title = data[Notification_TitleField]
+                val body = data[Notification_BodyField]
+                val callback = App.messageCallback
+                if (App.isForeground && callback != null)
+                    callback(remoteMessage.notification.title, remoteMessage.notification.body)
+                else
+                    sendNotification(remoteMessage.notification.title, remoteMessage.notification.body)
+            } else {
+                //FIXME
+            }
         }
     }
 
@@ -48,11 +54,17 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware {
         val notificationBuilder = NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
-                .setContentText(messageBody)
+                .setContentText(messageBody.fromHtml())
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
 
         notificationManager.notify(42, notificationBuilder.build())
+    }
+
+    companion object {
+        private const val Notification_TitleField = "title"
+        private const val Notification_BodyField = "body"
+
     }
 }

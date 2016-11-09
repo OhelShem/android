@@ -69,6 +69,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private val analyticsManager: Analytics by kodein.instance()
 
+    private val notificationCallback = { title: String, body: String -> onNotification(title, body) }
+    private var dialog: MaterialStyledDialog? = null
+
     //region Activity events
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +89,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 Shortcut_LaunchTimetable -> setScreen(ScreenType.Timetable)
                 Shortcut_LaunchDates -> setScreen(ScreenType.Dates)
                 else -> {
+                    if (intent?.action == Action_Notification) {
+                        onNotification(intent.getStringExtra(Intent.EXTRA_TITLE), intent.getStringExtra(Intent.EXTRA_TEXT))
+                    }
+
                     if (savedInstanceState == null) {
                         if (resources.getBoolean(R.bool.dashboard_as_default))
                             setScreen(ScreenType.Dashboard)
@@ -113,13 +120,17 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             lastUpdate = storage.updateDate
             updatables.forEach { it.onSuccess() }
         }
+        App.messageCallback = notificationCallback
         updateBadges()
     }
 
     override fun onPause() {
         super.onPause()
         debugDrawer?.onPause()
+        App.messageCallback = null
         apiController -= CallbackId
+        dialog?.dismiss()
+        dialog = null
     }
 
     override fun onStart() {
@@ -294,6 +305,19 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             toast(R.string.refresh_fail)
     }
 
+    fun onNotification(title: String, body: String) {
+        runOnUiThread {
+            dialog = MaterialStyledDialog.Builder(this)
+                    .setTitle(title)
+                    .setDescription(body.fromHtml())
+                    .autoDismiss(true)
+                    .setPositiveText(R.string.accept)
+                    .onPositive { materialDialog, dialogAction ->
+                        materialDialog.cancel()
+                    }.show()
+        }
+    }
+
 
     //region Utils
     override var screenTitle: CharSequence
@@ -329,7 +353,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
 
     override fun setToolbarElevation(enabled: Boolean) {
-        doFromSdk(Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (enabled) {
                 appBarLayout.elevation = 4f
             } else {
