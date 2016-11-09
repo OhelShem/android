@@ -17,11 +17,11 @@ This project is part of 'Ohel Shem OSS', our attempt at providing open standard 
 
 This app is for students, allowing them to be updated with the most important data:
 
-* Timetable and changes:
+* Timetable and changes
 <br>
 <img src="http://imgur.com/wZt4JKU.jpg" width="350">
 <img src="http://imgur.com/HU0PnXQ.jpg" width="350">
-* Tests and holidays:
+* Tests and holidays
 <br>
 <img src="http://imgur.com/ozhbftx.jpg" width="350">
 <img src="http://imgur.com/kTPJ9Kr.jpg" width="350">
