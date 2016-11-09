@@ -19,12 +19,12 @@ This app is for students, allowing them to be updated with the most important da
 
 * Timetable and changes:
 <br>
-<img src="http://imgur.com/wZt4JKU.jpg" width="250">
-<img src="http://imgur.com/HU0PnXQ.jpg" width="250">
+<img src="http://imgur.com/wZt4JKU.jpg" width="350">
+<img src="http://imgur.com/HU0PnXQ.jpg" width="350">
 * Tests and holidays:
 <br>
-<img src="http://imgur.com/ozhbftx.jpg" width="250">
-<img src="http://imgur.com/kTPJ9Kr.jpg" width="250">
+<img src="http://imgur.com/ozhbftx.jpg" width="350">
+<img src="http://imgur.com/kTPJ9Kr.jpg" width="350">
 
 
 # Technology behind
