@@ -78,4 +78,12 @@
             </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/bdaysFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_bday"
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom|center_horizontal" />
 </android.support.design.widget.CoordinatorLayout>

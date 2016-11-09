@@ -9,6 +9,7 @@ import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.contacts_fragment.*
+import org.jetbrains.anko.onClick
 
 class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), ContactsView {
     override val layoutId: Int = R.layout.contacts_fragment
@@ -20,6 +21,10 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         screenManager.setToolbarElevation(false)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
+        bdaysFab.onClick {
+            showBirthdaysDialog()
+        }
+
     }
 
     override fun showContacts(layer: Int, clazz: Int, contacts: List<Contact>) {
@@ -39,5 +44,9 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             e.printStackTrace()
             return false
         }
+    }
+
+    fun showBirthdaysDialog() {
+
     }
 }
