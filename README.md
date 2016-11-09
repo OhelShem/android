@@ -8,7 +8,7 @@ Ohel Shem for Android
 Ohel Shem (Hebrew: אהל שם‎) is an Israeli high school located in the city of Ramat Gan. 
 It has about 1,550 students studying in 45 classes, from ninth to twelfth grade, and about 160 teachers and 40 workers.
 
-![Ohel Shem Logo](http://i.imgur.com/Yy1Z5aX.png)
+<img src="http://imgur.com/Ymo1qoh.jpg" width="250">
 
 ## Ohel Shem :heart: OSS
 This project is part of 'Ohel Shem OSS', our attempt at providing open standard for modern school.
@@ -17,11 +17,14 @@ This project is part of 'Ohel Shem OSS', our attempt at providing open standard 
 
 This app is for students, allowing them to be updated with the most important data:
 
-* Timetable
-* Timetable's daily changes
-* Tests
-
-![screenshots](http://i.imgur.com/cZh4KQx.jpg?)
+* Timetable and changes:
+<br>
+<img src="http://imgur.com/wZt4JKU.jpg" width="250">
+<img src="http://imgur.com/HU0PnXQ.jpg" width="250">
+* Tests and holidays:
+<br>
+<img src="http://imgur.com/ozhbftx.jpg" width="250">
+<img src="http://imgur.com/kTPJ9Kr.jpg" width="250">
 
 
 # Technology behind
