@@ -27,10 +27,12 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
 
     override fun subscribe() {
         firebaseMessaging.subscribeToTopic("notifSub")
+        firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
     }
 
     override fun unsubscribe() {
         firebaseMessaging.unsubscribeFromTopic("notifSub")
+        firebaseMessaging.unsubscribeFromTopic("layer" + storage.userData.layer.toString())
     }
 
     override fun onLogout() {
