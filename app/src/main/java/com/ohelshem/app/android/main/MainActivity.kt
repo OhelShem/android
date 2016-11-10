@@ -88,6 +88,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 Shortcut_LaunchChanges -> setScreen(ScreenType.Changes)
                 Shortcut_LaunchTimetable -> setScreen(ScreenType.Timetable)
                 Shortcut_LaunchDates -> setScreen(ScreenType.Dates)
+                Shortcut_LaunchMyClass -> setScreen(ScreenType.Contacts)
                 else -> {
                     if (intent?.action == Action_Notification) {
                         onNotification(intent.getStringExtra(Intent.EXTRA_TITLE), intent.getStringExtra(Intent.EXTRA_TEXT))
@@ -596,6 +597,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"
         const val Shortcut_LaunchTimetable = "com.ohelshem.app.LAUNCH_TIMETABLE"
         const val Shortcut_LaunchDates = "com.ohelshem.app.LAUNCH_DATES"
+        const val Shortcut_LaunchMyClass = "com.ohelshem.app.LAUNCH_MY_CLASS"
         const val Action_Notification = "com.ohelshem.app.NOTIFICATION"
 
     }

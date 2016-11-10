@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="?colorPrimary"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:elevation="4dp"
+        android:layout_height="42dp">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="14/05/16"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/nameDay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="יום ראשון"
+            android:gravity="center_vertical|right"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
 
     <com.vlonjatg.progressactivity.ProgressActivity
         android:id="@+id/progressActivity"
@@ -23,4 +59,4 @@
 
     </com.vlonjatg.progressactivity.ProgressActivity>
 
-</FrameLayout>
+</LinearLayout>

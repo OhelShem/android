@@ -14,7 +14,9 @@ import com.ohelshem.app.android.changes.clazz.ClassChangesFragment
 import com.ohelshem.app.android.changes.layer.LayerChangesFragment
 import com.ohelshem.app.android.changes.layer.LayerChangesPresenter
 import com.ohelshem.app.android.drawableRes
+import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.main.MainActivity
+import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
@@ -40,6 +42,11 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
         screenManager.setToolbarElevation(false)
 
         initPager()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.update()
     }
 
     private fun initPager() {
@@ -79,6 +86,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
                 }
             }
         }
+        dateLayout.hide()
     }
 
     /**
@@ -100,6 +108,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
                     presenter.launchTimetableScreen(screenManager)
                 }
         }
+        dateLayout.hide()
     }
 
     override fun onBecomingVisible() {
@@ -108,6 +117,9 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
 
     override fun setData(changes: List<Change>) {
         initTabs()
+        dateLayout.show()
+        date.text = ChangesDataFormat.format(Date(presenter.changesDate))
+        nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().getDay() - 1]}"
 
         childFragmentManager.fragments?.forEach {
             (it as? BaseChangesFragment<*>)?.presenter?.update()
