@@ -1,18 +1,24 @@
 package com.ohelshem.app.android.contacts
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.controller.storage.implementation.Contacts
 import com.ohelshem.app.model.Contact
+import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.onClick
+import java.util.*
 
 class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), ContactsView {
     override val layoutId: Int = R.layout.contacts_fragment
+    val storage: Storage by kodein.instance()
 
     override fun createPresenter(): ContactsPresenter = with(kodein()) { ContactsPresenter(instance(), instance()) }
 
@@ -47,6 +53,29 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     }
 
     fun showBirthdaysDialog() {
-        //fixme
+        //TODO make me beautiful
+        val today = Calendar.getInstance()
+        val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
+        val bdays = Contacts.getContacts(-1, -1).filter {
+            val cal = it.birthday.toCalendar()
+            cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month }
+        val alert = AlertDialog.Builder(context)
+                .setTitle(getString(R.string.birthdays_in_school))
+                .setNeutralButton(getString(R.string.tests_dialog_close)) {
+                    dialog, whichButton ->  dialog.cancel()
+                }.create()
+        var alertMsg = ""
+        bdays.forEach {
+            alertMsg+= toFullName(it.name) + " " + stringArrayRes(R.array.layers)[it.layer - 9] + "'" + it.clazz + "\n"
+        }
+        alert.setMessage(alertMsg)
+        alert.show()
     }
+
+    private fun toFullName(name: String): String {
+        val arr = name.split(" ")
+        if (arr.size > 2) return name
+        return arr[1] + " " + arr[0]
+    }
+
 }

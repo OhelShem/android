@@ -111,6 +111,7 @@
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>
     <string name="notification_about_changes">התראה על שינויים</string>
     <string name="birthdays">ימי הולדת</string>
+    <string name="birthdays_in_school">ימי הולדת בבית הספר</string>
     <string name="want_get_notification_for_changes">האם ברצונך לקבל התראה בשעה תשע כשהשינויים מתעדכנים?</string>
     <string name="test_in">מקצוע המבחן</string>
     <string name="enter_to_see_changes">היכנס על מנת לראות את השינויים</string>

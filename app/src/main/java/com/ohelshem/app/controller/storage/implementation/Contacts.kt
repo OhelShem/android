@@ -28,11 +28,28 @@ object Contacts : ContactsProvider {
 
     private val serialization = ContactSerialization.ofList()
     override fun getContacts(layer: Int, clazz: Int): List<Contact> {
-        generator(layer).use { reader ->
-            if (clazz == -1) {
-                return serialization.deserialize(reader)
-            } else {
-                return serialization.filter { it.clazz == clazz }.deserialize(reader)
+        if (layer==-1) {
+            var theList: List<Contact> = emptyList()
+            generator(9).use { reader ->
+                theList+= serialization.deserialize(reader)
+            }
+            generator(10).use { reader ->
+                theList+= serialization.deserialize(reader)
+            }
+            generator(11).use { reader ->
+                theList+= serialization.deserialize(reader)
+            }
+            generator(12).use { reader ->
+                theList+= serialization.deserialize(reader)
+            }
+            return theList
+        } else {
+            generator(layer).use { reader ->
+                if (clazz == -1) {
+                    return serialization.deserialize(reader)
+                } else {
+                    return serialization.filter { it.clazz == clazz }.deserialize(reader)
+                }
             }
         }
     }
