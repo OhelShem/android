@@ -22,28 +22,33 @@ import org.jetbrains.anko.notificationManager
 import java.util.*
 
 class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiController.Callback {
-    override val kodein: LazyKodein = LazyKodein(appKodein)
-    private val apiController: ApiController by instance()
+    override val kodein: LazyKodein = LazyKodein(App.instance.appKodein)
+    private val
+            apiController: ApiController by instance()
     private val storage: Storage by instance()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.data?.isNotEmpty() ?: false) {
             val data = remoteMessage.data!!
-            if (Notification_TitleField in data) {
-                val title = data[Notification_TitleField] ?: ""
-                val body = data[Notification_BodyField] ?: ""
-                val callback = App.messageCallback
-                if (App.isForeground && callback != null)
-                    callback(title, body)
-                else
-                    sendNotification(title, body, showDialog = true)
-            } else {
-                apiController[CallbackId] = this
-                initCurrentChanges()
-                if (!apiController.isBusy) {
-                    isFirstTimeFailure = true
-                    apiController.update()
-                }
+            parseData(data)
+        }
+    }
+
+    fun parseData(data: Map<String, String>) {
+        if (Notification_TitleField in data) {
+            val title = data[Notification_TitleField] ?: ""
+            val body = data[Notification_BodyField] ?: ""
+            val callback = App.messageCallback
+            if (App.isForeground && callback != null)
+                callback(title, body)
+            else
+                sendNotification(title, body, showDialog = true)
+        } else {
+            apiController[CallbackId] = this
+            initCurrentChanges()
+            if (!apiController.isBusy) {
+                isFirstTimeFailure = true
+                apiController.update()
             }
         }
     }
@@ -54,6 +59,7 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
             if (changesDate != date) {
                 val clazz = storage.userData.clazz
                 currentChanges = storage.changes?.filter { it.clazz == clazz }
+                changesDate = date
             }
         }
     }
@@ -68,15 +74,13 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
 
             val areNoChangesNew = newChanges == null && current == null && storage.changesDate != changesDate &&
                     storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR]
-            val isThereDiff = newChanges == null && current != null ||
-                    newChanges != null && current == null ||
-                    newChanges?.size != current?.size ||
+            val isThereDiff = newChanges?.size ?: 0 != current?.size ?: 0 ||
                     newChanges?.any { new -> current?.none { it.color == new.color && it.content == new.content } ?: false } ?: false
 
             if (areNoChangesNew) {
                 notifyNoChanges()
             } else if (isThereDiff) {
-                if (current?.size ?: 0 == 0) {
+                if (newChanges?.size ?: 0 == 0) {
                     notifyNoChanges()
                 } else {
                     notifyChanges()

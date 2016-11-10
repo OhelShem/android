@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.support.design.widget.TabLayout
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
@@ -22,7 +21,6 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.changes.ChangesFragment
-import com.ohelshem.app.android.changes.LayerChangesGenerator
 import com.ohelshem.app.android.contacts.ContactsFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
@@ -37,7 +35,6 @@ import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
-import com.ohelshem.app.controller.info.SchoolInfoImpl
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
@@ -401,6 +398,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 ProcessPhoenix.triggerRebirth(this)
             }
 
+            val sendNotificationAction = ButtonAction("Send changes notification") {
+                FirebaseService().parseData(emptyMap())
+            }
+
+
             val shareFirebaseTokenAction = ButtonAction("Share firebaseToken") {
                 toast(FirebaseInstanceId.getInstance().token ?: "No token available")
                 startActivity(
@@ -423,15 +425,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 }
             }
 
-            val generateChangesDrawableAction = ButtonAction("Generate cache bitmap") {
-                LayerChangesGenerator.generateLayerChanges(this, storage.changes.orEmpty(), SchoolInfoImpl[storage.userData.layer], storage.userData.layer,
-                        File(Environment.getExternalStorageDirectory(), "image.jpeg")) {
-                    toast("Done!")
-                }
-            }
-
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, generateChangesDrawableAction, shareFirebaseTokenAction),
+                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, sendNotificationAction, shareFirebaseTokenAction),
                     DeviceModule(),
                     BuildModule(),
                     NetworkModule(),
