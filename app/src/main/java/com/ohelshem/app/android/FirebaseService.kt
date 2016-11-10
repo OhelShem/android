@@ -76,7 +76,7 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
             if (areNoChangesNew) {
                 notifyNoChanges()
             } else if (isThereDiff) {
-                if (current?.size ?: 0 == 0) {
+                if (newChanges?.size ?: 0 == 0) {
                     notifyNoChanges()
                 } else {
                     notifyChanges()
