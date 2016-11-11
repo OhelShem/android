@@ -27,7 +27,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
         holder.name.text = toFullName(contact.name)
-        holder.birthday.text = dateFormat.format(Date(contact.birthday))
+        holder.birthday.hint = dateFormat.format(Date(contact.birthday))
         if (contact.phone.isEmpty()) {
             holder.dial.hide()
             holder.menu.hide()
