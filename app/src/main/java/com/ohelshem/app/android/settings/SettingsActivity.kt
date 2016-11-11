@@ -51,6 +51,7 @@ class SettingsActivity : AppThemedActivity() {
     }
 
     private fun initLayout() {
+        restartApp.setColorFilter(themesHeader.currentTextColor)
         notificationsList.apply {
             settingsItem(getString(R.string.timetable_notif), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
                 storage.notificationsForTimetable = it
