@@ -65,29 +65,39 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
 
     //region Notifications
     private fun notifyHoliday() {
-        notificationManager.notify(1002, notification(getString(R.string.holiday_notification), "", action = MainActivity.Shortcut_LaunchDates))
+        notificationManager.notify(1002, notification(getString(R.string.holiday_notification), "", action = MainActivity.Shortcut_LaunchDates, big = false))
     }
 
     private fun notifyTestTomorrow(test: Test) {
-        notificationManager.notify(1003, notification(getString(R.string.test_tomorrow), test.content, action = MainActivity.Shortcut_LaunchDates))
+        notificationManager.notify(1003, notification(getString(R.string.test_tomorrow), test.content, action = MainActivity.Shortcut_LaunchDates, big = false))
     }
 
     private fun notifyTestsInAWeek(tests: List<Test>) {
         val text = if (tests.size == 1) tests.first().content else getString(R.string.tests_this_week_subtitle)
-        notificationManager.notify(1004, notification(getString(R.string.tests_this_week), text, action = MainActivity.Shortcut_LaunchDates))
+        notificationManager.notify(1004, notification(getString(R.string.tests_this_week), text, action = MainActivity.Shortcut_LaunchDates, big = false))
     }
 
 
     companion object {
-        fun notification(title: String, text: String, action: String): Notification? {
+        fun notification(title: String, text: String, action: String, big: Boolean = false): Notification? {
             val intent = Intent(App.instance, MainActivity::class.java).setAction(action)
             val pIntent = PendingIntent.getActivity(App.instance, 0, intent, 0)
-            return NotificationCompat.Builder(App.instance)
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setContentTitle(title)
-                    .setContentText(text)
-                    .setAutoCancel(true)
-                    .setContentIntent(pIntent).build()
+            if (big) {
+                return NotificationCompat.Builder(App.instance)
+                        .setStyle(android.support.v4.app.NotificationCompat.BigTextStyle().bigText(text))
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle(title)
+                        .setContentText(text)
+                        .setAutoCancel(true)
+                        .setContentIntent(pIntent).build()
+            } else {
+                return NotificationCompat.Builder(App.instance)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle(title)
+                        .setContentText(text)
+                        .setAutoCancel(true)
+                        .setContentIntent(pIntent).build()
+            }
         }
     }
     //endregion
