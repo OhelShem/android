@@ -70,7 +70,7 @@ class SettingsActivity : AppThemedActivity() {
             settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
                 storage.notificationsForTests = it
             }
-            settingsItem(getString(R.string.holidays), showCheckBox = true, isChecked = storage.notificationsForHolidays) {
+            settingsItem(getString(R.string.holidays_notif), showCheckBox = true, isChecked = storage.notificationsForHolidays) {
                 storage.notificationsForHolidays = it
             }
         }
