@@ -130,7 +130,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
 
             }
             if (apis.isEmpty()) forEach { it.onFail(UpdateError.NoData) }
-            else forEach { it.onSuccess(apis) }
+            else forEach { it.onSuccess(apis) } //TODO fix error for 4.4
         } catch (e: Exception) {
             logger.error(e) { "Failed to update" }
             forEach { it.onFail(UpdateError.Exception) }
