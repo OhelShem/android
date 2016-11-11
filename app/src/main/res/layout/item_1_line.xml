@@ -16,7 +16,6 @@
         android:layout_gravity="center_vertical"
         android:maxLines="1"
         android:layout_marginLeft="32dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="bold"
         tools:text="201509"/>
 
@@ -28,7 +27,6 @@
         android:layout_weight="1"
         android:gravity="right"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="אלגברה לינארית 1"/>
 
     <TextView

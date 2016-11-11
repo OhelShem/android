@@ -23,6 +23,7 @@
             android:gravity="right"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             tools:text="ראש השנה"/>
 
         <LinearLayout
