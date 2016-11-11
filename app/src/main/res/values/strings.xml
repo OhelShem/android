@@ -17,7 +17,7 @@
     <string name="changes">שינויים</string>
     <string name="refreshing">מעדכן מידע</string>
     <string name="timetable">מערכת שעות</string>
-    <string name="timetable_notif">סדר יום</string>
+    <string name="timetable_notif">מערכת שעות יומית</string>
     <string name="dates">מועדים</string>
     <string name="contacts">הכיתה שלי</string>
     <string name="tests">מבחנים</string>
@@ -111,6 +111,9 @@
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>
     <string name="notification_about_changes">התראה על שינויים</string>
     <string name="birthdays">ימי הולדת</string>
+    <string name="birthdays_in_class">ימי הולדת בכיתה</string>
+    <string name="changes_realtime">שינויים בזמן אמת</string>
+    <string name="holidays_notif">חופשים</string>
     <string name="birthdays_in_school">ימי הולדת בבית הספר</string>
     <string name="want_get_notification_for_changes">האם ברצונך לקבל התראה בשעה תשע כשהשינויים מתעדכנים?</string>
     <string name="test_in">מקצוע המבחן</string>
@@ -229,7 +232,7 @@
     <string name="intro_bottombar_timetable_secondary_text">לחצו פעם אחת למערכת השעות הרגילה, ופעמיים למערכת השבועית</string>
 
     <string name="intro_bottombar_changes_primary_text">השעה תשע שייכת לעבר</string>
-    <string name="intro_bottombar_changes_secondary_text">מגירסה זו תוכלו לקבל את השינויים בשעות הערב כשהם מועלים לאתר. ניתן להפעיל את ההתראה כדי להישאר מעודכנים</string>
+    <string name="intro_bottombar_changes_secondary_text">מגירסה זו תוכלו לקבל את השינויים בשעות הערב כשהם מועלים לאתר. ההתראה תעדכן אתכם כשעולים שינויים חדשים</string>
 
     <string name="intro_bottombar_dates_primary_text">חדש: מועדים</string>
     <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>

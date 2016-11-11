@@ -53,18 +53,18 @@ class SettingsActivity : AppThemedActivity() {
     private fun initLayout() {
         restartApp.setColorFilter(themesHeader.currentTextColor)
         notificationsList.apply {
-            settingsItem(getString(R.string.timetable_notif), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
-                storage.notificationsForTimetable = it
-                OngoingNotificationService.update(this@SettingsActivity)
-            }
-            settingsItem(getString(R.string.changes), showCheckBox = true, isChecked = storage.notificationsForChanges) {
+            settingsItem(getString(R.string.changes_realtime), showCheckBox = true, isChecked = storage.notificationsForChanges) {
                 storage.notificationsForChanges = it
                 if (it)
                     analyticsManager.subscribe()
                 else
                     analyticsManager.unsubscribe()
             }
-            settingsItem(getString(R.string.birthdays), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
+            settingsItem(getString(R.string.timetable_notif), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
+                storage.notificationsForTimetable = it
+                OngoingNotificationService.update(this@SettingsActivity)
+            }
+            settingsItem(getString(R.string.birthdays_in_class), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
                 storage.notificationsForBirthdays = it
             }
             settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {

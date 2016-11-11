@@ -225,13 +225,13 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
 
                     developerMode = old.developerModeEnabled
 
-                    notificationsForChanges = old.notificationsForChangesEnabled
+                    notificationsForChanges = true
 
                     notificationsForHolidays = old.notificationsForHolidaysEnabled
 
-                    notificationsForTests = old.notificationsForTestsEnabled
+                    notificationsForTests = true
 
-                    notificationsForTimetable = old.notificationsForTimetableEnabled
+                    notificationsForTimetable = true
 
                     updateDate = 0
                     serverUpdateDate = 0
