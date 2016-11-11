@@ -30,7 +30,6 @@ import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
-import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.UIStorage
@@ -53,7 +52,7 @@ import java.util.*
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
     override val layoutId: Int = R.layout.dashboard_fragment
 
-    private val defaultTextColor by lazy { AttributeExtractor.extractPrimaryTextColorFrom(context) }
+    private var defaultTextColor: Int = 0
 
     private val storage: UIStorage by kodein.instance()
 
@@ -66,6 +65,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     override fun createPresenter(): DashboardPresenter = with(kodein()) { DashboardPresenter(instance(), instance()) }
 
     override fun init() {
+        defaultTextColor = todayPlan.currentTextColor
         screenManager.setToolbarElevation(false)
         todayPlan.onClick {
             presenter.launchTodayPlan(screenManager)
