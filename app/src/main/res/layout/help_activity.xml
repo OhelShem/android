@@ -229,7 +229,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:textColor="?textColorPrimary"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textStyle="bold"
                             android:text="@string/yoav_sternberg"
                             android:id="@+id/textView2" />
@@ -290,7 +290,6 @@
                             android:gravity="center"
                             android:padding="2dp"
                             android:text="@string/grader"
-                            android:textColor="?textColorPrimary"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -325,7 +324,6 @@
                             android:gravity="center"
                             android:padding="2dp"
                             android:text="@string/quick_circle_apps"
-                            android:textColor="?textColorPrimary"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -360,7 +358,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:textColor="?textColorPrimary"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textStyle="bold"
                             android:text="@string/eran_machlev"/>
 
