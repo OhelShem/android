@@ -45,15 +45,15 @@ class HolidaysAdapter(val holidays: Array<Holiday>) : RecyclerView.Adapter<Holid
                 holder.extra.endBlock.show()
                 holder.extra.daysBlock.show()
                 holder.extra.startText.show()
-                holder.extra.endDate.hint = item.end.substring(0, 5)
-                holder.extra.length.hint = item.length.toString()
+                holder.extra.endDate.text = item.end.substring(0, 5)
+                holder.extra.length.text = item.length.toString()
             }
-            holder.startDate.hint = item.start.substring(0, 5)
+            holder.startDate.text = item.start.substring(0, 5)
         } else {
             if (item.isOneDay()) {
-                holder.startDate.hint = item.start.substring(0, 5)
+                holder.startDate.text = item.start.substring(0, 5)
             } else {
-                holder.startDate.hint = item.start.substring(0, 5) + " - " + item.end.substring(0, 5)
+                holder.startDate.text = item.start.substring(0, 5) + " - " + item.end.substring(0, 5)
 
             }
         }

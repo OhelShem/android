@@ -22,7 +22,7 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
     val contactsProvider: ContactsProvider by kodein.instance()
 
     override fun onHandleIntent(intent: Intent?) {
-        if (storage.notificationsForBirthdays && storage.lastNotificationTimeBirthday.toCalendar()[Calendar.DAY_OF_YEAR] != Calendar.getInstance()[Calendar.DAY_OF_YEAR]) {
+        if (storage.isSetup() && storage.notificationsForBirthdays && storage.lastNotificationTimeBirthday.toCalendar()[Calendar.DAY_OF_YEAR] != Calendar.getInstance()[Calendar.DAY_OF_YEAR]) {
             val today = Calendar.getInstance()
             val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
             val contacts = contactsProvider.getContacts(storage.userData.layer, storage.userData.clazz).filter {

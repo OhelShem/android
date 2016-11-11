@@ -16,7 +16,7 @@ object Contacts : ContactsProvider {
                 10 -> R.raw.contacts10
                 11 -> R.raw.contacts11
                 12 -> R.raw.contacts12
-                else -> throw IllegalArgumentException("No Such layer")
+                else -> throw IllegalArgumentException("No Such layer: " + it)
             }
             context.resources.openRawResource(resource).simpleReader()
         }

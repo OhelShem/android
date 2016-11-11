@@ -16,7 +16,6 @@
         android:layout_gravity="center_vertical"
         android:maxLines="1"
         android:layout_marginLeft="32dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="bold"
         tools:text="22/01/16 -23/01/16"/>
 
@@ -29,6 +28,5 @@
         android:gravity="right"
         android:maxLines="1"
         android:layout_marginRight="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="ראש השנה"/>
 </LinearLayout>
