@@ -71,7 +71,6 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
             val newChanges = storage.changes?.filter { it.clazz == clazz }
 
             val current = currentChanges
-
             val areNoChangesNew = newChanges == null && current == null && storage.changesDate != changesDate &&
                     storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR]
             val isThereDiff = newChanges?.size ?: 0 != current?.size ?: 0 ||

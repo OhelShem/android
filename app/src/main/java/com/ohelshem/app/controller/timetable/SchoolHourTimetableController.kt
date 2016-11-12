@@ -4,9 +4,13 @@ import com.ohelshem.api.controller.implementation.ApiParserImpl
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.SchoolHour
 
-class SchoolHourTimetableController : BaseTimetableController {
-    @Suppress("UNCHECKED_CAST")
-    constructor(hours: List<SchoolHour>) {
+class SchoolHourTimetableController(hours: List<SchoolHour>) : BaseTimetableController() {
+
+    override fun init() {
+
+    }
+
+    init {
         val isLearnOnFriday = hours.find { it.day == 6 } != null
         val timetable = Array<Array<Hour?>>(if (isLearnOnFriday) 6 else 5) { arrayOfNulls(ApiParserImpl.MaxHoursADay) }
         hours.forEach {
@@ -17,10 +21,7 @@ class SchoolHourTimetableController : BaseTimetableController {
                 if (day[hour] == null) day[hour] = Hour("", "", TimetableController.ColorEmpty)
             }
         }
+        @Suppress("UNCHECKED_CAST")
         this.timetable = timetable as Array<Array<Hour>>
-    }
-
-    override fun init() {
-
     }
 }

@@ -35,10 +35,7 @@ object OldStorage : KotprefModel() {
     override val kotprefName: String = "DBControllerImpl"
 
     var databaseVersion: Int by intPrefVar(3)
-    var notificationsForChangesEnabled: Boolean by booleanPrefVar()
     var notificationsForHolidaysEnabled: Boolean by booleanPrefVar()
-    var notificationsForTestsEnabled: Boolean by booleanPrefVar()
-    var notificationsForTimetableEnabled: Boolean by booleanPrefVar()
     var developerModeEnabled: Boolean by booleanPrefVar()
 
     var password: String by stringPrefVar()

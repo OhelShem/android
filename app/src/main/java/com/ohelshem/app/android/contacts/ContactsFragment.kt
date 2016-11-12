@@ -27,7 +27,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         screenManager.setToolbarElevation(false)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
-        bdaysFab.onClick {
+        birthdaysFab.onClick {
             showBirthdaysDialog()
         }
 
@@ -56,7 +56,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         //TODO make me beautiful
         val today = Calendar.getInstance()
         val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
-        val bdays = Contacts.getContacts(-1, -1).filter {
+        val birthdays = Contacts.getContacts(-1, -1).filter {
             val cal = it.birthday.toCalendar()
             cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month }
         val alert = AlertDialog.Builder(context)
@@ -65,7 +65,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
                     dialog, whichButton ->  dialog.cancel()
                 }.create()
         var alertMsg = ""
-        bdays.forEach {
+        birthdays.forEach {
             alertMsg+= toFullName(it.name) + " " + stringArrayRes(R.array.layers)[it.layer - 9] + "'" + it.clazz + "\n"
         }
         alert.setMessage(alertMsg)

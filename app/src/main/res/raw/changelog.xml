@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion versionName="7.0.0 RC" changeDate="Nov 12, 2016">
+        <changelogtext>[b]Finally![b] Changes Notification support</changelogtext>
+        <changelogtext>Messages from server</changelogtext>
+        <changelogtext>See all the birthdays of the day.</changelogtext>
+        <changelogtext>Bug fixes</changelogtext>
+    </changelogversion>
     <changelogversion versionName="7.0.0 Beta 5" changeDate="Nov 7, 2016">
         <changelogtext>Performance improvements</changelogtext>
         <changelogtext>Bug fixes</changelogtext>

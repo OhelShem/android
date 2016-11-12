@@ -214,7 +214,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     override fun showTests(tests: List<Test>) {
         if (testsCard != null) {
-            if (tests.size == 0) {
+            if (tests.isEmpty()) {
                 testsCard.hide()
                 testsHeader.textResource = R.string.no_tests_next_week
             } else {

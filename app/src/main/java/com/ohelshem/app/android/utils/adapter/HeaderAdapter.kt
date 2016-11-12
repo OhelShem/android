@@ -60,7 +60,7 @@ abstract class HeaderAdapter<K : Any>(context: Context, val items: MutableList<V
         fun <K : Any> split(data: List<K>, firstTitle: String, secondTitle: String, rule: K.() -> Boolean): MutableList<VisibleItem<K>> {
             val transform: List<K>.() -> MutableList<VisibleItem<K>> = { map { VisibleItem(it) }.toMutableList()}
             val before = data.takeWhile { !rule(it) }
-            if (before.size == 0) return (listOf(VisibleItem<K>(secondTitle)) + data.transform()).toMutableList()
+            if (before.isEmpty()) return (listOf(VisibleItem<K>(secondTitle)) + data.transform()).toMutableList()
             return (sequenceOf(VisibleItem<K>(firstTitle)) + before.transform() + VisibleItem<K>(secondTitle) + data.drop(before.size).transform()).toMutableList()
         }
     }

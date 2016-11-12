@@ -31,7 +31,7 @@ class LayerChangesAdapter(context: Context, val changes: List<Change>, val class
         } else {
             try {
                 val change: Change? = items[col][row - 1]
-                holder.itemView.setBackgroundColor(if (change == null) NoChangesColor[row % 2] else change.color)
+                holder.itemView.setBackgroundColor(change?.color ?: NoChangesColor[row % 2])
                 holder.textView.text = change?.content ?: ""
             } catch (e: Exception) {
                 e.printStackTrace()

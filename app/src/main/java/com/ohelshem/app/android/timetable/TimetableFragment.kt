@@ -150,30 +150,29 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
             table.addView(tableRow)
 
-            for (day in data.size - 1 downTo 0) {
-                if (data[day].size == 0) {
-                    continue
-                }
+            (data.size - 1 downTo 0)
+                    .filterNot { data[it].isEmpty() }
+                    .map { day ->
+                        activity.layoutInflater.inflate(R.layout.timetable_weekly_item, tableRow, false).apply {
+                            id = getId(day, hour)
 
-                val view = activity.layoutInflater.inflate(R.layout.timetable_weekly_item, tableRow, false).apply {
-                    id = getId(day, hour)
+                            if (data[day].size <= hour) {
+                                backgroundColor = Color.TRANSPARENT
+                            } else {
+                                backgroundColor = data[day][hour].color
+                                (find<TextView>(R.id.text)).text = data[day][hour].name
+                            }
 
-                    if (data[day].size <= hour) {
-                        backgroundColor = Color.TRANSPARENT
-                    } else {
-                        backgroundColor = data[day][hour].color
-                        (find<TextView>(R.id.text)).text = data[day][hour].name
+                            (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
+
+                            onClick {
+                                if (data.size > day && data[day].size > hour)
+                                    presenter.startEdit(data[day][hour], day, hour)
+                            }
+                        }
                     }
+                    .forEach { tableRow.addView(it) }
 
-                    (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
-
-                    onClick {
-                        if (data.size > day && data[day].size > hour)
-                            presenter.startEdit(data[day][hour], day, hour)
-                    }
-                }
-                tableRow.addView(view)
-            }
             val frameLayout = FrameLayout(activity).apply {
                 layoutParams = TableRow.LayoutParams(dp30, MATCH_PARENT)
                 backgroundColor = primaryColor

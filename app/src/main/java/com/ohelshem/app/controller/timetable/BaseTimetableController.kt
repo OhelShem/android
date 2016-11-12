@@ -113,12 +113,12 @@ abstract class BaseTimetableController : TimetableController {
         get() {
             val cal = Calendar.getInstance()
             val today = cal[Calendar.DAY_OF_WEEK]
-            if (today > timetable.size || timetable[today - 1].size == 0) return true
+            if (today > timetable.size || timetable[today - 1].isEmpty()) return true
             return TimetableController.getTimeToCompare(cal[Calendar.MINUTE], cal[Calendar.HOUR_OF_DAY]) >= getLessonTimeToCompare(lastHourOfDay(timetable[today - 1]), start = false)
         }
 
     private fun Array<Array<Hour>>.getFirstExisting(day: Int, startingDay: Int = day, isStartingNow: Boolean = false): NumberedHour? {
-        if (day > timetable.size || timetable[day - 1].size == 0) {
+        if (day > timetable.size || timetable[day - 1].isEmpty()) {
             return stillRunning(day, startingDay, isStartingNow) therefore { getFirstExisting(day.plusDay(), startingDay, isStartingNow = false) }
         }
 

@@ -13,10 +13,7 @@ interface SchoolInfo {
     fun validate(layer: Int, clazz: Int): Boolean
 
     fun getAbsoluteClass(layer: Int, clazz: Int): Int {
-        var absolute = 0
-        for (l in MinLayer until layer) {
-            absolute += get(l)
-        }
+        var absolute = (MinLayer until layer).sumBy { get(it) }
         absolute += clazz
 
         return absolute

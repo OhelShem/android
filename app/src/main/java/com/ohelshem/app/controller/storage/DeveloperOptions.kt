@@ -42,7 +42,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
                 val clazz = userData.clazz
                 val day = changesDate.toCalendar()[Calendar.DAY_OF_WEEK]
                 val timetable = timetable ?: return emptyList()
-                val size = if (day > timetable.size || timetable[day - 1].size == 0) 10 else timetable[day - 1].size
+                val size = if (day > timetable.size || timetable[day - 1].isEmpty()) 10 else timetable[day - 1].size
 
                 var c = 0
 

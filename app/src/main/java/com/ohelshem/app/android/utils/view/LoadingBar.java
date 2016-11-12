@@ -18,14 +18,14 @@ public class LoadingBar extends View {
 
     private float mWidth = 0f;
     private float mHigh = 0f;
-    private float mPadding = 5f;
+    private final float mPadding = 5f;
 
-    private float eatErWidth = 60f;
+    private final float eatErWidth = 60f;
     private float eatErPositionX = 0f;
-    int eatSpeed = 5;
+    private final int eatSpeed = 5;
 
 
-    private float mAngle = 34;
+    private final float mAngle = 34;
     private float eatErStartAngle = mAngle;
     private float eatErEndAngle = 360 - 2 * eatErStartAngle;
 
@@ -52,7 +52,7 @@ public class LoadingBar extends View {
         mHigh = getMeasuredHeight();
     }
 
-    RectF animationRect = new RectF(0,0,0,0);
+    private final RectF animationRect = new RectF(0,0,0,0);
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -99,7 +99,7 @@ public class LoadingBar extends View {
 
     public void startAnim() {
         stopAnim();
-        startViewAnim(0f, 1f, 3500);
+        startViewAnim();
     }
 
     public void stopAnim() {
@@ -113,11 +113,11 @@ public class LoadingBar extends View {
         }
     }
 
-    ValueAnimator valueAnimator = null;
+    private ValueAnimator valueAnimator = null;
 
-    private ValueAnimator startViewAnim(float startF, final float endF, long time) {
-        valueAnimator = ValueAnimator.ofFloat(startF, endF);
-        valueAnimator.setDuration(time);
+    private void startViewAnim() {
+        valueAnimator = ValueAnimator.ofFloat(0f, 1f);
+        valueAnimator.setDuration((long) 3500);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.setRepeatCount(ValueAnimator.INFINITE);//无限循环
         valueAnimator.setRepeatMode(ValueAnimator.RESTART);
@@ -134,17 +134,6 @@ public class LoadingBar extends View {
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-            }
-
-            @Override
             public void onAnimationRepeat(Animator animation) {
                 super.onAnimationRepeat(animation);
                 if (onAnimationRepeatListener != null) onAnimationRepeatListener.run();
@@ -154,11 +143,9 @@ public class LoadingBar extends View {
             valueAnimator.start();
 
         }
-
-        return valueAnimator;
     }
 
-    Runnable onAnimationRepeatListener;
+    private Runnable onAnimationRepeatListener;
 
     public void onRepeat(Runnable onRepeat) {
         this.onAnimationRepeatListener = onRepeat;

@@ -153,8 +153,8 @@
     <string name="never">אף פעם</string>
     <string name="start_playing">התחל לשחק</string>
     <string name="generating_data">מייצר תמונה…</string>
-    <string name="bday_title">יום הולדת בכיתה שלך</string>
-    <string name="bday_msg">אל %1$s לאחל היום מזל טוב ל%2$s</string>
+    <string name="birthday_title">יום הולדת בכיתה שלך</string>
+    <string name="birthday_message">אל %1$s לאחל היום מזל טוב ל%2$s</string>
     <string name="changes_notif_title">השינויים התעדכנו</string>
     <string name="no_connection_subtitle_notification">אנא התחבר לאינטרנט והיכנס לאפליקציה על מנת לצפות בשינויים</string>
     <string name="login_error">פרטי החשבון השתנו</string>
