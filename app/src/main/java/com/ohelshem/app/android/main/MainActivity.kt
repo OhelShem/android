@@ -222,6 +222,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         bottomBar.setOnTabReselectListener {
             notifyFragmentOnReselect()
         }
+
+        if (resources.getBoolean(R.bool.isTablet)) {
+            bottomBar.isSaveEnabled = false
+        }
     }
 
     override fun setScreen(screen: ScreenType, backStack: Boolean) {
