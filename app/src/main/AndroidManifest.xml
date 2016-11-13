@@ -86,6 +86,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name="com.ohelshem.app.android.notifications.DismissNotificationReceiver"
+                  android:exported="false" />
     </application>
 
 </manifest>

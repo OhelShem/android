@@ -62,6 +62,7 @@ class SettingsActivity : AppThemedActivity() {
             }
             settingsItem(getString(R.string.timetable_notif), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
                 storage.notificationsForTimetable = it
+                storage.ongoingNotificationDisableDate = 0
                 OngoingNotificationService.update(this@SettingsActivity)
             }
             settingsItem(getString(R.string.birthdays_in_class), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {

@@ -39,6 +39,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     override var updateDate: Long by longPrefVar(EmptyData.toLong())
     override var lastNotificationTime: Long by longPrefVar(EmptyData.toLong())
     override var lastNotificationTimeBirthday: Long by longPrefVar(EmptyData.toLong())
+    override var ongoingNotificationDisableDate: Long by longPrefVar(EmptyData.toLong())
 
     override var appVersion: Int by intPrefVar(EmptyData)
     override var debugFlag: Boolean by booleanPrefVar()

@@ -34,7 +34,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val cal = Calendar.getInstance()
         val day = cal.getDay()
         if (storage.isSetup()) {
-            if (storage.notificationsForTimetable && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
+            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != toDayOnly(Calendar.getInstance()).timeInMillis && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
@@ -131,6 +131,12 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         contentView.setImageViewResource(R.id.notifLogo, R.drawable.logo)
         contentView.setImageViewResource(R.id.hourIcon, R.drawable.ic_alarm)
         contentView.setImageViewResource(R.id.nextHourIcon, R.drawable.ic_arrow_forward)
+        contentView.setImageViewResource(R.id.notif_dismiss, R.drawable.ic_clear)
+
+        val cancelIntent = Intent(applicationContext, DismissNotificationReceiver::class.java)
+        val cancelPIntent = PendingIntent.getBroadcast(applicationContext, 0, cancelIntent, 0)
+
+        contentView.setOnClickPendingIntent(R.id.notif_dismiss, cancelPIntent)
 
         val intent = Intent(applicationContext, MainActivity::class.java)
         val pIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
@@ -141,7 +147,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(pIntent)
                 .setCustomBigContentView(contentView)
-                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .setVisibility(Notification.VISIBILITY_SECRET)
                 .setPriority(Notification.PRIORITY_MAX)
                 .build()
     }
@@ -153,5 +159,13 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             context.startService<OngoingNotificationService>()
         }
 
+    }
+
+    fun toDayOnly(cal: Calendar): Calendar {
+        cal.set(Calendar.HOUR,0)
+        cal.set(Calendar.MINUTE,0)
+        cal.set(Calendar.SECOND,0)
+        cal.set(Calendar.MILLISECOND,0)
+        return cal
     }
 }
