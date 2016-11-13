@@ -53,6 +53,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 
+
+
 class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationScreenManager {
     private val apiController: ApiController by instance()
 
@@ -403,7 +405,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             val sendNotificationAction = ButtonAction("Send changes notification") {
-                FirebaseService().parseData(emptyMap())
+                FirebaseService().queryApiForNotification()
+                val quit = Intent(Intent.ACTION_MAIN)
+                quit.addCategory(Intent.CATEGORY_HOME)
+                quit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(quit)
             }
 
 

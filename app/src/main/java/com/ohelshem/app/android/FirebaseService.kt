@@ -34,7 +34,7 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
         }
     }
 
-    fun parseData(data: Map<String, String>) {
+    private fun parseData(data: Map<String, String>) {
         if (Notification_TitleField in data) {
             val title = data[Notification_TitleField] ?: ""
             val body = data[Notification_BodyField] ?: ""
@@ -44,12 +44,16 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
             else
                 sendNotification(title, body, showDialog = true)
         } else {
-            apiController[CallbackId] = this
-            initCurrentChanges()
-            if (!apiController.isBusy) {
-                isFirstTimeFailure = true
-                apiController.update()
-            }
+            queryApiForNotification()
+        }
+    }
+
+    fun queryApiForNotification() {
+        apiController[CallbackId] = this
+        initCurrentChanges()
+        if (!apiController.isBusy) {
+            isFirstTimeFailure = true
+            apiController.update()
         }
     }
 
@@ -74,7 +78,7 @@ class FirebaseService : FirebaseMessagingService(), LazyKodeinAware, ApiControll
             val areNoChangesNew = newChanges == null && current == null && storage.changesDate != changesDate &&
                     storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR]
             val isThereDiff = newChanges?.size ?: 0 != current?.size ?: 0 ||
-                    newChanges?.any { new -> current?.none { it.color == new.color && it.content == new.content } ?: false } ?: false
+                    newChanges?.any { new -> current?.none { it.color == new.color && it.content.trim() == new.content.trim() } ?: false } ?: false
 
             if (areNoChangesNew) {
                 notifyNoChanges()
