@@ -110,8 +110,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private fun showCurrentLessonInfo(data: HourData, changes: List<Change>?) {
         val change = changes?.firstOrNull { it.hour - 1 == data.hour.hourOfDay }
         if (change != null) {
+            val changeIsWithout = change.content.contains("בלי")
             hasModifiedCurrentLessonView = true
-            lessonName.htmlText = bold { change.content } + " ($instead ${data.hour.represent()})"
+            lessonName.htmlText = if (changeIsWithout) bold { change.content } else bold { change.content } + " ($instead ${data.hour.represent()})"
             currentLesson.backgroundColor = change.color
             firstSpace.backgroundColor = change.color
             lessonName.textColor = Color.WHITE
@@ -159,8 +160,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         } else {
             val change = changes?.firstOrNull { it.hour - 1 == data.nextHour.hourOfDay }
             if (!isFuture && change != null) {
+                val nextChangeIsWithout = change.content.contains("בלי")
                 hasModifiedNextLessonView = true
-                nextLessonName.htmlText = bold { change.content } + " ($instead ${data.nextHour.represent()})"
+                nextLessonName.htmlText = if (nextChangeIsWithout) bold { change.content } else bold { change.content } + " ($instead ${data.nextHour.represent()})"
                 next_lesson.backgroundColor = change.color
                 nextLessonName.textColor = Color.WHITE
                 nextHourIcon.setColorFilter(Color.WHITE)
