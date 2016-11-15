@@ -92,7 +92,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     fun toBold(text: String, orig: String? = null): SpannableString {
         val s: SpannableString?
-        val isWithout = text.contains("בלי")
+        val isWithout = text.contains(" בלי ")
         if (orig != null)
             s = SpannableString(if (isWithout) text else text + " (" + getString(R.string.instead) + " " + orig + ")")
         else
