@@ -38,6 +38,9 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
                     if (storage.notificationsForHolidays)
                         notifyHoliday()
                 }
+                if (storage.notificationsForChanges) {
+                    NotifyChanges().notifyC(this)
+                }
                 if (storage.notificationsForTests) {
                     checkForTests(day)
                 }

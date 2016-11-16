@@ -27,6 +27,7 @@ import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.login.LoginActivity
+import com.ohelshem.app.android.notifications.NotifyChanges
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
@@ -405,11 +406,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             val sendNotificationAction = ButtonAction("Send changes notification") {
-                FirebaseService().queryApiForNotification()
-                val quit = Intent(Intent.ACTION_MAIN)
+                NotifyChanges().notifyC(this)
+                /*val quit = Intent(Intent.ACTION_MAIN)
                 quit.addCategory(Intent.CATEGORY_HOME)
                 quit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(quit)
+                startActivity(quit)*/
             }
 
 
