@@ -12,7 +12,6 @@ import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.Contact
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
-import org.jetbrains.anko.notificationManager
 import java.util.*
 
 class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationService"), LazyKodeinAware {
@@ -43,7 +42,7 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
                 text += " ו" + toFullName(contacts[i].name)
         }
         text += "!"
-        notificationManager.notify(1005, NotificationService.notification(getString(R.string.birthday_title), text, Shortcut_LaunchMyClass, big = true))
+        sendNotification(getString(R.string.birthday_title), text, action = Shortcut_LaunchMyClass, big = true, id = 1005)
     }
 
     private fun toFullName(name: String): String {

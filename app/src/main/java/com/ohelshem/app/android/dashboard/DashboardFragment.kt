@@ -110,7 +110,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private fun showCurrentLessonInfo(data: HourData, changes: List<Change>?) {
         val change = changes?.firstOrNull { it.hour - 1 == data.hour.hourOfDay }
         if (change != null) {
-            val changeIsWithout = change.content.contains(" בלי ")
+            val changeIsWithout = " בלי " in change.content
             hasModifiedCurrentLessonView = true
             lessonName.htmlText = if (changeIsWithout) bold { change.content } else bold { change.content } + " ($instead ${data.hour.represent()})"
             currentLesson.backgroundColor = change.color

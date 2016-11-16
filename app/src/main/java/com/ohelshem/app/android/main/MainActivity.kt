@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
@@ -27,7 +28,7 @@ import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.login.LoginActivity
-import com.ohelshem.app.android.notifications.NotifyChanges
+import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
@@ -53,7 +54,6 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
-
 
 
 class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationScreenManager {
@@ -406,11 +406,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             val sendNotificationAction = ButtonAction("Send changes notification") {
-                NotifyChanges().notifyC(this)
-                /*val quit = Intent(Intent.ACTION_MAIN)
+                Handler().postDelayed({ ChangesNotificationGenerator(this).prepareNotification() }, 1000)
+                val quit = Intent(Intent.ACTION_MAIN)
                 quit.addCategory(Intent.CATEGORY_HOME)
                 quit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(quit)*/
+                startActivity(quit)
             }
 
 
