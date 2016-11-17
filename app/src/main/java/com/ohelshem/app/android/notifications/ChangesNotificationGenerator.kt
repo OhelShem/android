@@ -53,6 +53,8 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
             val isThereDiff = newChanges?.size ?: 0 != current?.size ?: 0 ||
                     newChanges?.any { new -> current?.none { it.color == new.color && it.content.trim() == new.content.trim() } ?: false } ?: false
 
+            changesForTomorrow = (storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
+
             if (areNoChangesNew) {
                 notifyNoChanges()
             } else if (isThereDiff) {
@@ -69,11 +71,11 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
     }
 
     private fun notifyNoChanges() {
-        context.sendNotification(context.getString(R.string.changes_notif_title), context.getString(R.string.no_changes), NotificationId)
+        context.sendNotification(if (changesForTomorrow) context.getString(R.string.changes_notif_title_tmrw) else context.getString(R.string.changes_notif_title), context.getString(R.string.no_changes), NotificationId)
     }
 
     private fun notifyChanges() {
-        context.sendNotification(context.getString(R.string.changes_notif_title), context.getString(R.string.enter_to_see_changes), NotificationId)
+        context.sendNotification(if (changesForTomorrow) context.getString(R.string.changes_notif_title_tmrw) else context.getString(R.string.changes_notif_title), context.getString(R.string.enter_to_see_changes), NotificationId)
     }
 
     override fun onFail(error: UpdateError) {
@@ -105,6 +107,7 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
         private var isFirstTimeFailure = true
         private var currentChanges: List<Change>? = null
         private var changesDate: Long = 0
+        private var changesForTomorrow = false
 
     }
 
