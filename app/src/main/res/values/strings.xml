@@ -115,6 +115,7 @@
     <string name="changes_realtime">שינויים</string>
     <string name="holidays_notif">חופשים</string>
     <string name="birthdays_in_school">ימי הולדת בבית הספר</string>
+    <string name="no_birthdays_in_school">אין ימי הולדת היום</string>
     <string name="want_get_notification_for_changes">האם ברצונך לקבל התראה בשעה תשע כשהשינויים מתעדכנים?</string>
     <string name="test_in">מקצוע המבחן</string>
     <string name="enter_to_see_changes">היכנס על מנת לראות את השינויים</string>

@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.support.v4.act
+import org.jetbrains.anko.support.v4.toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,23 +66,27 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month
         }
 
-        val view = act.layoutInflater.inflate(R.layout.birthdays_dialog, null, false)
-        val llm = LinearLayoutManager(activity)
-        llm.orientation = LinearLayoutManager.VERTICAL
-        view.birthdaysRecyclerView.layoutManager = llm
-        view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
+        if (birthdays.isNotEmpty()) {
 
-        MaterialStyledDialog.Builder(activity)
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setTitle(getString(R.string.birthdays_in_school))
-                //.setDescription("לתאריך " + dateFormat.format(Calendar.getInstance().time))
-                .autoDismiss(false)
-                .setCustomView(view)
-                .setNeutralText(R.string.tests_dialog_close)
-                .onNeutral { materialDialog, dialogAction ->
-                    materialDialog.cancel()
-                }
-                .show()
+            val view = act.layoutInflater.inflate(R.layout.birthdays_dialog, null, false)
+            val llm = LinearLayoutManager(activity)
+            llm.orientation = LinearLayoutManager.VERTICAL
+            view.birthdaysRecyclerView.layoutManager = llm
+            view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
+
+            MaterialStyledDialog.Builder(activity)
+                    .setStyle(Style.HEADER_WITH_TITLE)
+                    .setTitle(getString(R.string.birthdays_in_school))
+                    //.setDescription("לתאריך " + dateFormat.format(Calendar.getInstance().time))
+                    .autoDismiss(false)
+                    .setCustomView(view)
+                    .setNeutralText(R.string.tests_dialog_close)
+                    .onNeutral { materialDialog, dialogAction ->
+                        materialDialog.cancel()
+                    }
+                    .show()
+
+        } else toast(getString(R.string.no_birthdays_in_school))
 
 
     }
