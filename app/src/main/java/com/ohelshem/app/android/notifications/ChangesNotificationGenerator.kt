@@ -10,6 +10,7 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.getDay
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import java.util.*
@@ -22,11 +23,15 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
     private val storage: Storage by instance()
 
     fun prepareNotification() {
-        apiController[CallbackId] = this
-        initCurrentChanges()
-        if (!apiController.isBusy) {
-            isFirstTimeFailure = true
-            apiController.update()
+        val cal = Calendar.getInstance()
+        val satTmrw = (cal[Calendar.HOUR_OF_DAY] >= 18 && cal.getDay() == Calendar.FRIDAY) //don's show the notification at friday night
+        if (!satTmrw) {
+            apiController[CallbackId] = this
+            initCurrentChanges()
+            if (!apiController.isBusy) {
+                isFirstTimeFailure = true
+                apiController.update()
+            }
         }
     }
 
