@@ -10,7 +10,6 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
-import com.ohelshem.app.getDay
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import java.util.*
@@ -23,15 +22,11 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
     private val storage: Storage by instance()
 
     fun prepareNotification() {
-        val cal = Calendar.getInstance()
-        val satTmrw = (cal[Calendar.HOUR_OF_DAY] >= 18 && cal.getDay() == Calendar.FRIDAY) //don's show the notification at friday night
-        if (!satTmrw) {
-            apiController[CallbackId] = this
-            initCurrentChanges()
-            if (!apiController.isBusy) {
-                isFirstTimeFailure = true
-                apiController.update()
-            }
+        apiController[CallbackId] = this
+        initCurrentChanges()
+        if (!apiController.isBusy) {
+            isFirstTimeFailure = true
+            apiController.update()
         }
     }
 
@@ -60,16 +55,17 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
 
             changesForTomorrow = (storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
 
-            if (areNoChangesNew) {
-                notifyNoChanges()
-            } else if (isThereDiff) {
-                if (newChanges?.size ?: 0 == 0) {
+            if (storage.changes?.isNotEmpty() ?: false) {
+                if (areNoChangesNew) {
                     notifyNoChanges()
-                } else {
-                    notifyChanges()
+                } else if (isThereDiff) {
+                    if (newChanges?.size ?: 0 == 0) {
+                        notifyNoChanges()
+                    } else {
+                        notifyChanges()
+                    }
                 }
             }
-
             currentChanges = null
             changesDate = 0
         }
