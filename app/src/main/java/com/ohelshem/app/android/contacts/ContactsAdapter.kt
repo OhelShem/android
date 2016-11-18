@@ -88,5 +88,5 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
         return arr[1] + " " + arr[0]
     }
 
-    val dateFormat = SimpleDateFormat("dd/MM/yy")
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 }
