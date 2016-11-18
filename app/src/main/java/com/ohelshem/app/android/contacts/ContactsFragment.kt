@@ -12,9 +12,13 @@ import com.ohelshem.app.controller.storage.implementation.Contacts
 import com.ohelshem.app.model.Contact
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
+import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.onClick
+import org.jetbrains.anko.support.v4.act
 import java.util.*
+
+
 
 class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), ContactsView {
     override val layoutId: Int = R.layout.contacts_fragment
@@ -53,29 +57,24 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     }
 
     fun showBirthdaysDialog() {
-        //TODO make me beautiful
         val today = Calendar.getInstance()
         val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
         val birthdays = Contacts.getContacts(-1, -1).filter {
             val cal = it.birthday.toCalendar()
-            cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month }
+            cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month
+        }
+
+        val view = act.layoutInflater.inflate(R.layout.birthdays_dialog, null, false) //fixme
+        view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
+
         val alert = AlertDialog.Builder(context)
                 .setTitle(getString(R.string.birthdays_in_school))
                 .setNeutralButton(getString(R.string.tests_dialog_close)) {
                     dialog, whichButton ->  dialog.cancel()
                 }.create()
-        var alertMsg = ""
-        birthdays.forEach {
-            alertMsg+= toFullName(it.name) + " " + stringArrayRes(R.array.layers)[it.layer - 9] + "'" + it.clazz + "\n"
-        }
-        alert.setMessage(alertMsg)
+        alert.setView(view)
         alert.show()
-    }
 
-    private fun toFullName(name: String): String {
-        val arr = name.split(" ")
-        if (arr.size > 2) return name
-        return arr[1] + " " + arr[0]
     }
 
 }
