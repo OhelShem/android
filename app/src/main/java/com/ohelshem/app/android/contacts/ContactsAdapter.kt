@@ -45,7 +45,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
                         R.id.addContact -> {
                             val intent = Intent(Intent.ACTION_INSERT)
                                     .setType(ContactsContract.Contacts.CONTENT_TYPE)
-                                    .putExtra(Insert.NAME, contact.name)
+                                    .putExtra(Insert.NAME, toFullName(contact.name))
                                     .putExtra(Insert.PHONE, contact.phone)
 
                             val format = SimpleDateFormat("yyyy-MM-dd")

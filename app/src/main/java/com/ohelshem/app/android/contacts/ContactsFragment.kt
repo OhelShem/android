@@ -1,9 +1,10 @@
 package com.ohelshem.app.android.contacts
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
+import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -16,8 +17,8 @@ import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.support.v4.act
+import java.text.SimpleDateFormat
 import java.util.*
-
 
 
 class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), ContactsView {
@@ -64,17 +65,27 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month
         }
 
-        val view = act.layoutInflater.inflate(R.layout.birthdays_dialog, null, false) //fixme
+        val view = act.layoutInflater.inflate(R.layout.birthdays_dialog, null, false)
+        val llm = LinearLayoutManager(activity)
+        llm.orientation = LinearLayoutManager.VERTICAL
+        view.birthdaysRecyclerView.layoutManager = llm
         view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
 
-        val alert = AlertDialog.Builder(context)
+        MaterialStyledDialog.Builder(activity)
+                .setStyle(Style.HEADER_WITH_TITLE)
                 .setTitle(getString(R.string.birthdays_in_school))
-                .setNeutralButton(getString(R.string.tests_dialog_close)) {
-                    dialog, whichButton ->  dialog.cancel()
-                }.create()
-        alert.setView(view)
-        alert.show()
+                //.setDescription("לתאריך " + dateFormat.format(Calendar.getInstance().time))
+                .autoDismiss(false)
+                .setCustomView(view)
+                .setNeutralText(R.string.tests_dialog_close)
+                .onNeutral { materialDialog, dialogAction ->
+                    materialDialog.cancel()
+                }
+                .show()
+
 
     }
+
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 
 }
