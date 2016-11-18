@@ -19,7 +19,7 @@ This app is for students, allowing them to be updated with the most important da
 
 * Timetable and changes
 <br>
-<img src="http://imgur.com/wZt4JKU.jpg" width="350">
+<img src="http://imgur.com/djmMQhx.jpg" width="350">
 <img src="http://imgur.com/HU0PnXQ.jpg" width="350">
 * Tests and holidays
 <br>
