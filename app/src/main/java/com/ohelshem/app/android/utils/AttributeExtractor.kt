@@ -14,6 +14,7 @@ object AttributeExtractor {
     private val ACCENT = intArrayOf(R.attr.colorAccent)
     private val RIPPLE = intArrayOf(R.attr.rippleColor)
     private val PRIMARY_TEXT_COLOR = intArrayOf(R.attr.textColorPrimary)
+    private val BACKGROUND_COLOR = intArrayOf(android.R.attr.windowBackground)
 
     /**
      * Extracts the colorPrimary color attribute of the passing Context's theme
@@ -45,6 +46,14 @@ object AttributeExtractor {
     @ColorInt
     fun extractPrimaryTextColorFrom(context: Context): Int {
         return extractIntAttribute(context, PRIMARY_TEXT_COLOR)
+    }
+
+    /**
+     * Extracts the activity background color attribute of the passing Context's theme
+     */
+    @ColorInt
+    fun extractBackgroundColorFrom(context: Context): Int {
+        return extractIntAttribute(context, BACKGROUND_COLOR)
     }
 
 

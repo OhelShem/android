@@ -7,6 +7,7 @@ import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.stringArrayRes
+import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.implementation.Contacts
@@ -15,6 +16,7 @@ import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
+import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
@@ -73,6 +75,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             llm.orientation = LinearLayoutManager.VERTICAL
             view.birthdaysRecyclerView.layoutManager = llm
             view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
+            view.backgroundColor = AttributeExtractor.extractBackgroundColorFrom(activity)
 
             MaterialStyledDialog.Builder(activity)
                     .setStyle(Style.HEADER_WITH_TITLE)
@@ -80,10 +83,6 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
                     //.setDescription("לתאריך " + dateFormat.format(Calendar.getInstance().time))
                     .autoDismiss(false)
                     .setCustomView(view)
-                    .setNeutralText(R.string.tests_dialog_close)
-                    .onNeutral { materialDialog, dialogAction ->
-                        materialDialog.cancel()
-                    }
                     .show()
 
         } else toast(getString(R.string.no_birthdays_in_school))
