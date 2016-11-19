@@ -6,47 +6,31 @@ import com.ohelshem.api.model.SchoolChange
 import com.ohelshem.api.model.SchoolHour
 import com.ohelshem.api.model.SchoolTest
 import com.ohelshem.app.controller.info.SchoolInfo
+import com.ohelshem.app.controller.serialization.ClassInfoSerialization
+import com.ohelshem.app.controller.serialization.ofList
+import com.ohelshem.app.controller.serialization.simpleReader
+import com.ohelshem.app.controller.serialization.simpleWriter
 import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.controller.storage.TeacherStorage
 import com.ohelshem.app.controller.utils.OffsetDataController
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.EOFException
 import java.io.File
 
 class TeacherStorageImpl(private val offsetDataController: OffsetDataController, private val schoolInfo: SchoolInfo) : TeacherStorage, KotprefModel() {
     override var version: Int by intPrefVar(IStorage.EmptyData)
+
+    private val classInfoSerialization = ClassInfoSerialization.ofList()
     override var classes: List<ClassInfo>
         get() {
             if (!ClassesFile.exists()) return emptyList()
-            else {
-                return DataInputStream(ClassesFile.inputStream()).use {
-                    val list = mutableListOf<ClassInfo>()
-                    while (true) {
-                        try {
-                            val layer = it.readInt()
-                            val clazz = it.readInt()
-                            list += ClassInfo(layer, clazz)
-                        } catch(ignored: EOFException) {
-                            break
-                        }
-                    }
-                    list
-                }
-            }
+            else return ClassesFile.simpleReader().use { reader -> classInfoSerialization.deserialize(reader) }
         }
         set(value) {
             if (classes.isEmpty()) ClassesFile.delete()
             else {
-                DataOutputStream(ClassesFile.outputStream()).use {
-                    value.forEach { info ->
-                        it.writeInt(info.layer)
-                        it.writeInt(info.clazz)
-                    }
-                }
+                prepare()
+                ClassesFile.simpleWriter().use { writer -> classInfoSerialization.serialize(writer, value) }
             }
         }
-
 
     //region Primary class
     override var primaryClass: ClassInfo?

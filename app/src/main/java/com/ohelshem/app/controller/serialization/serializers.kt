@@ -1,6 +1,7 @@
 package com.ohelshem.app.controller.serialization
 
 import com.ohelshem.api.model.Change
+import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.model.Contact
@@ -118,5 +119,18 @@ object OverrideSerialization : Serialization<OverrideData> {
         val newName = reader.readString()
         val newTeacher = reader.readString()
         return OverrideData(day, hour, newName, newTeacher)
+    }
+}
+
+object ClassInfoSerialization : Serialization<ClassInfo> {
+    override fun serialize(writer: SimpleWriter, data: ClassInfo) {
+        writer.writeInt(data.layer)
+        writer.writeInt(data.clazz)
+    }
+
+    override fun deserialize(reader: SimpleReader): ClassInfo {
+        val layer = reader.readInt()
+        val clazz = reader.readInt()
+        return ClassInfo(layer, clazz)
     }
 }
