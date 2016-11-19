@@ -18,9 +18,9 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
-        android:roundIcon="@mipmap/ic_launcher"
         tools:replace="android:supportsRtl,android:allowBackup">
 
         <activity
@@ -88,8 +88,15 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.ohelshem.app.android.notifications.DismissNotificationReceiver"
-                  android:exported="false" />
+        <receiver
+            android:name="com.ohelshem.app.android.notifications.DismissNotificationReceiver"
+            android:exported="false" />
+
+        <provider
+            android:name="com.chibatching.kotpref.KotprefInitProvider"
+            android:authorities="${applicationId}.KotprefInitProvider"
+            android:exported="false"
+            tools:node="remove" />
     </application>
 
 </manifest>
