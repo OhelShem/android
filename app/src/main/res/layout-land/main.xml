@@ -50,6 +50,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/appBarLayout"
+        android:tag="true"
         app:bb_behavior="shifting"
         app:bb_tabXmlResource="@xml/bottom_tabs"
         app:bb_tabletMode="true" />

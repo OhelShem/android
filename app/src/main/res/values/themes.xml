@@ -55,4 +55,6 @@
     <attr name="colorPrimaryLight" format="color" />
     <attr name="textColorPrimary" format="reference" />
     <attr name="toolbarTheme" format="reference" />
+
+    <bool name="nightModeEnabled">false</bool>
 </resources>
