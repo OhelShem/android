@@ -28,7 +28,7 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p><a href="http://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin-1.0.0-blue.svg" alt="Kotlin"></a> <img src="https://img.shields.io/badge/Version-6.0-yellow.svg" alt="Version 6.0"> <a href="http://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License Apache"></a></p>
+          <p><a href="http://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin-1.0.5-2-blue.svg" alt="Kotlin"></a> <img src="https://img.shields.io/badge/Version-7.0-yellow.svg" alt="Version 7.0"> <a href="http://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License Apache"></a></p>
 
 <h1>
 <a id="ohel-shem-for-android" class="anchor" href="#ohel-shem-for-android" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ohel Shem for Android</h1>
@@ -38,7 +38,7 @@
 <p>Ohel Shem (Hebrew: אהל שם‎) is an Israeli high school located in the city of Ramat Gan. 
 It has about 1,550 students studying in 45 classes, from ninth to twelfth grade, and about 160 teachers and 40 workers.</p>
 
-<p><img src="http://i.imgur.com/Yy1Z5aX.png" alt="Ohel Shem Logo"></p>
+<p><img src="http://imgur.com/Ymo1qoh.jpg" width="250"></p>
 
 <h2>
 <a id="ohel-shem-heart-oss" class="anchor" href="#ohel-shem-heart-oss" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ohel Shem <g-emoji alias="heart" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji> OSS</h2>
@@ -51,12 +51,17 @@ It has about 1,550 students studying in 45 classes, from ninth to twelfth grade,
 <p>This app is for students, allowing them to be updated with the most important data:</p>
 
 <ul>
-<li>Timetable</li>
-<li>Timetable's daily changes</li>
-<li>Tests</li>
+<li>Timetable and changes
+<br>
+<img src="http://imgur.com/djmMQhx.jpg" width="350">
+<img src="http://imgur.com/HU0PnXQ.jpg" width="350">
+</li>
+<li>Tests and holidays
+<br>
+<img src="http://imgur.com/ozhbftx.jpg" width="350">
+<img src="http://imgur.com/kTPJ9Kr.jpg" width="350">
+</li>
 </ul>
-
-<p><img src="http://i.imgur.com/cZh4KQx.jpg?" alt="screenshots"></p>
 
 <h1>
 <a id="technology-behind" class="anchor" href="#technology-behind" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Technology behind</h1>
@@ -73,7 +78,7 @@ Kotlin libraries used in this project:</p>
 
 <ul>
 <li>Anko - A DSL for layout and extension methods for Android development, Written  by JetBrains.</li>
-<li>Injekt - Dependency Injection library, based on Kotlin's delegation support.</li>
+<li>Kodein - Dependency Injection library, based on Kotlin's delegation support.</li>
 <li>Fuel - The easiest HTTP networking library in Kotlin for Android.</li>
 <li>KotPref - Android SharedPreference delegation for Kotlin.</li>
 </ul>
@@ -95,91 +100,6 @@ Kotlin libraries used in this project:</p>
 <a href="https://www.iconfinder.com/iconsets/flat-color-icons">https://www.iconfinder.com/iconsets/flat-color-icons</a>
 <a href="https://www.iconfinder.com/iconsets/little-boy">https://www.iconfinder.com/iconsets/little-boy</a></p>
 
-<h2>
-<a id="modularity" class="anchor" href="#modularity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Modularity</h2>
-
-<p>The project functionality is very modular. Every feature got his own controller, including:</p>
-
-<ul>
-<li>
-<code>DBController</code> - responsible of storing the data of the application.</li>
-<li>
-<code>OffsetDataController</code> - responsible on reading an <code>offset data</code> - The way timetable and tests are saved.</li>
-<li>
-<code>TimetableController</code> - responsible on managing the timetable and tests.</li>
-<li>
-<code>ApiController</code> - responsible on querying the api</li>
-</ul>
-
-<p>Each of those controller are interfaces, make them easy to test and pass by. Their implementations has the suffix <code>Impl</code>.<br>
-Beside that, there are few wrappers for the implementations:</p>
-
-<ul>
-<li>
-<code>DBControllerWrapper</code> - cache on the RAM the data used by <code>DBController</code>, which works with disk storage.</li>
-<li>
-<code>TimetableControllerWrapper</code> - support for overriding the regular timetable.</li>
-</ul>
-
-<p>And there are some debug mode specific wrappers:</p>
-
-<ul>
-<li>
-<code>DBControllerDebugWrapper</code> - disable cache update time checking when debug mode is enabled.</li>
-<li>
-<code>RequestsControllerDebugWrapper</code> - make the request goes to an offline file if debug mode is enabled.</li>
-</ul>
-
-<h2>
-<a id="offset-data" class="anchor" href="#offset-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Offset Data</h2>
-
-<p>The app has to store the timetable and the tests for the whole school. It is a lot of data.
-The data is a list of strings.
-Every time the app starts, it has to load the user's specific data.
-The best solution will be loading only the user's data to the memory.<br>
-That is why we dropped JSON, since <code>GSON</code> and <code>Jackson</code> load all the data to the memory first.<br>
-We could go with XML, but it would increase the file size.  </p>
-
-<p>The result was custom format we created - Offset data.<br>
-It is based on 2 files. The first include the data itself, separated by a delimiter. 
-The second file store the offset of each class of the school from the beginning of the file.</p>
-
-<h3>
-<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
-
-<p>Let's say we count offset in bytes, and there are only 3 classes at school, each of them having 3 hours only.
-The first file will be:</p>
-
-<pre><code>first_lesson_for_first_class|second_lesson_for_first_class|third_lesson_for_first_class|first_lesson_for_second_class|second_lesson_for_second_class|third_lesson_for_second_class|first_lesson_for_third_class|second_lesson_for_third_class|third_lesson_for_third_class
-</code></pre>
-
-<p>and the second file will be (in the actual file the data is stored in binary, but here a space between each number):</p>
-
-<pre><code>0 89 180 267
-</code></pre>
-
-<p>In order to read the data of the second class, we read the second and third numbers from the second file. Then we read only the data from offset 89 to 180.
-Now, we parse this data by splitting it over the delimiter.</p>
-
-<h3>
-<a id="performance" class="anchor" href="#performance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>performance</h3>
-
-<p>We tested the performance of reading from timetable from JSON and data offset.
-for 10,000 runs, it took GSON 9 seconds to read the data of a class. But, it took Offset data reader 1 second to read the data of a class.</p>
-
-<h2>
-<a id="unit-testing" class="anchor" href="#unit-testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Unit Testing</h2>
-
-<p>How can some release a product without testing?<br>
-Since the project functionality (unlike the UI with is android specific) is fully modular, it was possible to test every component.<br>
-Available tests:</p>
-
-<ul>
-<li>Offset data read</li>
-<li>Timetable functionality</li>
-<li>Tests functionality</li>
-</ul>
-
 <h1>
 <a id="becoming-a-part-in-the-project" class="anchor" href="#becoming-a-part-in-the-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Becoming a part in the project</h1>
 
@@ -191,7 +111,7 @@ Contact me at <a href="http://yoavst.com">Yoavst.com</a>.</p>
 <h1>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
 
-<pre><code>Copyright 2016 Yoav Sternberg
+<pre><code>Copyright 2016 Ohel Shem school
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
