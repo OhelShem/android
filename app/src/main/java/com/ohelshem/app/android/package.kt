@@ -151,10 +151,3 @@ val Context.screenSize: Point
         screen.getSize(size)
         return size
     }
-val Fragment.screenSize: Point
-    get() {
-        val screen = activity.windowManager.defaultDisplay
-        val size = Point()
-        screen.getSize(size)
-        return size
-    }
