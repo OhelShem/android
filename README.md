@@ -1,4 +1,4 @@
-[![Kotlin](https://img.shields.io/badge/kotlin-1.0.4-blue.svg)](http://kotlinlang.org) ![Version 6.0](https://img.shields.io/badge/Version-6.0-yellow.svg) [![License Apache](https://img.shields.io/badge/License-Apache%202.0-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.0.5-2-blue.svg)](http://kotlinlang.org) ![Version 7.0](https://img.shields.io/badge/Version-7.0-yellow.svg) [![License Apache](https://img.shields.io/badge/License-Apache%202.0-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 Ohel Shem for Android
 ===========
@@ -54,56 +54,6 @@ https://www.iconfinder.com/iconsets/kameleon-free-pack
 https://www.iconfinder.com/iconsets/flat-color-icons
 https://www.iconfinder.com/iconsets/little-boy
 
-## Modularity
-The project functionality is very modular. Every feature got his own controller, including:
-
-* `Storage` - responsible of storing the data of the application.
-* `OffsetDataController` - responsible on reading an `offset data` - The way timetable and tests are saved.
-* `TimetableController` - responsible on managing the timetable and tests.
-* `ApiController` - responsible on querying the api
-
-Each of those controller are interfaces, make them easy to test and pass by. 
-
-## Offset Data
-The app has to store the timetable and the tests for the whole school. It is a lot of data.
-The data is a list of strings.
-Every time the app starts, it has to load the user's specific data.
-The best solution will be loading only the user's data to the memory.  
-That is why we dropped JSON, since `GSON` and `Jackson` load all the data to the memory first.  
-We could go with XML, but it would increase the file size.  
-
-The result was custom format we created - Offset data.  
-It is based on 2 files. The first include the data itself, separated by a delimiter. 
-The second file store the offset of each class of the school from the beginning of the file.
-
-### Example
-Let's say we count offset in bytes, and there are only 3 classes at school, each of them having 3 hours only.
-The first file will be:
-```
-first_lesson_for_first_class|second_lesson_for_first_class|third_lesson_for_first_class|first_lesson_for_second_class|second_lesson_for_second_class|third_lesson_for_second_class|first_lesson_for_third_class|second_lesson_for_third_class|third_lesson_for_third_class
-```
-
-and the second file will be (in the actual file the data is stored in binary, but here a space between each number):
-
-```
-0 89 180 267
-```
-
-In order to read the data of the second class, we read the second and third numbers from the second file. Then we read only the data from offset 89 to 180.
-Now, we parse this data by splitting it over the delimiter.
-
-### performance
-We tested the performance of reading from timetable from JSON and data offset.
-for 10,000 runs, it took GSON 9 seconds to read the data of a class. But, it took Offset data reader 1 second to read the data of a class.
-
-## Unit Testing
-How can some release a product without testing?  
-Since the project functionality (unlike the UI with is android specific) is fully modular, it was possible to test every component.  
-Available tests:
-
-* Offset data read
-* Timetable functionality
-
 # Becoming a part in the project
 Want to become a part in the project that makes the life of an Ohel Shem student better?  
 Contact me at [Yoavst.com](http://yoavst.com).
@@ -112,7 +62,7 @@ Also, I would merge any useful pull request.
 
 # License
 
-    Copyright 2016 Yoav Sternberg
+    Copyright 2016 Ohel Shem school
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
