@@ -12,21 +12,16 @@ class FirebaseService : FirebaseMessagingService() {
     }
 
     private fun parseData(data: Map<String, String>) {
-        if (Notification_TitleField in data) {
-            val title = data[Notification_TitleField] ?: ""
-            val body = data[Notification_BodyField] ?: ""
-            val callback = App.messageCallback
-            if (App.isForeground && callback != null)
-                callback(title, body)
-            else
-                sendNotification(title, body, RemoteNotificationId, showDialog = true)
+        if (Notification_MsgMode in data) {
+            val title = data["msg_title"] ?: "הודעה מאהל שם"
+            val body = data["msg_body"] ?: ""
+                sendNotification(title, body, RemoteNotificationId, null, big = true)
         } else
             ChangesNotificationGenerator(this).prepareNotification()
     }
 
     companion object {
-        private const val Notification_TitleField = "title"
-        private const val Notification_BodyField = "body"
+        private const val Notification_MsgMode = "msg_mode"
         private const val RemoteNotificationId = 73
     }
 }

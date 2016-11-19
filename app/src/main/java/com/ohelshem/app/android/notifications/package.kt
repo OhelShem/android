@@ -34,18 +34,18 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, showDi
             .setContentIntent(pendingIntent).build())
 }
 
-fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String, big: Boolean = false) {
-    val intent = Intent(this, MainActivity::class.java).setAction(action)
-    val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
-    if (big) {
+fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false) {
+        val intent = Intent(this, MainActivity::class.java).setAction(action)
+        val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
         notificationManager.notify(id, NotificationCompat.Builder(this)
                 .apply { if (big) setStyle(android.support.v4.app.NotificationCompat.BigTextStyle().bigText(messageBody)) }
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(messageBody)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true)
-                .setContentIntent(pIntent).build())
-    }
+                .apply { if (action != null) setContentIntent(pIntent)}
+                .build())
 }
 
 
