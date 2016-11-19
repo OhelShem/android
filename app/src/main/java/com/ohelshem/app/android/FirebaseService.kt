@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
 import com.ohelshem.app.android.notifications.sendNotification
+import org.jetbrains.anko.notificationManager
 
 class FirebaseService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -15,7 +16,12 @@ class FirebaseService : FirebaseMessagingService() {
         if (Notification_MsgMode in data) {
             val title = data["msg_title"] ?: "הודעה מאהל שם"
             val body = data["msg_body"] ?: ""
+
+            if (body == "---")
+                notificationManager.cancel(RemoteNotificationId)
+            else
                 sendNotification(title, body, RemoteNotificationId, null, big = true)
+
         } else
             ChangesNotificationGenerator(this).prepareNotification()
     }
