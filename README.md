@@ -1,4 +1,4 @@
-[![Kotlin](https://img.shields.io/badge/kotlin-1.0.5-2-blue.svg)](http://kotlinlang.org) ![Version 7.0](https://img.shields.io/badge/Version-7.0-yellow.svg) [![License Apache](https://img.shields.io/badge/License-Apache%202.0-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.0.5-blue.svg)](http://kotlinlang.org) ![Version 7.0](https://img.shields.io/badge/Version-7.0-yellow.svg) [![License Apache](https://img.shields.io/badge/License-Apache%202.0-red.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 Ohel Shem for Android
 ===========
