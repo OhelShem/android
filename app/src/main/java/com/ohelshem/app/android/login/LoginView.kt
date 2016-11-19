@@ -23,6 +23,8 @@ import com.ohelshem.api.model.UpdateError
 interface LoginView: MvpView {
     fun showLoading()
 
+    fun showTeachersNotSupported()
+
     fun showLoginError(error: UpdateError)
     fun showIdInvalidError()
     fun showPasswordInvalidError()

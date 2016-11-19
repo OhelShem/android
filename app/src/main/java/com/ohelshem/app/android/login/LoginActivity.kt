@@ -127,6 +127,11 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         }
     }
 
+    override fun showTeachersNotSupported() {
+        longToast(R.string.teachers_are_not_supported_yet)
+        finish()
+    }
+
     fun onLogin() {
         idInputLayout.error = null
         passwordInputLayout.error = null

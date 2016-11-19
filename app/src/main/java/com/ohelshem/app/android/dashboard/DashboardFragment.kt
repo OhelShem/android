@@ -53,7 +53,7 @@ import java.util.*
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
     override val layoutId: Int = R.layout.dashboard_fragment
 
-    private val defaultTextColor by lazy { AttributeExtractor.extractPrimaryTextColorFrom(activity) }
+    private var defaultTextColor: Int = 0
 
     private val storage: UIStorage by kodein.instance()
 
@@ -66,6 +66,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     override fun createPresenter(): DashboardPresenter = with(kodein()) { DashboardPresenter(instance(), instance()) }
 
     override fun init() {
+        defaultTextColor = AttributeExtractor.extractPrimaryTextColorFrom(activity)
         screenManager.setToolbarElevation(false)
         todayPlan.onClick {
             presenter.launchTodayPlan(screenManager)

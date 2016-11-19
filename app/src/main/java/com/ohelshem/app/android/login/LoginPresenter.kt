@@ -57,8 +57,12 @@ class LoginPresenter(private val storage: SharedStorage, private val apiControll
     override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
         storage.password = lastPassword
         storage.id = lastId
-        analytics.onLogin()
-        view?.launchApp()
+        if (storage.userData.isTeacher()) {
+            view?.showTeachersNotSupported()
+        } else {
+            analytics.onLogin()
+            view?.launchApp()
+        }
 
         onDestroy()
     }

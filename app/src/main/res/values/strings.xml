@@ -12,6 +12,7 @@
     <string name="no_connection">אין חיבור לאינטרנט</string>
     <string name="no_connection_subtitle">אנא התחבר לאינטרנט ונסה שנית</string>
     <string name="general_error">שגיאה, אנא נסה בשנית</string>
+    <string name="teachers_are_not_supported_yet">אנו מצטערים, אבל תמיכה במורים תתווסף רק בגרסה הבאה</string>
     <!-- Navigation & Shortcuts -->
     <string name="dashboard">ראשי</string>
     <string name="changes">שינויים</string>
