@@ -103,7 +103,8 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                         }
                     }
                     is Api.ExtraData.Teacher -> {
-                        if (data.schoolChanges != null) {
+                        //FIXME teacher storage is not ready yet
+                        /*if (data.schoolChanges != null) {
                             storage.setSchoolChanges(data.schoolChanges)
                             apis += UpdatedApi.Changes
                         }
@@ -124,13 +125,13 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                         if (data.classes != storage.classes) {
                             storage.classes = data.classes ?: emptyList()
                             apis += UpdatedApi.UserData
-                        }
+                        }*/
                     }
                 }
 
             }
             if (apis.isEmpty()) forEach { it.onFail(UpdateError.NoData) }
-            else forEach { it.onSuccess(apis) } //TODO fix error for 4.4
+            else forEach { it.onSuccess(apis) }
         } catch (e: Exception) {
             logger.error(e) { "Failed to update" }
             forEach { it.onFail(UpdateError.Exception) }
