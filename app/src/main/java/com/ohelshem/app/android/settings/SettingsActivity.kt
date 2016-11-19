@@ -17,6 +17,10 @@
 
 package com.ohelshem.app.android.settings
 
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -39,6 +43,7 @@ import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.jetbrains.anko.*
+
 
 class SettingsActivity : AppThemedActivity() {
     private val analyticsManager: Analytics by kodein.instance()
@@ -140,7 +145,7 @@ class SettingsActivity : AppThemedActivity() {
             browse("https://ohelshem.github.io/android")
         }
         facebookButton.onClick {
-            browse("https://www.facebook.com/ohelshem.school")
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getFacebookPageURL())))
         }
         siteButton.onClick {
             browse("http://www.ohel-shem.com/portal6")
@@ -240,5 +245,22 @@ class SettingsActivity : AppThemedActivity() {
         }
     }
 
+    companion object {
+        const val FACEBOOK_PAGE_ID = "ohelshem.school"
+        const val FACEBOOK_URL = "https://www.facebook.com/$FACEBOOK_PAGE_ID"
 
+        private fun Context.getFacebookPageURL(): String {
+            val packageManager = packageManager
+            try {
+                val versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode
+                if (versionCode >= 3002850) {
+                    return "fb://facewebmodal/f?href=" + FACEBOOK_URL
+                } else {
+                    return "fb://page/" + FACEBOOK_PAGE_ID
+                }
+            } catch (e: PackageManager.NameNotFoundException) {
+                return FACEBOOK_URL
+            }
+        }
+    }
 }
