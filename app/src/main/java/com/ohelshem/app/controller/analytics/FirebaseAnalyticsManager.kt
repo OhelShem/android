@@ -21,18 +21,22 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserId(sha1(storage.id + Salt))
         firebaseAnalytics.setUserProperty(LayerProperty, storage.userData.layer.toString())
         firebaseAnalytics.setUserProperty(ClassProperty, storage.userData.clazz.toString())
+
+        // for remote messages
+        firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
+        firebaseMessaging.subscribeToTopic("allstudents")
+
         if (storage.notificationsForChanges)
             subscribe()
     }
 
     override fun subscribe() {
+        // for changes
         firebaseMessaging.subscribeToTopic("notifSub")
-        firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
     }
 
     override fun unsubscribe() {
         firebaseMessaging.unsubscribeFromTopic("notifSub")
-        firebaseMessaging.unsubscribeFromTopic("layer" + storage.userData.layer.toString())
     }
 
     override fun onLogout() {
