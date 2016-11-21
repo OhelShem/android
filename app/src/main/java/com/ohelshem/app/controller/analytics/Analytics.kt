@@ -9,5 +9,7 @@ interface Analytics {
 
     fun unsubscribe()
 
+    fun unsubscribeMessages()
+
     fun logEvent(type: String, info: Map<String, Any>)
 }

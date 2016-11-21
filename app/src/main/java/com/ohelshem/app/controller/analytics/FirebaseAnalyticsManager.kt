@@ -37,7 +37,11 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
 
     override fun unsubscribe() {
         firebaseMessaging.unsubscribeFromTopic("notifSub")
+    }
+
+    override fun unsubscribeMessages() {
         firebaseMessaging.unsubscribeFromTopic("layer" + storage.userData.layer.toString())
+        firebaseMessaging.unsubscribeFromTopic("allstudents")
     }
 
     override fun onLogout() {
@@ -45,6 +49,7 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserProperty(LayerProperty, null)
         firebaseAnalytics.setUserProperty(ClassProperty, null)
         unsubscribe()
+        unsubscribeMessages()
     }
 
     override fun logEvent(type: String, info: Map<String, Any>) {
