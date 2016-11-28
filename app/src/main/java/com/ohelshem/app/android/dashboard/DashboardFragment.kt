@@ -111,8 +111,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         val change = changes?.firstOrNull { it.hour - 1 == data.hour.hourOfDay }
         if (change != null) {
             val changeIsWithout = " בלי " in change.content
+            val changeIsMikbatz = "מקבץ" in change.content || "מקבצים" in change.content
+            val withoutNoMikbatz = changeIsWithout && !changeIsMikbatz
+            val withoutYesMikbatz = changeIsWithout && changeIsMikbatz
             hasModifiedCurrentLessonView = true
-            lessonName.htmlText = if (changeIsWithout) bold { change.content } else bold { change.content } + " ($instead ${data.hour.represent()})"
+            lessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz) "" else instead+" "}${data.hour.represent()})"
             currentLesson.backgroundColor = change.color
             firstSpace.backgroundColor = change.color
             lessonName.textColor = Color.WHITE
@@ -161,8 +164,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             val change = changes?.firstOrNull { it.hour - 1 == data.nextHour.hourOfDay }
             if (!isFuture && change != null) {
                 val nextChangeIsWithout = change.content.contains(" בלי ")
+                val nextChangeIsMikbatz = "מקבץ" in change.content || "מקבצים" in change.content
+                val withoutNoMikbatz = nextChangeIsWithout && !nextChangeIsMikbatz
+                val withoutYesMikbatz = nextChangeIsWithout && nextChangeIsMikbatz
                 hasModifiedNextLessonView = true
-                nextLessonName.htmlText = if (nextChangeIsWithout) bold { change.content } else bold { change.content } + " ($instead ${data.nextHour.represent()})"
+                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz) "" else instead+" "}${data.nextHour.represent()})"
                 next_lesson.backgroundColor = change.color
                 nextLessonName.textColor = Color.WHITE
                 nextHourIcon.setColorFilter(Color.WHITE)
