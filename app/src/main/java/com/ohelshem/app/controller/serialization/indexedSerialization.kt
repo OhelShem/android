@@ -76,3 +76,5 @@ class ByteArrayOutputStream2 : ByteArrayOutputStream {
 }
 
 private const val IndexItemSize = 4
+
+fun <T : Any> Serialization<T>.toIndexed(): IndexedDeserialization<T> = IndexedDeserializationImpl(this)

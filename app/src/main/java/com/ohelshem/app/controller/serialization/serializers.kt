@@ -1,9 +1,6 @@
 package com.ohelshem.app.controller.serialization
 
-import com.ohelshem.api.model.Change
-import com.ohelshem.api.model.ClassInfo
-import com.ohelshem.api.model.Hour
-import com.ohelshem.api.model.Test
+import com.ohelshem.api.model.*
 import com.ohelshem.app.model.Contact
 import com.ohelshem.app.model.OverrideData
 
@@ -35,6 +32,7 @@ object TestSerialization : Serialization<Test> {
     }
 }
 
+//region Contacts
 object ContactSerialization : Serialization<Contact> {
     override fun serialize(writer: SimpleWriter, data: Contact) {
         writer.writeBool(data.gender)
@@ -87,6 +85,7 @@ private fun Byte.fromDelta(): Char {
 }
 
 private fun Int.toPhoneNumber(): String = if (this == 0) "" else "0$this"
+//endregion
 
 object ChangeSerialization : Serialization<Change> {
     override fun serialize(writer: SimpleWriter, data: Change) {
@@ -134,3 +133,64 @@ object ClassInfoSerialization : Serialization<ClassInfo> {
         return ClassInfo(layer, clazz)
     }
 }
+
+//region School objects
+object SchoolHourSerialization : Serialization<SchoolHour> {
+    override fun serialize(writer: SimpleWriter, data: SchoolHour) {
+        writer.writeInt(data.layer)
+        writer.writeInt(data.clazz)
+        writer.writeInt(data.day)
+        writer.writeInt(data.hour)
+        writer.writeInt(data.color)
+        writer.writeString(data.name)
+        writer.writeString(data.teacher)
+    }
+
+    override fun deserialize(reader: SimpleReader): SchoolHour {
+        val layer = reader.readInt()
+        val clazz = reader.readInt()
+        val day = reader.readInt()
+        val hour = reader.readInt()
+        val color = reader.readInt()
+        val name = reader.readString()
+        val teacher = reader.readString()
+        return SchoolHour(layer, clazz, day, hour, name, teacher, color)
+    }
+}
+
+object SchoolTestSerialization : Serialization<SchoolTest> {
+    override fun serialize(writer: SimpleWriter, data: SchoolTest) {
+        writer.writeInt(data.layer)
+        writer.writeInt(data.clazz)
+        writer.writeLong(data.date)
+        writer.writeString(data.content)
+    }
+
+    override fun deserialize(reader: SimpleReader): SchoolTest {
+        val layer = reader.readInt()
+        val clazz = reader.readInt()
+        val date = reader.readLong()
+        val content = reader.readString()
+        return SchoolTest(layer, clazz, date, content)
+    }
+}
+
+object SchoolChangeSerialization : Serialization<SchoolChange> {
+    override fun serialize(writer: SimpleWriter, data: SchoolChange) {
+        writer.writeInt(data.layer)
+        writer.writeInt(data.clazz)
+        writer.writeInt(data.hour)
+        writer.writeInt(data.color)
+        writer.writeString(data.content)
+    }
+
+    override fun deserialize(reader: SimpleReader): SchoolChange {
+        val layer = reader.readInt()
+        val clazz = reader.readInt()
+        val hour = reader.readInt()
+        val color = reader.readInt()
+        val content = reader.readString()
+        return SchoolChange(layer, clazz, hour, content, color)
+    }
+}
+//endregion

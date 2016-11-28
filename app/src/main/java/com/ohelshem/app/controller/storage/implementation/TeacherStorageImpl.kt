@@ -6,10 +6,7 @@ import com.ohelshem.api.model.SchoolChange
 import com.ohelshem.api.model.SchoolHour
 import com.ohelshem.api.model.SchoolTest
 import com.ohelshem.app.controller.info.SchoolInfo
-import com.ohelshem.app.controller.serialization.ClassInfoSerialization
-import com.ohelshem.app.controller.serialization.ofList
-import com.ohelshem.app.controller.serialization.simpleReader
-import com.ohelshem.app.controller.serialization.simpleWriter
+import com.ohelshem.app.controller.serialization.*
 import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.controller.storage.TeacherStorage
 import com.ohelshem.app.controller.utils.OffsetDataController
@@ -52,89 +49,80 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
     private var _primaryClassClass: Int by intPrefVar(-1)
     //endregion
 
+    //region Changes
+    private val SchoolChangesSerialization = SchoolChangeSerialization.ofList().toIndexed()
     override fun setSchoolChanges(changes: List<SchoolChange>?) {
         if (changes == null || changes.isEmpty()) {
-            SchoolChangesDataFile.delete()
-            SchoolChangesOffsetFile.delete()
+            SchoolChangesFile.delete()
         } else {
             prepare()
-            changes.asSequence().map { it.layer.toString() + InnerSeparator + it.clazz.toString() + InnerSeparator + it.hour.toString() + InnerSeparator + it.content + InnerSeparator + it.color.toString() }.let {
-                offsetDataController.write(SchoolChangesOffsetFile, SchoolChangesDataFile, it)
-            }
+            SchoolChangesFile.simpleWriter().use { writer -> SchoolChangesSerialization.serialize(writer, changes.layerFlatMap(SchoolChange::layer)) }
         }
     }
 
     override fun getChangesForClass(layer: Int, clazz: Int): List<SchoolChange> {
         if (!schoolInfo.validate(layer, clazz)) return emptyList()
 
-        if (!SchoolChangesDataFile.exists() || !SchoolChangesOffsetFile.exists()) return emptyList()
-        return offsetDataController.read(SchoolChangesOffsetFile, SchoolChangesDataFile, schoolInfo.getAbsoluteClass(layer, clazz) - 1).map { item ->
-            item.split(InnerSeparator, limit = 5).let { SchoolChange(it[0].toInt(), it[1].toInt(), it[2].toInt(), it[3], it[4].toInt()) }
-        }
+        if (!SchoolChangesFile.exists()) return emptyList()
+        return SchoolChangesFile.simpleReader().use { reader -> SchoolChangesSerialization.deserialize(schoolInfo.getAbsoluteClass(layer, clazz), reader) }
     }
 
     override val hasSchoolChanges: Boolean
-        get() = SchoolChangesOffsetFile.exists() && SchoolChangesDataFile.exists()
+        get() = SchoolChangesFile.exists()
+    //endregion
 
+    //region Tests
+    private val SchoolTestsSerialization = SchoolTestSerialization.ofList().toIndexed()
     override fun setSchoolTests(tests: List<SchoolTest>?) {
         if (tests == null || tests.isEmpty()) {
-            SchoolTestsDataFile.delete()
-            SchoolTestOffsetFile.delete()
+            SchoolTestsFile.delete()
         } else {
             prepare()
-            tests.asSequence().map { it.layer.toString() + InnerSeparator + it.clazz.toString() + InnerSeparator + it.date.toString() + InnerSeparator + it.content }.let {
-                offsetDataController.write(SchoolChangesOffsetFile, SchoolChangesDataFile, it)
-            }
+            SchoolTestsFile.simpleWriter().use { writer -> SchoolTestsSerialization.serialize(writer, tests.layerFlatMap(SchoolTest::layer)) }
         }
     }
 
     override fun getTestsForClass(layer: Int, clazz: Int): List<SchoolTest> {
         if (!schoolInfo.validate(layer, clazz)) return emptyList()
 
-        if (!SchoolTestsDataFile.exists() || !SchoolTestOffsetFile.exists()) return emptyList()
-        return offsetDataController.read(SchoolTestOffsetFile, SchoolTestsDataFile, schoolInfo.getAbsoluteClass(layer, clazz) - 1).map { item ->
-            item.split(InnerSeparator, limit = 4).let { SchoolTest(it[0].toInt(), it[1].toInt(), it[2].toLong(), it[3]) }
-        }
+        if (!SchoolTestsFile.exists()) return emptyList()
+        return SchoolTestsFile.simpleReader().use { reader -> SchoolTestsSerialization.deserialize(schoolInfo.getAbsoluteClass(layer, clazz), reader) }
     }
 
     override val hasSchoolTests: Boolean
-        get() = SchoolTestOffsetFile.exists() && SchoolTestsDataFile.exists()
+        get() = SchoolTestsFile.exists()
+    //endregion
 
+    //region Timetable
+    private val SchoolTimetableSerialization = SchoolHourSerialization.ofList().toIndexed()
     override fun setSchoolTimetable(timetable: List<SchoolHour>?) {
         if (timetable == null || timetable.isEmpty()) {
-            SchoolTestsDataFile.delete()
-            SchoolTestOffsetFile.delete()
+            SchoolTimetableFile.delete()
         } else {
             prepare()
-            timetable.asSequence().map {
-                it.layer.toString() + InnerSeparator + it.clazz.toString() + InnerSeparator + it.day.toString() + InnerSeparator + it.hour + InnerSeparator +
-                        it.name + InnerSeparator + it.teacher + InnerSeparator + it.color.toString()
-            }.let {
-                offsetDataController.write(SchoolChangesOffsetFile, SchoolChangesDataFile, it)
-            }
+            SchoolTimetableFile.simpleWriter().use { writer -> SchoolTimetableSerialization.serialize(writer, timetable.layerFlatMap(SchoolHour::layer)) }
         }
     }
 
     override fun getTimetableForClass(layer: Int, clazz: Int): List<SchoolHour> {
         if (!schoolInfo.validate(layer, clazz)) return emptyList()
 
-        if (!SchoolTimetableDataFile.exists() || !SchoolTimetableOffsetFile.exists()) return emptyList()
-        return offsetDataController.read(SchoolTimetableOffsetFile, SchoolTimetableDataFile, schoolInfo.getAbsoluteClass(layer, clazz) - 1).map { item ->
-            item.split(InnerSeparator, limit = 7).let { SchoolHour(it[0].toInt(), it[1].toInt(), it[2].toInt(), it[3].toInt(), it[4], it[5], it[6].toInt()) }
-        }
+        if (!SchoolTimetableFile.exists()) return emptyList()
+        return SchoolTimetableFile.simpleReader().use { reader -> SchoolTimetableSerialization.deserialize(schoolInfo.getAbsoluteClass(layer, clazz), reader) }
     }
 
     override val hasSchoolTimetable: Boolean
-        get() = SchoolTimetableOffsetFile.exists() && SchoolTimetableDataFile.exists()
+        get() = SchoolTimetableFile.exists()
+    //endregion
 
 
     override fun migration() {
-        version = 4
+        version = LatestVersion
     }
 
     override fun clean() {
         clear()
-        version = 4
+        version = LatestVersion
         Files.forEach { it.delete() }
     }
 
@@ -144,27 +132,36 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
     }
 
     private val Files: Array<File> by lazy {
-        arrayOf(SchoolChangesDataFile, SchoolChangesOffsetFile,
-                SchoolTestsDataFile, SchoolTestOffsetFile,
-                SchoolTimetableDataFile, SchoolTimetableOffsetFile,
+        arrayOf(SchoolChangesFile,
+                SchoolTestsFile,
+                SchoolTimetableFile,
                 ClassesFile)
     }
 
     private val FilesFolder: File by lazy { context.filesDir }
 
-    private val SchoolChangesDataFile: File by lazy { File(FilesFolder, "school_changes.bin") }
-    private val SchoolChangesOffsetFile: File by lazy { File(FilesFolder, "school_changes_offsets.bin") }
+    private val SchoolChangesFile: File by lazy { File(FilesFolder, "school_changes_v5.bin") }
 
-    private val SchoolTestsDataFile: File by lazy { File(FilesFolder, "school_tests.bin") }
-    private val SchoolTestOffsetFile: File by lazy { File(FilesFolder, "school_tests_offsets.bin") }
+    private val SchoolTestsFile: File by lazy { File(FilesFolder, "school_tests_v5.bin") }
 
-    private val SchoolTimetableDataFile: File by lazy { File(FilesFolder, "school_timetable.bin") }
-    private val SchoolTimetableOffsetFile: File by lazy { File(FilesFolder, "school_timetable_offsets.bin") }
+    private val SchoolTimetableFile: File by lazy { File(FilesFolder, "school_timetable_v5.bin") }
 
     private val ClassesFile: File by lazy { File(FilesFolder, "teacher_classes.bin") }
 
 
     companion object {
-        private const val InnerSeparator: Char = '\u2004'
+        private const val LatestVersion = 5
+
+        //region Utils
+        @JvmName("changesLayerFlatMap")
+        private inline fun <K> List<K>.layerFlatMap(layer: (K) -> Int): List<List<K>> {
+            val layers = Array(4) { mutableListOf<K>() }.toList()
+            forEach {
+                layers[layer(it) - 9] += it
+            }
+            return layers
+        }
+        //endregion
+
     }
 }
