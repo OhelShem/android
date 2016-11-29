@@ -32,10 +32,20 @@ import org.jetbrains.anko.find
 /**
  * An adapter for the day spinner for the toolbar.
  */
-class DaySpinnerAdapter(context: Context, private val daysInWeek: Int) : BaseAdapter(), ThemedSpinnerAdapter {
+class DaySpinnerAdapter(context: Context, daysLearning: BooleanArray) : BaseAdapter(), ThemedSpinnerAdapter {
     private val mDropDownHelper: ThemedSpinnerAdapter.Helper = ThemedSpinnerAdapter.Helper(context)
     private val daysOfWeek = context.resources.getStringArray(R.array.week_days)
     private val allWeek = context.getString(R.string.all_week)
+    private val days: IntArray
+
+    init {
+        days = IntArray(daysLearning.count { it } + 1)
+        var pos = 0
+        daysLearning.forEachIndexed { index, enabled ->
+            if (enabled)
+                days[++pos] = index + 1
+        }
+    }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
@@ -45,7 +55,7 @@ class DaySpinnerAdapter(context: Context, private val daysInWeek: Int) : BaseAda
             view = inflater.inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
         } else view = convertView
         view.find<TextView>(android.R.id.text1).apply {
-            text = if (position == 0) allWeek else daysOfWeek[position - 1]
+            text = if (position == 0) allWeek else daysOfWeek[getItem(position) - 1]
             gravity = Gravity.CENTER
         }
         return view
@@ -57,9 +67,9 @@ class DaySpinnerAdapter(context: Context, private val daysInWeek: Int) : BaseAda
 
     override fun getDropDownViewTheme(): Resources.Theme? = mDropDownHelper.dropDownViewTheme
 
-    override fun getCount(): Int = daysInWeek + 1
+    override fun getCount(): Int = days.size
 
-    override fun getItem(position: Int) = position
+    override fun getItem(position: Int) = days[position]
 
     override fun getItemId(position: Int): Long = 0
 

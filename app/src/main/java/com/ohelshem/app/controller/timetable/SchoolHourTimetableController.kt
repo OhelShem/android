@@ -5,10 +5,7 @@ import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.SchoolHour
 
 class SchoolHourTimetableController(hours: List<SchoolHour>) : BaseTimetableController() {
-
-    override fun init() {
-
-    }
+    override fun init()  = Unit
 
     init {
         val isLearnOnFriday = hours.find { it.day == 6 } != null
@@ -17,9 +14,9 @@ class SchoolHourTimetableController(hours: List<SchoolHour>) : BaseTimetableCont
             timetable[it.day - 1][it.hour - 1] = it
         }
         timetable.forEach { day ->
-            for (hour in day.indices) {
-                if (day[hour] == null) day[hour] = Hour("", "", TimetableController.ColorEmpty)
-            }
+            day.indices
+                    .filter { day[it] == null }
+                    .forEach { day[it] = Hour("", "", TimetableController.ColorEmpty) }
         }
         @Suppress("UNCHECKED_CAST")
         this.timetable = timetable as Array<Array<Hour>>

@@ -105,18 +105,37 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
 
     fun setDay(day: Int) {
         currentDay = day
-        if (day == 0)
+        if (day == 0) {
             view?.showWeekTimetable()
-        else
+            view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
+        }
+        else {
             view?.showDayTimetable()
-        view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
+            val daysLearning = this.daysLearning
+            var position = day - 1
+            while (!daysLearning[position]) {
+                position++
+                if (position >= daysLearning.size)
+                    position = 0
+            }
+            currentDay = position + 1
+            view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
+        }
+
     }
 
     private fun String.or(data: String) = if (isEmpty()) data else this
 
-    val weekDays: Int
-        get() = timetableController.size
+    val daysLearning: BooleanArray
+        get() {
+            val size = timetableController.size
+            val days = BooleanArray(if (size < 6) 6 else size)
 
+            (0 until timetableController.size)
+                    .filter { timetableController[it].isNotEmpty() }
+                    .forEach { days[it] = true }
+            return days
+        }
 
     var currentDay: Int = -1
         private set

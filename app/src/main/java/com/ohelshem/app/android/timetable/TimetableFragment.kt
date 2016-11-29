@@ -98,13 +98,11 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             act.startActivity<OverridesActivity>()
             true
         }
-
-
     }
 
     override fun init() {
         val spinner = screenManager.topNavigationElement
-        spinner.adapter = DaySpinnerAdapter(activity, presenter.weekDays)
+        spinner.adapter = DaySpinnerAdapter(activity, presenter.daysLearning)
         spinner.gravity = Gravity.CENTER
         spinner.post {
             spinner.onItemSelectedListener {
@@ -113,7 +111,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 }
             }
         }
-        if (presenter.weekDays == 5) headerView.removeViewAt(0)
     }
 
     override fun showDayTimetable() {
@@ -137,6 +134,13 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         val dp24 = dip(24)
         val dp30 = dip(30)
         val primaryColor = activity.primaryColor
+
+        presenter.daysLearning.reversedArray().forEachIndexed { index, value ->
+            if (value)
+                headerView.getChildAt(index).show()
+            else
+                headerView.getChildAt(index).hide()
+        }
 
         repeat(max) { hour ->
             val tableRow = TableRow(context).apply {

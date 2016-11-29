@@ -26,17 +26,8 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
 
     override fun get(day: Int): Array<Hour> {
         val timetableForDay = overrideTimetable!![day]
-        var temp = overrideTimetable!![day].toList()
-        var shouldNotExit = true
-        var i = timetableForDay.size - 1
-        do {
-            if (i >= 0 && timetableForDay[i].isEmpty()) {
-                temp = temp.dropLast(1)
-            } else shouldNotExit = false
-            i--
-        } while (shouldNotExit)
-        if (temp.isEmpty()) return timetableForDay
-        else return temp.toTypedArray()
+        val temp = timetableForDay.dropLastWhile(Hour::isEmpty)
+        return temp.toTypedArray()
     }
 
     override fun getHourData(day: Int, hour: Int, minutesNow: Int): HourData {

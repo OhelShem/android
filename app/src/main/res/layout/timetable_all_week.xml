@@ -14,7 +14,6 @@
         tools:ignore="RtlHardcoded,RtlSymmetry">
 
         <TextView
-            android:id="@+id/title_friday"
             style="@style/HeaderText"
             android:text="@string/friday" />
 
