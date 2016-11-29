@@ -1,18 +1,14 @@
 package com.ohelshem.app.controller.storage.implementation
 
 import com.chibatching.kotpref.KotprefModel
-import com.ohelshem.api.model.ClassInfo
-import com.ohelshem.api.model.SchoolChange
-import com.ohelshem.api.model.SchoolHour
-import com.ohelshem.api.model.SchoolTest
+import com.ohelshem.api.model.*
 import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.serialization.*
 import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.controller.storage.TeacherStorage
-import com.ohelshem.app.controller.utils.OffsetDataController
 import java.io.File
 
-class TeacherStorageImpl(private val offsetDataController: OffsetDataController, private val schoolInfo: SchoolInfo) : TeacherStorage, KotprefModel() {
+class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, KotprefModel() {
     override var version: Int by intPrefVar(IStorage.EmptyData)
 
     private val classInfoSerialization = ClassInfoSerialization.ofList()
@@ -51,12 +47,13 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
 
     //region Changes
     private val SchoolChangesSerialization = SchoolChangeSerialization.ofList().toIndexed()
+
     override fun setSchoolChanges(changes: List<SchoolChange>?) {
         if (changes == null || changes.isEmpty()) {
             SchoolChangesFile.delete()
         } else {
             prepare()
-            SchoolChangesFile.simpleWriter().use { writer -> SchoolChangesSerialization.serialize(writer, changes.layerFlatMap(SchoolChange::layer)) }
+            SchoolChangesFile.simpleWriter().use { writer -> SchoolChangesSerialization.serialize(writer, changes.layerFlatMap()) }
         }
     }
 
@@ -73,12 +70,13 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
 
     //region Tests
     private val SchoolTestsSerialization = SchoolTestSerialization.ofList().toIndexed()
+
     override fun setSchoolTests(tests: List<SchoolTest>?) {
         if (tests == null || tests.isEmpty()) {
             SchoolTestsFile.delete()
         } else {
             prepare()
-            SchoolTestsFile.simpleWriter().use { writer -> SchoolTestsSerialization.serialize(writer, tests.layerFlatMap(SchoolTest::layer)) }
+            SchoolTestsFile.simpleWriter().use { writer -> SchoolTestsSerialization.serialize(writer, tests.layerFlatMap()) }
         }
     }
 
@@ -95,12 +93,13 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
 
     //region Timetable
     private val SchoolTimetableSerialization = SchoolHourSerialization.ofList().toIndexed()
+
     override fun setSchoolTimetable(timetable: List<SchoolHour>?) {
         if (timetable == null || timetable.isEmpty()) {
             SchoolTimetableFile.delete()
         } else {
             prepare()
-            SchoolTimetableFile.simpleWriter().use { writer -> SchoolTimetableSerialization.serialize(writer, timetable.layerFlatMap(SchoolHour::layer)) }
+            SchoolTimetableFile.simpleWriter().use { writer -> SchoolTimetableSerialization.serialize(writer, timetable.layerFlatMap()) }
         }
     }
 
@@ -148,20 +147,15 @@ class TeacherStorageImpl(private val offsetDataController: OffsetDataController,
 
     private val ClassesFile: File by lazy { File(FilesFolder, "teacher_classes.bin") }
 
+    private fun <K : SchoolModel> List<K>.layerFlatMap(): List<List<K>> {
+        val layers = Array(4) { i -> Array(schoolInfo[i + 9]) { mutableListOf<K>() }.toList() }.toList()
+        forEach {
+            layers[it.layer - 9][it.clazz - 1] += it
+        }
+        return layers.flatten()
+    }
 
     companion object {
         private const val LatestVersion = 5
-
-        //region Utils
-        @JvmName("changesLayerFlatMap")
-        private inline fun <K> List<K>.layerFlatMap(layer: (K) -> Int): List<List<K>> {
-            val layers = Array(4) { mutableListOf<K>() }.toList()
-            forEach {
-                layers[layer(it) - 9] += it
-            }
-            return layers
-        }
-        //endregion
-
     }
 }

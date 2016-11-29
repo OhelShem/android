@@ -16,20 +16,21 @@ interface IndexedDeserialization<T : Any> : Serialization<List<T>>, IndexedDeser
  * Data structure:
  * [4] Length of header
  * [4] Number of items in header
- * [4] <-> Items starting index
+ * [4] <-> Items starting index (from end of header)
  * [4] End of file index
  * Data itself
  */
 class IndexedDeserializationImpl<T : Any>(val serialization: Serialization<T>) : IndexedDeserialization<T> {
     override fun deserialize(reader: SimpleReader): List<T> {
         val dataIndex = reader.readInt()
-        reader.skip(dataIndex - 4) // already consumed 4 bytes
-        return serialization.ofList().deserialize(reader)
+        val items = reader.readInt()
+        reader.skip(dataIndex - 2 * IndexItemSize) // already consumed 8 bytes
+        return serialization.ofList(items).deserialize(reader)
     }
 
     override fun deserialize(index: Int, reader: SimpleReader): T {
         var bytesRead = 2 * IndexItemSize
-        reader.readInt()
+        val headerLength = reader.readInt()
         val items = reader.readInt()
 
         require(index >= 0 && index < items) { "Index is not valid. Index: $index, Items: $items" }
@@ -39,7 +40,8 @@ class IndexedDeserializationImpl<T : Any>(val serialization: Serialization<T>) :
         bytesRead += skippedBytes
 
         val position = reader.readInt()
-        reader.skip(position - bytesRead)
+        bytesRead += IndexItemSize
+        reader.skip(position + headerLength - bytesRead)
 
         return serialization.deserialize(reader)
     }
@@ -62,13 +64,7 @@ class IndexedDeserializationImpl<T : Any>(val serialization: Serialization<T>) :
     }
 }
 
-class ByteArrayOutputStream2 : ByteArrayOutputStream {
-    constructor() : super() {
-    }
-
-    constructor(size: Int) : super(size) {
-    }
-
+class ByteArrayOutputStream2(size: Int) : ByteArrayOutputStream(size) {
     /** Returns the internal buffer of this ByteArrayOutputStream, without copying.  */
     @Synchronized fun buf(): ByteArray {
         return this.buf

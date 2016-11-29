@@ -78,3 +78,8 @@ fun daysBetween(day1: Calendar, day2: Calendar): Int {
         return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays
     }
 }
+
+fun MutableList<*>.removeAtIfPositive(position: Int) {
+    if (position >= 0)
+        removeAt(position)
+}

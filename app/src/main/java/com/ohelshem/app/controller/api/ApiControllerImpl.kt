@@ -103,8 +103,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                         }
                     }
                     is Api.ExtraData.Teacher -> {
-                        //FIXME teacher storage is not ready yet
-                        /*if (data.schoolChanges != null) {
+                        if (data.schoolChanges != null) {
                             storage.setSchoolChanges(data.schoolChanges)
                             apis += UpdatedApi.Changes
                         }
@@ -125,7 +124,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                         if (data.classes != storage.classes) {
                             storage.classes = data.classes ?: emptyList()
                             apis += UpdatedApi.UserData
-                        }*/
+                        }
                     }
                 }
 

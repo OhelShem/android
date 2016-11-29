@@ -45,6 +45,7 @@ import com.ohelshem.app.controller.timetable.OverridableUserTimetableController
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.model.VisibleItem
+import com.ohelshem.app.removeAtIfPositive
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.overrides_activity.*
 import org.jetbrains.anko.childrenSequence
@@ -212,11 +213,6 @@ class OverridesActivity : AppThemedActivity() {
             itemTouchHelper.attachToRecyclerView(recycler)
         }
 
-    }
-
-    private fun MutableList<*>.removeAtIfPositive(position: Int) {
-        if (position >= 0)
-            removeAt(position)
     }
 
     private fun updateNotification() {

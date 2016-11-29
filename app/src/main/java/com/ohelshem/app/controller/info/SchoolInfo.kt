@@ -16,7 +16,7 @@ interface SchoolInfo {
         var absolute = (MinLayer until layer).sumBy { get(it) }
         absolute += clazz
 
-        return absolute
+        return absolute - 1
     }
 
     companion object {

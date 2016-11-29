@@ -36,7 +36,6 @@ import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
-import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.*
@@ -56,8 +55,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
     private var hasInitAllWeek = false
 
-    private val storage: Storage by kodein.instance()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = UI {
         frameLayout {
             recyclerView = customView<RecyclerView> {
@@ -74,7 +71,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         }
     }.view
 
-    override fun createPresenter(): TimetablePresenter = with(kodein()) { TimetablePresenter(instance(), instance()) }
+    override fun createPresenter(): TimetablePresenter = with(kodein()) { TimetablePresenter(instance(), instance(), isEditModeSupported = true) }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -84,7 +81,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             toast(R.string.start_edit_mode)
             it.isVisible = false
             menuDone.isVisible = true
-            presenter.isEditModeOn = true
+            presenter.isEditModeEnabled = true
             true
         }
         menuDone = menu.findItem(R.id.done)
@@ -93,7 +90,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             toast(R.string.finish_edit_mode)
             it.isVisible = false
             menuEdit.isVisible = true
-            presenter.isEditModeOn = false
+            presenter.isEditModeEnabled = false
             true
         }
 
@@ -218,7 +215,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     override fun flushDay() {
     }
 
-    override fun showEditScreen(hour: Hour, day: Int, position: Int) {
+    override fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean) {
         val view = View.inflate(activity, R.layout.dialog_override, null)
         view.find<TextView>(R.id.currentName).text = hour.name
         view.find<TextView>(R.id.currentTeacher).text = hour.teacher
@@ -237,7 +234,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 .setNegativeButton(R.string.cancel) { dialog, which ->
 
                 }
-        if (presenter.hasOverrideFor(day, position)) {
+        if (hasOverride) {
             builder.setNeutralButton(R.string.return_to_default) { dialog, which ->
                 presenter.returnToDefault(hour, day, position, all.isChecked)
             }

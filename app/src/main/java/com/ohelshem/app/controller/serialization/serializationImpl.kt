@@ -37,7 +37,7 @@ class DataOutputStreamReader(private val stream: DataInputStream) : SimpleReader
     override fun skip(bytes: Int) = stream.skipBytes(bytes)
 }
 
-fun File.simpleWriter() = DataOutputStreamWriter(DataOutputStream(outputStream()))
-fun File.simpleReader() = DataOutputStreamReader(DataInputStream(inputStream()))
-fun OutputStream.simpleWriter() = DataOutputStreamWriter(DataOutputStream(this))
-fun InputStream.simpleReader() = DataOutputStreamReader(DataInputStream(this))
+fun File.simpleWriter(): SimpleWriter = DataOutputStreamWriter(DataOutputStream(outputStream()))
+fun File.simpleReader(): SimpleReader = DataOutputStreamReader(DataInputStream(inputStream()))
+fun OutputStream.simpleWriter(): SimpleWriter = DataOutputStreamWriter(DataOutputStream(this))
+fun InputStream.simpleReader(): SimpleReader = DataOutputStreamReader(DataInputStream(this))

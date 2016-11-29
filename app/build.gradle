@@ -34,7 +34,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.ohelshem:api:0.4.2'
+    compile 'com.ohelshem:api:0.4.3'
     // Android support libraries
     compile "com.android.support:support-v4:$androidSupportLibrary"
     compile "com.android.support:appcompat-v7:$androidSupportLibrary"

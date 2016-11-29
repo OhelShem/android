@@ -9,6 +9,6 @@ object SchoolInfoImpl : SchoolInfo {
     }
 
     override fun validate(layer: Int, clazz: Int): Boolean {
-        return layer in MinLayer..MaxLayer && clazz in 0..get(layer)
+        return layer in MinLayer..MaxLayer && clazz in 1..get(layer)
     }
 }

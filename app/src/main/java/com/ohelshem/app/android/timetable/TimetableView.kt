@@ -35,7 +35,7 @@ interface TimetableView: MvpView {
         flushWeek()
     }
 
-    fun showEditScreen(hour: Hour, day: Int, position: Int)
+    fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean)
 
     val isShowingDayView: Boolean
 

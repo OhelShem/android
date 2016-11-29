@@ -22,14 +22,14 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
-import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.controller.storage.SharedStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.OverrideData
+import com.ohelshem.app.removeAtIfPositive
 import java.util.*
 
-class TimetablePresenter(val storage: Storage, val timetableController: TimetableController) : BasePresenter<TimetableView>(), ApiController.Callback {
-    var isEditModeOn: Boolean = false
-
+class TimetablePresenter(val storage: SharedStorage, val timetableController: TimetableController, val isEditModeSupported: Boolean) : BasePresenter<TimetableView>(), ApiController.Callback {
+    //region Lifecycle
     override fun onDestroy() = Unit
 
     override fun onCreate() {
@@ -37,7 +37,9 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
         currentDay = today
         setDay(currentDay)
     }
+    //endregion
 
+    //region Api Update
     override fun onSuccess(apis: Set<UpdatedApi>) {
         if (UpdatedApi.Timetable in apis) {
             view?.flush()
@@ -46,23 +48,18 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
     }
 
     override fun onFail(error: UpdateError) = Unit
-    fun setDay(day: Int) {
-        currentDay = day
-        if (day == 0)
-            view?.showWeekTimetable()
-        else
-            view?.showDayTimetable()
-        view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
-    }
+    //endregion
 
+    //region Edit
+    var isEditModeEnabled: Boolean = false
+        set(value) {
+            field = isEditModeSupported && value
+        }
 
     fun startEdit(hour: Hour, day: Int, position: Int) {
-        if (isEditModeOn)
-            view?.showEditScreen(hour, day, position)
+        if (isEditModeEnabled)
+            view?.showEditScreen(hour, day, position, storage.overrides.any { it.day == day && it.hour == position })
     }
-
-
-    fun hasOverrideFor(day: Int, position: Int) = storage.overrides.any { it.day == day && it.hour == position }
 
     fun returnToDefault(hour: Hour, day: Int, position: Int, editAll: Boolean) {
         if (!editAll) {
@@ -104,10 +101,15 @@ class TimetablePresenter(val storage: Storage, val timetableController: Timetabl
         view?.flush()
         setDay(currentDay)
     }
+    //endregion
 
-    private fun MutableList<*>.removeAtIfPositive(position: Int) {
-        if (position >= 0)
-            removeAt(position)
+    fun setDay(day: Int) {
+        currentDay = day
+        if (day == 0)
+            view?.showWeekTimetable()
+        else
+            view?.showDayTimetable()
+        view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
     }
 
     private fun String.or(data: String) = if (isEmpty()) data else this

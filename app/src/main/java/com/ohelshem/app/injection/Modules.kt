@@ -38,7 +38,7 @@ object Modules {
     val Storage = Kodein.Module {
         bind<ContactsProvider>() with singleton { ContactsWrapper(Contacts) }
         bind<SharedStorage>() with singleton { SharedStorageCachedImpl(SharedStorageImpl(instance())) }
-        bind<TeacherStorage>() with singleton { TeacherStorageCacheImpl(TeacherStorageImpl(instance(), instance())) }
+        bind<TeacherStorage>() with singleton { TeacherStorageCacheImpl(TeacherStorageImpl(instance())) }
         bind<StudentStorage>() with singleton { StudentStorageCacheImpl(StudentStorageImpl(instance())) }
         bind<UIStorage>() with singleton { UIStorageCacheImpl(UIStorageImpl()) }
 
