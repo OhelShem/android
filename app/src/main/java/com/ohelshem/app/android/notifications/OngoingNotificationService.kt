@@ -92,9 +92,15 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     fun toBold(text: String, orig: String? = null): SpannableString {
         val s: SpannableString?
-        val isWithout = text.contains(" בלי ")
+
+        val isWithout = " בלי " in text
+        val changeIsMikbatz = "מקבץ" in text || "מקבצים" in text
+        val withoutNoMikbatz = isWithout && !changeIsMikbatz
+        val withoutYesMikbatz = isWithout && changeIsMikbatz
+        val withoutNoName = text.startsWith("בלי")
+
         if (orig != null)
-            s = SpannableString(if (isWithout) text else text + " (" + getString(R.string.instead) + " " + orig + ")")
+            s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || withoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
         else
             s = SpannableString(text)
         s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
