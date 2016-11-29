@@ -10,14 +10,18 @@ import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.birthday_item.view.*
 import org.jetbrains.anko.layoutInflater
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BirthdaysAdapter(val context: Context, val contacts: List<Contact>) : RecyclerView.Adapter<BirthdaysAdapter.VH>() {
     override fun getItemCount(): Int = contacts.size
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
-        holder.name.text = toFullName(contact.name)
-        holder.birthday.hint = context.getString(R.string.clazz) + " " + context.stringArrayRes(R.array.layers)[contact.layer - 9] + "'" + contact.clazz
+        holder.name.text = toFullName(contact.name) + " (${context.stringArrayRes(R.array.layers)[contact.layer - 9] + "'" + contact.clazz})"
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = contact.birthday
+        holder.birthday.hint = dateFormat.format(cal.time)
 
     }
 
@@ -35,4 +39,6 @@ class BirthdaysAdapter(val context: Context, val contacts: List<Contact>) : Recy
         if (arr.size > 2) return name
         return arr[1] + " " + arr[0]
     }
+
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 }
