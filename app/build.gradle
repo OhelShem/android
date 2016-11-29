@@ -70,6 +70,7 @@ dependencies {
     compile 'com.vlonjatg.android:progress-activity:1.1.1'
     compile 'com.github.kevinthecity:BottomBar:-SNAPSHOT'
     compile 'com.timehop.fragmentswitcher:library:1.1.2'
+    compile 'au.com.dardle:badgelayout:0.0.7'
     // debug
     compile 'io.palaima.debugdrawer:debugdrawer:0.7.1-SNAPSHOT'
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.1-SNAPSHOT'

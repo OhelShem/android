@@ -116,15 +116,14 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
                             apis += UpdatedApi.Timetable
                         }
 
-                        if (data.primaryClass != storage.primaryClass) {
-                            storage.primaryClass = data.primaryClass
-                            apis += UpdatedApi.UserData
-                        }
-
                         if (data.classes != storage.classes) {
                             storage.classes = data.classes ?: emptyList()
                             apis += UpdatedApi.UserData
                         }
+
+                        val primaryClass = storage.primaryClass
+                        if (primaryClass != null && primaryClass !in storage.classes)
+                            storage.primaryClass = null
                     }
                 }
 

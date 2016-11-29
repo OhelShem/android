@@ -21,9 +21,9 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
-import com.ohelshem.app.controller.storage.SharedStorage
+import com.ohelshem.app.controller.storage.Storage
 
-class LoginPresenter(private val storage: SharedStorage, private val apiController: ApiController, val analytics: Analytics) : BasePresenter<LoginView>(), ApiController.Callback {
+class LoginPresenter(private val storage: Storage, private val apiController: ApiController, val analytics: Analytics) : BasePresenter<LoginView>(), ApiController.Callback {
     var lastPassword: String = ""
     var lastId: String = ""
 
@@ -58,7 +58,10 @@ class LoginPresenter(private val storage: SharedStorage, private val apiControll
         storage.password = lastPassword
         storage.id = lastId
         if (storage.userData.isTeacher()) {
-            view?.showTeachersNotSupported()
+            view?.showTeachersDialog(storage) {
+                analytics.onLogin()
+                view?.launchApp()
+            }
         } else {
             analytics.onLogin()
             view?.launchApp()

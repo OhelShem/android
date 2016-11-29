@@ -19,15 +19,16 @@ package com.ohelshem.app.android.login
 
 import com.hannesdorfmann.mosby.mvp.MvpView
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.controller.storage.TeacherStorage
 
 interface LoginView: MvpView {
     fun showLoading()
-
-    fun showTeachersNotSupported()
 
     fun showLoginError(error: UpdateError)
     fun showIdInvalidError()
     fun showPasswordInvalidError()
 
     fun launchApp()
+
+    fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit)
 }

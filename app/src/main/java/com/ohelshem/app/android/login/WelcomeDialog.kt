@@ -12,7 +12,6 @@ import com.ohelshem.app.android.getPressedColorRippleDrawable
 import com.ohelshem.app.android.getStateDrawable
 import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.controller.storage.SharedStorage
-import com.ohelshem.app.controller.storage.Storage
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.theme_dialog.view.*
 import org.jetbrains.anko.backgroundDrawable
@@ -20,7 +19,7 @@ import org.jetbrains.anko.dip
 import org.jetbrains.anko.onClick
 
 object WelcomeDialog {
-    fun create(storage: Storage, activity: Activity, listener: () -> Unit) {
+    fun create(storage: SharedStorage, activity: Activity, listener: () -> Unit): MaterialStyledDialog {
         val view = activity.layoutInflater.inflate(R.layout.theme_dialog, null, false)
         view.nightMode.check(R.id.auto)
 
@@ -41,7 +40,7 @@ object WelcomeDialog {
 
         val padding = activity.dip(8)
 
-        MaterialStyledDialog.Builder(activity)
+        return MaterialStyledDialog.Builder(activity)
                 .setStyle(Style.HEADER_WITH_TITLE)
                 .setTitle(R.string.theme_settings)
                 .setCustomView(view, padding, padding, padding, padding)

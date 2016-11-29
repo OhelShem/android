@@ -196,6 +196,8 @@
     <string name="fake_changes">זייף שינויים</string>
     <string name="fake_no_changes">זייף אין שינויים</string>
     <string name="cancel_faking">בטל זיוף</string>
+    <string name="set_primary_class">בחר כיתה עיקרית</string>
+    <string name="no_primary_class">ללא כיתה עיקרית</string>
 
     <!-- Help -->
     <string name="who_are_we">מי אנחנו</string>

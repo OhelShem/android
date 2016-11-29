@@ -14,6 +14,7 @@ import com.ohelshem.app.android.invisible
 import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.setMargins
 import com.ohelshem.app.android.show
+import com.ohelshem.app.controller.storage.TeacherStorage
 import com.readystatesoftware.systembartint.SystemBarTintManager
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.login.*
@@ -116,6 +117,12 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         shouldStopAnimation = true
     }
 
+    override fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit) {
+        PrimaryClassDialog.create(teacherStorage, this) {
+            listener()
+        }
+    }
+
     private var shouldStopAnimation: Boolean = false
     private fun onRepeat() {
         if (shouldStopAnimation) {
@@ -125,11 +132,6 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
                 startActivity<MainActivity>()
             }
         }
-    }
-
-    override fun showTeachersNotSupported() {
-        longToast(R.string.teachers_are_not_supported_yet)
-        finish()
     }
 
     fun onLogin() {
