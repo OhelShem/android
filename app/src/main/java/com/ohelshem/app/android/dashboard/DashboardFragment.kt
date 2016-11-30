@@ -32,7 +32,7 @@ import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
-import com.ohelshem.app.controller.storage.UIStorage
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
@@ -54,7 +54,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     private var defaultTextColor: Int = 0
 
-    private val storage: UIStorage by kodein.instance()
+    private val storage: Storage by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -84,7 +84,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             showHoliday()
         }
 
-        if (storage.firstTimeInApp)
+        if (storage.firstTimeInApp && storage.isStudent())
             showIntro()
     }
 
@@ -131,8 +131,12 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
             if (data.hour.isEmpty())
                 lessonName.htmlText = bold { windowLesson }
-            else
-                lessonName.htmlText = bold { data.hour.name } + with + data.hour.teacher
+            else {
+                if ("|" in data.hour.name)
+                    lessonName.htmlText = bold { data.hour.name.split("|")[0] } + with + data.hour.name.split("|")[1]
+                else
+                    lessonName.htmlText = bold { data.hour.name } + with + data.hour.teacher
+            }
         }
     }
 
@@ -184,8 +188,12 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
                 if (data.nextHour.isEmpty())
                     nextLessonName.htmlText = bold { windowLesson }
-                else
-                    nextLessonName.htmlText = bold { data.nextHour.name } + with + data.nextHour.teacher
+                else {
+                    if ("|" in data.nextHour.name)
+                        nextLessonName.htmlText = bold { data.nextHour.name.split("|")[0] } + with + data.nextHour.name.split("|")[1]
+                    else
+                        nextLessonName.htmlText = bold { data.nextHour.name } + with + data.nextHour.teacher
+                }
             }
         }
     }

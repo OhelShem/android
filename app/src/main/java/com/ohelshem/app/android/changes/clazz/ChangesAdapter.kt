@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.changes.clazz
 
+import android.graphics.Typeface
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
@@ -24,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Hour
+import com.ohelshem.app.android.fromHtml
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.yoavst.changesystemohelshem.R
@@ -48,14 +50,15 @@ class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordi
         val hour = if (position < timetable.size) timetable[position] else null
         holder.lesson.text = (position + 1).toString()
         if (item == null) {
-            holder.text.text = hour?.let { it.name + " " + it.teacher } ?: ""
+            holder.text.text = hour?.let { ("<b>"+it.name + "</b><br>" + "<small><font color='#ECEFF1'>" + it.teacher + "</font></small>").fromHtml() } ?: ""
             holder.background.backgroundDrawable = TimetableAdapter.createLessonDrawable(hour?.color ?: TimetableController.ColorEmpty)
             holder.lesson.backgroundResource = R.drawable.number_circle
             holder.itemView.onClick(EmptyCallback)
         } else {
             holder.text.text = item.content
-            holder.background.background = TimetableAdapter.createLessonDrawable(item.color)
+            holder.background.backgroundDrawable = TimetableAdapter.createLessonDrawable(item.color)
             holder.lesson.backgroundResource = R.drawable.number_circle_change
+            holder.text.setTypeface(holder.lesson.typeface, Typeface.ITALIC)
             holder.background.onClick { v ->
                 if (!(hour?.isEmpty() ?: true))
                     snackbar(hour!!.name + with + hour.teacher)

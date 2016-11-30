@@ -30,6 +30,8 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
     val storage: Storage by kodein.instance()
     val timetableController: TimetableController by kodein.instance()
 
+    private val with by lazy { " " + getString(R.string.with) + " " }
+
     override fun onHandleIntent(intent: Intent?) {
         val cal = Calendar.getInstance()
         val day = cal.getDay()
@@ -101,9 +103,16 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
         if (orig != null)
             s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || withoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
-        else
-            s = SpannableString(text)
-        s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
+        else {
+            if ("|" in text) {
+                s = SpannableString(text.split("|")[0] + with + text.split("|")[1])
+                s.setSpan(StyleSpan(Typeface.BOLD), 0, text.split("|")[0].length, 0)
+            }
+            else {
+                s = SpannableString(text)
+                s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
+            }
+        }
         return s
     }
 
