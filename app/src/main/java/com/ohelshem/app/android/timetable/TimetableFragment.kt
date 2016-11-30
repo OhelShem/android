@@ -29,6 +29,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Hour
+import com.ohelshem.app.android.fromHtml
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.settings.OverridesActivity
@@ -36,14 +37,12 @@ import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.customView
-import org.jetbrains.anko.support.v4.UI
-import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.*
 
 class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), TimetableView {
     private lateinit var recyclerView: RecyclerView
@@ -54,6 +53,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     private lateinit var menuDone: MenuItem
 
     private var hasInitAllWeek = false
+
+    private val storage: Storage by kodein.instance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = UI {
         frameLayout {
@@ -162,7 +163,13 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                             } else {
                                 backgroundColor = data[day][hour].color
                                 val current = data[day][hour]
-                                (find<TextView>(R.id.text)).text = if (current.name.isEmpty()) "" else if (showTeacher) "${current.name}|${current.teacher}" else current.name
+                                val mikbatz = !storage.isStudent() && current.teacher.count { it==',' } > 2
+                                if (mikbatz) {
+                                    (find<TextView>(R.id.text)).onClick {
+                                        longToast(current.teacher)
+                                    }
+                                }
+                                (find<TextView>(R.id.text)).text = if (current.name.isEmpty()) "" else if (showTeacher) ("<b>${current.name}</b> <font color='#ECEFF1'>${if (mikbatz) "(מקבץ)" else current.teacher}</font>").fromHtml() else current.name
                             }
 
                             (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)

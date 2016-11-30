@@ -48,6 +48,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                     var orig2: String? = null
 
                     var lessonName = ""
+                    var lessonTeacherName = ""
                     var isChange = false
                     storage.changes?.forEach {
                         if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
@@ -57,11 +58,14 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                             isChange = true
                         }
                     }
-                    if (!isChange)
+                    if (!isChange) {
                         lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                        lessonTeacherName = data.hour.teacher
+                    }
 
 
                     var nextLesson = ""
+                    var nextLessonTeacher = ""
                     val isEndOfDay = TimetableController.isEndOfDay(data.hour.hourOfDay, timetableController[data.hour.day - 1])
                     if (isEndOfDay) {
                         nextLesson = getString(R.string.end_of_day)
@@ -75,15 +79,17 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                                 isNextChange = true
                             }
                         }
-                        if (!isNextChange)
+                        if (!isNextChange) {
                             nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                            nextLessonTeacher = data.nextHour.teacher
+                        }
                     }
 
 
                     val hours = TimetableController.DayHours[data.hour.hourOfDay * 2] + " - " + TimetableController.DayHours[data.hour.hourOfDay * 2 + 1]
 
                     try {
-                        notificationManager.notify(NotificationId, createNotification(lessonName, hours, nextLesson, color, nextColor, orig, orig2))
+                        notificationManager.notify(NotificationId, createNotification(lessonName, lessonTeacherName, hours, nextLesson, nextLessonTeacher, color, nextColor, orig, orig2))
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -92,7 +98,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         } else notificationManager.cancel(NotificationId)
     }
 
-    fun toBold(text: String, orig: String? = null): SpannableString {
+    fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString {
         val s: SpannableString?
 
         val isWithout = " בלי " in text
@@ -104,19 +110,18 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         if (orig != null)
             s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || withoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
         else {
-            if ("|" in text) {
-                s = SpannableString(text.split("|")[0] + with + text.split("|")[1])
-                s.setSpan(StyleSpan(Typeface.BOLD), 0, text.split("|")[0].length, 0)
+            if (!storage.isStudent() && teacherName != null) {
+                s = SpannableString(text + with + teacherName)
             }
             else {
                 s = SpannableString(text)
-                s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
             }
         }
+        s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
         return s
     }
 
-    private fun Context.createNotification(lesson: String, hours: String, nextLesson: String? = null, color: Int? = null, nextColor: Int? = null, orig: String? = null, orig2: String? = null): Notification {
+    private fun Context.createNotification(lesson: String, teacherName: String? = null, hours: String, nextLesson: String? = null, nextTeacherName: String? = null, color: Int? = null, nextColor: Int? = null, orig: String? = null, orig2: String? = null): Notification {
 
         val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
 
@@ -129,8 +134,8 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         contentView.setTextColor(R.id.nextLessonName, Color.WHITE)
 
         contentView.setTextViewText(R.id.timeLeft, toBold(hours))
-        contentView.setTextViewText(R.id.lessonName, toBold(lesson, orig))
-        contentView.setTextViewText(R.id.nextLessonName, toBold(nextLesson!!, orig2))
+        contentView.setTextViewText(R.id.lessonName, if (teacherName != null) toBold(lesson, orig, teacherName) else toBold(lesson, orig))
+        contentView.setTextViewText(R.id.nextLessonName, if (nextTeacherName != null) toBold(nextLesson!!, orig2, nextTeacherName) else toBold(nextLesson!!, orig2))
 
         contentView.setFloat(R.id.timeLeft, "setTextSize", 14.5f)
         contentView.setFloat(R.id.lessonName, "setTextSize", 14.5f)
