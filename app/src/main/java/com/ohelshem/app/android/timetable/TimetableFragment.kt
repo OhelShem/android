@@ -127,7 +127,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         presenter.onReselected()
     }
 
-    private fun initTimetable(data: Array<Array<Hour>>) {
+    private fun initTimetable(data: Array<Array<Hour>>, showTeacher: Boolean) {
         hasInitAllWeek = true
         val max = data.map { it.size }.max()!!
         val dp1 = dip(1)
@@ -161,7 +161,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                                 backgroundColor = Color.TRANSPARENT
                             } else {
                                 backgroundColor = data[day][hour].color
-                                (find<TextView>(R.id.text)).text = data[day][hour].name
+                                val current = data[day][hour]
+                                (find<TextView>(R.id.text)).text = if (current.name.isEmpty()) "" else if (showTeacher) "${current.name}|${current.teacher}" else current.name
                             }
 
                             (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
@@ -201,7 +202,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         if (day == 0) {
             screenManager.setToolbarElevation(false)
             if (!hasInitAllWeek || table.childCount == 0)
-                initTimetable(data)
+                initTimetable(data, presenter.isShowingTeacherInWeekView)
         } else {
             screenManager.setToolbarElevation(true)
             recyclerView.adapter = TimetableAdapter(activity, data[day - 1]) { hour, position ->

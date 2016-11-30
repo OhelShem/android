@@ -32,11 +32,12 @@ import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
-import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
+import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
 import org.jetbrains.anko.backgroundColor
@@ -54,7 +55,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     private var defaultTextColor: Int = 0
 
-    private val storage: Storage by kodein.instance()
+    private val storage: UIStorage by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -84,7 +85,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             showHoliday()
         }
 
-        if (storage.firstTimeInApp && storage.isStudent())
+        if (storage.firstTimeInApp && !BuildConfig.DEBUG)
             showIntro()
     }
 
@@ -118,7 +119,10 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             val withoutNoName = change.content.startsWith("בלי")
 
             hasModifiedCurrentLessonView = true
-            lessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead+" "}${data.hour.represent()})"
+            lessonName.htmlText =
+                    if (withoutNoMikbatz) bold { change.content }
+                    else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.hour.represent()})"
+
             currentLesson.backgroundColor = change.color
             firstSpace.backgroundColor = change.color
             lessonName.textColor = Color.WHITE
@@ -132,10 +136,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (data.hour.isEmpty())
                 lessonName.htmlText = bold { windowLesson }
             else {
-                if ("|" in data.hour.name)
-                    lessonName.htmlText = bold { data.hour.name.split("|")[0] } + with + data.hour.name.split("|")[1]
-                else
-                    lessonName.htmlText = bold { data.hour.name } + with + data.hour.teacher
+                lessonName.htmlText = bold { data.hour.name } + with + data.hour.teacher
             }
         }
     }
@@ -178,7 +179,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 val withoutNoName = change.content.startsWith("בלי")
 
                 hasModifiedNextLessonView = true
-                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead+" "}${data.nextHour.represent()})"
+                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.nextHour.represent()})"
                 next_lesson.backgroundColor = change.color
                 nextLessonName.textColor = Color.WHITE
                 nextHourIcon.setColorFilter(Color.WHITE)
@@ -189,10 +190,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 if (data.nextHour.isEmpty())
                     nextLessonName.htmlText = bold { windowLesson }
                 else {
-                    if ("|" in data.nextHour.name)
-                        nextLessonName.htmlText = bold { data.nextHour.name.split("|")[0] } + with + data.nextHour.name.split("|")[1]
-                    else
-                        nextLessonName.htmlText = bold { data.nextHour.name } + with + data.nextHour.teacher
+                    nextLessonName.htmlText = bold { data.nextHour.name } + with + data.nextHour.teacher
                 }
             }
         }

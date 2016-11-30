@@ -108,8 +108,7 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
         if (day == 0) {
             view?.showWeekTimetable()
             view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
-        }
-        else {
+        } else {
             view?.showDayTimetable()
             val daysLearning = this.daysLearning
             var position = day - 1
@@ -144,6 +143,9 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
         get() {
             return timetableController.getHourData().hour.day
         }
+
+    val isShowingTeacherInWeekView: Boolean
+        get() = !storage.isStudent()
 
     fun onReselected() {
         if (currentDay == 0)

@@ -26,7 +26,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ohelshem.api.model.Hour
-import com.ohelshem.app.android.fromHtml
+import com.ohelshem.app.android.htmlText
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.timetable_item.view.*
@@ -45,10 +45,7 @@ class TimetableAdapter(val context: Context, val items: Array<Hour>, val listene
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = items[position]
         holder.lesson.text = (position + 1).toString()
-        if ("|" in item.name)
-            holder.text.text = ("<b>"+item.name.split("|")[0] + "</b><br>" + "<small><font color='#ECEFF1'>" + item.name.split("|")[1] + "</font></small>").fromHtml()
-        else
-            holder.text.text = ("<b>"+item.name + "</b><br>" + "<small><font color='#ECEFF1'>" + item.teacher + "</font></small>").fromHtml()
+        holder.text.htmlText = "<b>${item.name}</b><br><small><font color='#ECEFF1'>${item.teacher}</font></small>"
         holder.background.backgroundDrawable = createLessonDrawable(item.color)
         holder.hour.text = TimetableController.getStartOfHour(position + 1)
         holder.tillHour.text = TimetableController.getEndOfHour(position + 1)
