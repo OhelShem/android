@@ -17,58 +17,43 @@
 
 package com.ohelshem.app.android.timetable
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Hour
-import com.ohelshem.app.android.fromHtml
-import com.ohelshem.app.android.hide
-import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.settings.OverridesActivity
-import com.ohelshem.app.android.show
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
-import com.ohelshem.app.android.timetable.adapter.TimetableAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
-import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
-import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.customView
-import org.jetbrains.anko.support.v4.*
+import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.find
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.onItemSelectedListener
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.support.v4.UI
+import org.jetbrains.anko.support.v4.act
+import org.jetbrains.anko.support.v4.toast
 
 class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), TimetableView {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var headerView: ViewGroup
-    private lateinit var table: TableLayout
-    private lateinit var allWeek: ViewGroup
+    private lateinit var coordinatorLayout: CoordinatorLayout
+    private lateinit var timetableLayout: TimetableBasicView
     private lateinit var menuEdit: MenuItem
     private lateinit var menuDone: MenuItem
 
-    private var hasInitAllWeek = false
-
-    private val storage: Storage by kodein.instance()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = UI {
-        frameLayout {
-            recyclerView = customView<RecyclerView> {
-                padding = dip(16)
-                setHasFixedSize(true)
-                clipToPadding = false
-                layoutManager = LinearLayoutManager(activity)
-            }
-            allWeek = include<LinearLayout>(R.layout.timetable_all_week) {
-                headerView = find(R.id.header_row)
-                table = find(R.id.table)
-                visibility = View.GONE
-            }
+        coordinatorLayout = coordinatorLayout {
+            timetableLayout = customView<TimetableLayout> {
+                onClickListener = { day, hour, data ->
+                    presenter.startEdit(data, day, hour)
+                }
+            }.lparams(width = matchParent, height = matchParent)
         }
     }.view
 
@@ -115,113 +100,27 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     }
 
     override fun showDayTimetable() {
-        recyclerView.show()
-        allWeek.hide()
+        //FIXME
     }
 
     override fun showWeekTimetable() {
-        allWeek.show()
-        recyclerView.hide()
+        //FIXME
+
     }
 
     override fun onReselected() {
         presenter.onReselected()
     }
 
-    private fun initTimetable(data: Array<Array<Hour>>, showTeacher: Boolean) {
-        hasInitAllWeek = true
-        val max = data.map { it.size }.max()!!
-        val dp1 = dip(1)
-        val dp24 = dip(24)
-        val dp30 = dip(30)
-        val primaryColor = activity.primaryColor
-
-        presenter.daysLearning.reversedArray().forEachIndexed { index, value ->
-            if (value)
-                headerView.getChildAt(index).show()
-            else
-                headerView.getChildAt(index).hide()
-        }
-
-        repeat(max) { hour ->
-            val tableRow = TableRow(context).apply {
-                layoutParams = TableLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
-                    setMargins(dp1, 0, 0, dp1)
-                }
-            }
-
-            table.addView(tableRow)
-
-            (data.size - 1 downTo 0)
-                    .filterNot { data[it].isEmpty() }
-                    .map { day ->
-                        activity.layoutInflater.inflate(R.layout.timetable_weekly_item, tableRow, false).apply {
-                            id = getId(day, hour)
-
-                            if (data[day].size <= hour) {
-                                backgroundColor = Color.TRANSPARENT
-                            } else {
-                                backgroundColor = data[day][hour].color
-                                val current = data[day][hour]
-                                val mikbatz = !storage.isStudent() && current.teacher.count { it==',' } > 2
-                                if (mikbatz) {
-                                    (find<TextView>(R.id.text)).onClick {
-                                        longToast(current.teacher)
-                                    }
-                                }
-                                (find<TextView>(R.id.text)).text = if (current.name.isEmpty()) "" else if (showTeacher) ("<b>${current.name}</b> <font color='#ECEFF1'>${if (mikbatz) "(מקבץ)" else current.teacher}</font>").fromHtml() else current.name
-                            }
-
-                            (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
-
-                            onClick {
-                                if (data.size > day && data[day].size > hour)
-                                    presenter.startEdit(data[day][hour], day, hour)
-                            }
-                        }
-                    }
-                    .forEach { tableRow.addView(it) }
-
-            val frameLayout = FrameLayout(activity).apply {
-                layoutParams = TableRow.LayoutParams(dp30, MATCH_PARENT)
-                backgroundColor = primaryColor
-            }
-
-            val number = TextView(activity).apply {
-                layoutParams = FrameLayout.LayoutParams(dp24, WRAP_CONTENT, Gravity.CENTER)
-                textSize = 15f
-                gravity = Gravity.CENTER
-                text = (hour + 1).toString()
-                textColor = Color.WHITE
-
-                setTypeface(null, Typeface.BOLD)
-            }
-
-            frameLayout.addView(number)
-            tableRow.addView(frameLayout)
-        }
-    }
-
-    private fun getId(day: Int, hour: Int) = 100 + day * 10 + hour
-
     override fun setDay(day: Int, data: Array<Array<Hour>>) {
         screenManager.topNavigationElement.setSelection(day, false)
-        if (day == 0) {
-            screenManager.setToolbarElevation(false)
-            if (!hasInitAllWeek || table.childCount == 0)
-                initTimetable(data, presenter.isShowingTeacherInWeekView)
-        } else {
-            screenManager.setToolbarElevation(true)
-            recyclerView.adapter = TimetableAdapter(activity, data[day - 1]) { hour, position ->
-                presenter.startEdit(hour, day - 1, position)
-            }
-        }
+        screenManager.setToolbarElevation(day != TimetableLayout.Day_Week)
+        timetableLayout.setData(data, day, presenter.isTeacher)
 
     }
 
     override fun flushWeek() {
-        table.removeAllViews()
-        hasInitAllWeek = false
+        timetableLayout.destroyView()
     }
 
     override fun flushDay() {
@@ -255,7 +154,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     }
 
     override val isShowingDayView: Boolean
-        get() = recyclerView.visibility == View.VISIBLE
+        get() = timetableLayout.isVisible
 
     override var menuId: Int = R.menu.timetable
 

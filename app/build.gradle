@@ -58,6 +58,7 @@ dependencies {
     // Anko modules
     compile 'org.jetbrains.anko:anko-sdk15:0.9'
     compile 'org.jetbrains.anko:anko-support-v4:0.9'
+    compile 'org.jetbrains.anko:anko-design:0.9'
     // MVP
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     // UI

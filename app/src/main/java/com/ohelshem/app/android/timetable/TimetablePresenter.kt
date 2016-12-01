@@ -127,8 +127,7 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
 
     val daysLearning: BooleanArray
         get() {
-            val size = timetableController.size
-            val days = BooleanArray(if (size < 6) 6 else size)
+            val days = BooleanArray(6)
 
             (0 until timetableController.size)
                     .filter { timetableController[it].isNotEmpty() }
@@ -144,7 +143,7 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
             return timetableController.getHourData().hour.day
         }
 
-    val isShowingTeacherInWeekView: Boolean
+    val isTeacher: Boolean
         get() = !storage.isStudent()
 
     fun onReselected() {
