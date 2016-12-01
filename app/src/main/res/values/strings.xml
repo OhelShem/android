@@ -36,6 +36,7 @@
     <!-- Messages -->
     <string name="refresh_fail">אירעה שגיאה בטעינת המידע</string>
     <string name="refreshed">המידע עודכן</string>
+    <string name="not_available_for_teachers">אפשרות זו אינה זמינה למורים</string>
 
     <!-- General -->
     <string name="list">רשימה</string>
