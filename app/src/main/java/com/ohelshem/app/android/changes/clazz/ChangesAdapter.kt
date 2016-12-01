@@ -17,7 +17,6 @@
 
 package com.ohelshem.app.android.changes.clazz
 
-import android.graphics.Typeface
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
@@ -58,7 +57,7 @@ class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordi
             holder.text.text = item.content
             holder.background.backgroundDrawable = TimetableAdapter.createLessonDrawable(item.color)
             holder.lesson.backgroundResource = R.drawable.number_circle_change
-            holder.text.setTypeface(holder.lesson.typeface, Typeface.ITALIC)
+            //holder.text.setTypeface(holder.lesson.typeface, Typeface.ITALIC)
             holder.background.onClick { v ->
                 if (!(hour?.isEmpty() ?: true))
                     snackbar(hour!!.name + with + hour.teacher)
