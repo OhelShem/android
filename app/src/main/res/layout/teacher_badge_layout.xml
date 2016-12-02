@@ -5,10 +5,10 @@
     android:id="@+id/teacherBar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
     android:background="?colorPrimary"
     android:orientation="horizontal"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
     tools:ignore="RtlHardcoded">
 
     <android.support.design.widget.FloatingActionButton
@@ -28,19 +28,26 @@
         android:layout_marginRight="8dp"
         android:background="@android:color/white" />
 
-    <HorizontalScrollView
-        android:id="@+id/badgesLayoutScroll"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_weight="1">
 
-        <LinearLayout
-            android:id="@+id/badgesLayout"
+        <HorizontalScrollView
+            android:id="@+id/badgesLayoutScroll"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
-    </HorizontalScrollView>
+            android:layout_gravity="center"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/badgesLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+    </FrameLayout>
 
     <View
         android:layout_width="1dp"
@@ -55,8 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="2dp"
         android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:background="@drawable/badge_background"
         android:textColor="@android:color/white"
         android:visibility="gone"
