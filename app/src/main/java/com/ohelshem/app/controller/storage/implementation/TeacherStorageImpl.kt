@@ -12,6 +12,7 @@ class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, K
     override var version: Int by intPrefVar(IStorage.EmptyData)
 
     private val classInfoSerialization = ClassInfoSerialization.ofList()
+    override var activeClass: ClassInfo? = null
     override var classes: List<ClassInfo>
         get() {
             if (!ClassesFile.exists()) return emptyList()

@@ -247,7 +247,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 BadgeBarGenerator.badgesDisableAll(teacherBar)
                 //FIXME
             }) {
-                //FIXME
+                    storage.activeClass = it // TODO refresh fragment on select
             }
             teacherBar.show()
         } else {
