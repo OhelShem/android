@@ -18,6 +18,7 @@
 package com.ohelshem.app.android.utils
 
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.view.*
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
@@ -47,19 +48,18 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
         }
     }
 
-    open fun onBecomingVisible() {
-
-    }
+    open fun onBecomingVisible() = Unit
 
     fun onReselected() {
         presenter.onReselected()
     }
 
-    fun onChoosingClass(classInfo: ClassInfo?) {
+    @CallSuper
+    open fun onChoosingClass(classInfo: ClassInfo?) {
         presenter.onChoosingClass(classInfo)
 
         childFragmentManager.fragments?.forEach {
-            (it as? BaseMvpFragment<*,*>)?.onChoosingClass(classInfo)
+            (it as? BaseMvpFragment<*, *>)?.onChoosingClass(classInfo)
         }
     }
 
@@ -69,6 +69,7 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.currentClass = screenManager.currentClass
         init()
         if (callOnCreate)
             presenter.onCreate()

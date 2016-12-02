@@ -34,6 +34,7 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.onItemSelectedListener
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.act
+import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
 class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), TimetableView {
@@ -48,19 +49,20 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
         menuEdit = menu.findItem(R.id.edit)
         menuEdit.setOnMenuItemClickListener {
-            toast(R.string.start_edit_mode)
-            it.isVisible = false
-            menuDone.isVisible = true
-            presenter.isEditModeEnabled = true
+            if (presenter.isEditModeSupported) {
+                toast(R.string.start_edit_mode)
+                it.isVisible = false
+                menuDone.isVisible = true
+                presenter.isEditModeEnabled = true
+            } else toast(R.string.edit_mode_not_supported)
             true
         }
         menuDone = menu.findItem(R.id.done)
 
         menuDone.setOnMenuItemClickListener {
             toast(R.string.finish_edit_mode)
-            it.isVisible = false
-            menuEdit.isVisible = true
             presenter.isEditModeEnabled = false
+            disableEditMode()
             true
         }
 
@@ -68,6 +70,11 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             act.startActivity<OverridesActivity>()
             true
         }
+    }
+
+    override fun disableEditMode() {
+        menuDone.isVisible = false
+        menuEdit.isVisible = true
     }
 
     override fun init() {
@@ -82,8 +89,11 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             }
         }
         timetableLayout.onClickListener = { day, hour, data ->
+            if (presenter.isEditModeEnabled)
                 presenter.startEdit(data, day, hour)
-            }
+            else if (presenter.isTeacher && data.teacher.count { it == ',' } > 2)
+                longToast(data.teacher)
+        }
     }
 
     override fun setDay(day: Int, data: Array<Array<Hour>>) {

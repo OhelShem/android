@@ -25,6 +25,8 @@ interface TimetableView: MvpView {
 
     fun flush()
 
+    fun disableEditMode()
+
     fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean)
 
     val isShowingDayView: Boolean

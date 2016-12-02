@@ -70,6 +70,8 @@
     <string name="edit">ערוך</string>
     <string name="done">בוצע</string>
     <string name="start_edit_mode">מתחיל מצב עריכה, לחץ על השיעור שברצונך לשנות</string>
+    <string name="edit_mode_not_supported">מצב עריכה זמין רק למערכת שעות האישית</string>
+
     <string name="finish_edit_mode">מצב עריכה הופסק</string>
     <string name="current_name">שם השיעור הנוכחי</string>
     <string name="current_teacher">שם המורה הנוכחי</string>

@@ -17,6 +17,8 @@
 
 package com.ohelshem.app.android.main
 
+import com.ohelshem.api.model.ClassInfo
+
 interface ScreenManager {
     /**
      * Sets the main fragment to the new Fragment.
@@ -28,6 +30,8 @@ interface ScreenManager {
      * Sets the title to the screen.
      */
     var screenTitle: CharSequence
+
+    val currentClass: ClassInfo?
 
     /**
      * Refresh the data.

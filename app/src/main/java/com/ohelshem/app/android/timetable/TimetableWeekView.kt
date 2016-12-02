@@ -113,7 +113,6 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
                                     onClickListener?.invoke(day, hour, current)
                                 }
                                 find<TextView>(R.id.text).text = generateText(current, groupFormatting)
-                                if (current.teacher.count { it==',' } > 2) find<TextView>(R.id.text).onClick { context.longToast(current.teacher) }
                             }
 
                             (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
@@ -144,7 +143,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     }
 
     private fun generateText(hour: Hour, groupFormatting: Boolean): CharSequence {
-        val mikbatz =  groupFormatting && hour.teacher.count { it==',' } > 2
+        val mikbatz = groupFormatting && hour.teacher.count { it == ',' } > 2
         return if (hour.name.isEmpty()) "" else if (groupFormatting) ("<b>${hour.name}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml() else hour.name
     }
 

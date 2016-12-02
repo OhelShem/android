@@ -5,7 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView
 import com.ohelshem.api.model.ClassInfo
 
 abstract class BasePresenter<V : MvpView> : MvpBasePresenter<V>() {
-    protected var currentClass: ClassInfo? = null
+    var currentClass: ClassInfo? = null
 
     abstract fun onCreate()
 

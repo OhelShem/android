@@ -28,7 +28,7 @@ import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.removeAtIfPositive
 import java.util.*
 
-class TimetablePresenter(val storage: SharedStorage, val timetableController: TimetableController, val isEditModeSupported: Boolean) : BasePresenter<TimetableView>(), ApiController.Callback {
+class TimetablePresenter(val storage: SharedStorage, val timetableController: TimetableController, isEditModeSupported: Boolean) : BasePresenter<TimetableView>(), ApiController.Callback {
     //region Lifecycle
     override fun onDestroy() = Unit
 
@@ -50,6 +50,9 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     //endregion
 
     //region Edit
+    var isEditModeSupported: Boolean = isEditModeSupported
+        private set
+
     var isEditModeEnabled: Boolean = false
         set(value) {
             field = isEditModeSupported && value
@@ -151,6 +154,10 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     }
 
     override fun onChoosingClass() {
+        isEditModeSupported = currentClass == null
+        if (!isEditModeSupported)
+            view?.disableEditMode()
+
         //FIXME
     }
 }

@@ -407,8 +407,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     fun notifyFragmentOnChooseClass(classInfo: ClassInfo?) {
+        currentClass = classInfo
         (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onChoosingClass(classInfo)
     }
+
+    override var currentClass: ClassInfo? = null
 
     val updatables: List<ApiController.Callback>
         get() {
