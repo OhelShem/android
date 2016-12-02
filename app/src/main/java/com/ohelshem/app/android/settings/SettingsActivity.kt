@@ -83,12 +83,14 @@ class SettingsActivity : AppThemedActivity() {
         }
 
         notificationsList.apply {
-            settingsItem(getString(R.string.changes_realtime), showCheckBox = true, isChecked = storage.notificationsForChanges) {
-                storage.notificationsForChanges = it
-                if (it)
-                    analyticsManager.subscribe()
-                else
-                    analyticsManager.unsubscribe()
+            if (storage.isStudent()) {
+                settingsItem(getString(R.string.changes_realtime), showCheckBox = true, isChecked = storage.notificationsForChanges) {
+                    storage.notificationsForChanges = it
+                    if (it)
+                        analyticsManager.subscribe()
+                    else
+                        analyticsManager.unsubscribe()
+                }
             }
             settingsItem(getString(R.string.timetable_notif), showCheckBox = true, isChecked = storage.notificationsForTimetable) {
                 storage.notificationsForTimetable = it
@@ -98,8 +100,10 @@ class SettingsActivity : AppThemedActivity() {
             settingsItem(getString(R.string.birthdays_in_class), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
                 storage.notificationsForBirthdays = it
             }
-            settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
-                storage.notificationsForTests = it
+            if (storage.isStudent()) {
+                settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
+                    storage.notificationsForTests = it
+                }
             }
             settingsItem(getString(R.string.holidays_notif), showCheckBox = true, isChecked = storage.notificationsForHolidays) {
                 storage.notificationsForHolidays = it

@@ -24,7 +24,7 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
 
         // for remote messages
         firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
-        firebaseMessaging.subscribeToTopic("allstudents")
+        if (storage.isStudent()) firebaseMessaging.subscribeToTopic("allstudents")
 
         if (storage.notificationsForChanges)
             subscribe()

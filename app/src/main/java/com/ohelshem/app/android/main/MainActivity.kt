@@ -112,6 +112,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, DatesListFragment()).commit()
 
             debug()
+            if (storage.userData.isTeacher()) {
+                storage.notificationsForChanges = false
+                storage.notificationsForTests = false
+            }
             analyticsManager.onLogin()
             showIntro()
         }
