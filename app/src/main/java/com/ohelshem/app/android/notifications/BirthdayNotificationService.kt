@@ -24,7 +24,13 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
         if (storage.isSetup() && storage.notificationsForBirthdays && storage.lastNotificationTimeBirthday.toCalendar()[Calendar.DAY_OF_YEAR] != Calendar.getInstance()[Calendar.DAY_OF_YEAR]) {
             val today = Calendar.getInstance()
             val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
-            val contacts = contactsProvider.getContacts(storage.userData.layer, storage.userData.clazz).filter {
+            val allContacts =
+                    if (storage.isStudent())
+                        contactsProvider.getContacts(storage.userData.layer, storage.userData.clazz)
+                    else
+                        storage.primaryClass?.let { contactsProvider.getContacts(it.layer, it.clazz) } ?: emptyList()
+
+            val contacts = allContacts.filter {
                 val cal = it.birthday.toCalendar()
                 cal[Calendar.DAY_OF_MONTH] == day && cal[Calendar.MONTH] == month
             }

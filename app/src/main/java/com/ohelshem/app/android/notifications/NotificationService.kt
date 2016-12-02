@@ -46,10 +46,11 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
 
 
     private fun checkForTests(day: Calendar) {
+        val allTests = if (storage.isStudent()) storage.tests else storage.primaryClass?.let { storage.getTestsForClass(it.layer, it.clazz) }
         val now = day.timeInMillis
         day.add(Calendar.DAY_OF_YEAR, 7)
         val inAWeek = day.timeInMillis
-        var tests = storage.tests?.filter { it.date >= now && it.date <= inAWeek }?.sortedBy(Test::date) ?: emptyList()
+        var tests = allTests?.filter { it.date >= now && it.date <= inAWeek }?.sortedBy(Test::date) ?: emptyList()
         if (tests.isNotEmpty()) {
             val first = tests.first()
             if (first.date == now) {
