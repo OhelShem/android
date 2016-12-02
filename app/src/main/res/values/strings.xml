@@ -204,11 +204,11 @@
     <string name="fake_changes">זייף שינויים</string>
     <string name="fake_no_changes">זייף אין שינויים</string>
     <string name="cancel_faking">בטל זיוף</string>
-    <string name="set_primary_class">בחר כיתה עיקרית</string>
-    <string name="no_primary_class">ללא כיתה עיקרית</string>
+    <string name="set_primary_class">בחר כיתת חינוך</string>
+    <string name="no_primary_class">ללא כיתת חינוך</string>
     <string name="no_primary_class_short">ללא</string>
     <string name="teacher_settings">הגדרות למורים</string>
-    <string name="primary_class_setting">כיתה עיקרית</string>
+    <string name="primary_class_setting">כיתת חינוך</string>
 
     <!-- Help -->
     <string name="who_are_we">מי אנחנו</string>
