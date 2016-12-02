@@ -20,6 +20,8 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
+    private lateinit var groupText: String
+
     override var onClickListener: ((day: Int, hour: Int, data: Hour) -> Unit)? = null
 
     private var headerView: ViewGroup
@@ -33,6 +35,8 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
         View.inflate(context, R.layout.timetable_all_week, this)
         headerView = find(R.id.header_row)
         table = find(R.id.table)
+
+        groupText = "(" + context.getString(R.string.group) + ")"
 
     }
 
@@ -140,7 +144,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
 
     private fun generateText(hour: Hour, groupFormatting: Boolean): CharSequence {
         val mikbatz =  groupFormatting && hour.teacher.count { it==',' } > 2
-        return if (hour.name.isEmpty()) "" else if (groupFormatting) ("<b>${hour.name}</b> <font color='#ECEFF1'>${if (mikbatz) "(מקבץ)" else hour.teacher}</font>").fromHtml() else hour.name
+        return if (hour.name.isEmpty()) "" else if (groupFormatting) ("<b>${hour.name}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml() else hour.name
     }
 
     private fun getId(day: Int, hour: Int) = 100 + day * 10 + hour

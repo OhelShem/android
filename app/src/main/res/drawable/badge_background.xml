@@ -6,7 +6,7 @@
 
             <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
 
-            <solid android:color="@color/md_green_900" />
+            <solid android:color="#42ffffff" />
 
         </shape>
     </item>
@@ -16,18 +16,7 @@
 
             <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
 
-            <solid android:color="@color/md_green_700" />
-
-        </shape>
-    </item>
-
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="24dp" />
-
-            <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
-
-            <solid android:color="@color/md_green_500" />
+            <solid android:color="?colorPrimaryDark" />
 
         </shape>
     </item>

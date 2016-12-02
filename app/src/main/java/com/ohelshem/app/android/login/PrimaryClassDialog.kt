@@ -54,8 +54,8 @@ object PrimaryClassDialog {
         }
 
         badgeLayout.setBadgeBackground(R.drawable.badge_background)
-        badgeLayout.setSpacing((context.resources.displayMetrics.density * 8).toInt())
-        badgeLayout.setBadgeTextColor(ResourcesCompat.getColorStateList(context.resources, android.R.color.white, context.theme))
+        badgeLayout.spacing = (context.resources.displayMetrics.density * 8).toInt()
+        badgeLayout.badgeTextColor = ResourcesCompat.getColorStateList(context.resources, android.R.color.white, context.theme)
 
         classes.forEach {
             badgeLayout.addBadge(badgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })

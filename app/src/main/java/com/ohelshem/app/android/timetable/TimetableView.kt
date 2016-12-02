@@ -21,19 +21,9 @@ import com.hannesdorfmann.mosby.mvp.MvpView
 import com.ohelshem.api.model.Hour
 
 interface TimetableView: MvpView {
-    fun showDayTimetable()
-
-    fun showWeekTimetable()
-
     fun setDay(day: Int, data: Array<Array<Hour>>)
 
-    fun flushWeek()
-    fun flushDay()
-
-    fun flush() {
-        flushDay()
-        flushWeek()
-    }
+    fun flush()
 
     fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean)
 

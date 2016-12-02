@@ -107,6 +107,9 @@
     <string name="send_sms">שלח הודעה</string>
     <string name="more">עוד אפשרויות</string>
 
+    <!-- Timetable -->
+    <string name="group">מקבץ</string>
+    <string name="my_timetable">המערכת שלי</string>
 
     <!-- Notifications -->
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>

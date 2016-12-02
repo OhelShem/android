@@ -18,7 +18,7 @@ class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, K
             else return ClassesFile.simpleReader().use { reader -> classInfoSerialization.deserialize(reader) }
         }
         set(value) {
-            if (classes.isEmpty()) ClassesFile.delete()
+            if (value.isEmpty()) ClassesFile.delete()
             else {
                 prepare()
                 ClassesFile.simpleWriter().use { writer -> classInfoSerialization.serialize(writer, value) }

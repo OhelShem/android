@@ -17,45 +17,35 @@
 
 package com.ohelshem.app.android.timetable
 
-import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import au.com.dardle.widget.BadgeLayout
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Hour
+import com.ohelshem.app.android.App
+import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.settings.OverridesActivity
+import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
-import org.jetbrains.anko.custom.customView
-import org.jetbrains.anko.design.coordinatorLayout
+import kotlinx.android.synthetic.main.timetable_fragment.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.onItemSelectedListener
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
 
 class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), TimetableView {
-    private lateinit var coordinatorLayout: CoordinatorLayout
-    private lateinit var timetableLayout: TimetableBasicView
+    override val layoutId: Int = R.layout.timetable_fragment
     private lateinit var menuEdit: MenuItem
     private lateinit var menuDone: MenuItem
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = UI {
-        coordinatorLayout = coordinatorLayout {
-            timetableLayout = customView<TimetableLayout> {
-                onClickListener = { day, hour, data ->
-                    presenter.startEdit(data, day, hour)
-                }
-            }.lparams(width = matchParent, height = matchParent)
-        }
-    }.view
 
     override fun createPresenter(): TimetablePresenter = with(kodein()) { TimetablePresenter(instance(), instance(), isEditModeSupported = true) }
 
@@ -97,14 +87,30 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 }
             }
         }
-    }
 
-    override fun showDayTimetable() {
-        //FIXME
-    }
+        if (presenter.isTeacher) {
+            val badges = mutableListOf<BadgeLayout.Badge>()
+            val classes = App.instance.kodein.instance<Storage>().classes
+            val layers = stringArrayRes(R.array.layers)
 
-    override fun showWeekTimetable() {
-        //FIXME
+            teacherBadgeLayout.setBadgeBackground(R.drawable.badge_background)
+            teacherBadgeLayout.spacing = (context.resources.displayMetrics.density * 8).toInt()
+            teacherBadgeLayout.badgeTextColor = ResourcesCompat.getColorStateList(context.resources, android.R.color.white, context.theme)
+            classes.forEach {
+                teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })
+            }
+            teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText(getString(R.string.my_timetable)).setSelected(true).apply { badges += this })
+
+
+            teacherBadgeLayout.addOnBadgeClickedListener {
+                badges.forEach { it.setSelected(false) }
+                it.setSelected(true)
+            }
+
+
+        } else {
+            teacherBar.hide()
+        }
 
     }
 
@@ -119,11 +125,8 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
     }
 
-    override fun flushWeek() {
+    override fun flush() {
         timetableLayout.destroyView()
-    }
-
-    override fun flushDay() {
     }
 
     override fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean) {

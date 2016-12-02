@@ -33,7 +33,6 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     override fun onDestroy() = Unit
 
     override fun onCreate() {
-        view?.showDayTimetable()
         currentDay = today
         setDay(currentDay)
     }
@@ -106,10 +105,8 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     fun setDay(day: Int) {
         currentDay = day
         if (day == 0) {
-            view?.showWeekTimetable()
             view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
         } else {
-            view?.showDayTimetable()
             val daysLearning = this.daysLearning
             var position = day - 1
             while (!daysLearning[position]) {
