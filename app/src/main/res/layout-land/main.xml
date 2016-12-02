@@ -11,15 +11,15 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/ToolbarStyle"
-            app:elevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
 
             <Spinner
                 android:id="@+id/navigationSpinner"
@@ -41,6 +41,7 @@
         android:id="@+id/fragmentSwitcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/teacherWrapperLayout"
         android:layout_below="@+id/appBarLayout"
         android:layout_toRightOf="@+id/bottomBar" />
 
@@ -54,5 +55,15 @@
         app:bb_behavior="shifting"
         app:bb_tabXmlResource="@xml/bottom_tabs"
         app:bb_tabletMode="true" />
+
+    <FrameLayout
+        android:id="@+id/teacherWrapperLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/bottomBar">
+
+        <include layout="@layout/teacher_badge_layout" />
+    </FrameLayout>
 
 </RelativeLayout>
