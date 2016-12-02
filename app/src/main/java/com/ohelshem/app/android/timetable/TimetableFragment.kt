@@ -81,6 +81,9 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 }
             }
         }
+        timetableLayout.onClickListener = { day, hour, data ->
+                presenter.startEdit(data, day, hour)
+            }
     }
 
     override fun onReselected() {
