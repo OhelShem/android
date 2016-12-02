@@ -113,7 +113,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
                                     onClickListener?.invoke(day, hour, current)
                                 }
                                 find<TextView>(R.id.text).text = generateText(current, groupFormatting)
-                                if (groupFormatting) find<TextView>(R.id.text).onClick { context.longToast(current.teacher) }
+                                if (current.teacher.count { it==',' } > 2) find<TextView>(R.id.text).onClick { context.longToast(current.teacher) }
                             }
 
                             (layoutParams as TableRow.LayoutParams).setMargins(0, 0, dp1, 0)
