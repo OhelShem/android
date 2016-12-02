@@ -12,37 +12,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
-    <FrameLayout
-        android:id="@+id/teacherBar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom"
-        android:background="?colorPrimary"
-        android:orientation="horizontal"
-        android:paddingRight="8dp"
-        android:paddingLeft="60dp"
-        android:visibility="visible">
-
-        <au.com.dardle.widget.BadgeLayout
-            android:id="@+id/teacherBadgeLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:background="?colorPrimary"
-            android:layout_gravity="center|right" />
-
-    </FrameLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:src="@drawable/ic_list"
-        app:fabSize="mini"
-        app:elevation="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_gravity="bottom|left"/>
-
 </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="?colorPrimary">
+
+    <!-- TODO fix margins -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/ic_list"
+        app:fabSize="mini"
+        app:elevation="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom|left"/>
+
+    <FrameLayout
+        android:id="@+id/teacherBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingRight="8dp"
+        android:paddingLeft="60dp"
+        android:visibility="visible">
+
+        <au.com.dardle.widget.BadgeLayout
+            android:id="@+id/teacherBadgeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_gravity="center|right" />
+
+    </FrameLayout>
+
+</LinearLayout>

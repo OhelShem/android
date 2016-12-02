@@ -8,11 +8,14 @@ import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Spinner
+import au.com.dardle.widget.BadgeLayout
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
@@ -38,6 +41,7 @@ import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.DeveloperOptions
+import com.ohelshem.app.controller.storage.Storage
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -48,6 +52,7 @@ import io.palaima.debugdrawer.commons.DeviceModule
 import io.palaima.debugdrawer.commons.NetworkModule
 import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
+import kotlinx.android.synthetic.main.teacher_badge_layout.*
 import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
@@ -110,6 +115,37 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             debug()
             analyticsManager.onLogin()
             showIntro()
+
+            // init teacher bar
+            if (storage.userData.isTeacher()) {
+                val badges = mutableListOf<BadgeLayout.Badge>()
+                val classes = App.instance.kodein.instance<Storage>().classes
+                val layers = stringArrayRes(R.array.layers)
+
+                teacherBadgeLayout.setBadgeBackground(R.drawable.badge_background)
+                teacherBadgeLayout.spacing = (resources.displayMetrics.density * 8).toInt()
+                teacherBadgeLayout.badgeTextColor = ResourcesCompat.getColorStateList(resources, android.R.color.white, theme)
+                classes.forEach {
+                    teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })
+                }
+                teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText(getString(R.string.personal)).setSelected(true).apply { badges += this })
+
+                teacherBadgeLayout.addOnBadgeClickedListener {
+                    badges.forEach { it.setSelected(false) }
+                    it.setSelected(true)
+                }
+
+                more.visibility = View.VISIBLE
+                more.onClick {
+                    // TODO implement this
+                }
+
+
+            } else {
+                teacherBar.hide()
+                more.visibility = View.GONE
+            }
+
         }
     }
 

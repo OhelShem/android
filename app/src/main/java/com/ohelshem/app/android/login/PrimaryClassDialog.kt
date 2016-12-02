@@ -53,12 +53,12 @@ object PrimaryClassDialog {
 
         }
 
-        badgeLayout.setBadgeBackground(R.drawable.badge_background)
+        badgeLayout.setBadgeBackground(R.drawable.badge_background_login)
         badgeLayout.spacing = (context.resources.displayMetrics.density * 8).toInt()
         badgeLayout.badgeTextColor = ResourcesCompat.getColorStateList(context.resources, android.R.color.white, context.theme)
 
         classes.forEach {
-            badgeLayout.addBadge(badgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })
+            badgeLayout.addBadge(badgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this }) // TODO fix scroll
         }
         if (showNoClasses) {
             badgeLayout.addBadge(badgeLayout.newBadge().setText(context.getString(R.string.no_primary_class)).setEnabled(true).apply { badges += this })

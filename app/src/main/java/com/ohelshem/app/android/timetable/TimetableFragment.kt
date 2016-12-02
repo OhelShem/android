@@ -17,22 +17,16 @@
 
 package com.ohelshem.app.android.timetable
 
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
-import au.com.dardle.widget.BadgeLayout
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Hour
-import com.ohelshem.app.android.App
-import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.settings.OverridesActivity
-import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
-import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.timetable_fragment.*
@@ -87,31 +81,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 }
             }
         }
-
-        if (presenter.isTeacher) {
-            val badges = mutableListOf<BadgeLayout.Badge>()
-            val classes = App.instance.kodein.instance<Storage>().classes
-            val layers = stringArrayRes(R.array.layers)
-
-            teacherBadgeLayout.setBadgeBackground(R.drawable.badge_background)
-            teacherBadgeLayout.spacing = (context.resources.displayMetrics.density * 8).toInt()
-            teacherBadgeLayout.badgeTextColor = ResourcesCompat.getColorStateList(context.resources, android.R.color.white, context.theme)
-            classes.forEach {
-                teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })
-            }
-            teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText(getString(R.string.personal)).setSelected(true).apply { badges += this })
-
-
-            teacherBadgeLayout.addOnBadgeClickedListener {
-                badges.forEach { it.setSelected(false) }
-                it.setSelected(true)
-            }
-
-
-        } else {
-            teacherBar.hide()
-        }
-
     }
 
     override fun onReselected() {

@@ -36,22 +36,37 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!-- Main fragment container -->
     <me.tabak.fragmentswitcher.FragmentSwitcher
         android:id="@+id/fragmentSwitcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar"
+        android:layout_above="@+id/bottomLayout"
         android:layout_below="@+id/appBarLayout" />
+    <!-- END Main fragment container -->
 
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?colorPrimary"
-        android:tag="false"
-        app:bb_behavior="shifting"
-        app:bb_showShadow="false"
-        app:bb_tabXmlResource="@xml/bottom_tabs" />
+        android:layout_alignParentLeft="true">
+
+        <!-- TODO design bar for landscape mode -->
+        <include
+            android:id="@+id/teacherBadges"
+            layout="@layout/teacher_badge_layout"/>
+
+        <com.roughike.bottombar.BottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="?colorPrimary"
+            android:tag="false"
+            app:bb_behavior="shifting"
+            app:bb_showShadow="false"
+            app:bb_tabXmlResource="@xml/bottom_tabs" />
+    </LinearLayout>
 
 </RelativeLayout>
