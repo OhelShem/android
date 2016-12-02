@@ -200,6 +200,41 @@
                     android:layout_weight="1"
                     app:cardCornerRadius="2dp"
                     app:cardUseCompatPadding="true"
+                    tools:ignore="RtlHardcoded"
+                    android:id="@+id/teacherSettingsCard">
+
+                    <LinearLayout
+                        android:id="@+id/teacherSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@string/teacher_settings"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textStyle="bold"
+                            tools:ignore="RtlHardcoded" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/primary_class_info" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="2dp"
+                    app:cardUseCompatPadding="true"
                     tools:ignore="RtlHardcoded">
 
                     <LinearLayout
