@@ -8,4 +8,7 @@ class HolidaysPresenter: BasePresenter<HolidaysView>() {
         view?.showHolidays(TimetableController.Holidays, TimetableController.Summer)
     }
     override fun onDestroy() = Unit
+
+    override fun onChoosingClass() = Unit
+
 }

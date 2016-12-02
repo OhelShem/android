@@ -74,6 +74,8 @@ class LoginPresenter(private val storage: Storage, private val apiController: Ap
         view?.showLoginError(error)
     }
 
+    override fun onChoosingClass() = Unit
+
     companion object {
         private const val Id = 532
     }

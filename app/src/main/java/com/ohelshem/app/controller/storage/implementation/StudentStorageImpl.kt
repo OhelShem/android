@@ -84,7 +84,7 @@ class StudentStorageImpl(private val offsetDataController: OffsetDataController)
             FilesFolder.mkdir()
     }
 
-    private val Files: Array<File> by lazy { arrayOf(ChangesDataFileV4, ChangesOffsetFileV4, TestsDataFileV4, TestsOffsetFileV4) }
+    private val Files: Array<File> by lazy { arrayOf(TestsDataFile, ChangesDataFile) }
 
     private val FilesFolder: File by lazy { context.filesDir }
 

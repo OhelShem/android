@@ -24,6 +24,7 @@ import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.hannesdorfmann.mosby.mvp.MvpView
+import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.app.android.main.TopNavigationScreenManager
 
 abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<V, P>(), LazyKodeinAware {
@@ -50,8 +51,16 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
 
     }
 
-    open fun onReselected() {
+    fun onReselected() {
+        presenter.onReselected()
+    }
 
+    fun onChoosingClass(classInfo: ClassInfo?) {
+        presenter.onChoosingClass(classInfo)
+
+        childFragmentManager.fragments?.forEach {
+            (it as? BaseMvpFragment<*,*>)?.onChoosingClass(classInfo)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

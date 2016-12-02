@@ -8,7 +8,6 @@ import com.ohelshem.api.model.SchoolTest
 interface TeacherStorage : IStorage {
     var classes: List<ClassInfo>
     var primaryClass: ClassInfo?
-    var activeClass: ClassInfo?
 
 
     fun setSchoolTimetable(timetable: List<SchoolHour>?)

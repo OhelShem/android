@@ -73,6 +73,10 @@ abstract class BaseChangesPresenter(protected val storage: Storage, protected va
         }
     }
 
+    override fun onChoosingClass() {
+        //FIXME implement code
+    }
+
     fun refresh(screen: ScreenManager) = screen.refresh()
 
     fun launchTimetableScreen(screen: ScreenManager) = screen.setScreen(ScreenType.Timetable)

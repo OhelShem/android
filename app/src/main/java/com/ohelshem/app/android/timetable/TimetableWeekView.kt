@@ -20,7 +20,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private lateinit var groupText: String
+    private var groupText: String
 
     override var onClickListener: ((day: Int, hour: Int, data: Hour) -> Unit)? = null
 

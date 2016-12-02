@@ -121,7 +121,6 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             if (days < 0) days = 0
             daysToHoliday?.text = days.toString()
         }
-
     }
 
     override fun onBecomingVisible() {

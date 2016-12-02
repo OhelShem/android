@@ -19,6 +19,7 @@ import com.github.salomonbrys.kodein.erased.instance
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hannesdorfmann.mosby.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
+import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.changes.ChangesFragment
@@ -247,7 +248,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 BadgeBarGenerator.badgesDisableAll(teacherBar)
                 //FIXME
             }) {
-                    storage.activeClass = it // TODO refresh fragment on select
+                notifyFragmentOnChooseClass(it)
             }
             teacherBar.show()
         } else {
@@ -403,6 +404,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     fun notifyFragmentOnReselect() {
         (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onReselected()
+    }
+
+    fun notifyFragmentOnChooseClass(classInfo: ClassInfo?) {
+        (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onChoosingClass(classInfo)
     }
 
     val updatables: List<ApiController.Callback>

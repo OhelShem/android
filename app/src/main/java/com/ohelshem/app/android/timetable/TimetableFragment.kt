@@ -86,10 +86,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             }
     }
 
-    override fun onReselected() {
-        presenter.onReselected()
-    }
-
     override fun setDay(day: Int, data: Array<Array<Hour>>) {
         screenManager.topNavigationElement.setSelection(day, false)
         screenManager.setToolbarElevation(day != TimetableLayout.Day_Week)

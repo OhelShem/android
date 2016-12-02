@@ -38,8 +38,12 @@ class DatesPresenter(private val storage: Storage) : BasePresenter<DatesView>(),
         view?.update(tests)
     }
 
+    override fun onChoosingClass() {
+        load()
+    }
+
     val tests: List<Test>
-        get() = if (storage.userData.isTeacher() && storage.activeClass != null) storage.getTestsForClass(storage.activeClass!!.layer, storage.activeClass!!.clazz) else storage.tests ?: emptyList()
+        get() = currentClass?.let { clazz -> storage.getTestsForClass(clazz.layer, clazz.clazz) } ?: storage.tests ?: emptyList()
 
     override fun onDestroy() = Unit // ignored
 

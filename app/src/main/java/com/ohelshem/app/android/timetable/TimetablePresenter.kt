@@ -143,10 +143,14 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     val isTeacher: Boolean
         get() = !storage.isStudent()
 
-    fun onReselected() {
+    override fun onReselected() {
         if (currentDay == 0)
             setDay(today)
         else
             setDay(0)
+    }
+
+    override fun onChoosingClass() {
+        //FIXME
     }
 }
