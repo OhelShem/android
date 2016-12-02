@@ -33,6 +33,7 @@ import android.widget.CompoundButton
 import android.widget.LinearLayout
 import com.github.salomonbrys.kodein.erased.instance
 import com.jakewharton.processphoenix.ProcessPhoenix
+import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.utils.AppThemedActivity
@@ -57,6 +58,30 @@ class SettingsActivity : AppThemedActivity() {
 
     private fun initLayout() {
         restartApp.setColorFilter(themesHeader.currentTextColor)
+
+        // settings card for teachers
+        if (storage.userData.isTeacher()) {
+            teacherSettings.apply {
+                var options = emptyArray<String>()
+                var flags = emptyArray<ClassInfo>()
+                options += getString(R.string.no_primary_class_short)
+                flags += ClassInfo(0, 0)
+                storage.classes.forEach {
+                    options += "${stringArrayRes(R.array.layers)[it.layer - 9]}'${it.clazz}"
+                    flags += it
+                }
+                settingsItem(getString(R.string.primary_class_setting), items = options, default = flags.indexOf(storage.primaryClass)) {
+                    if (it == 0) {
+                        storage.primaryClass = null
+                    } else {
+                        storage.primaryClass = flags[it]
+                    }
+                }
+            }
+        } else {
+            teacherSettingsCard.hide()
+        }
+
         notificationsList.apply {
             settingsItem(getString(R.string.changes_realtime), showCheckBox = true, isChecked = storage.notificationsForChanges) {
                 storage.notificationsForChanges = it
