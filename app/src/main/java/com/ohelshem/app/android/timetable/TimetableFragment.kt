@@ -99,7 +99,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             classes.forEach {
                 teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })
             }
-            teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText(getString(R.string.my_timetable)).setSelected(true).apply { badges += this })
+            teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText(getString(R.string.personal)).setSelected(true).apply { badges += this })
 
 
             teacherBadgeLayout.addOnBadgeClickedListener {

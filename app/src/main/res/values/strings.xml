@@ -51,6 +51,8 @@
     <string name="download">הורד</string>
     <string name="apply">אישור</string>
     <string name="cancel">ביטול</string>
+    <string name="personal">אישי</string>
+
 
     <!-- Dashboard -->
     <string name="tomorrow">מחר</string>
@@ -110,7 +112,6 @@
 
     <!-- Timetable -->
     <string name="group">מקבץ</string>
-    <string name="my_timetable">המערכת שלי</string>
 
     <!-- Notifications -->
     <string name="ohel_shem_notification_title">הודעה מאהל שם</string>
