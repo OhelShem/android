@@ -1,40 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?colorPrimary">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teacherBar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:background="?colorPrimary"
+    android:orientation="horizontal"
+    tools:ignore="RtlHardcoded">
 
-    <!-- TODO fix margins -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/ic_list"
-        app:fabSize="mini"
         app:elevation="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_gravity="bottom|left"/>
+        app:fabSize="mini" />
 
-    <FrameLayout
-        android:id="@+id/teacherBar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:paddingRight="8dp"
-        android:paddingLeft="60dp"
-        android:visibility="visible">
+    <View
+        android:layout_width="1dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white" />
 
-        <au.com.dardle.widget.BadgeLayout
-            android:id="@+id/teacherBadgeLayout"
+    <HorizontalScrollView
+        android:id="@+id/badgesLayoutScroll"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/badgesLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_gravity="center|right" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
-    </FrameLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="6dp"
+        android:background="@android:color/white" />
+
+    <TextView
+        android:id="@+id/staticBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="2dp"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/badge_background"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        tools:text="יב"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/secondStaticBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/badge_background"
+        android:text="@string/personal"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

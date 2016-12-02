@@ -47,16 +47,12 @@
 
     <LinearLayout
         android:id="@+id/bottomLayout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true">
+        android:orientation="vertical">
 
-        <!-- TODO design bar for landscape mode -->
-        <include
-            android:id="@+id/teacherBadges"
-            layout="@layout/teacher_badge_layout"/>
+        <include layout="@layout/teacher_badge_layout" />
 
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottomBar"

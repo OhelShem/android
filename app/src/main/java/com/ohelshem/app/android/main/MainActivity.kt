@@ -8,14 +8,11 @@ import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.widget.Spinner
-import au.com.dardle.widget.BadgeLayout
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
@@ -36,12 +33,12 @@ import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
 import com.ohelshem.app.android.utils.AppThemedActivity
+import com.ohelshem.app.android.utils.BadgeBarGenerator
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.DeveloperOptions
-import com.ohelshem.app.controller.storage.Storage
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -87,6 +84,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         } else {
             setContentView(R.layout.main)
             initNavigation()
+            initTeacherBar()
             lastUpdate = storage.updateDate
 
             when (intent?.action) {
@@ -115,37 +113,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             debug()
             analyticsManager.onLogin()
             showIntro()
-
-            // init teacher bar
-            if (storage.userData.isTeacher()) {
-                val badges = mutableListOf<BadgeLayout.Badge>()
-                val classes = App.instance.kodein.instance<Storage>().classes
-                val layers = stringArrayRes(R.array.layers)
-
-                teacherBadgeLayout.setBadgeBackground(R.drawable.badge_background)
-                teacherBadgeLayout.spacing = (resources.displayMetrics.density * 8).toInt()
-                teacherBadgeLayout.badgeTextColor = ResourcesCompat.getColorStateList(resources, android.R.color.white, theme)
-                classes.forEach {
-                    teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText("${layers[it.layer - 9]}'${it.clazz}").apply { badges += this })
-                }
-                teacherBadgeLayout.addBadge(teacherBadgeLayout.newBadge().setText(getString(R.string.personal)).setSelected(true).apply { badges += this })
-
-                teacherBadgeLayout.addOnBadgeClickedListener {
-                    badges.forEach { it.setSelected(false) }
-                    it.setSelected(true)
-                }
-
-                more.visibility = View.VISIBLE
-                more.onClick {
-                    // TODO implement this
-                }
-
-
-            } else {
-                teacherBar.hide()
-                more.visibility = View.GONE
-            }
-
         }
     }
 
@@ -264,6 +231,27 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
         if (resources.getBoolean(R.bool.isTablet)) {
             bottomBar.isSaveEnabled = false
+        }
+    }
+
+    private fun initTeacherBar() {
+        if (storage.userData.isTeacher()) {
+            var classes = storage.classes
+
+            val primaryText = storage.primaryClass?.let {
+                classes -= it
+                "${stringArrayRes(R.array.layers)[it.layer - 9]}'${it.clazz}"
+            }
+
+            BadgeBarGenerator.inflate(teacherBar, classes, primaryText, getString(R.string.personal), storage.primaryClass, null, null, {
+                BadgeBarGenerator.badgesDisableAll(teacherBar)
+                //FIXME
+            }) {
+                //FIXME
+            }
+            teacherBar.show()
+        } else {
+            teacherBar.hide()
         }
     }
 
