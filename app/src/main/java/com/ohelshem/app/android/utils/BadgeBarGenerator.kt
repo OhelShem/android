@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.app.android.hide
@@ -66,9 +65,11 @@ object BadgeBarGenerator {
         view.tag = badges
         badges.forEach { badge ->
             badge.onClick {
-                badges.forEach { it.isSelected = false }
-                badge.isSelected = true
-                listener(badge.tag as? ClassInfo)
+                if (!badge.isSelected) {
+                    badges.forEach { it.isSelected = false }
+                    badge.isSelected = true
+                    listener(badge.tag as? ClassInfo)
+                }
             }
         }
 

@@ -22,13 +22,15 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
-import com.ohelshem.app.controller.storage.SharedStorage
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.removeAtIfPositive
 import java.util.*
 
-class TimetablePresenter(val storage: SharedStorage, val timetableController: TimetableController, isEditModeSupported: Boolean) : BasePresenter<TimetableView>(), ApiController.Callback {
+class TimetablePresenter(private val storage: Storage, private val userTimetableController: TimetableController,
+                         private val teacherTimetableControllerGenerator: (layer: Int, clazz: Int) -> TimetableController, isEditModeSupported: Boolean) :
+        BasePresenter<TimetableView>(), ApiController.Callback {
     //region Lifecycle
     override fun onDestroy() = Unit
 
@@ -105,6 +107,19 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     }
     //endregion
 
+    private var cachedTimetableController: TimetableController? = null
+    val timetableController: TimetableController
+        get() {
+            val currentClass = currentClass
+            if (currentClass == null) return userTimetableController
+            else {
+                if (cachedTimetableController == null) {
+                    cachedTimetableController = teacherTimetableControllerGenerator(currentClass.layer, currentClass.clazz)
+                }
+                return cachedTimetableController!!
+            }
+        }
+
     fun setDay(day: Int) {
         currentDay = day
         if (day == 0) {
@@ -146,6 +161,9 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
     val isTeacher: Boolean
         get() = !storage.isStudent()
 
+    val groupFormatting: Boolean
+        get() = currentClass == null && isTeacher
+
     override fun onReselected() {
         if (currentDay == 0)
             setDay(today)
@@ -155,9 +173,11 @@ class TimetablePresenter(val storage: SharedStorage, val timetableController: Ti
 
     override fun onChoosingClass() {
         isEditModeSupported = currentClass == null
+        cachedTimetableController = null
         if (!isEditModeSupported)
             view?.disableEditMode()
 
-        //FIXME
+        view?.flush()
+        setDay(currentDay)
     }
 }

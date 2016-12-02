@@ -22,11 +22,15 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import com.github.salomonbrys.kodein.erased.factory
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Hour
+import com.ohelshem.api.model.SchoolHour
 import com.ohelshem.app.android.settings.OverridesActivity
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.controller.storage.TeacherStorage
+import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.timetable_fragment.*
@@ -42,7 +46,13 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     private lateinit var menuEdit: MenuItem
     private lateinit var menuDone: MenuItem
 
-    override fun createPresenter(): TimetablePresenter = with(kodein()) { TimetablePresenter(instance(), instance(), isEditModeSupported = true) }
+    override fun createPresenter(): TimetablePresenter = with(kodein()) {
+        val teacherStorage = instance<TeacherStorage>()
+        val timetableControllerWrapper = factory<List<SchoolHour>, TimetableController>()
+        TimetablePresenter(instance(), instance(),
+                { layer: Int, clazz: Int -> timetableControllerWrapper(teacherStorage.getTimetableForClass(layer, clazz)) },
+                isEditModeSupported = true)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -91,7 +101,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         timetableLayout.onClickListener = { day, hour, data ->
             if (presenter.isEditModeEnabled)
                 presenter.startEdit(data, day, hour)
-            else if (presenter.isTeacher && data.teacher.count { it == ',' } > 2)
+            else if (presenter.groupFormatting && data.teacher.count { it == ',' } > 2)
                 longToast(data.teacher)
         }
     }
@@ -99,7 +109,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     override fun setDay(day: Int, data: Array<Array<Hour>>) {
         screenManager.topNavigationElement.setSelection(day, false)
         screenManager.setToolbarElevation(day != TimetableLayout.Day_Week)
-        timetableLayout.setData(data, day, presenter.isTeacher)
+        timetableLayout.setData(data, day, presenter.groupFormatting)
 
     }
 
