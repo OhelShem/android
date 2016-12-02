@@ -13,7 +13,7 @@ import org.jetbrains.anko.notificationManager
 /**
  * Create and show a simple notification
  */
-fun Context.sendNotification(title: String, messageBody: String, id: Int, showDialog: Boolean = false) {
+fun Context.sendNotification(title: String, messageBody: String, id: Int, showDialog: Boolean = false, sound: Boolean = false) {
     val intent = Intent(this, MainActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     if (showDialog) {
@@ -30,11 +30,11 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, showDi
             .setContentTitle(title)
             .setContentText(messageBody.fromHtml())
             .setAutoCancel(true)
-            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .apply { if (sound) setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) }
             .setContentIntent(pendingIntent).build())
 }
 
-fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false) {
+fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false, sound: Boolean = false) {
         val intent = Intent(this, MainActivity::class.java).setAction(action)
         val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
         notificationManager.notify(id, NotificationCompat.Builder(this)
@@ -42,7 +42,7 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, action
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(messageBody)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .apply {if (sound) setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))}
                 .setAutoCancel(true)
                 .apply { if (action != null) setContentIntent(pIntent)}
                 .build())

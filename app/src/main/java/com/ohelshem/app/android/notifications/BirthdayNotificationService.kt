@@ -42,7 +42,7 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
                 text += " ו" + toFullName(contacts[i].name)
         }
         text += "!"
-        sendNotification(getString(R.string.birthday_title), text, action = Shortcut_LaunchMyClass, big = true, id = 1005)
+        sendNotification(getString(R.string.birthday_title), text, action = Shortcut_LaunchMyClass, big = true, id = 1005, sound = true)
     }
 
     private fun toFullName(name: String): String {
