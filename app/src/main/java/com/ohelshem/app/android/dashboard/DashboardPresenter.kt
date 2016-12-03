@@ -54,7 +54,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
     }
 
     private fun generateChanges(day: Int, clazz: Int): List<Change>? {
-       return if (storage.changesDate.toCalendar()[Calendar.DAY_OF_WEEK] == day) storage.changes?.filter { it.clazz == clazz } else null
+        return if (storage.changesDate.toCalendar()[Calendar.DAY_OF_WEEK] == day) storage.changes?.filter { it.clazz == clazz } else null
     }
 
     override fun onSuccess(apis: Set<UpdatedApi>) {
@@ -63,9 +63,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
 
     override fun onFail(error: UpdateError) = Unit // Ignored
 
-    override fun onChoosingClass() {
-        //FIXME
-    }
+    override fun onChoosingClass() = Unit
 
     fun launchTestsScreen(screenManager: ScreenManager) {
         screenManager.setScreen(ScreenType.Dates, backStack = true)
@@ -81,8 +79,12 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
         get() {
             val time = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
             val now = Date().time
-            if (storage.userData.isTeacher() && storage.primaryClass != null) {
-                return storage.getTestsForClass(storage.primaryClass!!.layer, storage.primaryClass!!.clazz).filter { it.date <= time && it.date >= now }
+            if (storage.userData.isTeacher()) {
+                val primaryClass = storage.primaryClass
+                if (primaryClass != null)
+                    return storage.getTestsForClass(primaryClass.layer, primaryClass.clazz).filter { it.date <= time && it.date >= now }
+                else
+                    return emptyList()
             }
             return storage.tests?.filter { it.date <= time && it.date >= now } ?: emptyList()
         }

@@ -272,7 +272,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private fun setScreenInternal(screen: ScreenType) {
         fragmentSwitcher.currentItem = fragmentPosition[screen]!!
         (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onBecomingVisible()
-        if (screen == ScreenType.Dashboard && storage.userData.isTeacher()) teacherBar.hide() else if (storage.userData.isTeacher()) teacherBar.show()
+        if (!storage.isStudent()) {
+            if (screen == ScreenType.Dashboard) teacherBar.hide() else teacherBar.show()
+        }
     }
 
     private fun setSelected(screen: ScreenType) {
