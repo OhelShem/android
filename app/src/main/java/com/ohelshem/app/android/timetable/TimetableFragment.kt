@@ -88,16 +88,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     }
 
     override fun init() {
-        val spinner = screenManager.topNavigationElement
-        spinner.adapter = DaySpinnerAdapter(activity, presenter.daysLearning)
-        spinner.gravity = Gravity.CENTER
-        spinner.post {
-            spinner.onItemSelectedListener {
-                onItemSelected { adapterView, view, position, id ->
-                    presenter.setDay(position)
-                }
-            }
-        }
+        flushMenu()
         timetableLayout.onClickListener = { day, hour, data ->
             if (presenter.isEditModeEnabled)
                 presenter.startEdit(data, day, hour)
@@ -142,6 +133,19 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             }
         }
         builder.show()
+    }
+
+    override fun flushMenu() {
+        val spinner = screenManager.topNavigationElement
+        spinner.adapter = DaySpinnerAdapter(activity, presenter.daysLearning)
+        spinner.gravity = Gravity.CENTER
+        spinner.post {
+            spinner.onItemSelectedListener {
+                onItemSelected { adapterView, view, position, id ->
+                    presenter.setDay(position)
+                }
+            }
+        }
     }
 
     override val isShowingDayView: Boolean

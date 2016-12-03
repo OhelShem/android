@@ -24,6 +24,7 @@ interface TimetableView: MvpView {
     fun setDay(day: Int, data: Array<Array<Hour>>)
 
     fun flush()
+    fun flushMenu()
 
     fun disableEditMode()
 

@@ -178,6 +178,7 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
             view?.disableEditMode()
 
         view?.flush()
+        view?.flushMenu()
         setDay(currentDay)
     }
 }
