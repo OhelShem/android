@@ -47,7 +47,7 @@ class IndexedDeserializationImpl<T : Any>(val serialization: Serialization<T>) :
     }
 
     override fun serialize(writer: SimpleWriter, data: List<T>) {
-        val buffer = Buffer(ByteArrayOutputStream2(1048576))
+        val buffer = Buffer(ByteArrayOutputStream2(BufferDefaultSize))
         val indexes = IntArray(data.size)
 
         data.forEachIndexed { i, item ->
@@ -82,6 +82,7 @@ class Buffer(val stream: ByteArrayOutputStream2, val writer: SimpleWriter = stre
 }
 
 private const val IndexItemSize = 4
+private const val BufferDefaultSize = 131072
 
 
 fun <T : Any> Serialization<T>.toIndexed(): IndexedDeserialization<T> = IndexedDeserializationImpl(this)
