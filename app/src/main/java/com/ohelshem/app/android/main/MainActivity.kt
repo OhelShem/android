@@ -28,6 +28,7 @@ import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
+import com.ohelshem.app.android.login.ActiveClassDialog
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
 import com.ohelshem.app.android.notifications.OngoingNotificationService
@@ -252,7 +253,15 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
             BadgeBarGenerator.inflate(teacherBar, classes, primaryText, getString(R.string.personal), storage.primaryClass, null, null, {
                 BadgeBarGenerator.badgesDisableAll(teacherBar)
-                //FIXME
+                val schoolClasses = getSchoolClasses()
+                val newClassDialog = ActiveClassDialog.create(this, schoolClasses)
+                var chosenClass = ClassInfo(0,0)
+                newClassDialog.itemsCallbackSingleChoice(0) { dialog, view, which, text ->
+                    chosenClass = schoolClasses[which] //FIXME
+                    true
+                }
+                newClassDialog.onPositive { materialDialog, dialogAction ->  notifyFragmentOnChooseClass(if (chosenClass.layer != 0) chosenClass else currentClass)}
+                newClassDialog.build().show()
             }) {
                 notifyFragmentOnChooseClass(it)
             }

@@ -205,6 +205,7 @@
     <string name="fake_no_changes">זייף אין שינויים</string>
     <string name="cancel_faking">בטל זיוף</string>
     <string name="set_primary_class">בחר כיתת חינוך</string>
+    <string name="set_current_class">בחר כיתה</string>
     <string name="no_primary_class">ללא כיתת חינוך</string>
     <string name="no_primary_class_short">ללא</string>
     <string name="teacher_settings">הגדרות למורים</string>
