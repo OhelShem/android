@@ -19,7 +19,7 @@ interface SimpleWriter : Closeable {
     fun writeInt(value: Int)
     fun writeBool(value: Boolean)
     fun writeByte(value: Int)
-    fun writeByteArray(value: ByteArray)
+    fun writeByteArray(value: ByteArray, length: Int = -1)
     fun writeString(value: String)
     fun writeLong(value: Long)
 }

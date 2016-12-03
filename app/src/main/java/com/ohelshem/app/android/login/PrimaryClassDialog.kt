@@ -23,16 +23,14 @@ object PrimaryClassDialog {
                 .cancelable(false)
                 .itemsGravity(GravityEnum.CENTER)
                 .items(listOf(activity.getString(R.string.no_primary_class)) + classes.map { "${layers[it.layer - 9]}'${it.clazz}" })
-                .itemsCallbackSingleChoice(0) { dialog, view, which, text ->
+                .itemsCallback { dialog, view, which, text ->
                     if (which == 0)
                         storage.primaryClass = null
                     else
                         storage.primaryClass = classes[which - 1]
 
                     listener()
-                    true
                 }
-                .positiveText(R.string.accept)
                 .show()
     }
 }

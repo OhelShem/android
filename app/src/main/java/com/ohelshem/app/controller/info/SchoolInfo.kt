@@ -1,5 +1,7 @@
 package com.ohelshem.app.controller.info
 
+import com.ohelshem.api.model.ClassInfo
+
 interface SchoolInfo {
 
     /**
@@ -18,6 +20,8 @@ interface SchoolInfo {
 
         return absolute - 1
     }
+
+    val allClasses: List<ClassInfo>
 
     companion object {
         const val MinLayer = 9

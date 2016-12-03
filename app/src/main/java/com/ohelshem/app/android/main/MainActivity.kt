@@ -13,6 +13,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.Spinner
+import com.afollestad.materialdialogs.GravityEnum
+import com.afollestad.materialdialogs.MaterialDialog
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
@@ -28,7 +30,6 @@ import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
-import com.ohelshem.app.android.login.ActiveClassDialog
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
 import com.ohelshem.app.android.notifications.OngoingNotificationService
@@ -40,6 +41,7 @@ import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.DebugMenuSwitchAction
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
+import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
@@ -63,6 +65,7 @@ import kotlin.comparisons.compareBy
 
 class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationScreenManager {
     private val apiController: ApiController by instance()
+    private val schoolInfo: SchoolInfo by instance()
 
     private var lastUpdate: Long = 0
 
@@ -245,25 +248,34 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
+            val layers = stringArrayRes(R.array.layers)
             var classes = storage.classes
             classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz })).reversed()
 
             val primaryText = storage.primaryClass?.let {
                 classes -= it
-                "${stringArrayRes(R.array.layers)[it.layer - 9]}'${it.clazz}"
+                "${layers[it.layer - 9]}'${it.clazz}"
             }
 
             BadgeBarGenerator.inflate(teacherBar, classes, primaryText, getString(R.string.personal), storage.primaryClass, null, null, {
-                BadgeBarGenerator.badgesDisableAll(teacherBar)
-                val schoolClasses = getSchoolClasses()
-                val newClassDialog = ActiveClassDialog.create(this, schoolClasses)
-                var chosenClass = ClassInfo(0,0)
-                newClassDialog.itemsCallbackSingleChoice(0) { dialog, view, which, text ->
-                    chosenClass = schoolClasses[which] //FIXME
-                    true
-                }
-                newClassDialog.onPositive { materialDialog, dialogAction ->  notifyFragmentOnChooseClass(if (chosenClass.layer != 0) chosenClass else currentClass)}
-                newClassDialog.build().show()
+                val schoolClasses = schoolInfo.allClasses
+                var chosenClass: ClassInfo? = null
+
+                MaterialDialog.Builder(this)
+                        .title(R.string.set_current_class)
+                        .autoDismiss(true)
+                        .canceledOnTouchOutside(true)
+                        .cancelable(true)
+                        .itemsGravity(GravityEnum.CENTER)
+                        .items(schoolClasses.map { "${layers[it.layer - 9]}'${it.clazz}" })
+                        .negativeText(R.string.cancel)
+                        .itemsCallback { dialog, view, which, text ->
+                            chosenClass = schoolClasses[which]
+                            BadgeBarGenerator.badgesDisableAll(teacherBar)
+                            notifyFragmentOnChooseClass(chosenClass)
+                        }.onNegative { materialDialog, dialogAction ->
+                    materialDialog.dismiss()
+                }.show()
             }) {
                 notifyFragmentOnChooseClass(it)
             }

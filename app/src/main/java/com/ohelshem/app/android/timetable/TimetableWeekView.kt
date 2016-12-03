@@ -73,11 +73,9 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
 
         //region Header view
         val days = BooleanArray(6)
-
         (0 until data.size)
-                .reversed()
                 .filter { data[it].isNotEmpty() }
-                .forEach { days[it] = true }
+                .forEach { days[5 - it] = true }
 
         days.forEachIndexed { index, isLearning ->
             if (isLearning)

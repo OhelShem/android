@@ -65,17 +65,6 @@ fun Context.isNetworkAvailable() = connectivityManager.activeNetworkInfo?.isConn
 
 fun Activity.hideKeyboard() = inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
 
-fun getSchoolClasses(): List<ClassInfo> {
-    var classes = emptyList<ClassInfo>()
-    for (i in 9..12) {
-        for (j in 1..12) {
-            classes+=ClassInfo(i,j)
-        }
-    }
-    classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz }))
-    return classes
-}
-
 fun View.setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0) {
     val params = layoutParams as ViewGroup.MarginLayoutParams
     params.setMargins(left, top, right, bottom)
