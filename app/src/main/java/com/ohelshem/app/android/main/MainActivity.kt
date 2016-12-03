@@ -116,9 +116,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             debug()
             if (storage.userData.isTeacher()) {
                 storage.notificationsForChanges = false
+                storage.notificationsForTests = false
                 if (storage.primaryClass == null)
                     storage.notificationsForBirthdays = false
-                    storage.notificationsForTests = false
             }
             analyticsManager.onLogin()
             showIntro()

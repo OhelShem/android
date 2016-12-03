@@ -108,7 +108,7 @@ class SettingsActivity : AppThemedActivity() {
                 storage.notificationsForBirthdays = it
             }
             if (storage.isStudent()) {
-                settingsItem(getString(if (storage.isStudent()) R.string.tests else R.string.tests_notif_teacher), showCheckBox = true, isChecked = storage.notificationsForTests) {
+                settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
                     storage.notificationsForTests = it
                 }
             }
