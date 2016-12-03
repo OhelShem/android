@@ -93,7 +93,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             if (presenter.isEditModeEnabled)
                 presenter.startEdit(data, day, hour)
             else if (presenter.groupFormatting && data.teacher.count { it == ',' } > 2)
-                longToast(data.teacher)
+                if (day != TimetableLayout.Day_Week) longToast(data.teacher)
         }
     }
 
