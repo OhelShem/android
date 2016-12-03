@@ -81,6 +81,9 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
         get() {
             val time = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
             val now = Date().time
+            if (storage.userData.isTeacher() && storage.primaryClass != null) {
+                return storage.getTestsForClass(storage.primaryClass!!.layer, storage.primaryClass!!.clazz).filter { it.date <= time && it.date >= now }
+            }
             return storage.tests?.filter { it.date <= time && it.date >= now } ?: emptyList()
         }
 }
