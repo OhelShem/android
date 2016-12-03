@@ -85,6 +85,12 @@ object BadgeBarGenerator {
         (view.tag as List<View>).forEach { it.isSelected = false }
     }
 
+    fun badgeSelect(view: ViewGroup, classInfo: ClassInfo?) {
+        badgesDisableAll(view)
+        @Suppress("UNCHECKED_CAST")
+        (view.tag as List<View>).find { classInfo == it.tag }?.isSelected = true
+    }
+
     private fun Context.generateBadge(text: String, background: Drawable?): View {
         val view = TextView(this)
         if (background != null)

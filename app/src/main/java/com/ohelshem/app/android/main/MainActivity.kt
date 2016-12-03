@@ -271,7 +271,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                         .negativeText(R.string.cancel)
                         .itemsCallback { dialog, view, which, text ->
                             chosenClass = schoolClasses[which]
-                            BadgeBarGenerator.badgesDisableAll(teacherBar)
+                            BadgeBarGenerator.badgeSelect(teacherBar, chosenClass)
                             notifyFragmentOnChooseClass(chosenClass)
                         }.onNegative { materialDialog, dialogAction ->
                     materialDialog.dismiss()
@@ -336,11 +336,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     override fun refresh(): Boolean {
-        val result = apiController.update()
-        if (result) {
-            // TODO apply refresh state
-        }
-        return result
+        return apiController.update()
     }
 
 
