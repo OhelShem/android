@@ -78,6 +78,8 @@ class SettingsActivity : AppThemedActivity() {
                 settingsItem(getString(R.string.primary_class_setting), items = options, default = flags.indexOf(storage.primaryClass)) {
                     if (it == 0) {
                         storage.primaryClass = null
+                        storage.notificationsForBirthdays = false
+                        storage.notificationsForTests = false
                     } else {
                         storage.primaryClass = flags[it]
                     }
@@ -102,11 +104,11 @@ class SettingsActivity : AppThemedActivity() {
                 storage.ongoingNotificationDisableDate = 0
                 OngoingNotificationService.update(this@SettingsActivity)
             }
-            settingsItem(getString(R.string.birthdays_in_class), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
+            settingsItem(getString(if (storage.isStudent()) R.string.birthdays_in_class else R.string.birthdays_in_class_teacher), showCheckBox = true, isChecked = storage.notificationsForBirthdays) {
                 storage.notificationsForBirthdays = it
             }
             if (storage.isStudent()) {
-                settingsItem(getString(R.string.tests), showCheckBox = true, isChecked = storage.notificationsForTests) {
+                settingsItem(getString(if (storage.isStudent()) R.string.tests else R.string.tests_notif_teacher), showCheckBox = true, isChecked = storage.notificationsForTests) {
                     storage.notificationsForTests = it
                 }
             }

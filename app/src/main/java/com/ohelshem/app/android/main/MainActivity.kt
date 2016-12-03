@@ -116,7 +116,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             debug()
             if (storage.userData.isTeacher()) {
                 storage.notificationsForChanges = false
-                storage.notificationsForTests = false
+                if (storage.primaryClass == null)
+                    storage.notificationsForBirthdays = false
+                    storage.notificationsForTests = false
             }
             analyticsManager.onLogin()
             showIntro()
@@ -517,7 +519,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         var prompt: MaterialTapTargetPrompt? = null
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_timetable_primary_text)
-                .setSecondaryText(R.string.intro_bottombar_timetable_secondary_text)
+                .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_timetable_secondary_text else R.string.intro_bottombar_timetable_secondary_text_teacher)
                 .setTarget(bottomBar.getTabWithId(R.id.timetable))
                 .setIcon(R.drawable.ic_timetable_blue)
                 .setBackgroundColour(act.primaryColor)
@@ -542,7 +544,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         var prompt: MaterialTapTargetPrompt? = null
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_changes_primary_text)
-                .setSecondaryText(R.string.intro_bottombar_changes_secondary_text)
+                .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_changes_secondary_text else R.string.intro_bottombar_changes_secondary_text_teacher)
                 .setTarget(bottomBar.getTabWithId(R.id.changes))
                 .setIcon(R.drawable.ic_track_changes_blue)
                 .setBackgroundColour(act.primaryColor)
@@ -567,7 +569,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         var prompt: MaterialTapTargetPrompt? = null
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_dates_primary_text)
-                .setSecondaryText(R.string.intro_bottombar_dates_secondary_text)
+                .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_dates_secondary_text else R.string.intro_bottombar_dates_secondary_text_teacher)
                 .setTarget(bottomBar.getTabWithId(R.id.dates))
                 .setIcon(R.drawable.ic_calendar_blue)
                 .setBackgroundColour(act.primaryColor)
@@ -592,7 +594,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         var prompt: MaterialTapTargetPrompt? = null
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_contacts_primary_text)
-                .setSecondaryText(R.string.intro_bottombar_contacts_secondary_text)
+                .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_contacts_secondary_text else R.string.intro_bottombar_contacts_secondary_text_teacher)
                 .setTarget(bottomBar.getTabWithId(R.id.contacts))
                 .setIcon(R.drawable.ic_contacts)
                 .setBackgroundColour(act.primaryColor)
