@@ -141,7 +141,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     }
 
     private fun generateText(hour: Hour, groupFormatting: Boolean): CharSequence {
-        val mikbatz = groupFormatting && hour.teacher.count { it == ',' } > 2
+        val mikbatz = groupFormatting && hour.teacher.count { it == ',' } >= 2
         return if (hour.name.isEmpty()) "" else if (groupFormatting) ("<b>${hour.name}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml() else hour.name
     }
 
