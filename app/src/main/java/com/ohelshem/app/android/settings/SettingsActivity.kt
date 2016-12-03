@@ -44,6 +44,7 @@ import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.jetbrains.anko.*
+import kotlin.comparisons.compareBy
 
 
 class SettingsActivity : AppThemedActivity() {
@@ -62,14 +63,18 @@ class SettingsActivity : AppThemedActivity() {
         // settings card for teachers
         if (storage.userData.isTeacher()) {
             teacherSettings.apply {
+                var classes = storage.classes
                 var options = emptyArray<String>()
                 var flags = emptyArray<ClassInfo>()
                 options += getString(R.string.no_primary_class_short)
                 flags += ClassInfo(0, 0)
-                storage.classes.forEach {
+
+                classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz }))
+                classes.forEach {
                     options += "${stringArrayRes(R.array.layers)[it.layer - 9]}'${it.clazz}"
                     flags += it
                 }
+
                 settingsItem(getString(R.string.primary_class_setting), items = options, default = flags.indexOf(storage.primaryClass)) {
                     if (it == 0) {
                         storage.primaryClass = null

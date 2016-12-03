@@ -57,6 +57,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import kotlin.comparisons.compareBy
 
 
 class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationScreenManager {
@@ -242,6 +243,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
             var classes = storage.classes
+            classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz })).reversed()
 
             val primaryText = storage.primaryClass?.let {
                 classes -= it

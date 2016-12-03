@@ -6,11 +6,13 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.controller.storage.TeacherStorage
 import com.yoavst.changesystemohelshem.R
+import kotlin.comparisons.compareBy
 
 
 object PrimaryClassDialog {
     fun create(storage: TeacherStorage, activity: Activity, listener: () -> Unit): MaterialDialog {
-        val classes = storage.classes
+        var classes = storage.classes
+        classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz }))
 
         val layers = activity.stringArrayRes(R.array.layers)
 
