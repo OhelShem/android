@@ -28,6 +28,7 @@ class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), T
     override fun createPresenter(): TeacherChangesPresenter = with(kodein()) { TeacherChangesPresenter(instance(), instance()) }
 
     override fun init() {
+        screenManager.screenTitle = ""
         recyclerView.padding = 0
         recyclerView.layoutManager = GridLayoutManager(activity, MaxChangesHours + 1, LinearLayoutManager.HORIZONTAL, true)
         recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL).apply { setDrawable(drawableRes(R.drawable.divider_white)!!) })
