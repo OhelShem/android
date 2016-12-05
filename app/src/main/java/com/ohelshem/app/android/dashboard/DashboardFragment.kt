@@ -136,7 +136,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (data.hour.isEmpty())
                 lessonName.htmlText = bold { windowLesson }
             else {
-                lessonName.htmlText = bold { data.hour.name } + with + data.hour.teacher
+                lessonName.htmlText = bold { data.hour.name } + if (data.hour.teacher.isNotEmpty()) with + data.hour.teacher else ""
             }
         }
     }
@@ -190,7 +190,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 if (data.nextHour.isEmpty())
                     nextLessonName.htmlText = bold { windowLesson }
                 else {
-                    nextLessonName.htmlText = bold { data.nextHour.name } + with + data.nextHour.teacher
+                    nextLessonName.htmlText = bold { data.nextHour.name } + if (data.nextHour.teacher.isNotEmpty()) with + data.nextHour.teacher else ""
                 }
             }
         }

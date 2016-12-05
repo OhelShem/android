@@ -111,7 +111,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || withoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
         else {
             if (!storage.isStudent() && teacherName != null) {
-                s = SpannableString(text + with + teacherName)
+                s = SpannableString(text + if (teacherName.isNotEmpty()) with + teacherName else "")
             }
             else {
                 s = SpannableString(text)

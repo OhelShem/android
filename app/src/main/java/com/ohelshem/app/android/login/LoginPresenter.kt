@@ -42,7 +42,7 @@ class LoginPresenter(private val storage: Storage, private val apiController: Ap
 
     fun login(id: String, password: String) {
         if (!apiController.isBusy) {
-            if (id.length != 9 || !id.all(Char::isDigit)) view?.showIdInvalidError()
+            if ((id.length < 8 || id.length > 9) || !id.all(Char::isDigit)) view?.showIdInvalidError()
             else if (password.length < 4) view?.showPasswordInvalidError()
             else {
                 lastPassword = password
