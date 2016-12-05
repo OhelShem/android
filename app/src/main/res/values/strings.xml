@@ -251,19 +251,19 @@
 
     <string name="intro_bottombar_timetable_primary_text">מערכת שעות</string>
     <string name="intro_bottombar_timetable_secondary_text">לחצו פעם אחת למערכת השעות הרגילה, ופעמיים למערכת השבועית</string>
-    <string name="intro_bottombar_timetable_secondary_text_teacher">במסך זה תוכלו לראות את מערכת השעות שלכם ושל כיתות הלימוד שלכם. לחיצה שנייה על הכפתור תפתח את המערכת השבועית</string>
+    <string name="intro_bottombar_timetable_secondary_text_teacher">במסך זה תוכלו לראות את מערכת השעות שלכם ושל כל הכיתות בבית הספר. לחיצה שנייה על הכפתור תפתח את המערכת השבועית</string>
 
     <string name="intro_bottombar_changes_primary_text">שינויים</string>
     <string name="intro_bottombar_changes_secondary_text">מגירסה זו תוכלו לקבל התראה כשהשינויים לכיתה שלכם מתעדכנים, ולשתף את השינויים השכבתיים כתמונה</string>
-    <string name="intro_bottombar_changes_secondary_text_teacher"></string> <!-- TODO add teacher tour texts -->
+    <string name="intro_bottombar_changes_secondary_text_teacher">שינויים יומיים במערכת השעות עבור כל שכבה</string>
 
-    <string name="intro_bottombar_dates_primary_text">חדש: מועדים</string>
+    <string name="intro_bottombar_dates_primary_text">מועדים</string>
     <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
-    <string name="intro_bottombar_dates_secondary_text_teacher"></string>
+    <string name="intro_bottombar_dates_secondary_text_teacher">מבחנים וחגים בבית הספר</string>
 
-    <string name="intro_bottombar_contacts_primary_text">חדש: הכיתה שלי</string>
+    <string name="intro_bottombar_contacts_primary_text">הכיתה שלי</string>
     <string name="intro_bottombar_contacts_secondary_text">מספרי טלפון, ימי הולדת בבית הספר ועוד</string>
-    <string name="intro_bottombar_contacts_secondary_text_teacher"></string>
+    <string name="intro_bottombar_contacts_secondary_text_teacher">מספרי טלפון, ימי הולדת בבית הספר ועוד</string>
 
     <string name="intro_menu_primary_text">רגע, זה לא הכל!</string>
     <string name="intro_menu_secondary_text">ערכות נושא, התראות, הגדרות ומידע נוסף אפשר למצוא פה</string>
