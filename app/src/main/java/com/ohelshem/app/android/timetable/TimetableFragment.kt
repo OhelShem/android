@@ -88,7 +88,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     }
 
     override fun init() {
-        flushMenu()
         timetableLayout.onClickListener = { day, hour, data ->
             if (presenter.isEditModeEnabled)
                 presenter.startEdit(data, day, hour)
@@ -98,7 +97,9 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     }
 
     override fun setDay(day: Int, data: Array<Array<Hour>>) {
+        removeListener()
         screenManager.topNavigationElement.setSelection(day, false)
+        setListener()
         screenManager.setToolbarElevation(day != TimetableLayout.Day_Week)
         timetableLayout.setData(data, day, presenter.groupFormatting)
 
@@ -140,10 +141,17 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         spinner.adapter = DaySpinnerAdapter(activity, presenter.daysLearning)
         spinner.gravity = Gravity.CENTER
         spinner.post {
-            spinner.onItemSelectedListener {
-                onItemSelected { adapterView, view, position, id ->
-                    presenter.setDay(position)
-                }
+            setListener()
+        }
+    }
+
+    private fun removeListener() {
+        screenManager.topNavigationElement.onItemSelectedListener {}
+    }
+    private fun setListener() {
+        screenManager.topNavigationElement.onItemSelectedListener {
+            onItemSelected { adapterView, view, position, id ->
+                presenter.setDay(position)
             }
         }
     }

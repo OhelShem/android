@@ -25,6 +25,7 @@ import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.changes.ChangesFragment
+import com.ohelshem.app.android.changes.teacher.TeacherChangesFragment
 import com.ohelshem.app.android.contacts.ContactsFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
@@ -222,7 +223,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             addAll(
                     ContactsFragment(),
                     DatesFragment(),
-                    ChangesFragment(),
+                    if (storage.isStudent()) ChangesFragment() else TeacherChangesFragment(),
                     TimetableFragment(),
                     DashboardFragment()
             )
@@ -296,7 +297,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         fragmentSwitcher.currentItem = fragmentPosition[screen]!!
         (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onBecomingVisible()
         if (!storage.isStudent()) {
-            if (screen == ScreenType.Dashboard) teacherBar.hide() else teacherBar.show()
+            if (screen == ScreenType.Dashboard || screen == ScreenType.Changes) teacherBar.hide() else teacherBar.show()
         }
     }
 

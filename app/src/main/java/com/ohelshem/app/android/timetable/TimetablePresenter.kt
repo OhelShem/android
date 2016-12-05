@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.timetable
 
+import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.utils.BasePresenter
@@ -35,6 +36,10 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
     override fun onDestroy() = Unit
 
     override fun onCreate() {
+        if (cachedClass != currentClass) {
+            invalidateCache()
+        }
+        view?.flushMenu()
         currentDay = today
         setDay(currentDay)
     }
@@ -107,20 +112,25 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
     }
     //endregion
 
+    private var cachedClass: ClassInfo? = null
     private var cachedTimetableController: TimetableController? = null
     val timetableController: TimetableController
         get() {
-            val currentClass = currentClass
-            if (currentClass == null) return userTimetableController
-            else {
-                if (cachedTimetableController == null) {
-                    cachedTimetableController = teacherTimetableControllerGenerator(currentClass.layer, currentClass.clazz)
-                }
-                return cachedTimetableController!!
+            val currentClass = currentClass ?: return userTimetableController
+            if (cachedTimetableController == null) {
+                cachedClass = currentClass
+                cachedTimetableController = teacherTimetableControllerGenerator(currentClass.layer, currentClass.clazz)
             }
+            return cachedTimetableController!!
         }
 
+    private fun invalidateCache() {
+        cachedTimetableController = null
+        cachedClass = null
+    }
+
     fun setDay(day: Int) {
+        val timetableController = timetableController
         currentDay = day
         if (day == 0) {
             view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
@@ -143,6 +153,8 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
     val daysLearning: BooleanArray
         get() {
             val days = BooleanArray(6)
+
+            val timetableController = timetableController
 
             (0 until timetableController.size)
                     .filter { timetableController[it].isNotEmpty() }

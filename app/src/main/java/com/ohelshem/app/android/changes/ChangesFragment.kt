@@ -122,7 +122,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
         nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().getDay() - 1]}"
 
         childFragmentManager.fragments?.forEach {
-            (it as? BaseChangesFragment<*>)?.presenter?.update()
+            ((it as? BaseChangesFragment<*>)?.getPresenter() as IBaseChangesPresenter).update()
         }
     }
 

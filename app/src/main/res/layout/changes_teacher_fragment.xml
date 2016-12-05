@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="?colorPrimary"
+        android:elevation="0dp"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="14/05/16" />
+
+        <TextView
+            android:id="@+id/nameDay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded"
+            tools:text="יום ראשון" />
+    </LinearLayout>
+
+    <com.vlonjatg.progressactivity.ProgressActivity
+        android:id="@+id/progressActivity"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:progressEmptyStateBackgroundColor="?colorPrimaryLight"
+        app:progressEmptyStateContentTextColor="@android:color/white"
+        app:progressEmptyStateTitleTextColor="@android:color/white"
+        app:progressErrorStateBackgroundColor="?colorPrimaryLight"
+        app:progressErrorStateButtonTextColor="@android:color/white"
+        app:progressErrorStateContentTextColor="@android:color/white"
+        app:progressErrorStateTitleTextColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <include layout="@layout/layer_hours" />
+        </LinearLayout>
+
+    </com.vlonjatg.progressactivity.ProgressActivity>
+
+    <LinearLayout
+        android:id="@+id/layersBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        tools:ignore="RtlHardcoded">
+
+
+        <TextView
+            android:id="@+id/layerTwelve"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:tag="12"
+            android:text="@string/layer_twelve"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/layerEleven"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:tag="11"
+            android:text="@string/layer_eleven"
+            android:textColor="@android:color/white" />
+
+
+        <TextView
+            android:id="@+id/layerTen"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:tag="10"
+            android:text="@string/layer_ten"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/layerNine"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:tag="9"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:text="@string/layer_nine"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -31,7 +31,8 @@ import com.ohelshem.app.isToday
 import com.ohelshem.app.isTomorrow
 import com.ohelshem.app.toCalendar
 
-abstract class BaseChangesPresenter(protected val storage: Storage, protected val timetableController: TimetableController) : BasePresenter<ChangesView>(), ApiController.Callback {
+abstract class BaseChangesPresenter(protected val storage: Storage, protected val timetableController: TimetableController) :
+        BasePresenter<ChangesView>(), ApiController.Callback, IBaseChangesPresenter {
     var lastChanges: List<Change>? = null
 
     override fun onCreate() {
@@ -40,7 +41,7 @@ abstract class BaseChangesPresenter(protected val storage: Storage, protected va
 
     override fun onDestroy() = Unit
 
-    fun update() {
+    override fun update() {
         if (areChangesUpdated()) {
             val changes = storage.changes
             if (changes == null || !changes.isConsideredAsChanges()) {
@@ -73,20 +74,18 @@ abstract class BaseChangesPresenter(protected val storage: Storage, protected va
         }
     }
 
-    override fun onChoosingClass() {
-        //FIXME implement code
-    }
+    override fun onChoosingClass() = Unit
 
-    fun refresh(screen: ScreenManager) = screen.refresh()
+    override fun refresh(screen: ScreenManager) = screen.refresh()
 
-    fun launchTimetableScreen(screen: ScreenManager) = screen.setScreen(ScreenType.Timetable)
+    override fun launchTimetableScreen(screen: ScreenManager) = screen.setScreen(ScreenType.Timetable)
 
-    val changesDate: Long
+    override val changesDate: Long
         get() = storage.changesDate
 
     protected fun areChangesUpdated() = changesDate.toCalendar().let { (it.isToday() && getHour() < 21) || it.isTomorrow() }
 
-    val hasData: Boolean
+    override val hasData: Boolean
         get() = lastChanges?.isNotEmpty() ?: false
 
     abstract fun List<Change>.isConsideredAsChanges(): Boolean

@@ -22,11 +22,12 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.android.utils.BasePresenter
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.list_fragment.*
 
-abstract class BaseChangesFragment<K : BaseChangesPresenter> : ChangesView, BaseMvpFragment<ChangesView, K>() {
+abstract class BaseChangesFragment<K> : ChangesView, BaseMvpFragment<ChangesView, K>() where K : BasePresenter<ChangesView>, K : IBaseChangesPresenter {
     override val layoutId: Int = R.layout.list_fragment
 
     private val day by stringResource(R.string.day)
