@@ -35,6 +35,7 @@ import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.dates.list.HolidaysListFragment
 import com.ohelshem.app.android.drawableRes
+import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -106,20 +107,24 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     }
 
     override fun update(tests: List<Test>) {
-        val now = Calendar.getInstance().clearTime().timeInMillis
-        val nextTest = tests.firstOrNull { now <= it.date }
-        if (nextTest != null) {
-            daysToTest?.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
-            totalTests?.text = tests.size.toString()
-        }
-
-        val nextHoliday = TimetableController.Holidays.find { it.startTime >= now }
-        if (nextHoliday == null)
-            daysToHoliday?.text = TimeUnit.MILLISECONDS.toDays(TimetableController.Summer.startTime - now).toString()
+        if (tests.isEmpty()) teacherErrorView.show()
         else {
-            var days = TimeUnit.MILLISECONDS.toDays(nextHoliday.startTime - now)
-            if (days < 0) days = 0
-            daysToHoliday?.text = days.toString()
+            teacherErrorView.hide()
+            val now = Calendar.getInstance().clearTime().timeInMillis
+            val nextTest = tests.firstOrNull { now <= it.date }
+            if (nextTest != null) {
+                daysToTest?.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
+                totalTests?.text = tests.size.toString()
+            }
+
+            val nextHoliday = TimetableController.Holidays.find { it.startTime >= now }
+            if (nextHoliday == null)
+                daysToHoliday?.text = TimeUnit.MILLISECONDS.toDays(TimetableController.Summer.startTime - now).toString()
+            else {
+                var days = TimeUnit.MILLISECONDS.toDays(nextHoliday.startTime - now)
+                if (days < 0) days = 0
+                daysToHoliday?.text = days.toString()
+            }
         }
     }
 
@@ -142,6 +147,8 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         if (isTablet) menu.findItem(R.id.menu_mashov).isVisible = false
+        else if (presenter.isTeacher)
+            menu.findItem(R.id.menu_mashov).isVisible = false
         else
             menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {
                 val intent = activity.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")

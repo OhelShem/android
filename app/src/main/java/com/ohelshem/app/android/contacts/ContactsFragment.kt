@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
+import com.ohelshem.app.android.hide
+import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -42,10 +44,15 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     }
 
     override fun showContacts(layer: Int, clazz: Int, contacts: List<Contact>) {
-        studentsInClass.text = contacts.size.toString()
-        classname.text = stringArrayRes(R.array.layers)[layer - 9] + clazz
-        recyclerView.adapter = ContactsAdapter(activity, contacts) {
-            makeCall(it.phone)
+        if (contacts.isEmpty()) {
+            teacherErrorView.show()
+        } else {
+            teacherErrorView.hide()
+            studentsInClass.text = contacts.size.toString()
+            classname.text = stringArrayRes(R.array.layers)[layer - 9] + clazz
+            recyclerView.adapter = ContactsAdapter(activity, contacts) {
+                makeCall(it.phone)
+            }
         }
     }
 

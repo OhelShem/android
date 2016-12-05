@@ -53,7 +53,6 @@
     <string name="cancel">ביטול</string>
     <string name="personal">אישי</string>
 
-
     <!-- Dashboard -->
     <string name="tomorrow">מחר</string>
     <string name="future">בעתיד</string>
@@ -104,13 +103,15 @@
     <string name="old_test">מבחנים ישנים</string>
     <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
     <string name="tests_dialog_close">סגור</string>
-    
+    <string name="choose_class_for_tests_long_text">בחר כיתה על מנת לראות את המבחנים שלה</string>
+
     <!-- Contacts -->
     <string name="students">תלמידים</string>
     <string name="call">התקשר</string>
     <string name="add_to_contacts">הוסף לאנשי הקשר</string>
     <string name="send_sms">שלח הודעה</string>
     <string name="more">עוד אפשרויות</string>
+    <string name="choose_class_for_contacts_long_text">בחר כיתה על מנת לראות את אנשי הקשר שלה</string>
 
     <!-- Timetable -->
     <string name="group">מקבץ</string>

@@ -42,6 +42,9 @@ class DatesPresenter(private val storage: Storage) : BasePresenter<DatesView>(),
         load()
     }
 
+    val isTeacher: Boolean
+        get() = !storage.isStudent()
+
     val tests: List<Test>
         get() = currentClass?.let { clazz -> storage.getTestsForClass(clazz.layer, clazz.clazz) } ?: storage.tests ?: emptyList()
 

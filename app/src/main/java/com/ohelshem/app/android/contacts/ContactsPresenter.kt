@@ -22,7 +22,7 @@ class ContactsPresenter(val storage: SharedStorage, val contactsProvider: Contac
     }
 
     private fun handleTeacherContacts() {
-        //FIXME
+       view?.showContacts(0, 0, emptyList())
     }
 
     private fun load(layer: Int, clazz: Int) {
