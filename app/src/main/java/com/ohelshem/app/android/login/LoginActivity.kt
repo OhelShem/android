@@ -118,18 +118,22 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     }
 
     override fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit) {
-        PrimaryClassDialog.create(teacherStorage, this) {
-            listener()
+        runOnUiThread {
+            PrimaryClassDialog.create(teacherStorage, this) {
+                listener()
+            }
         }
     }
 
     private var shouldStopAnimation: Boolean = false
     private fun onRepeat() {
         if (shouldStopAnimation) {
-            loadingBar.stopAnim()
-            WelcomeDialog.create(appKodein().instance(), this) {
-                finish()
-                startActivity<MainActivity>()
+            runOnUiThread {
+                loadingBar.stopAnim()
+                WelcomeDialog.create(appKodein().instance(), this) {
+                    finish()
+                    startActivity<MainActivity>()
+                }
             }
         }
     }

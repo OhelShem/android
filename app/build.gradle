@@ -10,7 +10,7 @@ android {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 84
+        versionCode 85
         versionName "7.1 RC"
         resConfigs "he"
     }
@@ -22,13 +22,13 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources = true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     aaptOptions {
-        cruncherEnabled = false
+        cruncherEnabled false
     }
 }
 
