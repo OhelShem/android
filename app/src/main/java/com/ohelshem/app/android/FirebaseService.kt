@@ -20,7 +20,7 @@ class FirebaseService : FirebaseMessagingService() {
             if (body == "---")
                 notificationManager.cancel(RemoteNotificationId)
             else
-                sendNotification(title, body, RemoteNotificationId, null, big = true)
+                sendNotification(title, body, RemoteNotificationId, null, big = true, sound = true)
 
         } else
             ChangesNotificationGenerator(this).prepareNotification()
