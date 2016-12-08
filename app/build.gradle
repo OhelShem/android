@@ -69,7 +69,7 @@ dependencies {
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.4.3'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.vlonjatg.android:progress-activity:1.1.1'
-    compile 'com.github.kevinthecity:BottomBar:-SNAPSHOT'
+    compile 'com.roughike:bottom-bar:2.0.2'
     compile 'com.timehop.fragmentswitcher:library:1.1.2'
     compile 'au.com.dardle:badgelayout:0.1.0'
     // debug

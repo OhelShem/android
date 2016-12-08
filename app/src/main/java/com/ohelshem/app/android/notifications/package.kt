@@ -4,11 +4,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
+import android.net.Uri
 import android.support.v7.app.NotificationCompat
 import com.ohelshem.app.android.fromHtml
 import com.ohelshem.app.android.main.MainActivity
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
+
 
 /**
  * Create and show a simple notification
@@ -34,9 +36,13 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, showDi
             .setContentIntent(pendingIntent).build())
 }
 
-fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false, sound: Boolean = false) {
+fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false, sound: Boolean = false, link: String = "") {
         val intent = Intent(this, MainActivity::class.java).setAction(action)
         val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
+
+        val linkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        val linkPIntent = PendingIntent.getActivity(this, 0, linkIntent, 0)
+
         notificationManager.notify(id, NotificationCompat.Builder(this)
                 .apply { if (big) setStyle(android.support.v4.app.NotificationCompat.BigTextStyle().bigText(messageBody)) }
                 .setSmallIcon(R.drawable.ic_notification)
@@ -44,7 +50,7 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, action
                 .setContentText(messageBody)
                 .apply {if (sound) setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))}
                 .setAutoCancel(true)
-                .apply { if (action != null) setContentIntent(pIntent)}
+                .apply { if (action != null) setContentIntent(pIntent) else if (link.isNotEmpty()) setContentIntent(linkPIntent)}
                 .build())
 }
 

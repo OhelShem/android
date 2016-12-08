@@ -16,11 +16,12 @@ class FirebaseService : FirebaseMessagingService() {
         if (Notification_MsgMode in data) {
             val title = data["msg_title"] ?: "הודעה מאהל שם"
             val body = data["msg_body"] ?: ""
+            val link = data["link"] ?: ""
 
             if (body == "---")
                 notificationManager.cancel(RemoteNotificationId)
             else
-                sendNotification(title, body, RemoteNotificationId, null, big = true, sound = true)
+                sendNotification(title, body, RemoteNotificationId, null, big = true, sound = true, link = link)
 
         } else
             ChangesNotificationGenerator(this).prepareNotification()
