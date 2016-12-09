@@ -180,8 +180,8 @@
     <string name="menu_mashov_message">התקן את אפליקציית Grader</string>
 
     <!-- Settings -->
-    <string name="overrides">שינויים במערכת</string>
-    <string name="no_overrides">אין שינוים למערכת השעות</string>
+    <string name="overrides">עריכות במערכת</string>
+    <string name="no_overrides">אין עריכות למערכת השעות</string>
     <string name="development_info">מידע למפתחים</string>
     <string name="developer_mode">מצב מפתחים</string>
     <string name="version_name">שם גרסה</string>

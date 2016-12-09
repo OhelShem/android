@@ -168,7 +168,7 @@ class OverridesActivity : AppThemedActivity() {
         val overrides = storage.overrides.sortedBy { it.day * 100 + it.hour }.toMutableList()
         if (overrides.isEmpty()) {
             recycler.adapter = null
-            progressActivity.showEmpty(drawableRes(R.drawable.ic_list), getString(R.string.overrides), "")
+            progressActivity.showEmpty(drawableRes(R.drawable.ic_list), getString(R.string.no_overrides), "")
         } else {
             progressActivity.showContent()
             var lastDay = -1
