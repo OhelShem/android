@@ -26,10 +26,13 @@ import android.support.v7.widget.CardView
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.ohelshem.app.android.main.MainActivity
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.help_activity.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.customView
+import java.io.File
+import java.io.FileOutputStream
 
 class HelpActivity : AppCompatActivity() {
     val usedPadding by lazy { dip(8) }
@@ -60,8 +63,8 @@ class HelpActivity : AppCompatActivity() {
         contactButton.onClick {
             email("yoav.sternberg@gmail.com", subject = getString(R.string.email_title))
         }
-        phonesListButton.onClick {
-            browse("https://ohel-shem.com/portal6/page.php?id=122")
+        regulationButton.onClick {
+            openRegulations()
         }
         eranButton.onClick {
             browse("http://www.eran.org.il/")
@@ -115,5 +118,24 @@ class HelpActivity : AppCompatActivity() {
         } catch (e: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
         }
+    }
+
+    private
+    val RegulationFile by lazy { File(File(filesDir, MainActivity.SharingFolder).apply { mkdirs() }, RegulationFilename) }
+    private val RegulationFilename = "regulation.pdf"
+
+    private fun openRegulations() {
+        if (!RegulationFile.exists()) {
+            resources.openRawResource(R.raw.regulations).use { regulationStream ->
+                RegulationFile.createNewFile()
+                FileOutputStream(RegulationFile).use {
+                    regulationStream.copyTo(it)
+                }
+            }
+        }
+        val intent = Intent(Intent.ACTION_VIEW).setDataAndType(Uri.parse("content://$packageName/${MainActivity.SharingFolder}/$RegulationFilename"), "application/pdf").setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        if (packageManager.queryIntentActivities(intent, 0).isEmpty()) {
+            toast("No PDF reader installed")
+        } else startActivity(Intent.createChooser(intent, getString(R.string.choose_opener)))
     }
 }

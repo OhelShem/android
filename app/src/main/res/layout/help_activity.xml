@@ -149,7 +149,7 @@
                     android:orientation="horizontal">
 
                     <com.ohelshem.app.android.utils.view.ForegroundTextView
-                        android:id="@+id/phonesListButton"
+                        android:id="@+id/regulationButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -157,11 +157,11 @@
                         android:foreground="?selectableItemBackground"
                         android:gravity="center"
                         android:minHeight="32dp"
-                        android:text="@string/phones_list"
+                        android:text="@string/regulations"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        android:drawableRight="@drawable/ic_contacts"
+                        android:drawableRight="@drawable/ic_book"
                         tools:ignore="RtlHardcoded" />
 
                     <com.ohelshem.app.android.utils.view.ForegroundTextView

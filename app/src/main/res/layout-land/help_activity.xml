@@ -148,7 +148,7 @@
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
                 <com.ohelshem.app.android.utils.view.ForegroundLinearLayout
-                    android:id="@+id/phonesListButton"
+                    android:id="@+id/regulationButton"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="16dp"
@@ -161,14 +161,14 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:contentDescription="@string/phones_list"
-                        android:src="@drawable/ic_contacts" />
+                        android:contentDescription="@string/regulations"
+                        android:src="@drawable/ic_book" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/phones_list"
+                        android:text="@string/regulations"
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />

@@ -1,7 +1,6 @@
 package com.ohelshem.app.android.main
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -58,8 +57,6 @@ import kotlinx.android.synthetic.main.teacher_badge_layout.*
 import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
-import java.io.File
-import java.io.FileOutputStream
 import java.util.*
 import kotlin.comparisons.compareBy
 
@@ -188,10 +185,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 refresh()
                 true
             }
-            R.id.regulations -> {
-                openRegulations()
-                true
-            }
             R.id.help -> {
                 openHelp()
                 true
@@ -260,7 +253,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
             BadgeBarGenerator.inflate(teacherBar, classes, primaryText, getString(R.string.personal), storage.primaryClass, null, null, {
                 val schoolClasses = schoolInfo.allClasses
-                var chosenClass: ClassInfo? = null
+                var chosenClass: ClassInfo?
 
                 MaterialDialog.Builder(this)
                         .title(R.string.set_current_class)
@@ -311,21 +304,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun openHelp() {
         startActivity<HelpActivity>()
-    }
-
-    private fun openRegulations() {
-        if (!RegulationFile.exists()) {
-            resources.openRawResource(R.raw.regulations).use { regulationStream ->
-                RegulationFile.createNewFile()
-                FileOutputStream(RegulationFile).use {
-                    regulationStream.copyTo(it)
-                }
-            }
-        }
-        val intent = Intent(Intent.ACTION_VIEW).setDataAndType(Uri.parse("content://$packageName/$SharingFolder/$RegulationFilename"), "application/pdf").setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        if (packageManager.queryIntentActivities(intent, 0).isEmpty()) {
-            toast("No PDF reader installed")
-        } else startActivity(Intent.createChooser(intent, getString(R.string.choose_opener)))
     }
 //endregion
 
@@ -652,14 +630,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
 //endregion
 
-    private
-    val RegulationFile by lazy { File(File(filesDir, SharingFolder).apply { mkdirs() }, RegulationFilename) }
-
     companion object {
-        private const val CallbackId = 75
-        private val RegulationFilename = "regulation.pdf"
         val SharingFolder = "sharing"
         private const val Key_Fragment = "key_fragment"
+        private const val CallbackId = 75
 
         const val Shortcut_LaunchChanges = "com.ohelshem.app.LAUNCH_CHANGES"
         const val Shortcut_LaunchTimetable = "com.ohelshem.app.LAUNCH_TIMETABLE"

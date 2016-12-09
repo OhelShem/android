@@ -9,11 +9,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/regulations"
-        android:title="@string/regulations"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/help"
         android:title="@string/help"
         app:showAsAction="never" />

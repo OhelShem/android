@@ -29,11 +29,6 @@
     <group
         android:id="@+id/links">
         <item
-            android:id="@+id/regulations"
-            android:icon="@drawable/ic_book"
-            android:title="@string/regulations"/>
-
-        <item
             android:id="@+id/help"
             android:icon="@drawable/ic_help"
             android:title="@string/help"/>
