@@ -231,11 +231,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
         bottomBar.setOnTabSelectListener { id ->
             when (id) {
-                R.id.dashboard -> setScreenInternal(ScreenType.Dashboard)
-                R.id.timetable -> setScreenInternal(ScreenType.Timetable)
-                R.id.changes -> setScreenInternal(ScreenType.Changes)
-                R.id.dates -> setScreenInternal(ScreenType.Dates)
-                R.id.contacts -> setScreenInternal(ScreenType.Contacts)
+                R.id.tab_dashboard -> setScreenInternal(ScreenType.Dashboard)
+                R.id.tab_timetable -> setScreenInternal(ScreenType.Timetable)
+                R.id.tab_changes -> setScreenInternal(ScreenType.Changes)
+                R.id.tab_dates -> setScreenInternal(ScreenType.Dates)
+                R.id.tab_contacts -> setScreenInternal(ScreenType.Contacts)
             }
         }
         bottomBar.setOnTabReselectListener {
@@ -422,7 +422,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     private fun updateBadges() {
-        val changesTab = bottomBar.getTabWithId(R.id.changes)
+        val changesTab = bottomBar.getTabWithId(R.id.tab_changes)
 
         val clazz = storage.userData.clazz
         val count = storage.changes?.count { it.clazz == clazz } ?: 0
@@ -529,7 +529,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_timetable_primary_text)
                 .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_timetable_secondary_text else R.string.intro_bottombar_timetable_secondary_text_teacher)
-                .setTarget(bottomBar.getTabWithId(R.id.timetable))
+                .setTarget(bottomBar.getTabWithId(R.id.tab_timetable))
                 .setIcon(R.drawable.ic_timetable_blue)
                 .setBackgroundColour(act.primaryColor)
                 .setCaptureTouchEventOutsidePrompt(true)
@@ -554,7 +554,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_changes_primary_text)
                 .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_changes_secondary_text else R.string.intro_bottombar_changes_secondary_text_teacher)
-                .setTarget(bottomBar.getTabWithId(R.id.changes))
+                .setTarget(bottomBar.getTabWithId(R.id.tab_changes))
                 .setIcon(R.drawable.ic_track_changes_blue)
                 .setBackgroundColour(act.primaryColor)
                 .setCaptureTouchEventOutsidePrompt(true)
@@ -579,7 +579,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_dates_primary_text)
                 .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_dates_secondary_text else R.string.intro_bottombar_dates_secondary_text_teacher)
-                .setTarget(bottomBar.getTabWithId(R.id.dates))
+                .setTarget(bottomBar.getTabWithId(R.id.tab_dates))
                 .setIcon(R.drawable.ic_calendar_blue)
                 .setBackgroundColour(act.primaryColor)
                 .setCaptureTouchEventOutsidePrompt(true)
@@ -604,7 +604,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         prompt = MaterialTapTargetPrompt.Builder(this)
                 .setPrimaryText(R.string.intro_bottombar_contacts_primary_text)
                 .setSecondaryText(if (storage.isStudent()) R.string.intro_bottombar_contacts_secondary_text else R.string.intro_bottombar_contacts_secondary_text_teacher)
-                .setTarget(bottomBar.getTabWithId(R.id.contacts))
+                .setTarget(bottomBar.getTabWithId(R.id.tab_contacts))
                 .setIcon(R.drawable.ic_contacts)
                 .setBackgroundColour(act.primaryColor)
                 .setCaptureTouchEventOutsidePrompt(true)
