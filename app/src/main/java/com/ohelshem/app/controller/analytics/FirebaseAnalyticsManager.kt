@@ -1,9 +1,12 @@
 package com.ohelshem.app.controller.analytics
 
 import android.content.Context
+import android.support.v7.app.AppCompatDelegate.MODE_NIGHT_NO
+import android.support.v7.app.AppCompatDelegate.MODE_NIGHT_YES
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ohelshem.app.controller.storage.SharedStorage
+import org.jetbrains.anko.bundleOf
 import java.io.UnsupportedEncodingException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -21,6 +24,10 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserId(sha1(storage.id + Salt))
         firebaseAnalytics.setUserProperty(LayerProperty, storage.userData.layer.toString())
         firebaseAnalytics.setUserProperty(ClassProperty, storage.userData.clazz.toString())
+        firebaseAnalytics.setUserProperty(NightModeProperty, storage.darkMode.let {
+            if (it == MODE_NIGHT_NO) "MODE_NIGHT_NO" else if (it == MODE_NIGHT_YES) "MODE_NIGHT_YES" else "MODE_NIGHT_AUTO"
+        })
+        firebaseAnalytics.setUserProperty(ThemeColorProperty, storage.theme.toString())
 
         // for remote messages
         firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
@@ -48,19 +55,23 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserId(null)
         firebaseAnalytics.setUserProperty(LayerProperty, null)
         firebaseAnalytics.setUserProperty(ClassProperty, null)
+        firebaseAnalytics.setUserProperty(ThemeColorProperty, null)
+        firebaseAnalytics.setUserProperty(NightModeProperty, null)
         unsubscribe()
         unsubscribeMessages()
     }
 
     override fun logEvent(type: String, info: Map<String, Any>) {
-       // firebaseAnalytics.logEvent(type, bundleOf(info.toList()))
+        firebaseAnalytics.logEvent(type, bundleOf(*info.map { it.toPair() }.toTypedArray()))
     }
 
     companion object {
-        const val Salt = "dyIVuLoEih"
+        private const val Salt = "dyIVuLoEih"
 
-        const val LayerProperty = "layer"
-        const val ClassProperty = "class"
+        private const val LayerProperty = "layer"
+        private const val ClassProperty = "class"
+        private const val ThemeColorProperty = "themeColor"
+        private const val NightModeProperty = "themeMode"
 
         fun sha1(toHash: String): String? {
             var hash: String? = null

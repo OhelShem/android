@@ -63,8 +63,6 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     override var menuId: Int = R.menu.tests
     override fun createPresenter(): DatesPresenter = with(kodein()) { DatesPresenter(instance()) }
 
-    private val isTablet by lazy { resources.getBoolean(R.bool.isTablet) }
-
     private var dialog: AlertDialog? = null
 
     override fun init() {
@@ -114,7 +112,6 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             val nextTest = tests.firstOrNull { now <= it.date }
             if (nextTest != null) {
                 daysToTest?.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
-                totalTests?.text = tests.size.toString()
             }
 
             val nextHoliday = TimetableController.Holidays.find { it.startTime >= now }
@@ -146,8 +143,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (isTablet) menu.findItem(R.id.menu_mashov).isVisible = false
-        else if (presenter.isTeacher)
+        if (presenter.isTeacher)
             menu.findItem(R.id.menu_mashov).isVisible = false
         else
             menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {

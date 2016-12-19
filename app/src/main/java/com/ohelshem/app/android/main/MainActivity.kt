@@ -28,7 +28,6 @@ import com.ohelshem.app.android.changes.teacher.TeacherChangesFragment
 import com.ohelshem.app.android.contacts.ContactsFragment
 import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
-import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
@@ -109,11 +108,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     } else setScreen(ScreenType.values()[savedInstanceState.getInt(Key_Fragment)])
                 }
             }
-            if (extraFragment != null)
-                supportFragmentManager.beginTransaction().replace(R.id.extraFragment, DashboardFragment()).commit()
-            if (secondaryExtraFragment != null)
-                supportFragmentManager.beginTransaction().replace(R.id.secondaryExtraFragment, DatesListFragment()).commit()
-
             debug()
             if (storage.userData.isTeacher()) {
                 storage.notificationsForChanges = false
@@ -233,10 +227,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
         bottomBar.setOnTabReselectListener {
             notifyFragmentOnReselect()
-        }
-
-        if (resources.getBoolean(R.bool.isTablet)) {
-            bottomBar.isSaveEnabled = false
         }
     }
 
@@ -424,10 +414,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         get() {
             @Suppress("UNCHECKED_CAST")
             return listOf(
-                    (fragmentSwitcher.currentFragment as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
-                    (supportFragmentManager.findFragmentById(R.id.extraFragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback,
-                    (supportFragmentManager.findFragmentById(R.id.secondaryExtraFragment) as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback)
-                    .filterNotNull()
+                    (fragmentSwitcher.currentFragment as? MvpFragment<*, *>)?.getPresenter() as? ApiController.Callback).filterNotNull()
         }
 
     private fun debug() {
