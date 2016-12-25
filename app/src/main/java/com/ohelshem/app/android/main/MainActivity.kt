@@ -3,7 +3,6 @@ package com.ohelshem.app.android.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
@@ -30,7 +29,6 @@ import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.login.LoginActivity
-import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
@@ -42,6 +40,7 @@ import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.storage.DeveloperOptions
+import com.sloydev.preferator.Preferator
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -431,12 +430,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 ProcessPhoenix.triggerRebirth(this)
             }
 
-            val sendNotificationAction = ButtonAction("Send changes notification") {
-                Handler().postDelayed({ ChangesNotificationGenerator(this).prepareNotification() }, 1000)
-                val quit = Intent(Intent.ACTION_MAIN)
-                quit.addCategory(Intent.CATEGORY_HOME)
-                quit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(quit)
+            val preferenceAction = ButtonAction("Preferences editor") {
+                Preferator.launch(this)
             }
 
 
@@ -463,7 +458,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, sendNotificationAction, shareFirebaseTokenAction),
+                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, preferenceAction, shareFirebaseTokenAction),
                     DeviceModule(),
                     BuildModule(),
                     NetworkModule(),

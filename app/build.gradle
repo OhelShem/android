@@ -71,6 +71,7 @@ dependencies {
     compile 'com.vlonjatg.android:progress-activity:1.1.1'
     compile 'com.github.kevinthecity:BottomBar:6483a0bfa3'
     compile 'com.timehop.fragmentswitcher:library:1.1.2'
+    compile 'com.sloydev:preferator:1.0.0'
     // debug
     compile 'io.palaima.debugdrawer:debugdrawer:0.7.1-SNAPSHOT'
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.1-SNAPSHOT'
