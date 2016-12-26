@@ -18,6 +18,7 @@ import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
+import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.getDay
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
@@ -36,7 +37,8 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val cal = Calendar.getInstance()
         val day = cal.getDay()
         if (storage.isSetup()) {
-            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != toDayOnly(Calendar.getInstance()).timeInMillis && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
+            val dayType = TimetableController.getDayType(cal, timetableController.learnsOnFriday)
+            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != toDayOnly(Calendar.getInstance()).timeInMillis && dayType != DayType.Holiday && dayType != DayType.Summer && dayType != DayType.Friday && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
