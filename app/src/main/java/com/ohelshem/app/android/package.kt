@@ -21,14 +21,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.TextView
-import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.view.AutoResizeTextView
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.windowManager
-import kotlin.comparisons.compareBy
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -69,6 +67,14 @@ fun View.setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0
     val params = layoutParams as ViewGroup.MarginLayoutParams
     params.setMargins(left, top, right, bottom)
     layoutParams = params
+}
+
+fun TextView.setTextAppear(context: Context, ta: Int) {
+    @Suppress("DEPRECATION")
+    if (Build.VERSION.SDK_INT < 23)
+        this.setTextAppearance(context, ta)
+    else
+        this.setTextAppearance(ta)
 }
 
 fun Activity.resourceAttr(attr: Int): Int {

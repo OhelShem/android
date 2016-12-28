@@ -22,9 +22,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.Typeface
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
@@ -34,6 +38,7 @@ import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
+import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
@@ -50,12 +55,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
+
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
     override val layoutId: Int = R.layout.dashboard_fragment
 
     private var defaultTextColor: Int = 0
 
     private val storage: UIStorage by kodein.instance()
+
+    private val timetableController: TimetableController by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -101,10 +110,35 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
-        progress.progress = data.progress
-        showCurrentLessonInfo(data, changes)
-        showTimeLeft(data, isFuture, isTomorrow)
-        showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+        val today = Calendar.getInstance()
+        val tmrw = today
+        tmrw.add(Calendar.DATE, 1)
+
+        val todayType = TimetableController.getDayType(today, timetableController.learnsOnFriday)
+        val tmrwType = TimetableController.getDayType(tmrw, timetableController.learnsOnFriday)
+
+        if ((todayType == DayType.Holiday || todayType == DayType.Summer) && (tmrwType == DayType.Holiday || tmrwType == DayType.Summer)) {
+            lessonsContainer.removeAllViews()
+            lessonsContainer.minimumHeight = 144
+            val holidayText = TextView(context)
+            val params = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+            holidayText.layoutParams = params
+            holidayText.setPadding(16, 16, 16, 16)
+            holidayText.gravity = Gravity.CENTER
+            holidayText.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_beach, 0, 0)
+            holidayText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
+            holidayText.setTypeface(null, Typeface.BOLD)
+            holidayText.textColor = defaultTextColor
+            holidayText.text = getString(R.string.dashboard_holiday)
+            holidayText.compoundDrawables[1].setColorFilter(defaultTextColor, PorterDuff.Mode.SRC_IN)
+            lessonsContainer.addView(holidayText)
+        }
+        else {
+            progress.progress = data.progress
+            showCurrentLessonInfo(data, changes)
+            showTimeLeft(data, isFuture, isTomorrow)
+            showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+        }
     }
 
     private var hasModifiedCurrentLessonView = true
