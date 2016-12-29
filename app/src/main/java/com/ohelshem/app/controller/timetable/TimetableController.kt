@@ -133,6 +133,20 @@ interface TimetableController {
             else return DayType.Regular
         }
 
+        fun getHoliday(calendar: Calendar): Holiday? {
+            val time = calendar.clearTime().timeInMillis
+            val parser = SimpleDateFormat("dd/MM/yyyy")
+            for (holiday in Holidays) {
+                if (holiday.isOneDay()) {
+                    if (time == holiday.startTime) return holiday
+                } else {
+                    if (time >= holiday.startTime && time <= holiday.endTime) return holiday
+                }
+            }
+            if (time >= parser.parse(Summer.start).time && time <= parser.parse(Summer.end).time) return Summer
+            return null
+        }
+
         data class Holiday(val name: String, val start: String, val end: String = "") {
             fun isOneDay(): Boolean = end.isEmpty()
 

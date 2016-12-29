@@ -21,8 +21,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -34,14 +34,16 @@ import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
+import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
-import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
+import com.ohelshem.app.daysBetween
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
+import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
@@ -53,8 +55,6 @@ import org.jetbrains.anko.textResource
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.text.SimpleDateFormat
 import java.util.*
-
-
 
 
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
@@ -111,15 +111,17 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
         val today = Calendar.getInstance()
-        val tmrw = today
+        val tmrw = Calendar.getInstance()
         tmrw.add(Calendar.DATE, 1)
 
-        val todayType = TimetableController.getDayType(today, timetableController.learnsOnFriday)
-        val tmrwType = TimetableController.getDayType(tmrw, timetableController.learnsOnFriday)
+        val todayHoliday = TimetableController.getHoliday(today)
+        val tomorrowHoliday = TimetableController.getHoliday(tmrw)
 
-        if ((todayType == DayType.Holiday || todayType == DayType.Summer) && (tmrwType == DayType.Holiday || tmrwType == DayType.Summer)) {
+        if ((todayHoliday != null && tomorrowHoliday != null) || (todayHoliday != null && (tomorrowHoliday == null && !(isFuture || isTomorrow)))) {
+            // Don't show the regular timetable if we're in the middle of any holiday (incl. Summer)
+            todayPlan.text = getString(R.string.go_to_timetable)
             lessonsContainer.removeAllViews()
-            lessonsContainer.minimumHeight = 144
+            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) lessonsContainer.minimumHeight = 144
             val holidayText = TextView(context)
             val params = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
             holidayText.layoutParams = params
@@ -128,12 +130,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_beach, 0, 0)
             holidayText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
             holidayText.setTypeface(null, Typeface.BOLD)
-            holidayText.textColor = defaultTextColor
-            holidayText.text = getString(R.string.dashboard_holiday)
-            holidayText.compoundDrawables[1].setColorFilter(defaultTextColor, PorterDuff.Mode.SRC_IN)
+            holidayText.textColor = Color.WHITE
+            holidayText.text = if (todayHoliday.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar())+1} ימים נותרו" + ")"
+            lessonsContainer.backgroundColor = AttributeExtractor.extractPrimaryLightColorFrom(context)
             lessonsContainer.addView(holidayText)
-        }
-        else {
+        } else {
             progress.progress = data.progress
             showCurrentLessonInfo(data, changes)
             showTimeLeft(data, isFuture, isTomorrow)
