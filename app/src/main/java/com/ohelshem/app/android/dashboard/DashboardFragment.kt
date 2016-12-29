@@ -55,16 +55,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
-
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
     override val layoutId: Int = R.layout.dashboard_fragment
 
     private var defaultTextColor: Int = 0
 
     private val storage: UIStorage by kodein.instance()
-
-    private val timetableController: TimetableController by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -110,14 +106,24 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
+        if (!showHolidayInfo()) {
+            progress.progress = data.progress
+            showCurrentLessonInfo(data, changes)
+            showTimeLeft(data, isFuture, isTomorrow)
+            showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+        }
+    }
+
+
+    private fun showHolidayInfo(): Boolean {
         val today = Calendar.getInstance()
-        val tmrw = today
-        tmrw.add(Calendar.DATE, 1)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DATE, 1)
 
-        val todayType = TimetableController.getDayType(today, timetableController.learnsOnFriday)
-        val tmrwType = TimetableController.getDayType(tmrw, timetableController.learnsOnFriday)
+        val todayType = TimetableController.getDayType(today, false)
+        val tomorrowType = TimetableController.getDayType(tomorrow, false)
 
-        if ((todayType == DayType.Holiday || todayType == DayType.Summer) && (tmrwType == DayType.Holiday || tmrwType == DayType.Summer)) {
+        if ((todayType == DayType.Holiday || todayType == DayType.Summer) && (tomorrowType == DayType.Holiday || tomorrowType == DayType.Summer)) {
             lessonsContainer.removeAllViews()
             lessonsContainer.minimumHeight = 144
             val holidayText = TextView(context)
@@ -132,13 +138,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.text = getString(R.string.dashboard_holiday)
             holidayText.compoundDrawables[1].setColorFilter(defaultTextColor, PorterDuff.Mode.SRC_IN)
             lessonsContainer.addView(holidayText)
+            return true
         }
-        else {
-            progress.progress = data.progress
-            showCurrentLessonInfo(data, changes)
-            showTimeLeft(data, isFuture, isTomorrow)
-            showNextLessonInfo(data, changes, isEndOfDay, isFuture)
-        }
+        return false
     }
 
     private var hasModifiedCurrentLessonView = true
