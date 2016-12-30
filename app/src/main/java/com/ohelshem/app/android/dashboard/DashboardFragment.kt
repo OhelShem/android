@@ -127,7 +127,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         if ((todayHoliday != null && tomorrowHoliday != null) || (todayHoliday != null && (tomorrowHoliday == null && !(isFuture || isTomorrow)))) {
             // Don't show the regular timetable if we're in the middle of any holiday (incl. Summer)
             lessonsContainer.removeAllViews()
-            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) lessonsContainer.minimumHeight = 144
+            if (resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) lessonsContainer.minimumHeight = 144 //fixme
             val holidayText = TextView(context)
             val params = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
             holidayText.layoutParams = params
