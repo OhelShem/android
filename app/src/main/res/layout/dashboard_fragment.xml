@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:ignore="RtlHardcoded">
+              xmlns:card="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:ignore="RtlHardcoded">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/dashboardLogo"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
+            android:layout_gravity="center"
             android:background="?colorPrimary"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/logo"
-            android:layout_gravity="center"
-            android:id="@+id/dashboardLogo" />
+            android:src="@drawable/logo"/>
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
@@ -42,138 +42,132 @@
                     android:id="@+id/lessonsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/currentLesson"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="46dp">
+
+                                <TextView
+                                    android:id="@+id/timeLeft"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="right"
+                                    android:maxLines="1"
+                                    android:textSize="14sp"
+                                    tools:ignore="RtlHardcoded"
+                                    tools:text="35 דקות"/>
+
+                                <TextView
+                                    android:id="@+id/lessonName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_toRightOf="@+id/timeLeft"
+                                    android:gravity="right"
+                                    android:textSize="14sp"
+                                    tools:text="חנג בנים, חנג בנות ימפולסקי ל, נאור מלי"/>
+                            </RelativeLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                tools:ignore="NestedWeights">
+
+                                <ProgressBar
+                                    android:id="@+id/progress"
+                                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="10dp"
+                                    android:layout_gravity="center"
+                                    android:max="45"/>
+                            </FrameLayout>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/hourIcon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:contentDescription="@string/current_hour"
+                            android:src="@drawable/ic_alarm"
+                            tools:ignore="ContentDescription,HardcodedText,SpUsage"/>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/firstSpace"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#e0e0e0"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:id="@+id/next_lesson"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/currentLesson"
-                            android:layout_width="match_parent"
-                            android:layout_height="72dp"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="46dp">
-
-                                    <TextView
-                                        android:id="@+id/timeLeft"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_centerVertical="true"
-                                        android:gravity="right"
-                                        android:maxLines="1"
-                                        android:textSize="14sp"
-                                        tools:ignore="RtlHardcoded"
-                                        tools:text="35 דקות" />
-
-                                    <TextView
-                                        android:id="@+id/lessonName"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_toRightOf="@+id/timeLeft"
-                                        android:gravity="right"
-                                        android:textSize="14sp"
-                                        tools:text="חנג בנים, חנג בנות ימפולסקי ל, נאור מלי" />
-                                </RelativeLayout>
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    tools:ignore="NestedWeights">
-
-                                    <ProgressBar
-                                        android:id="@+id/progress"
-                                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="10dp"
-                                        android:layout_gravity="center"
-                                        android:max="45" />
-                                </FrameLayout>
-                            </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/hourIcon"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:contentDescription="@string/current_hour"
-                                android:src="@drawable/ic_alarm"
-                                tools:ignore="ContentDescription,HardcodedText,SpUsage" />
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/firstSpace"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="#e0e0e0"
-                            tools:ignore="ContentDescription" />
-
-                        <LinearLayout
-                            android:id="@+id/next_lesson"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="16dp"
-                            android:paddingTop="16dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/nextLessonName"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:textSize="14sp"
-                                tools:text="היסטוריה" />
-
-                            <ImageView
-                                android:id="@+id/nextHourIcon"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:src="@drawable/ic_arrow_forward"
-                                android:contentDescription="@string/next_hour"
-                                tools:ignore="HardcodedText,SpUsage" />
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/secondSpace"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="#e0e0e0"
-                            tools:ignore="ContentDescription" />
+                        android:orientation="horizontal"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp">
 
                         <TextView
-                            android:id="@+id/todayPlan"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="?selectableItemBackground"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:text="@string/today_plan"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:id="@+id/nextLessonName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:textSize="14sp"
+                            tools:text="היסטוריה"/>
+
+                        <ImageView
+                            android:id="@+id/nextHourIcon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:contentDescription="@string/next_hour"
+                            android:src="@drawable/ic_arrow_forward"
+                            tools:ignore="HardcodedText,SpUsage"/>
                     </LinearLayout>
+
+                    <View
+                        android:id="@+id/secondSpace"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#e0e0e0"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:id="@+id/todayPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:text="@string/today_plan"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -190,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/see_more"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"/>
 
                 <TextView
                     android:id="@+id/testsHeader"
@@ -202,7 +196,7 @@
                     android:text="@string/tests_in_next_week"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="RtlHardcoded"/>
             </LinearLayout>
 
             <android.support.v7.widget.CardView
@@ -220,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="8dp" />
+                    android:padding="8dp"/>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
