@@ -56,15 +56,12 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
     override val layoutId: Int = R.layout.dashboard_fragment
 
     private var defaultTextColor: Int = 0
 
     private val storage: UIStorage by kodein.instance()
-
-    private val timetableController: TimetableController by kodein.instance()
 
     val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -110,12 +107,22 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
+        if (!showHolidayInfo(isTomorrow, isFuture)) {
+            progress.progress = data.progress
+            showCurrentLessonInfo(data, changes)
+            showTimeLeft(data, isFuture, isTomorrow)
+            showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+        }
+    }
+
+    private fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean {
+
         val today = Calendar.getInstance()
-        val tmrw = Calendar.getInstance()
-        tmrw.add(Calendar.DATE, 1)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DATE, 1)
 
         val todayHoliday = TimetableController.getHoliday(today)
-        val tomorrowHoliday = TimetableController.getHoliday(tmrw)
+        val tomorrowHoliday = TimetableController.getHoliday(tomorrow)
 
         if ((todayHoliday != null && tomorrowHoliday != null) || (todayHoliday != null && (tomorrowHoliday == null && !(isFuture || isTomorrow)))) {
             // Don't show the regular timetable if we're in the middle of any holiday (incl. Summer)
@@ -131,15 +138,12 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
             holidayText.setTypeface(null, Typeface.BOLD)
             holidayText.textColor = Color.WHITE
-            holidayText.text = if (todayHoliday.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar())+1} ימים נותרו" + ")"
+            holidayText.text = if (todayHoliday.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
             lessonsContainer.backgroundColor = AttributeExtractor.extractPrimaryLightColorFrom(context)
             lessonsContainer.addView(holidayText)
-        } else {
-            progress.progress = data.progress
-            showCurrentLessonInfo(data, changes)
-            showTimeLeft(data, isFuture, isTomorrow)
-            showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+            return true
         }
+        return false
     }
 
     private var hasModifiedCurrentLessonView = true
