@@ -107,7 +107,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     override fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?) {
         if (!showHolidayInfo(isTomorrow, isFuture)) {
-            progress.progress = data.progress
+            progress?.progress = data.progress
             showCurrentLessonInfo(data, changes)
             showTimeLeft(data, isFuture, isTomorrow)
             showNextLessonInfo(data, changes, isEndOfDay, isFuture)
