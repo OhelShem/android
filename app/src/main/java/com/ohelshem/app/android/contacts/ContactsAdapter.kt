@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.show
+import com.ohelshem.app.android.toFullName
 import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.contact_item.view.*
@@ -26,7 +27,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
-        holder.name.text = toFullName(contact.name)
+        holder.name.text = contact.name.toFullName()
         holder.birthday.hint = dateFormat.format(Date(contact.birthday))
         if (contact.phone.isEmpty()) {
             holder.dial.hide()
@@ -45,7 +46,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
                         R.id.addContact -> {
                             val intent = Intent(Intent.ACTION_INSERT)
                                     .setType(ContactsContract.Contacts.CONTENT_TYPE)
-                                    .putExtra(Insert.NAME, toFullName(contact.name))
+                                    .putExtra(Insert.NAME, contact.name.toFullName())
                                     .putExtra(Insert.PHONE, contact.phone)
 
                             val format = SimpleDateFormat("yyyy-MM-dd")
@@ -80,12 +81,6 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
         val name: TextView = itemView.name
         val birthday: TextView = itemView.birthday
 
-    }
-
-    private fun toFullName(name: String): String {
-        val arr = name.split(" ")
-        if (arr.size > 2) return name
-        return arr[1] + " " + arr[0]
     }
 
     val dateFormat = SimpleDateFormat("dd/MM/yyyy")

@@ -7,6 +7,7 @@ import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.main.MainActivity.Companion.Shortcut_LaunchMyClass
+import com.ohelshem.app.android.toFullName
 import com.ohelshem.app.controller.storage.ContactsProvider
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.model.Contact
@@ -42,19 +43,13 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
     }
 
     private fun notifyBirthdays(contacts: List<Contact>) {
-        var text = getString(R.string.birthday_message, toFullName(contacts[0].name))
+        var text = getString(R.string.birthday_message, contacts[0].name.toFullName())
         if (contacts.size > 1) {
             for (i in 1 until contacts.size)
-                text += " ו" + toFullName(contacts[i].name)
+                text += " ו" + contacts[i].name.toFullName()
         }
         text += "!"
         sendNotification(getString(R.string.birthday_title), text, action = Shortcut_LaunchMyClass, big = true, id = 1005, sound = true)
-    }
-
-    private fun toFullName(name: String): String {
-        val arr = name.split(" ")
-        if (arr.size > 2) return name
-        return arr[1] + " " + arr[0]
     }
 
 }

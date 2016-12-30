@@ -94,6 +94,12 @@ class StringResourceDelegate(private val resources: () -> Resources, private val
     }
 }
 
+fun String.toFullName(): String {
+    val arr = this.split(" ")
+    if (arr.size != 2) return this
+    return arr[1] + " " + arr[0]
+}
+
 fun Fragment.stringResource(id: Int): StringResourceDelegate = StringResourceDelegate(futureResources(), id)
 private fun Fragment.futureResources(): () -> Resources = { resources }
 

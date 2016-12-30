@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
+import com.ohelshem.app.android.contacts.birthdays.BirthdaysAdapter
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringArrayRes
