@@ -34,10 +34,8 @@ import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
-import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
-import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
 import com.ohelshem.app.daysBetween
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
@@ -84,10 +82,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
         clearCurrentLessonView()
         clearNextLessonView()
-
-        if (holidayData != null) {
-            showHoliday()
-        }
 
         if (storage.firstTimeInApp && !BuildConfig.DEBUG)
             showIntro()
@@ -303,16 +297,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 }
             }
         }
-    }
-
-    private fun showHoliday() {
-        val time = Calendar.getInstance().clearTime().timeInMillis
-        var holiday: Holiday? = TimetableController.Holidays.firstOrNull { if (it.isOneDay()) it.startTime == time else time >= it.startTime && time <= it.endTime }
-        if (holiday == null) holiday = TimetableController.Holidays.firstOrNull { it.startTime > time }
-        if (holiday == null) holiday = TimetableController.Summer
-
-        holidayText.text = holiday.name
-        holidayDate.text = if (holiday.isOneDay()) holiday.start.substring(0, 5) else holiday.start.substring(0, 5) + " - " + holiday.end.substring(0, 5)
     }
 
     override fun onResume() {

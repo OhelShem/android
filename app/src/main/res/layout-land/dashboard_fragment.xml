@@ -232,46 +232,5 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            app:cardUseCompatPadding="true"
-            card:cardCornerRadius="2dp">
-
-            <LinearLayout
-                android:id="@+id/holidayData"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:background="?selectableItemBackground"
-                android:clipChildren="false"
-                android:orientation="horizontal"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                tools:ignore="RtlHardcoded,RtlSymmetry">
-
-                <TextView
-                    android:id="@+id/holidayDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textStyle="bold"
-                    tools:text="201509"/>
-
-                <TextView
-                    android:id="@+id/holidayText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    tools:text="ראש השנה"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
     </LinearLayout>
 </android.support.percent.PercentRelativeLayout>
