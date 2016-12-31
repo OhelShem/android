@@ -122,7 +122,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         val todayHoliday = TimetableController.getHoliday(today)
         val tomorrowHoliday = TimetableController.getHoliday(tomorrow)
 
-        if ((todayHoliday != null && tomorrowHoliday != null) || (todayHoliday != null && (tomorrowHoliday == null && !(isFuture || isTomorrow))) || (todayHoliday == null && (tomorrowHoliday != null && (isFuture || isTomorrow)))) {
+        val isBeforeHoliday = todayHoliday == null && tomorrowHoliday != null && (isTomorrow || isFuture)
+        val isInHoliday = todayHoliday != null && tomorrowHoliday != null
+        val isEndOfHoliday = todayHoliday != null && tomorrowHoliday == null && !(isTomorrow || isFuture)
+
+        if (isBeforeHoliday || isInHoliday || isEndOfHoliday) {
             // Don't show the regular timetable if we're in the middle of any holiday (incl. Summer)
             lessonsContainer.removeAllViews()
             val holidayText = TextView(context)
@@ -134,10 +138,10 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
             holidayText.setTypeface(null, Typeface.BOLD)
             holidayText.textColor = Color.WHITE
-            if (todayHoliday != null)
-                holidayText.text = if (todayHoliday.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
-            else if (tomorrowHoliday != null)
-                holidayText.text = if (tomorrowHoliday.isOneDay()) tomorrowHoliday.name else "${tomorrowHoliday.name} (${daysBetween(today, tomorrowHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
+            if (isBeforeHoliday)
+                holidayText.text = if (tomorrowHoliday!!.isOneDay()) tomorrowHoliday.name else "${tomorrowHoliday.name} (${daysBetween(today, tomorrowHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
+            else
+                holidayText.text = if (todayHoliday!!.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
             lessonsContainer.backgroundColor = context.primaryLightColor
             lessonsContainer.addView(holidayText)
             return true
