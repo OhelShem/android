@@ -37,7 +37,6 @@ import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.utils.AppThemedActivity
-import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.storage.SharedStorage.Theme
 import com.yoavst.changesystemohelshem.BuildConfig
@@ -126,7 +125,7 @@ class SettingsActivity : AppThemedActivity() {
             }
         }
         val currentMode = storage.theme
-        val rippleColor = AttributeExtractor.extractRippleColorFrom(this)
+        val rippleColor = rippleColor
 
         initColor(redTheme, colorRes(R.color.red_light), rippleColor, colorRes(R.color.red), currentMode == Theme.Red)
         redTheme.onClick {

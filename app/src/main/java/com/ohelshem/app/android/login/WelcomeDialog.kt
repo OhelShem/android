@@ -10,7 +10,7 @@ import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.ohelshem.app.android.colorRes
 import com.ohelshem.app.android.getPressedColorRippleDrawable
 import com.ohelshem.app.android.getStateDrawable
-import com.ohelshem.app.android.utils.AttributeExtractor
+import com.ohelshem.app.android.rippleColor
 import com.ohelshem.app.controller.storage.SharedStorage
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.theme_dialog.view.*
@@ -23,7 +23,7 @@ object WelcomeDialog {
         val view = activity.layoutInflater.inflate(R.layout.theme_dialog, null, false)
         view.nightMode.check(R.id.auto)
 
-        val rippleColor = AttributeExtractor.extractRippleColorFrom(activity)
+        val rippleColor = activity.rippleColor
 
         initColor(view.redTheme, activity.colorRes(R.color.red_light), rippleColor, activity.colorRes(R.color.red),false)
         view.redTheme.onClick {

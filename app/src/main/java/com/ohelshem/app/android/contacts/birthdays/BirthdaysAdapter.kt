@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ohelshem.app.android.stringArrayRes
-import com.ohelshem.app.android.toFullName
+import com.ohelshem.app.android.flipName
 import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.birthday_item.view.*
@@ -19,7 +19,7 @@ class BirthdaysAdapter(val context: Context, val contacts: List<Contact>) : Recy
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
-        holder.name.text = contact.name.toFullName() + " (${context.stringArrayRes(R.array.layers)[contact.layer - 9] + "'" + contact.clazz})"
+        holder.name.text = contact.name.flipName() + " (${context.stringArrayRes(R.array.layers)[contact.layer - 9] + "'" + contact.clazz})"
         val cal = Calendar.getInstance()
         cal.timeInMillis = contact.birthday
         holder.birthday.hint = dateFormat.format(cal.time)

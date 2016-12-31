@@ -10,9 +10,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.ohelshem.app.android.flipName
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.show
-import com.ohelshem.app.android.toFullName
 import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.contact_item.view.*
@@ -27,7 +27,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
-        holder.name.text = contact.name.toFullName()
+        holder.name.text = contact.name.flipName()
         holder.birthday.hint = dateFormat.format(Date(contact.birthday))
         if (contact.phone.isEmpty()) {
             holder.dial.hide()
@@ -46,7 +46,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
                         R.id.addContact -> {
                             val intent = Intent(Intent.ACTION_INSERT)
                                     .setType(ContactsContract.Contacts.CONTENT_TYPE)
-                                    .putExtra(Insert.NAME, contact.name.toFullName())
+                                    .putExtra(Insert.NAME, contact.name.flipName())
                                     .putExtra(Insert.PHONE, contact.phone)
 
                             val format = SimpleDateFormat("yyyy-MM-dd")

@@ -6,11 +6,11 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
+import com.ohelshem.app.android.backgroundColor
 import com.ohelshem.app.android.contacts.birthdays.BirthdaysAdapter
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringArrayRes
-import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.implementation.Contacts
@@ -83,7 +83,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             llm.orientation = LinearLayoutManager.VERTICAL
             view.birthdaysRecyclerView.layoutManager = llm
             view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
-            view.backgroundColor = AttributeExtractor.extractBackgroundColorFrom(activity)
+            view.backgroundColor = activity.backgroundColor
 
             MaterialStyledDialog.Builder(activity)
                     .setStyle(Style.HEADER_WITH_TITLE)

@@ -33,7 +33,6 @@ import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
-import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.UIStorage
@@ -136,7 +135,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.setTypeface(null, Typeface.BOLD)
             holidayText.textColor = Color.WHITE
             holidayText.text = if (todayHoliday.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
-            lessonsContainer.backgroundColor = AttributeExtractor.extractPrimaryLightColorFrom(context)
+            lessonsContainer.backgroundColor = context.primaryLightColor
             lessonsContainer.addView(holidayText)
             return true
         }

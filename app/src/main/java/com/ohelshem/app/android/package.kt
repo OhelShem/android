@@ -94,7 +94,7 @@ class StringResourceDelegate(private val resources: () -> Resources, private val
     }
 }
 
-fun String.toFullName(): String {
+fun String.flipName(): String {
     val arr = this.split(" ")
     if (arr.size != 2) return this
     return arr[1] + " " + arr[0]
@@ -111,6 +111,10 @@ val Context.primaryLightColor: Int
     get() = AttributeExtractor.extractPrimaryLightColorFrom(this)
 val Context.accentColor: Int
     get() = AttributeExtractor.extractAccentColorFrom(this)
+val Context.backgroundColor: Int
+    get() = AttributeExtractor.extractBackgroundColorFrom(this)
+val Context.rippleColor: Int
+    get() = AttributeExtractor.extractRippleColorFrom(this)
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 fun getPressedColorRippleDrawable(normalColor: Int, selectedColor: Int, pressedColor: Int): Drawable {
