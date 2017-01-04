@@ -104,13 +104,13 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val s: SpannableString?
 
         val isWithout = " בלי " in text
-        val changeIsMikbatz = "מקבץ" in text || "מקבצים" in text
+        val changeIsMikbatz = "מקבץ" in text || "מקבצים" in text || "מגמה" in text || "מגמות" in text
         val withoutNoMikbatz = isWithout && !changeIsMikbatz
         val withoutYesMikbatz = isWithout && changeIsMikbatz
-        val withoutNoName = text.startsWith("בלי")
+        val roomOrWithoutNoName = text.startsWith("בלי") || text.startsWith("בחדר")
 
         if (orig != null)
-            s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || withoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
+            s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || roomOrWithoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
         else {
             if (!storage.isStudent() && teacherName != null) {
                 s = SpannableString(text + if (teacherName.isNotEmpty()) with + teacherName else "")
