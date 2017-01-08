@@ -36,7 +36,7 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, showDi
             .setContentIntent(pendingIntent).build())
 }
 
-fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false, sound: Boolean = false, link: String = "") {
+fun Context.sendNotification(title: String, messageBody: String, id: Int, action: String?, big: Boolean = false, sound: Boolean = false, link: String = "", icon: Int = R.drawable.ic_notification) {
         val intent = Intent(this, MainActivity::class.java).setAction(action)
         val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
@@ -45,7 +45,7 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, action
 
         notificationManager.notify(id, NotificationCompat.Builder(this)
                 .apply { if (big) setStyle(android.support.v4.app.NotificationCompat.BigTextStyle().bigText(messageBody)) }
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(icon)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .apply {if (sound) setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))}
