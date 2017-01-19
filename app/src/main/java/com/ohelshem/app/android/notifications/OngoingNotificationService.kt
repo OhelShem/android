@@ -16,9 +16,9 @@ import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.main.MainActivity
+import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
-import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.getDay
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
@@ -37,8 +37,8 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val cal = Calendar.getInstance()
         val day = cal.getDay()
         if (storage.isSetup()) {
-            val dayType = TimetableController.getDayType(cal, timetableController.learnsOnFriday)
-            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != toDayOnly(Calendar.getInstance()).timeInMillis && dayType != DayType.Holiday && dayType != DayType.Summer && dayType != DayType.Friday && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
+            val holiday = TimetableController.getHoliday(Calendar.getInstance())
+            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != Calendar.getInstance().clearTime().timeInMillis && holiday == null && day != Calendar.SATURDAY  && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
@@ -104,13 +104,13 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val s: SpannableString?
 
         val isWithout = " בלי " in text
-        val changeIsMikbatz = "מקבץ" in text || "מקבצים" in text
+        val changeIsMikbatz = "מקבץ" in text || "מקבצים" in text || "מגמה" in text || "מגמות" in text
         val withoutNoMikbatz = isWithout && !changeIsMikbatz
         val withoutYesMikbatz = isWithout && changeIsMikbatz
-        val withoutNoName = text.startsWith("בלי")
+        val roomOrWithoutNoName = text.startsWith("בלי") || text.startsWith("בחדר")
 
         if (orig != null)
-            s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || withoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
+            s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || roomOrWithoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
         else {
             if (!storage.isStudent() && teacherName != null) {
                 s = SpannableString(text + if (teacherName.isNotEmpty()) with + teacherName else "")
@@ -182,13 +182,5 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             context.startService<OngoingNotificationService>()
         }
 
-    }
-
-    fun toDayOnly(cal: Calendar): Calendar {
-        cal.set(Calendar.HOUR,0)
-        cal.set(Calendar.MINUTE,0)
-        cal.set(Calendar.SECOND,0)
-        cal.set(Calendar.MILLISECOND,0)
-        return cal
     }
 }

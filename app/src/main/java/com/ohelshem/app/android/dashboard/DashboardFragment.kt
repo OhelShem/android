@@ -149,15 +149,15 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         if (change != null) {
 
             val changeIsWithout = " בלי " in change.content
-            val changeIsMikbatz = "מקבץ" in change.content || "מקבצים" in change.content
-            val withoutNoMikbatz = changeIsWithout && !changeIsMikbatz
-            val withoutYesMikbatz = changeIsWithout && changeIsMikbatz
-            val withoutNoName = change.content.startsWith("בלי")
+            val changeIsMikbatz = "מקבץ" in change.content || "מקבצים" in change.content || "מגמה" in change.content || "מגמות" in change.content
+            val withoutNoMikbatz = changeIsWithout && !changeIsMikbatz // ex: מתמטיקה בלי קלמפנר
+            val withoutYesMikbatz = changeIsWithout && changeIsMikbatz // ex: מקבץ בלי לרר
+            val roomOrWithoutNoName = change.content.startsWith("בלי") || change.content.startsWith("בחדר") // ex: בחדר 318
 
             hasModifiedCurrentLessonView = true
             lessonName.htmlText =
                     if (withoutNoMikbatz) bold { change.content }
-                    else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.hour.represent()})"
+                    else bold { change.content } + " (${if (withoutYesMikbatz || roomOrWithoutNoName) "" else instead + " "}${data.hour.represent()})"
 
             currentLesson.backgroundColor = change.color
             firstSpace.backgroundColor = change.color
@@ -209,10 +209,10 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (!isFuture && change != null) {
 
                 val nextChangeIsWithout = " בלי " in change.content
-                val nextChangeIsMikbatz = "מקבץ" in change.content || "מקבצים" in change.content
+                val nextChangeIsMikbatz = "מקבץ" in change.content || "מקבצים" in change.content || "מגמה" in change.content || "מגמות" in change.content
                 val withoutNoMikbatz = nextChangeIsWithout && !nextChangeIsMikbatz
                 val withoutYesMikbatz = nextChangeIsWithout && nextChangeIsMikbatz
-                val withoutNoName = change.content.startsWith("בלי")
+                val withoutNoName = change.content.startsWith("בלי") || change.content.startsWith("בחדר")
 
                 hasModifiedNextLessonView = true
                 nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.nextHour.represent()})"

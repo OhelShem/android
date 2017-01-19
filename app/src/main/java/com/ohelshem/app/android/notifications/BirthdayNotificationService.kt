@@ -49,7 +49,7 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
                 text += " ו" + contacts[i].name.flipName()
         }
         text += "!"
-        sendNotification(getString(R.string.birthday_title), text, action = Shortcut_LaunchMyClass, big = true, id = 1005, sound = true)
+        sendNotification(getString(R.string.birthday_title), text, action = Shortcut_LaunchMyClass, big = true, id = 1005, sound = true, icon = R.drawable.ic_birthday)
     }
 
 }
