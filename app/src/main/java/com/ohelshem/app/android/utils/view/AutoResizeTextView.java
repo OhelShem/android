@@ -6,12 +6,12 @@ import android.content.res.Resources;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 /**
  * a textView that is able to self-adjust its font size depending on the min and max size of the font, and its own size.<br/>
@@ -20,7 +20,7 @@ import android.widget.TextView;
  * It should work fine with most Android versions, but might have some issues on Android 3.1 - 4.04, as setTextSize will only work for the first time. <br/>
  * More info here: https://code.google.com/p/android/issues/detail?id=22493 and here in case you wish to fix it: http://stackoverflow.com/a/21851239/878126
  */
-public class AutoResizeTextView extends TextView {
+public class AutoResizeTextView extends AppCompatTextView {
     private static final int NO_LINE_LIMIT = -1;
     private final RectF _availableSpaceRect = new RectF();
     private final SizeTester _sizeTester;

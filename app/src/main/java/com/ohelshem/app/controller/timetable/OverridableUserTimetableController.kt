@@ -38,8 +38,8 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
     fun onUpdate(data: List<OverrideData>) {
         val daysOfWeek = timetableController.size - 1
         val goodOverrides = data.toMutableList()
-        data.forEachReversedWithIndex { i, overrideData ->
-            if (overrideData.day > daysOfWeek || overrideData.hour >= timetableController[overrideData.day].size)
+        data.forEachReversedWithIndex { i, (day, hour) ->
+            if (day > daysOfWeek || hour >= timetableController[day].size)
                 goodOverrides.removeAt(i)
         }
         if (goodOverrides.size != data.size) {
@@ -75,7 +75,7 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
             }
 
             if (timetable.size == 6 && timetable[5].size == 0) timetable.removeAt(5)
-            overrideTimetable = timetable.map { it.toTypedArray() }.toTypedArray()
+            overrideTimetable = timetable.map(List<Hour>::toTypedArray).toTypedArray()
         }
     }
 

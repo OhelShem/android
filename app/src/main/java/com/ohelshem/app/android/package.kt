@@ -154,10 +154,8 @@ var TextView.htmlText: String
 
 inline fun bold(text: () -> CharSequence) = "<b>${text()}</b>"
 
-fun ViewManager.appCompatSwitch(theme: Int = 0): SwitchCompat = appCompatSwitch(theme) {}
 inline fun ViewManager.appCompatSwitch(theme: Int = 0, init: SwitchCompat.() -> Unit): SwitchCompat = ankoView(::SwitchCompat, theme, init)
 
-fun ViewManager.autoResizeTextView(theme: Int = 0) = autoResizeTextView(theme) {}
 inline fun ViewManager.autoResizeTextView(theme: Int = 0, init: AutoResizeTextView.() -> Unit) = ankoView(::AutoResizeTextView, theme, init)
 
 operator fun View.get(index: Int): View = (this as ViewGroup).getChildAt(index)

@@ -16,11 +16,12 @@ import com.ohelshem.app.android.show
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.*
 
+@Suppress("JoinDeclarationAndAssignment")
 class TimetableWeekView : LinearLayout, TimetableBasicView {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private var groupText: String
+    private var groupText: String = "(" + context.getString(R.string.group) + ")"
 
     override var onClickListener: ((day: Int, hour: Int, data: Hour) -> Unit)? = null
 
@@ -35,8 +36,6 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
         View.inflate(context, R.layout.timetable_all_week, this)
         headerView = find(R.id.header_row)
         table = find(R.id.table)
-
-        groupText = "(" + context.getString(R.string.group) + ")"
 
     }
 
@@ -64,7 +63,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     }
 
     private fun initView(data: Array<Array<Hour>>, groupFormatting: Boolean) {
-        val max = data.map { it.size }.max()!!
+        val max = data.map(Array<*>::size).max()!!
         val dp1 = dip(1)
         val dp24 = dip(24)
         val dp30 = dip(30)

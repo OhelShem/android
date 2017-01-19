@@ -23,7 +23,6 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -88,16 +87,10 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             MaterialStyledDialog.Builder(activity)
                     .setStyle(Style.HEADER_WITH_TITLE)
                     .setTitle(getString(R.string.birthdays_in_school))
-                    //.setDescription("לתאריך " + dateFormat.format(Calendar.getInstance().time))
                     .autoDismiss(false)
                     .setCustomView(view)
                     .show()
 
         } else toast(getString(R.string.no_birthdays_in_school))
-
-
     }
-
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-
 }

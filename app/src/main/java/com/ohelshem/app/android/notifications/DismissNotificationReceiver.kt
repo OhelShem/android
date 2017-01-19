@@ -11,7 +11,7 @@ import org.jetbrains.anko.notificationManager
 import java.util.*
 
 
-class DismissNotificationReceiver(): BroadcastReceiver() {
+class DismissNotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         val kodein = LazyKodein(context.appKodein)

@@ -36,10 +36,9 @@ class DaySpinnerAdapter(context: Context, daysLearning: BooleanArray) : BaseAdap
     private val mDropDownHelper: ThemedSpinnerAdapter.Helper = ThemedSpinnerAdapter.Helper(context)
     private val daysOfWeek = context.resources.getStringArray(R.array.week_days)
     private val allWeek = context.getString(R.string.all_week)
-    private val days: IntArray
+    private val days: IntArray = IntArray(daysLearning.count { it } + 1)
 
     init {
-        days = IntArray(daysLearning.count { it } + 1)
         var pos = 0
         daysLearning.forEachIndexed { index, enabled ->
             if (enabled)

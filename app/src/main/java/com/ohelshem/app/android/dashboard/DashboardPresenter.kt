@@ -82,10 +82,10 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
             if (storage.userData.isTeacher()) {
                 val primaryClass = storage.primaryClass
                 if (primaryClass != null)
-                    return storage.getTestsForClass(primaryClass.layer, primaryClass.clazz).filter { it.date <= time && it.date >= now }
+                    return storage.getTestsForClass(primaryClass.layer, primaryClass.clazz).filter { it.date in now..time }
                 else
                     return emptyList()
             }
-            return storage.tests?.filter { it.date <= time && it.date >= now } ?: emptyList()
+            return storage.tests?.filter { it.date in now..time } ?: emptyList()
         }
 }

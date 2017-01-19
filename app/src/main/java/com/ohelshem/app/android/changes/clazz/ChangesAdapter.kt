@@ -37,7 +37,7 @@ import org.jetbrains.anko.onClick
  */
 class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordinatorLayout: CoordinatorLayout) : RecyclerView.Adapter<TimetableAdapter.VH>() {
     val EmptyCallback = { v: View? -> }
-    val items = Array(Math.max(items.maxBy { it.hour }!!.hour, timetable.size)) { position -> items.firstOrNull { it.hour - 1 == position } }
+    val items = Array(Math.max(items.maxBy(Change::hour)!!.hour, timetable.size)) { position -> items.firstOrNull { it.hour - 1 == position } }
     val with = " " + coordinatorLayout.context.getString(R.string.with) + " "
 
     override fun getItemCount(): Int = items.size
@@ -49,7 +49,7 @@ class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordi
         val hour = if (position < timetable.size) timetable[position] else null
         holder.lesson.text = (position + 1).toString()
         if (item == null) {
-            holder.text.text = hour?.let { ("<b>"+it.name + "</b><br>" + "<small><font color='#ECEFF1'>" + it.teacher + "</font></small>").fromHtml() } ?: ""
+            holder.text.text = hour?.let { ("<b>" + it.name + "</b><br>" + "<small><font color='#ECEFF1'>" + it.teacher + "</font></small>").fromHtml() } ?: ""
             holder.background.backgroundDrawable = TimetableAdapter.createLessonDrawable(hour?.color ?: TimetableController.ColorEmpty)
             holder.lesson.backgroundResource = R.drawable.number_circle
             holder.itemView.onClick(EmptyCallback)

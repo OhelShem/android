@@ -10,13 +10,10 @@ class TimetableLayout : FrameLayout, TimetableBasicView {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private var weekView: TimetableBasicView
-    private var dayView: TimetableBasicView
+    private var weekView: TimetableBasicView = TimetableWeekView(context, null)
+    private var dayView: TimetableBasicView = TimetableDayView(context, null)
 
     init {
-        weekView = TimetableWeekView(context, null)
-        dayView = TimetableDayView(context, null)
-
         weekView.onClickListener = { a, b, c -> onClickListener?.invoke(a, b, c) }
         dayView.onClickListener = { a, b, c -> onClickListener?.invoke(a, b, c) }
 

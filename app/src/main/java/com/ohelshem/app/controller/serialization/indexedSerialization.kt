@@ -33,7 +33,7 @@ class IndexedDeserializationImpl<T : Any>(val serialization: Serialization<T>) :
         val headerLength = reader.readInt()
         val items = reader.readInt()
 
-        require(index >= 0 && index < items) { "Index is not valid. Index: $index, Items: $items" }
+        require(index in 0..(items - 1)) { "Index is not valid. Index: $index, Items: $items" }
 
         val skippedBytes = IndexItemSize * index
         reader.skip(skippedBytes)

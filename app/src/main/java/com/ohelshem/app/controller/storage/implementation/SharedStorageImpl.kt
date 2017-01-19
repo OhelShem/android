@@ -120,7 +120,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             } else {
                 prepare()
                 TimetableDataFile.simpleWriter().use { writer ->
-                    hourSerialization.serialize(writer, value.flatMap { it.toList() })
+                    hourSerialization.serialize(writer, value.flatMap (Array<Hour>::toList))
                 }
                 timetableListeners.values.forEach { it(value) }
             }

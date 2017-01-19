@@ -122,10 +122,10 @@ class OverridesActivity : AppThemedActivity() {
     }
 
     fun processFile(file: String) {
-        File(file).inputStream().use {
+        File(file).inputStream().use { stream ->
             tempFile.createNewFile()
             FileOutputStream(tempFile).use { file ->
-                it.copyTo(file)
+                stream.copyTo(file)
             }
         }
         try {

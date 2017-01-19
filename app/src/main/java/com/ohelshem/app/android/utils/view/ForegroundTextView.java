@@ -26,13 +26,13 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.TextView;
 
 import com.yoavst.changesystemohelshem.R;
 
-public class ForegroundTextView extends TextView {
+public class ForegroundTextView extends AppCompatTextView {
 
     // UI
     private Drawable foreground;

@@ -50,7 +50,7 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
         val now = day.timeInMillis
         day.add(Calendar.DAY_OF_YEAR, 7)
         val inAWeek = day.timeInMillis
-        var tests = allTests?.filter { it.date >= now && it.date <= inAWeek }?.sortedBy(Test::date) ?: emptyList()
+        var tests = allTests?.filter { it.date in now..inAWeek }?.sortedBy(Test::date) ?: emptyList()
         if (tests.isNotEmpty()) {
             val first = tests.first()
             if (first.date == now) {
