@@ -49,12 +49,14 @@ class DatesListFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesVie
         val time = Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
         val now = Calendar.getInstance().clearTime().timeInMillis
         val indexOfNew = tests.indexOfFirst { it.date > now }
-        val items = if (indexOfNew == -1 || indexOfNew == tests.lastIndex) tests.map { VisibleItem(it) }
-        else listOf(VisibleItem<Test>(oldTests)) +
-                tests.take(indexOfNew).map { VisibleItem(it) } +
-                HeaderAdapter.split(tests.drop(indexOfNew), getString(R.string.close_week), getString(R.string.later)) { date >= time }
+        val items =
+                if (indexOfNew == -1 || indexOfNew == tests.lastIndex) tests.map { VisibleItem(it) }
+                else if (indexOfNew == 0) HeaderAdapter.split(tests.drop(indexOfNew), getString(R.string.close_week), getString(R.string.later)) { date >= time }
+                else listOf(VisibleItem<Test>(oldTests)) +
+                        tests.take(indexOfNew).map { VisibleItem(it) } +
+                        HeaderAdapter.split(tests.drop(indexOfNew), getString(R.string.close_week), getString(R.string.later)) { date >= time }
         list.adapter = TestsAdapter(activity, items) {}
-        if (indexOfNew > -1)
+        if (indexOfNew > 0)
             list.scrollToPosition(indexOfNew + 1)
     }
 }

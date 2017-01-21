@@ -12,7 +12,7 @@ class IndexedSerializationTest {
     fun testCycleOfSimpleData() {
         val serialization = TestSerialization.toIndexed()
 
-        val tests = (0..10).map { OHTest(it.toLong(), "$it") }
+        val tests = List(10) { OHTest(it.toLong(), "$it") }
         val file = File.createTempFile("testCycleOfSimpleData", ".bin")
 
         file.simpleWriter().use { writer ->
@@ -34,7 +34,7 @@ class IndexedSerializationTest {
     fun testCycleOfList() {
         val serialization = TestSerialization.ofList().toIndexed()
 
-        val tests = (0..10).map { index -> (0..10).map { OHTest((index * 100 + it).toLong(), "${index * 100 + it}") } }
+        val tests = List(10) { index -> List(10) { OHTest((index * 100 + it).toLong(), "${index * 100 + it}") } }
         val file = File.createTempFile("testCycleOfList", ".bin")
 
         file.simpleWriter().use { writer ->

@@ -159,12 +159,12 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                             .setIcon(R.drawable.mashov)
                             .autoDismiss(true)
                             .setPositiveText(R.string.download)
-                            .onPositive { materialDialog, dialogAction ->
+                            .onPositive { materialDialog, _ ->
                                 materialDialog.cancel()
                                 launchPlayStore("com.yoavst.mashov")
                             }
                             .setNegativeText(R.string.no_thanks)
-                            .onNegative { materialDialog, dialogAction ->
+                            .onNegative { materialDialog, _ ->
                                 materialDialog.cancel()
                             }
                             .show()
@@ -225,7 +225,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             setMinimumDate(CalendarDay.from(TimetableController.StartOfTheYear))
             setMaximumDate(CalendarDay.from(Date(TimetableController.Summer.endTime)))
         }.commit()
-        calendarView.setOnDateChangedListener { materialCalendarView, calendarDay, selected ->
+        calendarView.setOnDateChangedListener { _, calendarDay, _ ->
             var hasFound = false
             val time = calendarDay.date.time
             for (test in tests) {
@@ -258,7 +258,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
 
         dialog = AlertDialog.Builder(context)
-                .setNeutralButton(R.string.tests_dialog_close) { dialog, id -> dialog.dismiss() }
+                .setNeutralButton(R.string.tests_dialog_close) { dialog, _ -> dialog.dismiss() }
                 .setView(view)
                 .show()
     }
