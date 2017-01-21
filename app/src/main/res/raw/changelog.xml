@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
     <changelogversion
+        changeData="Jan 21, 2016"
+        versionName="7.1.1">
+        <changelogtext>[b]Bug fixes[/b]</changelogtext>
+        <changelogtext>[b]Notifications for schedule work again[/b]</changelogtext>
+        <changelogtext>Updated to Kotlin 1.1 Beta</changelogtext>
+    </changelogversion>
+    <changelogversion
         changeData="Jan 1, 2016"
         versionName="7.1">
         <changelogtext>[b]Bug fixes[/b]</changelogtext>
