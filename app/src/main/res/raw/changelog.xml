@@ -4,7 +4,7 @@
         changeData="Jan 22, 2016"
         versionName="7.1.2">
         <changelogtext>[b]Fix crash in weekly timetable view[/b]</changelogtext>
-        <changelogtext>[b]Removed the light blue color. I hope you are happy Omer.[/b]</changelogtext>
+        <changelogtext>[b]Modified the colors. I hope you are happy Omer.[/b]</changelogtext>
     </changelogversion>
     <changelogversion
         changeData="Jan 21, 2016"

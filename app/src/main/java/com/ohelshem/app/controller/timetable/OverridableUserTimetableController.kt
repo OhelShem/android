@@ -61,9 +61,8 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
                         } else {
                             var color = lessons[lesson]
                             if (color == null) {
-                                c++
-                                if (c == colors.size) c = 0
-                                color = colors[c]
+                                if (c + 1 == colors.size) c = 0
+                                color = colors[c++]
                                 lessons[lesson] = color
                             }
                             if (override == null)
