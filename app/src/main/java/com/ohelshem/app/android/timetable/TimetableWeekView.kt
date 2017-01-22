@@ -63,7 +63,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     }
 
     private fun initView(data: Array<Array<Hour>>, groupFormatting: Boolean) {
-        val max = data.map(Array<*>::size).max()!!
+        val max = data.map { it.size }.max()!!
         val dp1 = dip(1)
         val dp24 = dip(24)
         val dp30 = dip(30)
