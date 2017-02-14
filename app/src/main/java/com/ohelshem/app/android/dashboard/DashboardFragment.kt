@@ -240,7 +240,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     }
 
 
-    private fun NumberedHour.represent(val showRoom = true) = if (isEmpty()) windowLesson else if (room != 0 && showRoom) "$name ($room)" else name
+    private fun NumberedHour.represent(showRoom: Boolean = true) = if (isEmpty()) windowLesson else if (room != 0 && showRoom) "$name ($room)" else name
     //endregion
 
 
