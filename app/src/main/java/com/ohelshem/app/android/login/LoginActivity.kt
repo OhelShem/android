@@ -14,6 +14,7 @@ import com.ohelshem.app.android.invisible
 import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.setMargins
 import com.ohelshem.app.android.show
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.TeacherStorage
 import com.readystatesoftware.systembartint.SystemBarTintManager
 import com.yoavst.changesystemohelshem.R
@@ -123,6 +124,10 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
                 listener()
             }
         }
+    }
+
+    override fun showStudentsDialog(studentStorage: Storage, listener: () -> Unit) {
+        listener()
     }
 
     private var shouldStopAnimation: Boolean = false

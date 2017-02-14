@@ -56,7 +56,6 @@ import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.util.*
-import kotlin.comparisons.compareBy
 
 
 class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationScreenManager {

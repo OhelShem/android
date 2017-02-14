@@ -82,12 +82,12 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
         setDay(currentDay)
     }
 
-    fun edit(hour: Hour, day: Int, position: Int, newLesson: String, newTeacher: String, editAll: Boolean) {
-        if (newLesson.isNotEmpty() || newTeacher.isNotEmpty()) {
+    fun edit(hour: Hour, day: Int, position: Int, newLesson: String, newTeacher: String, newRoom: Int, editAll: Boolean) {
+        if (newLesson.isNotEmpty() || newTeacher.isNotEmpty() || newRoom >= 0) {
             if (!editAll) {
                 val overrides = storage.overrides.toMutableList()
                 val index = overrides.indexOfFirst { it.day == day && it.hour == position }
-                val override = OverrideData(day, position, newLesson.or(hour.name), newTeacher.or(hour.teacher))
+                val override = OverrideData(day, position, newLesson.or(hour.name), newTeacher.or(hour.teacher), newRoom)
                 if (index < 0) overrides.add(override)
                 else overrides[index] = override
                 storage.overrides = overrides
@@ -98,7 +98,7 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
                     timetableController[dayOfWeek].forEachIndexed { i, hour ->
                         if (hour.name == name) {
                             val index = overrides.indexOfFirst { it.day == dayOfWeek && it.hour == i }
-                            val override = OverrideData(dayOfWeek, i, newLesson.or(hour.name), newTeacher.or(hour.teacher))
+                            val override = OverrideData(dayOfWeek, i, newLesson.or(hour.name), newTeacher.or(hour.teacher), newRoom)
                             if (index < 0) overrides += override
                             else overrides[index] = override
                         }

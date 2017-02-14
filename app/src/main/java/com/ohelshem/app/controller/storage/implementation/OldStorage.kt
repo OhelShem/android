@@ -115,7 +115,7 @@ object OldStorage : KotprefModel() {
         if (!TimetableOverridesFile.exists()) return emptyArray()
         val data = TimetableOverridesFile.readLines()
         return Array(data.size) { i ->
-            data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3]) }
+            data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3], 0) }
         }
     }
 

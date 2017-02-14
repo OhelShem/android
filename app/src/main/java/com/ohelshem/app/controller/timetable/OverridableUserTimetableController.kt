@@ -48,8 +48,7 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
             val colors = timetableController.colors
             val lessons = HashMap<String, Int>(20)
             var c = 0
-            val timetable = ArrayList<ArrayList<Hour>>(timetableController.size)
-            (0..timetableController.size - 1).mapTo(timetable) {
+            val timetable = MutableList(timetableController.size) {
                 ArrayList<Hour>(timetableController[it].size).apply {
                     for (hour in 0..timetableController[it].size - 1) {
                         val original = timetableController[it][hour]
@@ -57,7 +56,7 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
                         val lesson = override?.newName ?: original.name
                         val teacher = override?.newTeacher ?: original.teacher
                         if (lesson.isBlank()) {
-                            add(WrappedHour("", "", original.name, original.teacher, TimetableController.ColorEmpty))
+                            add(WrappedHour("", "", original.name, original.teacher, TimetableController.ColorEmpty, override?.newRoom ?: 0))
                         } else {
                             var color = lessons[lesson]
                             if (color == null) {
@@ -67,7 +66,7 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
                             }
                             if (override == null)
                                 add(Hour(lesson, teacher, color))
-                            else add(WrappedHour(override.newName, override.newTeacher, original.name, original.teacher, color))
+                            else add(WrappedHour(override.newName, override.newTeacher, original.name, original.teacher, color, override.newRoom))
                         }
                     }
                 }

@@ -20,4 +20,4 @@ package com.ohelshem.app.model
 /**
  * Represent an override for the timetable system.
  */
-data class OverrideData(val day: Int, val hour: Int, val newName: String, val newTeacher: String)
+data class OverrideData(val day: Int, val hour: Int, val newName: String, val newTeacher: String, val newRoom: Int)

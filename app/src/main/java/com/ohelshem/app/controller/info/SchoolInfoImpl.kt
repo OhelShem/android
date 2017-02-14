@@ -14,5 +14,5 @@ object SchoolInfoImpl : SchoolInfo {
     }
 
     override val allClasses: List<ClassInfo>
-        get() = (MinLayer..MaxLayer).flatMap { layer -> (0 until get(layer)).map { clazz -> ClassInfo(layer, clazz + 1) } }
+        get() = (MinLayer..MaxLayer).flatMap { layer -> List(get(layer)) { clazz -> ClassInfo(layer, clazz + 1) } }
 }

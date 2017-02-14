@@ -86,7 +86,7 @@ class App : Application(), KodeinAware {
             val version = BuildConfig.VERSION_CODE
             if (version != appVersion) {
                 // Migration comes here
-                updatedFromVersion = version
+                updatedFromVersion = appVersion
                 appVersion = version
             }
         }

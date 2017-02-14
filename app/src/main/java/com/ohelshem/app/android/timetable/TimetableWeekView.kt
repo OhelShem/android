@@ -13,6 +13,7 @@ import com.ohelshem.app.android.fromHtml
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
+import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.*
 
@@ -141,9 +142,16 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
 
     private fun generateText(hour: Hour, groupFormatting: Boolean): CharSequence {
         val mikbatz = groupFormatting && hour.teacher.count { it == ',' } >= 2
-        return if (hour.name.isEmpty()) "" else if (groupFormatting) ("<b>${hour.name}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml() else hour.name
+        if (hour.name.isEmpty()) return ""
+        else if (groupFormatting) return ("<b>${hour.represent()}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml()
+        else return hour.represent()
     }
 
     private fun getId(day: Int, hour: Int) = 100 + day * 10 + hour
+
+    private fun Hour.represent(): String {
+        if (this !is WrappedHour || room == 0) return name
+        else return "$name ($room)"
+    }
 
 }

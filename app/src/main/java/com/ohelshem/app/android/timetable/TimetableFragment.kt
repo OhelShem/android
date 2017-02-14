@@ -26,6 +26,7 @@ import com.github.salomonbrys.kodein.erased.factory
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.SchoolHour
+import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.settings.OverridesActivity
 import com.ohelshem.app.android.timetable.adapter.DaySpinnerAdapter
 import com.ohelshem.app.android.utils.BaseMvpFragment
@@ -110,11 +111,24 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     }
 
     override fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean) {
+        val room = (hour as? WrappedHour)?.room?.takeIf { it != 0 }
+
         val view = View.inflate(activity, R.layout.dialog_override, null)
         view.find<TextView>(R.id.currentName).text = hour.name
         view.find<TextView>(R.id.currentTeacher).text = hour.teacher
+        if (room != null)
+            view.find<TextView>(R.id.currentRoom).text = "$room"
+        else {
+            view.find<TextView>(R.id.currentRoom).hide()
+            view.find<TextView>(R.id.currentRoomTitle).hide()
+
+        }
+
+
         val newName = view.find<EditText>(R.id.newName)
         val newTeacher = view.find<EditText>(R.id.newTeacher)
+        val newRoom = view.find<EditText>(R.id.newRoom)
+
         val all = view.find<CheckBox>(R.id.changeAll)
         if (hour is WrappedHour) {
             newName.hint = hour.oldName
@@ -122,14 +136,14 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         }
         val builder = AlertDialog.Builder(activity)
                 .setView(view)
-                .setPositiveButton(R.string.apply) { dialog, which ->
-                    presenter.edit(hour, day, position, newName.text.toString(), newTeacher.text.toString(), all.isChecked)
+                .setPositiveButton(R.string.apply) { _, _ ->
+                    presenter.edit(hour, day, position, newName.text.toString(), newTeacher.text.toString(), newRoom.text.toString().toIntOrNull() ?: -1, all.isChecked)
                 }
-                .setNegativeButton(R.string.cancel) { dialog, which ->
+                .setNegativeButton(R.string.cancel) { _, _ ->
 
                 }
         if (hasOverride) {
-            builder.setNeutralButton(R.string.return_to_default) { dialog, which ->
+            builder.setNeutralButton(R.string.return_to_default) { _, _ ->
                 presenter.returnToDefault(hour, day, position, all.isChecked)
             }
         }
@@ -148,9 +162,10 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
     private fun removeListener() {
         screenManager.topNavigationElement.onItemSelectedListener {}
     }
+
     private fun setListener() {
         screenManager.topNavigationElement.onItemSelectedListener {
-            onItemSelected { adapterView, view, position, id ->
+            onItemSelected { _, _, position, _ ->
                 presenter.setDay(position)
             }
         }

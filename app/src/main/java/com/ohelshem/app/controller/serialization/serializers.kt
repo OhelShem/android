@@ -110,6 +110,7 @@ object OverrideSerialization : Serialization<OverrideData> {
         writer.writeInt(data.hour)
         writer.writeString(data.newName)
         writer.writeString(data.newTeacher)
+        writer.writeInt(data.newRoom)
     }
 
     override fun deserialize(reader: SimpleReader): OverrideData {
@@ -117,7 +118,8 @@ object OverrideSerialization : Serialization<OverrideData> {
         val hour = reader.readInt()
         val newName = reader.readString()
         val newTeacher = reader.readString()
-        return OverrideData(day, hour, newName, newTeacher)
+        val newRoom = reader.readInt()
+        return OverrideData(day, hour, newName, newTeacher, newRoom)
     }
 }
 

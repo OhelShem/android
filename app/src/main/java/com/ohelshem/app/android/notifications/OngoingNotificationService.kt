@@ -20,6 +20,7 @@ import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.getDay
+import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
 import org.jetbrains.anko.startService
@@ -56,12 +57,12 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                         if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
                             lessonName = it.content
                             color = it.color
-                            orig = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                            orig = data.hour.represent()
                             isChange = true
                         }
                     }
                     if (!isChange) {
-                        lessonName = if (data.hour.isEmpty()) getString(R.string.window_lesson) else data.hour.name
+                        lessonName = data.hour.represent()
                         lessonTeacherName = data.hour.teacher
                     }
 
@@ -77,12 +78,12 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                             if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
                                 nextLesson = it.content
                                 nextColor = it.color
-                                orig2 = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                                orig2 = data.nextHour.represent()
                                 isNextChange = true
                             }
                         }
                         if (!isNextChange) {
-                            nextLesson = if (data.nextHour.isEmpty()) getString(R.string.window_lesson) else data.nextHour.name
+                            nextLesson = data.nextHour.represent()
                             nextLessonTeacher = data.nextHour.teacher
                         }
                     }
@@ -99,6 +100,8 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
             } else notificationManager.cancel(NotificationId)
         } else notificationManager.cancel(NotificationId)
     }
+
+    private fun NumberedHour.represent() = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0) "$name ($room)" else name
 
     fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString {
         val s: SpannableString?

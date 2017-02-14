@@ -172,7 +172,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             if (data.hour.isEmpty())
                 lessonName.htmlText = bold { windowLesson }
             else {
-                lessonName.htmlText = bold { data.hour.name } + if (data.hour.teacher.isNotEmpty()) with + data.hour.teacher else ""
+                lessonName.htmlText = bold { data.hour.represent() } + if (data.hour.teacher.isNotEmpty()) with + data.hour.teacher else ""
             }
         }
     }
@@ -226,7 +226,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 if (data.nextHour.isEmpty())
                     nextLessonName.htmlText = bold { windowLesson }
                 else {
-                    nextLessonName.htmlText = bold { data.nextHour.name } + if (data.nextHour.teacher.isNotEmpty()) with + data.nextHour.teacher else ""
+                    nextLessonName.htmlText = bold { data.nextHour.represent() } + if (data.nextHour.teacher.isNotEmpty()) with + data.nextHour.teacher else ""
                 }
             }
         }
@@ -240,7 +240,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     }
 
 
-    private fun NumberedHour.represent() = if (isEmpty()) windowLesson else name
+    private fun NumberedHour.represent() = if (isEmpty()) windowLesson else if (room != 0) "$name ($room)" else name
     //endregion
 
 

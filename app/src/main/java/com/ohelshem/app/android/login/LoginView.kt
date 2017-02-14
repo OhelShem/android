@@ -19,6 +19,7 @@ package com.ohelshem.app.android.login
 
 import com.hannesdorfmann.mosby.mvp.MvpView
 import com.ohelshem.api.model.UpdateError
+import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.TeacherStorage
 
 interface LoginView: MvpView {
@@ -31,4 +32,5 @@ interface LoginView: MvpView {
     fun launchApp()
 
     fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit)
+    fun showStudentsDialog(studentStorage: Storage, listener: () -> Unit)
 }

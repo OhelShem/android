@@ -81,6 +81,7 @@
     <string name="new_name">שם השיעור החדש</string>
     <string name="new_teacher_name">שם המורה החדש</string>
     <string name="change_all">שנה עבור כל השיעורים בעלי אותו השם</string>
+    <string name="change_all_today">שנה עבור כל השיעורים בעלי אותו השם היום</string>
     <string name="edit_lesson">עריכת שיעור</string>
     <string name="return_to_default">החזר למקור</string>
     <string name="settings_name">ניהול עריכות שיעורים</string>
@@ -92,6 +93,9 @@
     <string name="invalid_backup_file">קובץ גיבוי לא תקין</string>
     <string name="share">שתף</string>
     <string name="backup_file_name">קובץ גיבוי שינויים במערכת שעות</string>
+    <string name="current_room">חדר נוכחי</string>
+    <string name="new_room">חדר חדש</string>
+    <string name="main_room">חדר כיתת האם</string>
 
     <!-- Holidays -->
     <string name="weeks_left_to_summer">שבועות לקיץ</string>

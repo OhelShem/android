@@ -263,13 +263,17 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             }
             // Migrate overrides
             if (TimetableOverridesFileV4.exists()) {
-                val data = TimetableOverridesFileV4.readLines()
-                val overrides = (0 until data.size).map { i ->
-                    data[i].split('^').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], it[3]) }
-                }
-                this.overrides = overrides
+                this.overrides = Overrides.read(4, TimetableOverridesFileV4)
                 TimetableOverridesFileV4.delete()
             }
+            version = 5
+        }
+        if (version == 5) {
+            // migrate overrides
+            if (TimetableOverridesFileV5.exists()) {
+                this.overrides = Overrides.read(5, TimetableOverridesFileV5)
+            }
+            version = 6
         }
         version = LatestVersion
     }
@@ -285,10 +289,12 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
 
     private val TimetableDataFile: File by lazy { File(FilesFolder, "timetable5.bin") }
 
-    private val TimetableOverridesFile: File by lazy { File(FilesFolder, "timetable5_overrides.bin") }
-    private val TimetableOverridesFileBackup: File by lazy { File(FilesFolder, "timetable5_overrides_backup.bin") }
+    private val TimetableOverridesFile: File by lazy { File(FilesFolder, "timetable6_overrides.bin") }
+    private val TimetableOverridesFileBackup: File by lazy { File(FilesFolder, "timetable6_overrides_backup.bin") }
 
     //region compatibility
+    private val TimetableOverridesFileV5: File by lazy { File(FilesFolder, "timetable5_overrides.bin") }
+    private val TimetableOverridesFileBackupV5: File by lazy { File(FilesFolder, "timetable5_overrides_backup.bin") }
     private val TimetableDataFileV4: File by lazy { File(FilesFolder, "timetable4.bin") }
     private val TimetableOffsetFileV4: File by lazy { File(FilesFolder, "timetable4_offsets.bin") }
     private val TimetableOverridesFileV4: File by lazy { File(FilesFolder, "timetable4_overrides.csv") }
@@ -298,6 +304,6 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     companion object : KLogging() {
         private const val InnerSeparator: Char = '\u2004'
 
-        private const val LatestVersion = 5
+        private const val LatestVersion = 6
     }
 }

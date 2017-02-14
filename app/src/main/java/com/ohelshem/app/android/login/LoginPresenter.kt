@@ -63,8 +63,10 @@ class LoginPresenter(private val storage: Storage, private val apiController: Ap
                 view?.launchApp()
             }
         } else {
-            analytics.onLogin()
-            view?.launchApp()
+            view?.showStudentsDialog(storage) {
+                analytics.onLogin()
+                view?.launchApp()
+            }
         }
 
         onDestroy()

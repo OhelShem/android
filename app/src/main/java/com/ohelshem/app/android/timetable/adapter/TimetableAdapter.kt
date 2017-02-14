@@ -28,6 +28,7 @@ import android.widget.TextView
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.android.htmlText
 import com.ohelshem.app.controller.timetable.TimetableController
+import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.timetable_item.view.*
 import org.jetbrains.anko.backgroundDrawable
@@ -45,13 +46,16 @@ class TimetableAdapter(val context: Context, val items: Array<Hour>, val listene
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = items[position]
         holder.lesson.text = (position + 1).toString()
-        holder.text.htmlText = "<b>${item.name}</b><br><small><font color='#ECEFF1'>${item.teacher}</font></small>"
         holder.background.backgroundDrawable = createLessonDrawable(item.color)
         holder.hour.text = TimetableController.getStartOfHour(position + 1)
         holder.tillHour.text = TimetableController.getEndOfHour(position + 1)
         holder.background.setOnClickListener {
             listener(item, position)
         }
+
+        if (item is WrappedHour && item.room != 0) {
+            holder.text.htmlText = "<b>${item.name}</b> <small>(${item.room})</small><br><small><font color='#ECEFF1'>${item.teacher}</font></small>"
+        } else holder.text.htmlText = "<b>${item.name}</b><br><small><font color='#ECEFF1'>${item.teacher}</font></small>"
     }
 
 

@@ -3,6 +3,7 @@ package com.ohelshem.app.controller.timetable
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
+import com.ohelshem.app.model.WrappedHour
 import java.util.*
 import java.util.Calendar.SATURDAY
 import java.util.Calendar.SUNDAY
@@ -76,9 +77,9 @@ abstract class BaseTimetableController : TimetableController {
                 days--
 
                 val minutesLeft = getLessonTimeToCompare(schoolHour) + (days * 60 * 24) + (60 * 24 - timeNow)
-                val now = NumberedHour(h, day, schoolHour)
+                val now = NumberedHour(h, day, schoolHour, h.room())
                 val nextHour = if (schoolHour + 1 != today.size) {
-                    NumberedHour(today[schoolHour + 1], day, schoolHour + 1)
+                    NumberedHour(today[schoolHour + 1], day, schoolHour + 1, today[schoolHour + 1].room())
                 } else {
                     timetable.getFirstExisting(day.plusDay())
                 }
@@ -86,9 +87,9 @@ abstract class BaseTimetableController : TimetableController {
 
             } else if (getLessonTimeToCompare(schoolHour) > timeNow) {
                 val minutesLeft = getLessonTimeToCompare(schoolHour) - timeNow
-                val now = NumberedHour(h, day, schoolHour)
+                val now = NumberedHour(h, day, schoolHour, h.room())
                 val nextHour = if (schoolHour + 1 != today.size) {
-                    NumberedHour(today[schoolHour + 1], day, schoolHour + 1)
+                    NumberedHour(today[schoolHour + 1], day, schoolHour + 1, today[schoolHour + 1].room())
                 } else {
                     timetable.getFirstExisting(day.plusDay())
                 }
@@ -96,9 +97,9 @@ abstract class BaseTimetableController : TimetableController {
                 return HourData(now, nextHour!!, minutesLeft, 0, isBefore = true)
             } else if (getLessonTimeToCompare(schoolHour, false) > timeNow) {
                 val minutesLeft = getLessonTimeToCompare(schoolHour, start = false) - timeNow
-                val now = NumberedHour(h, day, schoolHour)
+                val now = NumberedHour(h, day, schoolHour, h.room())
                 val nextHour = if (schoolHour + 1 != today.size) {
-                    NumberedHour(today[schoolHour + 1], day, schoolHour + 1)
+                    NumberedHour(today[schoolHour + 1], day, schoolHour + 1, today[schoolHour + 1].room())
                 } else {
                     timetable.getFirstExisting(day.plusDay())
                 }
@@ -122,8 +123,11 @@ abstract class BaseTimetableController : TimetableController {
             return stillRunning(day, startingDay, isStartingNow) therefore { getFirstExisting(day.plusDay(), startingDay, isStartingNow = false) }
         }
 
-        return NumberedHour(timetable[day - 1][0], day, 0)
+        val hour = timetable[day - 1][0]
+        return NumberedHour(hour, day, 0, hour.room())
     }
+
+    private fun Hour.room() = (this as? WrappedHour)?.room ?: 0
 
     private fun stillRunning(day: Int, startingDay: Int, isStartingNow: Boolean) = !(day == startingDay && !isStartingNow)
     private fun Int.plusDay() = if (this == SATURDAY) SUNDAY else this + 1

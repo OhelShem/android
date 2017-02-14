@@ -19,6 +19,6 @@ package com.ohelshem.app.model
 
 import com.ohelshem.api.model.Hour
 
-class NumberedHour(name: String = "", teacher: String = "", color: Int = 0, val day: Int = 0, val hourOfDay: Int = 0) : Hour(name, teacher, color) {
-    constructor(hour: Hour, day: Int, hourOfDay: Int) : this(hour.name, hour.teacher, hour.color, day, hourOfDay)
+class NumberedHour(name: String = "", teacher: String = "", color: Int = 0, val day: Int = 0, val hourOfDay: Int = 0, val room: Int = 0) : Hour(name, teacher, color) {
+    constructor(hour: Hour, day: Int, hourOfDay: Int, room: Int = 0) : this(hour.name, hour.teacher, hour.color, day, hourOfDay, room)
 }
