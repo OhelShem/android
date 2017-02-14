@@ -57,7 +57,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                         if (it.clazz == storage.userData.clazz && it.hour - 1 == data.hour.hourOfDay) {
                             lessonName = it.content
                             color = it.color
-                            orig = data.hour.represent()
+                            orig = data.hour.represent(false)
                             isChange = true
                         }
                     }
@@ -78,7 +78,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                             if (it.clazz == storage.userData.clazz && it.hour - 1 == data.nextHour.hourOfDay) {
                                 nextLesson = it.content
                                 nextColor = it.color
-                                orig2 = data.nextHour.represent()
+                                orig2 = data.nextHour.represent(false)
                                 isNextChange = true
                             }
                         }
@@ -101,7 +101,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         } else notificationManager.cancel(NotificationId)
     }
 
-    private fun NumberedHour.represent() = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0) "$name ($room)" else name
+    private fun NumberedHour.represent(val showRoom = true) = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0 && showRoom) "$name ($room)" else name
 
     fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString {
         val s: SpannableString?
