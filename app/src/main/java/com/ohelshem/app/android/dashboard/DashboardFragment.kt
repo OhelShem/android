@@ -215,7 +215,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 val withoutNoName = change.content.startsWith("בלי") || change.content.startsWith("בחדר")
 
                 hasModifiedNextLessonView = true
-                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.nextHour.represent()})"
+                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.nextHour.represent(false)})"
                 next_lesson.backgroundColor = change.color
                 nextLessonName.textColor = Color.WHITE
                 nextHourIcon.setColorFilter(Color.WHITE)
