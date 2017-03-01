@@ -32,10 +32,7 @@ import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
-import com.ohelshem.app.android.utils.AppThemedActivity
-import com.ohelshem.app.android.utils.BadgeBarGenerator
-import com.ohelshem.app.android.utils.BaseMvpFragment
-import com.ohelshem.app.android.utils.DebugMenuSwitchAction
+import com.ohelshem.app.android.utils.*
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfo
@@ -308,7 +305,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
 
     override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
-        runOnUiThread {
+        uiThread {
             if (!firstUpdate) {
                 toast(R.string.refreshed)
             } else {
@@ -331,8 +328,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     fun onNotification(title: String, body: String) {
-        runOnUiThread {
-            dialog = MaterialStyledDialog.Builder(this)
+        uiThread {
+            dialog = MaterialStyledDialog.Builder(act)
                     .setTitle(title)
                     .setDescription(body.fromHtml())
                     .autoDismiss(true)

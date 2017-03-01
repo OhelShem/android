@@ -14,6 +14,7 @@ import com.ohelshem.app.android.invisible
 import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.setMargins
 import com.ohelshem.app.android.show
+import com.ohelshem.app.android.utils.uiThread
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.TeacherStorage
 import com.readystatesoftware.systembartint.SystemBarTintManager
@@ -119,8 +120,8 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     }
 
     override fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit) {
-        runOnUiThread {
-            PrimaryClassDialog.create(teacherStorage, this) {
+        uiThread {
+            PrimaryClassDialog.create(teacherStorage, act) {
                 listener()
             }
         }
@@ -133,9 +134,9 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     private var shouldStopAnimation: Boolean = false
     private fun onRepeat() {
         if (shouldStopAnimation) {
-            runOnUiThread {
+            uiThread {
                 loadingBar.stopAnim()
-                WelcomeDialog.create(appKodein().instance(), this) {
+                WelcomeDialog.create(appKodein().instance(), act) {
                     finish()
                     startActivity<MainActivity>()
                 }

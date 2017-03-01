@@ -7,9 +7,13 @@ import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.runBlocking
 import mu.KLogging
 import java.util.*
 
+@Suppress("EXPERIMENTAL_FEATURE_WARNING")
 class ApiControllerImpl(override val storage: Storage, private val apiEngine: ApiEngine) : ApiController, Api.Callback {
     private var networkProvider: () -> Boolean = { true }
 
@@ -42,7 +46,13 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
         if (!isBusy) {
             if (networkProvider()) {
                 isBusy = true
-                apiEngine.call(id, password, storage.serverUpdateDate, this)
+
+                runBlocking {
+                    val (response, exception) = async(CommonPool) { apiEngine.call(id, password, storage.serverUpdateDate) }.await()
+                    if (response != null) onSuccess(response)
+                    else onFailure(exception!!)
+                }
+
                 return true
             } else forEach { it.onFail(UpdateError.Connection) }
         }
