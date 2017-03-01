@@ -157,7 +157,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             hasModifiedCurrentLessonView = true
             lessonName.htmlText =
                     if (withoutNoMikbatz) bold { change.content }
-                    else bold { change.content } + " (${if (withoutYesMikbatz || roomOrWithoutNoName) "" else instead + " "}${data.hour.represent()})"
+                    else bold { change.content } + " (${if (withoutYesMikbatz || roomOrWithoutNoName) "" else instead + " "}${data.hour.represent(false)})"
 
             currentLesson.backgroundColor = change.color
             firstSpace.backgroundColor = change.color
@@ -215,7 +215,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                 val withoutNoName = change.content.startsWith("בלי") || change.content.startsWith("בחדר")
 
                 hasModifiedNextLessonView = true
-                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.nextHour.represent()})"
+                nextLessonName.htmlText = if (withoutNoMikbatz) bold { change.content } else bold { change.content } + " (${if (withoutYesMikbatz || withoutNoName) "" else instead + " "}${data.nextHour.represent(false)})"
                 next_lesson.backgroundColor = change.color
                 nextLessonName.textColor = Color.WHITE
                 nextHourIcon.setColorFilter(Color.WHITE)
@@ -240,7 +240,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     }
 
 
-    private fun NumberedHour.represent() = if (isEmpty()) windowLesson else if (room != 0) "$name ($room)" else name
+    private fun NumberedHour.represent(showRoom: Boolean = true) = if (isEmpty()) windowLesson else if (room != 0 && showRoom) "$name ($room)" else name
     //endregion
 
 
