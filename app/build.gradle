@@ -40,7 +40,7 @@ kotlin {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.ohelshem:api:0.5.0'
+    compile 'com.ohelshem:api:0.5.1'
     // Android support libraries
     compile "com.android.support:support-v4:$androidSupportLibrary"
     compile "com.android.support:appcompat-v7:$androidSupportLibrary"
@@ -54,7 +54,6 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$firebase"
     // Kotlin libraries
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.12'
     compile 'com.github.salomonbrys.kodein:kodein-erased:3.2.0'
     compile 'com.github.salomonbrys.kodein:kodein-android:3.2.0'
     compile 'com.chibatching:kotpref:1.6.0'

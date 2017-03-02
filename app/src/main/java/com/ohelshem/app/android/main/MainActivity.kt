@@ -248,11 +248,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                         .itemsGravity(GravityEnum.CENTER)
                         .items(schoolClasses.map { "${layers[it.layer - 9]}'${it.clazz}" })
                         .negativeText(R.string.cancel)
-                        .itemsCallback { dialog, view, which, text ->
+                        .itemsCallback { _, _, which, _ ->
                             chosenClass = schoolClasses[which]
                             BadgeBarGenerator.badgeSelect(teacherBar, chosenClass)
                             notifyFragmentOnChooseClass(chosenClass)
-                        }.onNegative { materialDialog, dialogAction ->
+                        }.onNegative { materialDialog, _ ->
                     materialDialog.dismiss()
                 }.show()
             }) {
@@ -305,7 +305,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
 
     override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
-        uiThread {
+        runOnUiThread {
             if (!firstUpdate) {
                 toast(R.string.refreshed)
             } else {
@@ -328,13 +328,13 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     }
 
     fun onNotification(title: String, body: String) {
-        uiThread {
+        runOnUiThread {
             dialog = MaterialStyledDialog.Builder(act)
                     .setTitle(title)
                     .setDescription(body.fromHtml())
                     .autoDismiss(true)
                     .setPositiveText(R.string.accept)
-                    .onPositive { materialDialog, dialogAction ->
+                    .onPositive { materialDialog, _ ->
                         materialDialog.cancel()
                     }.show()
         }
