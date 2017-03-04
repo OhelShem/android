@@ -72,11 +72,21 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
     }
 
     private fun notifyNoChanges() {
-        context.sendNotification(if (changesForTomorrow) context.getString(R.string.changes_notif_title_tmrw) else context.getString(R.string.changes_notif_title), context.getString(R.string.no_changes), NotificationId, sound = true)
+        context.sendNotification(
+                if (changesForTomorrow)
+                    context.getString(R.string.changes_notif_title_tmrw)
+                else
+                    context.getString(R.string.changes_notif_title),
+                context.getString(R.string.no_changes), NotificationId, sound = true)
     }
 
     private fun notifyChanges() {
-        context.sendNotification(if (changesForTomorrow) context.getString(R.string.changes_notif_title_tmrw) else context.getString(R.string.changes_notif_title), context.getString(R.string.enter_to_see_changes), NotificationId, sound = true)
+        context.sendNotification(
+                if (changesForTomorrow)
+                    context.getString(R.string.changes_notif_title_tmrw)
+                else
+                    context.getString(R.string.changes_notif_title), context.getString(R.string.enter_to_see_changes),
+                NotificationId, sound = true)
     }
 
     override fun onFail(error: UpdateError) {

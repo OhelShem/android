@@ -33,7 +33,7 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
                     if (storage.notificationsForHolidays)
                         notifyHoliday()
                 }
-                if (storage.notificationsForChanges) {
+                if (dayType == DayType.Regular && storage.notificationsForChanges) {
                     ChangesNotificationGenerator(this).prepareNotification()
                 }
                 if (storage.notificationsForTests) {
