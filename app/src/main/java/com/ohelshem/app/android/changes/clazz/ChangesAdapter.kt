@@ -36,7 +36,7 @@ import org.jetbrains.anko.onClick
  * Showing changes inside a [RecyclerView]. Based on [TimetableAdapter] UI.
  */
 class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordinatorLayout: CoordinatorLayout) : RecyclerView.Adapter<TimetableAdapter.VH>() {
-    val EmptyCallback = { v: View? -> }
+    val EmptyCallback = { _: View? -> }
     val items = Array(Math.max(items.maxBy(Change::hour)!!.hour, timetable.size)) { position -> items.firstOrNull { it.hour - 1 == position } }
     val with = " " + coordinatorLayout.context.getString(R.string.with) + " "
 
@@ -58,7 +58,7 @@ class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordi
             holder.background.backgroundDrawable = TimetableAdapter.createLessonDrawable(item.color)
             holder.lesson.backgroundResource = R.drawable.number_circle_change
             //holder.text.setTypeface(holder.lesson.typeface, Typeface.ITALIC)
-            holder.background.onClick { v ->
+            holder.background.onClick {
                 if (!(hour?.isEmpty() ?: true))
                     snackbar(hour!!.name + with + hour.teacher)
                 else

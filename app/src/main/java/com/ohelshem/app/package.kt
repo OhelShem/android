@@ -26,10 +26,10 @@ fun Date.clearTime(): Date {
     return time.toCalendar().clearTime().time
 }
 
-fun Calendar?.isTomorrow(): Boolean {
+fun Calendar.isTomorrow(): Boolean {
     val tomorrow = Calendar.getInstance()
     tomorrow.add(Calendar.DAY_OF_YEAR, 1)
-    return tomorrow.isSameDay(if (this == null) Calendar.getInstance() else this)
+    return tomorrow.isSameDay(this)
 }
 
 fun Calendar?.isSameDay(cal2: Calendar?): Boolean {
@@ -40,7 +40,7 @@ fun Calendar?.isSameDay(cal2: Calendar?): Boolean {
 }
 
 fun Calendar.isToday(): Boolean {
-    return this.isSameDay(Calendar.getInstance())
+    return isSameDay(Calendar.getInstance())
 }
 
 fun getHour(): Int {
@@ -56,7 +56,7 @@ fun daysBetween(day1: Calendar, day2: Calendar): Int {
     var dayOne = day1.clone() as Calendar
     var dayTwo = day2.clone() as Calendar
 
-    if (dayOne.get(Calendar.YEAR) === dayTwo.get(Calendar.YEAR)) {
+    if (dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR)) {
         return Math.abs(dayOne.get(Calendar.DAY_OF_YEAR) - dayTwo.get(Calendar.DAY_OF_YEAR))
     } else {
         if (dayTwo.get(Calendar.YEAR) > dayOne.get(Calendar.YEAR)) {

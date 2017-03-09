@@ -12,6 +12,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.*
+import com.ohelshem.app.model.component1
+import com.ohelshem.app.model.component2
+import com.ohelshem.app.model.component3
+import com.ohelshem.app.model.component4
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.*
 import java.io.File
@@ -56,7 +60,7 @@ object LayerChangesGenerator {
 
             val layerText = stringArrayRes(R.array.layers)[layer - 9]
 
-            val view =  UI {
+            val view = UI {
                 linearLayout {
                     gravity = Gravity.RIGHT
                     orientation = LinearLayout.VERTICAL
@@ -137,10 +141,10 @@ object LayerChangesGenerator {
             }
         }
 
-        changes.forEach {
-            (rows[it.hour - 1][classes - it.clazz] as TextView).apply {
-                backgroundColor = it.color
-                text = it.content
+        changes.forEach { (clazz, hour, content, color) ->
+            with(rows[hour - 1][classes - clazz] as TextView) {
+                backgroundColor = color
+                text = content
             }
         }
     }

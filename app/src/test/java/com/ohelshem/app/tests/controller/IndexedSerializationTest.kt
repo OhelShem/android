@@ -1,7 +1,7 @@
-package com.ohelshem.app.controller
+package com.ohelshem.app.tests.controller
 
 import com.ohelshem.app.controller.serialization.*
-import com.ohelshem.app.getTestResource
+import com.ohelshem.app.tests.getTestResource
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -12,7 +12,7 @@ class IndexedSerializationTest {
     fun testCycleOfSimpleData() {
         val serialization = TestSerialization.toIndexed()
 
-        val tests = List(10) { OHTest(it.toLong(), "$it") }
+        val tests = List(10) { com.ohelshem.api.model.Test(it.toLong(), "$it") }
         val file = File.createTempFile("testCycleOfSimpleData", ".bin")
 
         file.simpleWriter().use { writer ->
@@ -34,7 +34,7 @@ class IndexedSerializationTest {
     fun testCycleOfList() {
         val serialization = TestSerialization.ofList().toIndexed()
 
-        val tests = List(10) { index -> List(10) { OHTest((index * 100 + it).toLong(), "${index * 100 + it}") } }
+        val tests = List(10) { index -> List(10) { com.ohelshem.api.model.Test((index * 100 + it).toLong(), "${index * 100 + it}") } }
         val file = File.createTempFile("testCycleOfList", ".bin")
 
         file.simpleWriter().use { writer ->

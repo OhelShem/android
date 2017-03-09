@@ -1,4 +1,4 @@
-package com.ohelshem.app.controller
+package com.ohelshem.app.tests.controller
 
 import com.ohelshem.api.model.Hour
 import com.ohelshem.app.controller.timetable.BaseTimetableController
