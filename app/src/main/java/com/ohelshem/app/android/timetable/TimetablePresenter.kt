@@ -27,7 +27,6 @@ import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.OverrideData
 import com.ohelshem.app.removeAtIfPositive
-import java.util.*
 
 class TimetablePresenter(private val storage: Storage, private val userTimetableController: TimetableController,
                          private val teacherTimetableControllerGenerator: (layer: Int, clazz: Int) -> TimetableController, isEditModeSupported: Boolean) :
@@ -92,13 +91,14 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
                 else overrides[index] = override
                 storage.overrides = overrides
             } else {
-                val overrides = storage.overrides.toCollection(LinkedList())
+                val overrides = storage.overrides.toMutableList()
                 val name = hour.name
                 for (dayOfWeek in 0 until timetableController.size) {
                     timetableController[dayOfWeek].forEachIndexed { i, hour ->
                         if (hour.name == name) {
                             val index = overrides.indexOfFirst { it.day == dayOfWeek && it.hour == i }
-                            val override = OverrideData(dayOfWeek, i, newLesson.or(hour.name), newTeacher.or(hour.teacher), newRoom)
+                            val override = OverrideData(dayOfWeek, i, newLesson.or(hour.name), newTeacher.or(hour.teacher),
+                                    if (newRoom >= 0) newRoom else if (index > 0) overrides[index].newRoom else 0 )
                             if (index < 0) overrides += override
                             else overrides[index] = override
                         }

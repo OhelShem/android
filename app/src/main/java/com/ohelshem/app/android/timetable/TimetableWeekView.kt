@@ -150,7 +150,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     private fun getId(day: Int, hour: Int) = 100 + day * 10 + hour
 
     private fun Hour.represent(): String {
-        if (this !is WrappedHour || room == 0) return name
+        if (this !is WrappedHour || room == 0 || room == -1) return name
         else return "$name ($room)"
     }
 
