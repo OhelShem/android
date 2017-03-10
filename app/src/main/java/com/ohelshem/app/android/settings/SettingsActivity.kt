@@ -39,7 +39,7 @@ import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.utils.AppThemedActivity
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.storage.SharedStorage.Theme
-import com.yoavst.changesystemohelshem.BuildConfig
+import com.yoavst.changesystemohelshem.BuildConfig.*
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.jetbrains.anko.*
@@ -61,15 +61,13 @@ class SettingsActivity : AppThemedActivity() {
         // settings card for teachers
         if (storage.userData.isTeacher()) {
             teacherSettings.apply {
-                var classes = storage.classes
-                var options = emptyArray<String>()
-                var flags = emptyArray<ClassInfo>()
-                options += getString(R.string.no_primary_class_short)
-                flags += ClassInfo(0, 0)
+                val classes = storage.classes.sortedWith(compareBy({ it.layer }, { it.clazz }))
+                val options = mutableListOf(getString(R.string.no_primary_class_short))
+                val flags = mutableListOf(ClassInfo(0, 0))
 
-                classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz }))
+                val layers = stringArrayRes(R.array.layers)
                 classes.forEach {
-                    options += "${stringArrayRes(R.array.layers)[it.layer - 9]}'${it.clazz}"
+                    options += "${layers[it.layer - 9]}'${it.clazz}"
                     flags += it
                 }
 
@@ -119,7 +117,7 @@ class SettingsActivity : AppThemedActivity() {
         themeList.apply {
             val options = stringArrayRes(R.array.night_mode_options)
             val flags = intArrayOf(AppCompatDelegate.MODE_NIGHT_NO, AppCompatDelegate.MODE_NIGHT_YES, AppCompatDelegate.MODE_NIGHT_AUTO)
-            settingsItem(getString(R.string.dark_mode), items = options, default = flags.indexOf(storage.darkMode)) {
+            settingsItem(getString(R.string.dark_mode), items = options.toList(), default = flags.indexOf(storage.darkMode)) {
                 storage.darkMode = flags[it]
             }
         }
@@ -198,9 +196,9 @@ class SettingsActivity : AppThemedActivity() {
             ProcessPhoenix.triggerRebirth(this)
         }
 
-        versionName.htmlText = versionName.text.toString() + ": <b>"+BuildConfig.VERSION_NAME+"</b>"
-        versionCode.htmlText = versionCode.text.toString() + ": <b>"+BuildConfig.VERSION_CODE+"</b>"
-        versionType.htmlText = versionType.text.toString() + ": <b>"+BuildConfig.BUILD_TYPE+"</b>"
+        versionName.htmlText = "${versionName.text}: <b>$VERSION_NAME</b>"
+        versionCode.htmlText = "${versionCode.text}: <b>$VERSION_CODE</b>"
+        versionType.htmlText = "${versionType.text}: <b>$BUILD_TYPE</b>"
         versionCode.onClick {
             if (!storage.developerMode) {
                 numberOfTaps++
@@ -251,7 +249,7 @@ class SettingsActivity : AppThemedActivity() {
         }
     }
 
-    fun LinearLayout.settingsItem(title: String, subtitle: String = "", items: Array<String>, default: Int, listener: ((selected: Int) -> Unit)): LinearLayout {
+    fun LinearLayout.settingsItem(title: String, subtitle: String = "", items: List<String>, default: Int, listener: ((selected: Int) -> Unit)): LinearLayout {
         return linearLayout {
             orientation = LinearLayout.HORIZONTAL
             bottomPadding = dip(5)
