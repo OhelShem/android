@@ -169,10 +169,11 @@ class SettingsActivity : AppThemedActivity() {
             finish()
         }
 
+        val data = storage.userData
         if (storage.isStudent())
-            profile.htmlText = "מחובר כ" + "<b>${storage.userData.privateName} ${storage.userData.familyName}</b> מכיתה <b>${stringArrayRes(R.array.layers)[storage.userData.layer - 9] + "'" + storage.userData.clazz}</b>"
+            profile.htmlText = resources.getString(R.string.logged_in_as_student, data.privateName, data.familyName, stringArrayRes(R.array.layers)[data.layer - 9], data.clazz)
         else
-            profile.htmlText = "מחובר כ" + "<b>${storage.userData.privateName} ${storage.userData.familyName}</b> (מורים)"
+            profile.htmlText = resources.getString(R.string.logged_in_as_teacher, data.privateName, data.familyName)
 
         contactButton.onClick {
             email("yoav.sternberg@gmail.com", subject = getString(R.string.email_title))

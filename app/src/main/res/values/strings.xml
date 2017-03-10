@@ -217,6 +217,9 @@
     <string name="no_primary_class_short">ללא</string>
     <string name="teacher_settings">הגדרות למורים</string>
     <string name="primary_class_setting">כיתת חינוך</string>
+    <string name="logged_in_as_student"><![CDATA[מחובר כ<b>%1$s %2$s</b> מכיתה <b>%3$s\'%4$d</b>]]></string>
+    <string name="logged_in_as_teacher"><![CDATA[מחובר כ<b>%1$s %2$s</b> (מורים)]]></string>
+
 
     <!-- Help -->
     <string name="who_are_we">מי אנחנו</string>
