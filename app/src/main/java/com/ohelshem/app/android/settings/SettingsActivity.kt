@@ -43,7 +43,6 @@ import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.jetbrains.anko.*
-import kotlin.comparisons.compareBy
 
 
 class SettingsActivity : AppThemedActivity() {
@@ -169,6 +168,12 @@ class SettingsActivity : AppThemedActivity() {
         toolbar.setNavigationOnClickListener {
             finish()
         }
+
+        if (storage.isStudent())
+            profile.htmlText = "מחובר כ" + "<b>${storage.userData.privateName} ${storage.userData.familyName}</b> מכיתה <b>${stringArrayRes(R.array.layers)[storage.userData.layer - 9] + "'" + storage.userData.clazz}</b>"
+        else
+            profile.htmlText = "מחובר כ" + "<b>${storage.userData.privateName} ${storage.userData.familyName}</b> (מורים)"
+
         contactButton.onClick {
             email("yoav.sternberg@gmail.com", subject = getString(R.string.email_title))
         }
@@ -192,9 +197,9 @@ class SettingsActivity : AppThemedActivity() {
             ProcessPhoenix.triggerRebirth(this)
         }
 
-        versionName.append(": " + BuildConfig.VERSION_NAME)
-        versionCode.append(": " + BuildConfig.VERSION_CODE)
-        versionType.append(": " + BuildConfig.BUILD_TYPE)
+        versionName.htmlText = versionName.text.toString() + ": <b>"+BuildConfig.VERSION_NAME+"</b>"
+        versionCode.htmlText = versionCode.text.toString() + ": <b>"+BuildConfig.VERSION_CODE+"</b>"
+        versionType.htmlText = versionType.text.toString() + ": <b>"+BuildConfig.BUILD_TYPE+"</b>"
         versionCode.onClick {
             if (!storage.developerMode) {
                 numberOfTaps++

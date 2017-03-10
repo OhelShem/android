@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -32,14 +32,12 @@
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="RtlHardcoded"/>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_scrollFlags="scroll">
@@ -48,6 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -70,14 +70,14 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:contentDescription="@string/logout"
-                        android:src="@drawable/ic_exit" />
+                        android:src="@drawable/ic_exit"/>
 
                     <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/logout"
                         android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
                 <com.ohelshem.app.android.utils.view.ForegroundLinearLayout
@@ -95,14 +95,14 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:contentDescription="@string/open_source"
-                        android:src="@drawable/ic_code" />
+                        android:src="@drawable/ic_code"/>
 
                     <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/open_source"
                         android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
                 </com.ohelshem.app.android.utils.view.ForegroundLinearLayout>
 
                 <com.ohelshem.app.android.utils.view.ForegroundLinearLayout
@@ -120,7 +120,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:contentDescription="@string/overrides_properties"
-                        android:src="@drawable/ic_web" />
+                        android:src="@drawable/ic_web"/>
 
                     <com.ohelshem.app.android.utils.view.AutoResizeTextView
                         android:layout_width="wrap_content"
@@ -151,7 +151,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="RtlHardcoded"/>
 
                 <com.ohelshem.app.android.utils.view.ForegroundTextView
                     android:id="@+id/siteButton"
@@ -168,16 +168,45 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="RtlHardcoded"/>
             </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/profileCard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#E1F5FE"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        tools:ignore="RtlHardcoded"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/teacherSettingsCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="2dp">
+                app:cardCornerRadius="2dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:id="@+id/teacherSettings"
@@ -193,22 +222,22 @@
                         android:text="@string/teacher_settings"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold"
-                        tools:ignore="RtlHardcoded" />
+                        tools:ignore="RtlHardcoded"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/primary_class_info" />
+                        android:text="@string/primary_class_info"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="2dp">
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="2dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:id="@+id/notificationsList"
@@ -224,7 +253,7 @@
                         android:text="@string/notifications"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold"
-                        tools:ignore="RtlHardcoded" />
+                        tools:ignore="RtlHardcoded"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -232,8 +261,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="2dp">
+                app:cardCornerRadius="2dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:id="@+id/themeList"
@@ -255,7 +284,7 @@
                             android:background="?selectableItemBackgroundBorderless"
                             android:contentDescription="@string/restart_app"
                             android:src="@drawable/ic_done"
-                            android:tint="?textColorPrimary" />
+                            android:tint="?textColorPrimary"/>
 
                         <TextView
                             android:id="@+id/themesHeader"
@@ -266,7 +295,7 @@
                             android:text="@string/theme_settings"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textStyle="bold"
-                            tools:ignore="RtlHardcoded" />
+                            tools:ignore="RtlHardcoded"/>
 
                     </LinearLayout>
 
@@ -274,7 +303,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/app_restart_required" />
+                        android:text="@string/app_restart_required"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -288,7 +317,7 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center_vertical"
-                            tools:background="@color/red" />
+                            tools:background="@color/red"/>
 
                         <View
                             android:id="@+id/blueTheme"
@@ -296,7 +325,7 @@
                             android:layout_height="32dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
-                            tools:background="@color/blue" />
+                            tools:background="@color/blue"/>
 
                         <View
                             android:id="@+id/greenTheme"
@@ -304,7 +333,7 @@
                             android:layout_height="32dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
-                            tools:background="@color/green" />
+                            tools:background="@color/green"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -312,7 +341,7 @@
                             android:layout_gravity="center_vertical"
                             android:gravity="right"
                             android:text="@string/theme_color"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -320,10 +349,10 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="2dp">
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="2dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -339,7 +368,7 @@
                         android:text="@string/development_info"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold"
-                        tools:ignore="RtlHardcoded" />
+                        tools:ignore="RtlHardcoded"/>
 
                     <TextView
                         android:id="@+id/versionName"
@@ -348,7 +377,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/version_name"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/versionCode"
@@ -358,7 +387,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/version_code"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/versionType"
@@ -367,7 +396,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/version_type"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
@@ -383,6 +412,6 @@
         android:src="@drawable/ic_mail"
         app:fabSize="mini"
         app:layout_anchor="@+id/app_bar_layout"
-        app:layout_anchorGravity="bottom|left|end" />
+        app:layout_anchorGravity="bottom|left|end"/>
 
 </android.support.design.widget.CoordinatorLayout>
