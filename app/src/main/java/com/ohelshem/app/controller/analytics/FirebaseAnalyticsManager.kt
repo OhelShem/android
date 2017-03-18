@@ -30,6 +30,10 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseAnalytics.setUserProperty(ThemeColorProperty, storage.theme.toString())
 
         // for remote messages
+        firebaseMessaging.unsubscribeFromTopic("layer9")
+        firebaseMessaging.unsubscribeFromTopic("layer10")
+        firebaseMessaging.unsubscribeFromTopic("layer11")
+        firebaseMessaging.unsubscribeFromTopic("layer12")
         firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
         if (storage.isStudent()) firebaseMessaging.subscribeToTopic("allstudents")
 
