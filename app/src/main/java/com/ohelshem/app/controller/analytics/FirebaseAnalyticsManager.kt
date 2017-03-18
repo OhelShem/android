@@ -34,6 +34,7 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         firebaseMessaging.unsubscribeFromTopic("layer10")
         firebaseMessaging.unsubscribeFromTopic("layer11")
         firebaseMessaging.unsubscribeFromTopic("layer12")
+        firebaseMessaging.unsubscribeFromTopic("layer13")
         firebaseMessaging.subscribeToTopic("layer" + storage.userData.layer.toString())
         if (storage.isStudent()) firebaseMessaging.subscribeToTopic("allstudents")
 
