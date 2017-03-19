@@ -128,7 +128,7 @@ class App : Application(), KodeinAware {
             val cal = GregorianCalendar()
             cal.timeInMillis = System.currentTimeMillis()
             cal.set(Calendar.HOUR_OF_DAY, 21)
-            cal.set(Calendar.MINUTE, 10) //server clock is not accurate
+            cal.set(Calendar.MINUTE, 1)
             context.alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                     cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
         }
