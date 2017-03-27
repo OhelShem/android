@@ -60,6 +60,7 @@
             android:layout_height="60dp"
             android:background="?colorPrimary"
             android:tag="false"
+            app:bb_badgesHideWhenActive="false"
             app:bb_behavior="shifting"
             app:bb_showShadow="false"
             app:bb_tabXmlResource="@xml/bottom_tabs" />

@@ -11,7 +11,7 @@ import java.io.File
 import java.util.*
 
 class StudentStorageImpl(private val offsetDataController: OffsetDataController) : StudentStorage, KotprefModel() {
-    override var version: Int by intPrefVar(EmptyData)
+    override var version: Int by intPref(EmptyData)
 
     private val changesSerialization = ChangeSerialization.ofList()
     override var changes: List<Change>?

@@ -53,7 +53,6 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.calendar_fragment.view.*
 import kotlinx.android.synthetic.main.dates_fragment.*
 import org.jetbrains.anko.onClick
-import org.jetbrains.anko.support.v4.act
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -182,7 +181,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     private val TestsDateFormat = SimpleDateFormat("dd/MM/yy")
     private fun openCalendarView() {
         val tests = presenter.tests
-        val view = act.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
+        val view = activity.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
         val calendarView = view.calendarView
         val title = view.title
         val extra = view.extra

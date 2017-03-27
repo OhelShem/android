@@ -128,7 +128,7 @@ interface TimetableController {
                     if (time >= holiday.startTime && time <= holiday.endTime) return DayType.Holiday
                 }
             }
-            if (time >= parser.parse(Summer.start).time && time <= parser.parse(Summer.end).time) return DayType.Summer
+            if (time in parser.parse(Summer.start).time..parser.parse(Summer.end).time) return DayType.Summer
             if (dayOfWeek == 6 && !learnsOnFriday) return DayType.Friday
             else return DayType.Regular
         }

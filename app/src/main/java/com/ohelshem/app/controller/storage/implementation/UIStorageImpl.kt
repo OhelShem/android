@@ -5,10 +5,10 @@ import com.ohelshem.app.controller.storage.IStorage
 import com.ohelshem.app.controller.storage.UIStorage
 
 class UIStorageImpl: UIStorage, KotprefModel() {
-    override var version: Int by intPrefVar(IStorage.EmptyData)
+    override var version: Int by intPref(IStorage.EmptyData)
 
-    override var firstTimeInApp: Boolean by booleanPrefVar(true)
-    override var firstTimeInOverridesManager: Boolean by booleanPrefVar(true)
+    override var firstTimeInApp: Boolean by booleanPref(true)
+    override var firstTimeInOverridesManager: Boolean by booleanPref(true)
 
     override fun migration() {
         version = 4

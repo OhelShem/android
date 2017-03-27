@@ -34,11 +34,11 @@ object OldStorage : KotprefModel() {
     private val offsetDataController: OffsetDataController = OffsetDataControllerImpl
     override val kotprefName: String = "DBControllerImpl"
 
-    var databaseVersion: Int by intPrefVar(3)
-    var notificationsForHolidaysEnabled: Boolean by booleanPrefVar()
-    var developerModeEnabled: Boolean by booleanPrefVar()
+    var databaseVersion: Int by intPref(3)
+    var notificationsForHolidaysEnabled: Boolean by booleanPref()
+    var developerModeEnabled: Boolean by booleanPref()
 
-    var password: String by stringPrefVar()
+    var password: String by stringPref()
 
     val timetable: Array<Array<Hour>>?
         get() {
@@ -86,17 +86,17 @@ object OldStorage : KotprefModel() {
     val userData: UserData
         get() = UserData(_userId, _userIdentity, _userPrivateName, _userFamilyName, _userLayer, _userClazz, _userGender, _userEmail, _userPhone, _userBirthday, Role.values()[_userRole])
 
-    private var _userClazz: Int by intPrefVar()
-    private var _userLayer: Int by intPrefVar()
-    private var _userId: Int by intPrefVar()
-    private var _userIdentity: String by stringPrefVar()
-    private var _userPrivateName: String by stringPrefVar()
-    private var _userFamilyName: String by stringPrefVar()
-    private var _userGender: Int by intPrefVar()
-    private var _userEmail: String by stringPrefVar()
-    private var _userPhone: String by stringPrefVar()
-    private var _userBirthday: String by stringPrefVar()
-    private var _userRole: Int by intPrefVar()
+    private var _userClazz: Int by intPref()
+    private var _userLayer: Int by intPref()
+    private var _userId: Int by intPref()
+    private var _userIdentity: String by stringPref()
+    private var _userPrivateName: String by stringPref()
+    private var _userFamilyName: String by stringPref()
+    private var _userGender: Int by intPref()
+    private var _userEmail: String by stringPref()
+    private var _userPhone: String by stringPref()
+    private var _userBirthday: String by stringPref()
+    private var _userRole: Int by intPref()
 
     private val InnerSeparator: Char = '\u2004'
 

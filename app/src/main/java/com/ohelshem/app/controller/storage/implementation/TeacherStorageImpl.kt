@@ -9,7 +9,7 @@ import com.ohelshem.app.controller.storage.TeacherStorage
 import java.io.File
 
 class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, KotprefModel() {
-    override var version: Int by intPrefVar(IStorage.EmptyData)
+    override var version: Int by intPref(IStorage.EmptyData)
 
     private val classInfoSerialization = ClassInfoSerialization.ofList()
     override var classes: List<ClassInfo>
@@ -41,8 +41,8 @@ class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, K
             }
         }
 
-    private var _primaryClassLayer: Int by intPrefVar(-1)
-    private var _primaryClassClass: Int by intPrefVar(-1)
+    private var _primaryClassLayer: Int by intPref(-1)
+    private var _primaryClassClass: Int by intPref(-1)
     //endregion
 
     //region Changes

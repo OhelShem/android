@@ -21,37 +21,37 @@ import java.io.File
 import java.util.*
 
 class SharedStorageImpl(private val offsetDataController: OffsetDataController) : SharedStorage, KotprefModel() {
-    override var version: Int by intPrefVar(EmptyData)
+    override var version: Int by intPref(EmptyData)
 
-    override var id: String by stringPrefVar()
-    override var password: String by stringPrefVar()
+    override var id: String by stringPref()
+    override var password: String by stringPref()
 
-    override var notificationsForChanges: Boolean by booleanPrefVar(true)
-    override var notificationsForHolidays: Boolean by booleanPrefVar()
-    override var notificationsForBirthdays: Boolean by booleanPrefVar(true)
-    override var notificationsForTests: Boolean by booleanPrefVar(true)
-    override var notificationsForTimetable: Boolean by booleanPrefVar(true)
+    override var notificationsForChanges: Boolean by booleanPref(true)
+    override var notificationsForHolidays: Boolean by booleanPref()
+    override var notificationsForBirthdays: Boolean by booleanPref(true)
+    override var notificationsForTests: Boolean by booleanPref(true)
+    override var notificationsForTimetable: Boolean by booleanPref(true)
 
-    override var developerMode: Boolean by booleanPrefVar()
+    override var developerMode: Boolean by booleanPref()
 
-    override var changesDate: Long by longPrefVar(EmptyData.toLong())
-    override var serverUpdateDate: Long by longPrefVar(EmptyData.toLong())
-    override var updateDate: Long by longPrefVar(EmptyData.toLong())
-    override var lastNotificationTime: Long by longPrefVar(EmptyData.toLong())
-    override var lastNotificationTimeBirthday: Long by longPrefVar(EmptyData.toLong())
-    override var ongoingNotificationDisableDate: Long by longPrefVar(EmptyData.toLong())
+    override var changesDate: Long by longPref(EmptyData.toLong())
+    override var serverUpdateDate: Long by longPref(EmptyData.toLong())
+    override var updateDate: Long by longPref(EmptyData.toLong())
+    override var lastNotificationTime: Long by longPref(EmptyData.toLong())
+    override var lastNotificationTimeBirthday: Long by longPref(EmptyData.toLong())
+    override var ongoingNotificationDisableDate: Long by longPref(EmptyData.toLong())
 
-    override var appVersion: Int by intPrefVar(EmptyData)
-    override var debugFlag: Boolean by booleanPrefVar()
+    override var appVersion: Int by intPref(EmptyData)
+    override var debugFlag: Boolean by booleanPref()
 
-    var _theme: Int by intPrefVar(Theme.Blue.ordinal)
+    var _theme: Int by intPref(Theme.Blue.ordinal)
     override var theme: Theme
         get() = Theme.values()[_theme]
         set(value) {
             _theme = value.ordinal
         }
 
-    override var darkMode: Int by intPrefVar(AppCompatDelegate.MODE_NIGHT_NO)
+    override var darkMode: Int by intPref(AppCompatDelegate.MODE_NIGHT_NO)
 
     //region UserData
     override var userData: UserData
@@ -70,16 +70,16 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             _userRole = value.role.ordinal
         }
 
-    private var _userClazz: Int by intPrefVar()
-    private var _userLayer: Int by intPrefVar()
-    private var _userId: Int by intPrefVar()
-    private var _userPrivateName: String by stringPrefVar()
-    private var _userFamilyName: String by stringPrefVar()
-    private var _userGender: Int by intPrefVar()
-    private var _userEmail: String by stringPrefVar()
-    private var _userPhone: String by stringPrefVar()
-    private var _userBirthday: String by stringPrefVar()
-    private var _userRole: Int by intPrefVar()
+    private var _userClazz: Int by intPref()
+    private var _userLayer: Int by intPref()
+    private var _userId: Int by intPref()
+    private var _userPrivateName: String by stringPref()
+    private var _userFamilyName: String by stringPref()
+    private var _userGender: Int by intPref()
+    private var _userEmail: String by stringPref()
+    private var _userPhone: String by stringPref()
+    private var _userBirthday: String by stringPref()
+    private var _userRole: Int by intPref()
     //endregion
 
     //region Timetable

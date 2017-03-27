@@ -41,6 +41,7 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.sloydev.preferator.Preferator
+import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
 import io.palaima.debugdrawer.actions.ActionsModule
@@ -70,7 +71,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private var firstUpdate: Boolean = true
 
-    private val analyticsManager: Analytics by kodein.instance()
+    private val analyticsManager: Analytics by instance()
 
     private val notificationCallback = { title: String, body: String -> onNotification(title, body) }
     private var dialog: MaterialStyledDialog? = null
@@ -416,7 +417,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
 
     private fun debug() {
-        if (storage.developerMode) {
+        if (storage.developerMode || BuildConfig.DEBUG) {
             val nightModeAction = DebugMenuSwitchAction("Night mode", storage.darkMode == AppCompatDelegate.MODE_NIGHT_YES) {
                 storage.darkMode = if (it) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             }
