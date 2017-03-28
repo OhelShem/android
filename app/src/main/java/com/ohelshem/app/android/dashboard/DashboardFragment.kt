@@ -45,7 +45,6 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
-import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.textResource
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
@@ -247,11 +246,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private fun showIntro() {
         dashboardLogo?.post {
             var prompt: MaterialTapTargetPrompt? = null
-            prompt = MaterialTapTargetPrompt.Builder(act)
+            prompt = MaterialTapTargetPrompt.Builder(activity)
                     .setPrimaryText(R.string.intro_dashboard_primary_text)
                     .setSecondaryText(R.string.intro_dashboard_secondary_text)
                     .setTarget(dashboardLogo)
-                    .setBackgroundColour(act.primaryColor)
+                    .setBackgroundColour(activity.primaryColor)
                     .setCaptureTouchEventOutsidePrompt(true)
                     .setAutoFinish(false)
                     .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {

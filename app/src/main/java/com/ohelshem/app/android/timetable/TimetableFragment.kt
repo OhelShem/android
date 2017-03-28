@@ -38,7 +38,6 @@ import kotlinx.android.synthetic.main.timetable_fragment.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onItemSelectedListener
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
@@ -78,7 +77,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         }
 
         menu.findItem(R.id.overridesSettings).setOnMenuItemClickListener {
-            act.startActivity<OverridesActivity>()
+            activity.startActivity<OverridesActivity>()
             true
         }
     }

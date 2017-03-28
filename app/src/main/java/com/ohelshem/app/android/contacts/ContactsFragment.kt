@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.onClick
-import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 
@@ -76,8 +75,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         }
 
         if (birthdays.isNotEmpty()) {
-
-            val view = act.layoutInflater.inflate(R.layout.birthdays_dialog, null, false)
+            val view = activity.layoutInflater.inflate(R.layout.birthdays_dialog, null, false)
             val llm = LinearLayoutManager(activity)
             llm.orientation = LinearLayoutManager.VERTICAL
             view.birthdaysRecyclerView.layoutManager = llm
