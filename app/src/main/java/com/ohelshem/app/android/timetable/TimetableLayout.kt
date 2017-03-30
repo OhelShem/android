@@ -14,8 +14,8 @@ class TimetableLayout : FrameLayout, TimetableBasicView {
     private var dayView: TimetableBasicView = TimetableDayView(context, null)
 
     init {
-        weekView.onClickListener = { a, b, c -> onClickListener?.invoke(a, b, c) }
-        dayView.onClickListener = { a, b, c -> onClickListener?.invoke(a, b, c) }
+        weekView.onClickListener = { day, hour, data -> onClickListener?.invoke(day, hour, data) }
+        dayView.onClickListener = { day, hour, data -> onClickListener?.invoke(day, hour, data) }
 
         addView(dayView as View)
         addView(weekView as View)

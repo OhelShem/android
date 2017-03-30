@@ -36,14 +36,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!-- Main fragment container -->
     <me.tabak.fragmentswitcher.FragmentSwitcher
         android:id="@+id/fragmentSwitcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLayout"
         android:layout_below="@+id/appBarLayout" />
-    <!-- END Main fragment container -->
 
     <LinearLayout
         android:id="@+id/bottomLayout"
@@ -60,7 +58,6 @@
             android:layout_height="60dp"
             android:background="?colorPrimary"
             android:tag="false"
-            app:bb_badgesHideWhenActive="false"
             app:bb_behavior="shifting"
             app:bb_showShadow="false"
             app:bb_tabXmlResource="@xml/bottom_tabs" />
