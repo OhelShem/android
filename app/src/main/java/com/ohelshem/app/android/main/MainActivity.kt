@@ -40,6 +40,7 @@ import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.storage.DeveloperOptions
+import com.plattysoft.leonids.ParticleSystem
 import com.sloydev.preferator.Preferator
 import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
@@ -231,6 +232,8 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
+            if (findViewById(R.id.storiesBar) != null)
+                storiesBar.hide()
             val layers = stringArrayRes(R.array.layers)
             var classes = storage.classes
             classes = classes.sortedWith(compareBy({ it.layer }, { it.clazz })).reversed()
@@ -265,7 +268,37 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             teacherBar.show()
         } else {
             teacherBar.hide()
+            if (findViewById(R.id.storiesBar) != null) {
+                if (storage.debugFlag) {
+                    story1.onClick {
+                        doStories(R.drawable.story1)
+                    }
+                    story2.onClick {
+                        doStories(R.drawable.story2)
+                    }
+                    story3.onClick {
+                        doStories(R.drawable.story3)
+
+                    }
+                    story4.onClick {
+                        doStories(R.drawable.story4)
+                    }
+                    story5.onClick {
+                        doStories(R.drawable.story5)
+
+                    }
+                } else storiesBar.hide()
+            }
         }
+    }
+
+    fun doStories(resource: Int) {
+        ParticleSystem(this, 80, resource, 10000)
+                .setSpeedModuleAndAngleRange(0f, 0.3f, 120, 180)
+                .setRotationSpeed(120f)
+                .setAcceleration(0.00005f, 60)
+                .oneShot(topRight, 10)
+
     }
 
     override fun setScreen(screen: ScreenType, backStack: Boolean) {

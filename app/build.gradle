@@ -10,8 +10,8 @@ android {
         applicationId "com.yoavst.changesystemohelshem"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 89
-        versionName "7.1.3"
+        versionCode 90
+        versionName "7.1.4"
         resConfigs "he"
     }
 
@@ -79,6 +79,8 @@ dependencies {
     compile 'com.roughike:bottom-bar:2.2.0'
     compile 'com.timehop.fragmentswitcher:library:1.1.2'
     compile 'com.sloydev:preferator:1.1.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.plattysoft.leonids:LeonidsLib:1.3.2'
     // debug
     compile 'io.palaima.debugdrawer:debugdrawer:0.7.1-SNAPSHOT'
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.1-SNAPSHOT'

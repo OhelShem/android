@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/topRight"
+        tools:ignore="RtlHardcoded" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -51,6 +60,68 @@
         android:orientation="vertical">
 
         <include layout="@layout/teacher_badge_layout" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="?colorPrimary"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:id="@+id/storiesBar"
+            tools:ignore="RtlHardcoded">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="4dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:id="@+id/story1"
+                android:src="@drawable/story1" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="4dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:id="@+id/story2"
+                android:src="@drawable/story2" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="4dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:id="@+id/story3"
+                android:src="@drawable/story3" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="4dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:id="@+id/story4"
+                android:src="@drawable/story4" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="4dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:id="@+id/story5"
+                android:src="@drawable/story5" />
+        </LinearLayout>
 
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottomBar"
