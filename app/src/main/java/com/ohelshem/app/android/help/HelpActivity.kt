@@ -31,6 +31,7 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.help_activity.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.customView
+import org.jetbrains.anko.sdk15.listeners.onClick
 import java.io.File
 import java.io.FileOutputStream
 

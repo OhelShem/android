@@ -49,7 +49,7 @@ import com.ohelshem.app.removeAtIfPositive
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.overrides_activity.*
 import org.jetbrains.anko.childrenSequence
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.toast
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File

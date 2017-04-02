@@ -15,6 +15,7 @@ import com.ohelshem.app.android.stringArrayRes
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.teacher_badge_layout.view.*
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk15.listeners.onClick
 
 object BadgeBarGenerator {
     fun inflate(view: ViewGroup, classes: List<ClassInfo>, firstStaticBadgeText: String? = null, secondStaticBadgeText: String? = null,
@@ -94,7 +95,7 @@ object BadgeBarGenerator {
     private fun Context.generateBadge(text: String, background: Drawable?): View {
         val view = TextView(this)
         if (background != null)
-            view.background = background
+            view.backgroundDrawable = background
         else
             view.backgroundResource = R.drawable.badge_background
         view.text = text

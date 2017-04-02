@@ -20,7 +20,7 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 

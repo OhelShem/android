@@ -36,7 +36,7 @@ import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.timetable_fragment.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.onItemSelectedListener
+import org.jetbrains.anko.sdk15.listeners.onItemSelectedListener
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast

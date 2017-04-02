@@ -15,7 +15,7 @@ import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.changes_teacher_fragment.*
 import org.jetbrains.anko.childrenSequence
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.padding
 import java.text.SimpleDateFormat
 import java.util.*

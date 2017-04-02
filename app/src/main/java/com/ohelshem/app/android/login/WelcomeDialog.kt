@@ -16,7 +16,7 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.theme_dialog.view.*
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 
 object WelcomeDialog {
     fun create(storage: SharedStorage, activity: Activity, listener: () -> Unit): MaterialStyledDialog {

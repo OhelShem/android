@@ -21,6 +21,7 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.login_view.*
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk15.listeners.onClick
 
 class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     override fun createPresenter(): LoginPresenter = with(appKodein()) { LoginPresenter(instance(), instance(), instance()) }

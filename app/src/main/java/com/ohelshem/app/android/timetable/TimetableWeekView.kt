@@ -16,6 +16,7 @@ import com.ohelshem.app.android.show
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk15.listeners.onClick
 
 @Suppress("JoinDeclarationAndAssignment")
 class TimetableWeekView : LinearLayout, TimetableBasicView {

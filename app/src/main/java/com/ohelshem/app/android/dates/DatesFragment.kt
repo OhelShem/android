@@ -52,7 +52,7 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.calendar_fragment.view.*
 import kotlinx.android.synthetic.main.dates_fragment.*
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit

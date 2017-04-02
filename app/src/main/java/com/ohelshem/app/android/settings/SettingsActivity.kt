@@ -43,6 +43,9 @@ import com.yoavst.changesystemohelshem.BuildConfig.*
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk15.listeners.onCheckedChange
+import org.jetbrains.anko.sdk15.listeners.onClick
+import org.jetbrains.anko.sdk15.listeners.onItemSelectedListener
 
 
 class SettingsActivity : AppThemedActivity() {
@@ -227,10 +230,10 @@ class SettingsActivity : AppThemedActivity() {
             if (showCheckBox) {
                 appCompatSwitch {
                     setChecked(isChecked)
-                    onCheckedChange { compoundButton, b -> listener(b) }
+                    onCheckedChange { _, b -> listener(b) }
                 }.lparams(width = wrapContent, height = matchParent)
-                onClick { v -> (getChildAt(0) as CompoundButton).toggle() }
-            } else onClick({ v -> listener(false) })
+                onClick { (getChildAt(0) as CompoundButton).toggle() }
+            } else onClick { listener(false) }
             linearLayout {
                 orientation = LinearLayout.VERTICAL
 
@@ -261,7 +264,7 @@ class SettingsActivity : AppThemedActivity() {
                 setAdapter(adapter)
                 setSelection(default)
                 onItemSelectedListener {
-                    onItemSelected { adapterView, view, position, id ->
+                    onItemSelected { _, _, position, _ ->
                         listener(position)
                     }
                 }

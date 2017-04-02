@@ -44,7 +44,7 @@ import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.dashboard_fragment.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.textResource
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt

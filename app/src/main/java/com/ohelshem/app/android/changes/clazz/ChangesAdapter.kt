@@ -30,7 +30,7 @@ import com.ohelshem.app.controller.timetable.TimetableController
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.backgroundResource
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 
 /**
  * Showing changes inside a [RecyclerView]. Based on [TimetableAdapter] UI.

@@ -17,7 +17,7 @@ import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.contact_item.view.*
 import org.jetbrains.anko.layoutInflater
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.sendSMS
 import java.text.SimpleDateFormat
 import java.util.*

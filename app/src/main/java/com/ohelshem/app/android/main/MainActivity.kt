@@ -56,6 +56,7 @@ import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.teacher_badge_layout.*
 import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk15.listeners.onClick
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.util.*
 
