@@ -54,8 +54,8 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$firebase"
     // Kotlin libraries
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
-    compile 'com.github.salomonbrys.kodein:kodein-erased:3.3.0'
-    compile 'com.github.salomonbrys.kodein:kodein-android:3.3.0'
+    compile 'com.github.salomonbrys.kodein:kodein-erased:4.0.0-beta1'
+    compile 'com.github.salomonbrys.kodein:kodein-android:4.0.0-beta1'
     compile 'com.chibatching.kotpref:kotpref:2.1.1'
     compile 'com.github.kittinunf.fuel:fuel-android:1.5.0'
     // Util
@@ -65,6 +65,7 @@ dependencies {
     // Anko modules
     compile "org.jetbrains.anko:anko-sdk15:$anko"
     compile "org.jetbrains.anko:anko-support-v4:$anko"
+    compile "org.jetbrains.anko:anko-recyclerview-v7:$anko"
     compile "org.jetbrains.anko:anko-design:$anko"
     compile "org.jetbrains.anko:anko-sdk15-listeners:$anko"
     // MVP

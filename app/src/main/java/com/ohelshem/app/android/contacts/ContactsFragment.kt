@@ -17,11 +17,14 @@ import com.ohelshem.app.controller.storage.implementation.Contacts
 import com.ohelshem.app.model.Contact
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
-import kotlinx.android.synthetic.main.birthdays_dialog.view.*
 import kotlinx.android.synthetic.main.contacts_fragment.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.bottomPadding
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk15.listeners.onClick
+import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.topPadding
 import java.util.*
 
 
@@ -75,13 +78,18 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         }
 
         if (birthdays.isNotEmpty()) {
-            val view = activity.layoutInflater.inflate(R.layout.birthdays_dialog, null, false)
-            val llm = LinearLayoutManager(activity)
-            llm.orientation = LinearLayoutManager.VERTICAL
-            view.birthdaysRecyclerView.layoutManager = llm
-            view.birthdaysRecyclerView.adapter = BirthdaysAdapter(activity, birthdays)
-            view.backgroundColor = activity.backgroundColor
+            val view = UI {
+                recyclerView {
+                    backgroundColor = activity.backgroundColor
+                    clipToPadding = false
+                    topPadding = 4
+                    bottomPadding = 4
+                    layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                    adapter = BirthdaysAdapter(activity, birthdays)
 
+                    setHasFixedSize(true)
+                }
+            }.view
             MaterialStyledDialog.Builder(activity)
                     .setStyle(Style.HEADER_WITH_TITLE)
                     .setTitle(getString(R.string.birthdays_in_school))
