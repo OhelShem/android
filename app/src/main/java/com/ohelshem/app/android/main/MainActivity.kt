@@ -3,6 +3,7 @@ package com.ohelshem.app.android.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
@@ -465,9 +466,12 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             val preferenceAction = ButtonAction("Preferences editor") {
-                Preferator.launch(this)
+                numberOfTaps++
+                handler.removeCallbacksAndMessages(null)
+                if (numberOfTaps == 7) {
+                    Preferator.launch(this)
+                } else handler.postDelayed(request, 500)
             }
-
 
             val shareFirebaseTokenAction = ButtonAction("Share firebaseToken") {
                 toast(FirebaseInstanceId.getInstance().token ?: "No token available")
@@ -498,6 +502,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     NetworkModule(),
                     SettingsModule()).build()
         }
+    }
+    private var numberOfTaps: Int = 0
+    private val handler = Handler()
+    private val request: Runnable = Runnable {
+        numberOfTaps = 0
     }
     //endregion
 
