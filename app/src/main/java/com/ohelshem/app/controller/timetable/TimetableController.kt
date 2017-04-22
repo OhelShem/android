@@ -81,7 +81,7 @@ interface TimetableController {
                 Holiday("פורים", "12/03/2017", "13/03/2017"),
                 Holiday("פסח", "02/04/2017", "18/04/2017"),
                 Holiday("יום העצמאות", "02/05/2017"),
-                Holiday("ל\"ג בעומר", "14/05/2017"),
+                Holiday("ל\"ג בעומר", "15/05/2017"),
                 Holiday("שבועות", "30/05/2017", "01/06/2017"))
 
         val StartOfTheYear: Date = Holiday.Format.parse("01/09/2016")
