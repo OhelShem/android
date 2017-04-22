@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="48dp"
-              android:background="?attr/selectableItemBackground"
-              android:orientation="horizontal"
-              android:paddingRight="?listPreferredItemPaddingRight"
-              android:paddingLeft="4dp"
-              tools:ignore="RtlHardcoded,RtlSymmetry">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingLeft="4dp"
+    android:paddingRight="?listPreferredItemPaddingRight"
+    tools:ignore="RtlHardcoded,RtlSymmetry">
 
     <ImageView
         android:layout_width="32dp"
@@ -16,7 +16,8 @@
         android:background="?selectableItemBackgroundBorderless"
         android:padding="4dp"
         android:src="@drawable/ic_birthday"
-        android:tint="?colorAccent" />
+        android:tint="?colorAccent"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="0dp"
