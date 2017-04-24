@@ -103,6 +103,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             showCurrentLessonInfo(data, changes)
             showTimeLeft(data, isFuture, isTomorrow)
             showNextLessonInfo(data, changes, isEndOfDay, isFuture)
+            if (isTomorrow)
+                todayPlan.text = getString(R.string.tomorrow_plan)
         }
     }
 
