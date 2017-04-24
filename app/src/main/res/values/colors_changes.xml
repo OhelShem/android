@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="changesFilters">
-        <item>מבוטל</item>
-        <item>ספריה</item>
-        <item>יום שבת</item>
-        <item>סיור</item>
+        <item>שיעור חינוך</item>
+        <item>מתכונת</item>
+        <item>תיגבור</item>
         <item>טקס</item>
-        <item>"בלי "</item> <!-- Green: מקצוע בלי מורה, Blue: קנובליך בחדר 333 -->
-        <item>אשכול</item>
-        <item>תיאטרון</item>
-        <item>מבחן</item>
-        <item>הרצאה</item>
         <item>סדנא</item>
-        <item>של\"ח</item>
         <item>אהל שיר</item>
+        <item>של\"ח</item>
+        <item>הרצאה</item>
+        <item>מבחן</item>
+        <item>תיאטרון</item>
+        <item>אשכול</item>
+        <item>סיור</item>
+        <item>בלי</item>
+        <item>יום  שבת</item>
+        <item>ספריה</item>
+        <item>מבוטל</item>
     </string-array>
 
     <array name="changesColors">
-        <item>#dd4b39</item>
-        <item>#00a65a</item>
-        <item>#39CCCC</item>
-        <item>#605ca8</item>
+        <item>#f39c12</item>
+        <item>#f39c12</item>
+        <item>#f39c12</item>
         <item>#8BF14A</item>
-        <item>#3D9970</item>
-        <item>#f39c12</item>
-        <item>#D81B60</item>
-        <item>#9E9E9E</item>
         <item>#f39c12</item>
         <item>#f39c12</item>
         <item>#605ca8</item>
         <item>#f39c12</item>
+        <item>#9E9E9E</item>
+        <item>#D81B60</item>
+        <item>#f39c12</item>
+        <item>#605ca8</item>
+        <item>#3D9970</item>
+        <item>#39CCCC</item>
+        <item>#00a65a</item>
+        <item>#dd4b39</item>
     </array>
 
     <color name="changeDefaultColor">#00c0ef</color>
