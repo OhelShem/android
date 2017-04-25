@@ -100,6 +100,17 @@ fun String.flipName(): String {
     return arr[1] + " " + arr[0]
 }
 
+fun nameOriginalHour(change: String, hourName: String): String {
+    val changeIsWithout = " בלי " in change
+    val changeIsMikbatz = "מקבץ" in change || "מקבצים" in change || "מגמה" in change || "מגמות" in change
+    val withoutNoMikbatz = changeIsWithout && !changeIsMikbatz // ex: מתמטיקה בלי קלמפנר
+    val withoutYesMikbatz = changeIsWithout && changeIsMikbatz // ex: מקבץ בלי לרר
+    val roomOrWithoutNoName = change.startsWith("בלי") || change.startsWith("בחדר") // ex: בחדר 318
+
+    if (withoutNoMikbatz) return ""
+    else return "(${if (withoutYesMikbatz || roomOrWithoutNoName) "" else "במקום "}$hourName)"
+}
+
 fun Fragment.stringResource(id: Int): StringResourceDelegate = StringResourceDelegate(futureResources(), id)
 private fun Fragment.futureResources(): () -> Resources = { resources }
 
@@ -146,6 +157,7 @@ fun getColorDrawableFromColor(color: Int): ColorDrawable {
 
 @Suppress("DEPRECATION")
 fun String.fromHtml(): CharSequence = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY) else Html.fromHtml(this)
+
 var TextView.htmlText: String
     get() = throw IllegalAccessException("Getter should not get called")
     set(value) {

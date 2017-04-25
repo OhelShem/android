@@ -16,6 +16,7 @@ import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.android.main.MainActivity
+import com.ohelshem.app.android.nameOriginalHour
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
@@ -39,7 +40,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         val day = cal.getDay()
         if (storage.isSetup()) {
             val holiday = TimetableController.getHoliday(Calendar.getInstance())
-            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != Calendar.getInstance().clearTime().timeInMillis && holiday == null && day != Calendar.SATURDAY  && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
+            if (storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != Calendar.getInstance().clearTime().timeInMillis && holiday == null && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
@@ -106,19 +107,12 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
     fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString {
         val s: SpannableString?
 
-        val isWithout = " בלי " in text
-        val changeIsMikbatz = "מקבץ" in text || "מקבצים" in text || "מגמה" in text || "מגמות" in text
-        val withoutNoMikbatz = isWithout && !changeIsMikbatz
-        val withoutYesMikbatz = isWithout && changeIsMikbatz
-        val roomOrWithoutNoName = text.startsWith("בלי") || text.startsWith("בחדר")
-
         if (orig != null)
-            s = SpannableString(if (withoutNoMikbatz) text else text + " (" + (if (withoutYesMikbatz || roomOrWithoutNoName) "" else getString(R.string.instead) + " ") + orig + ")")
+            s = SpannableString(text + " " + nameOriginalHour(text, orig))
         else {
             if (!storage.isStudent() && teacherName != null) {
                 s = SpannableString(text + if (teacherName.isNotEmpty()) with + teacherName else "")
-            }
-            else {
+            } else {
                 s = SpannableString(text)
             }
         }
