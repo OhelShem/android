@@ -102,7 +102,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         } else notificationManager.cancel(NotificationId)
     }
 
-    private fun NumberedHour.represent(showRoom: Boolean = true) = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0 && showRoom) "$name ($room)" else name
+    private fun NumberedHour.represent(showRoom: Boolean = true) = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0 && room != -1 && showRoom) "$name ($room)" else name
 
     fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString {
         val s: SpannableString?
