@@ -17,7 +17,7 @@
 
 package com.ohelshem.app.android.dashboard
 
-import com.hannesdorfmann.mosby.mvp.MvpView
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.model.HourData

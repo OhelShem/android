@@ -23,8 +23,8 @@ import android.view.*
 import com.github.salomonbrys.kodein.LazyKodein
 import com.github.salomonbrys.kodein.LazyKodeinAware
 import com.github.salomonbrys.kodein.android.appKodein
-import com.hannesdorfmann.mosby.mvp.MvpFragment
-import com.hannesdorfmann.mosby.mvp.MvpView
+import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.app.android.main.TopNavigationScreenManager
 

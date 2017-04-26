@@ -17,7 +17,7 @@
 
 package com.ohelshem.app.android.timetable
 
-import com.hannesdorfmann.mosby.mvp.MvpView
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.ohelshem.api.model.Hour
 
 interface TimetableView: MvpView {

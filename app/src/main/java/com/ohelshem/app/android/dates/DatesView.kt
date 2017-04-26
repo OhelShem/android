@@ -17,7 +17,7 @@
 
 package com.ohelshem.app.android.dates
 
-import com.hannesdorfmann.mosby.mvp.MvpView
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.ohelshem.api.model.Test
 
 interface DatesView : MvpView {

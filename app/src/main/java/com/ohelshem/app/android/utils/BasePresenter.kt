@@ -1,7 +1,7 @@
 package com.ohelshem.app.android.utils
 
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter
-import com.hannesdorfmann.mosby.mvp.MvpView
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.ohelshem.api.model.ClassInfo
 
 abstract class BasePresenter<V : MvpView> : MvpBasePresenter<V>() {

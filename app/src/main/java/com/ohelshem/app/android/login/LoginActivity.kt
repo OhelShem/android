@@ -7,7 +7,7 @@ import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.erased.instance
-import com.hannesdorfmann.mosby.mvp.MvpActivity
+import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.android.hideKeyboard
 import com.ohelshem.app.android.invisible

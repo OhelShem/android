@@ -18,7 +18,7 @@ import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
 import com.google.firebase.iid.FirebaseInstanceId
-import com.hannesdorfmann.mosby.mvp.MvpFragment
+import com.hannesdorfmann.mosby3.mvp.MvpFragment
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ohelshem.api.model.ClassInfo
 import com.ohelshem.api.model.UpdateError
