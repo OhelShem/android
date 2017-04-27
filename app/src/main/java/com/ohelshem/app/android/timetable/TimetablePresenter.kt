@@ -86,7 +86,7 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
             if (!editAll) {
                 val overrides = storage.overrides.toMutableList()
                 val index = overrides.indexOfFirst { it.day == day && it.hour == position }
-                val override = OverrideData(day, position, newLesson.or(hour.name), newTeacher.or(hour.teacher), newRoom)
+                val override = OverrideData(day, position, newLesson.or(hour.name), newTeacher.or(hour.teacher), if (newRoom < 0) 0 else newRoom)
                 if (index < 0) overrides.add(override)
                 else overrides[index] = override
                 storage.overrides = overrides
