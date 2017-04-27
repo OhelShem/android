@@ -131,21 +131,24 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
 
     fun setDay(day: Int) {
         val timetableController = timetableController
-        currentDay = day
-        if (day == 0) {
-            view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
-        } else {
-            val daysLearning = this.daysLearning
-            var position = day - 1
-            while (!daysLearning[position]) {
-                position++
-                if (position >= daysLearning.size)
-                    position = 0
+        if (timetableController.hasData) {
+            currentDay = day
+            if (day == 0) {
+                view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
+            } else {
+                val daysLearning = this.daysLearning
+                var position = day - 1
+                while (!daysLearning[position]) {
+                    position++
+                    if (position >= daysLearning.size)
+                        position = 0
+                }
+                currentDay = position + 1
+                view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
             }
-            currentDay = position + 1
-            view?.setDay(currentDay, Array(timetableController.size) { timetableController[it] })
+        } else {
+            //FIXME
         }
-
     }
 
     private fun String.or(data: String) = if (isEmpty()) data else this
