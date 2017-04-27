@@ -42,14 +42,16 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
 
     fun update() {
         view?.apply {
-            val hourData = timetableController.getHourData()
-            showLessonInfo(hourData,
-                    isEndOfDay = TimetableController.isEndOfDay(hourData.hour.hourOfDay, timetableController[hourData.hour.day - 1]),
-                    isTomorrow = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                            Calendar.getInstance().clearTime().timeInMillis,
-                    isFuture = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                            Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = generateChanges(hourData.hour.day, userClazz))
-            showTests(testsForWeek)
+            if (timetableController.hasData) {
+                val hourData = timetableController.getHourData()
+                showLessonInfo(hourData,
+                        isEndOfDay = TimetableController.isEndOfDay(hourData.hour.hourOfDay, timetableController[hourData.hour.day - 1]),
+                        isTomorrow = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
+                                Calendar.getInstance().clearTime().timeInMillis,
+                        isFuture = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
+                                Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = generateChanges(hourData.hour.day, userClazz))
+                showTests(testsForWeek)
+            }
         }
     }
 

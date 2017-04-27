@@ -39,8 +39,10 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
             invalidateCache()
         }
         view?.flushMenu()
-        currentDay = today
-        setDay(currentDay)
+        if (timetableController.hasData) {
+            currentDay = today
+            setDay(currentDay)
+        }
     }
     //endregion
 
