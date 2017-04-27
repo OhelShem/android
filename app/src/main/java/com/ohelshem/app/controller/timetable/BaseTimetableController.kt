@@ -27,6 +27,7 @@ abstract class BaseTimetableController : TimetableController {
         get() = timetable.size
 
     override var hasData: Boolean = false
+        protected set
 
     override var colors: IntArray = intArrayOf()
 

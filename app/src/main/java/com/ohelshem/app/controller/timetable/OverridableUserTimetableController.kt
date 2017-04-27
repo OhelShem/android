@@ -9,8 +9,11 @@ import org.jetbrains.anko.collections.forEachReversedWithIndex
 import java.util.*
 
 class OverridableUserTimetableController(internal val timetableController: BaseTimetableController, private val storage: SharedStorage)
-: TimetableController by timetableController {
+    : TimetableController by timetableController {
     private var overrideTimetable: Array<Array<Hour>>? = null
+
+    override var hasData: Boolean = false
+        private set
 
     override fun init() {
         storage.attachOverridesListener(1) {
@@ -74,6 +77,7 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
 
             if (timetable.size == 6 && timetable[5].size == 0) timetable.removeAt(5)
             overrideTimetable = timetable.map(List<Hour>::toTypedArray).toTypedArray()
+            hasData = lessons.size > 0
         }
     }
 

@@ -16,7 +16,7 @@ class SchoolHourTimetableController(hours: List<SchoolHour>) : BaseTimetableCont
         timetable.forEach { day ->
             day.indices
                     .filter { day[it]?.isEmpty() ?: false }
-                    .forEach { day[it]?.let { h -> day[it] = Hour(h.name, h.teacher, TimetableController.ColorEmpty) }}
+                    .forEach { day[it]?.let { h -> day[it] = Hour(h.name, h.teacher, TimetableController.ColorEmpty) } }
             day.indices
                     .filter { day[it] == null }
                     .forEach { day[it] = Hour(" ", " ", TimetableController.ColorEmpty) }
@@ -26,5 +26,6 @@ class SchoolHourTimetableController(hours: List<SchoolHour>) : BaseTimetableCont
             @Suppress("UNCHECKED_CAST")
             (timetable[it] as Array<Hour>).dropLastWhile(Hour::isEmpty).toTypedArray()
         }
+        this.hasData = this.timetable.any { it.isNotEmpty() }
     }
 }
