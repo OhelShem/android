@@ -154,7 +154,6 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
             hasModifiedCurrentLessonView = true
             lessonName.htmlText = bold { change.content } + " " + nameOriginalHour(change.content, data.hour.represent(showRoom = false))
-
             currentLesson.backgroundColor = change.color
             firstSpace.backgroundColor = change.color
             lessonName.textColor = Color.WHITE

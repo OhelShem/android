@@ -34,8 +34,10 @@ import com.ohelshem.app.controller.storage.TeacherStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.model.WrappedHour
 import com.yoavst.changesystemohelshem.R
+import kotlinx.android.synthetic.main.dialog_override.view.*
 import kotlinx.android.synthetic.main.timetable_fragment.*
 import org.jetbrains.anko.find
+import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.sdk15.listeners.onItemSelectedListener
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.longToast
@@ -146,7 +148,16 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
                 presenter.returnToDefault(hour, day, position, all.isChecked)
             }
         }
-        builder.show()
+
+        val alert = builder.create()
+
+        view.delete_hour.setColorFilter(view.currentName.currentTextColor)
+        view.delete_hour.onClick {
+            presenter.edit(hour, day, position, " ", " ", -1, all.isChecked) //fixme deleting all hours causes crash
+            alert.hide()
+        }
+
+        alert.show()
     }
 
     override fun flushMenu() {
