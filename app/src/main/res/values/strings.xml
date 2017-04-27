@@ -248,37 +248,34 @@
     </string-array>
 
     <string-array name="answers">
-        <item>בשעות הערב לקראת 21:00 ובבוקר בסביבות 07:00.</item>
+        <item>בערב בשעה 21:00 ובבוקר לקראת 07:00.</item>
         <item>באתר בית הספר היכנסו להגדרות החשבון שלכם, שם תוכלו להחליף כיתה ולעדכן פרטים אישיים.</item>
         <item>בהגדרות של האפליקציה ניתן לסמן שהאפליקציה תשלח התראה כשהשינויים מתפרסמים/מתעדכנים או כשיש מבחן בשבוע הקרוב.</item>
         <item>האפליקציה ניגשת לשרתים של בית הספר, ומבקשת מהם את המידע. בנוסף, האפליקציה שומרת אותו על המכשיר, על מנת שיהיה ניתן לראות אותו שוב גם ללא חיבור לאינטרנט.</item>
     </string-array>
 
     <!-- Intro -->
-    <string name="intro_dashboard_primary_text">חידשנו כאן!</string>
-    <string name="intro_dashboard_secondary_text">אבודים קצת? בואו נחזיר אתכם לעניינים</string>
+    <string name="intro_dashboard_primary_text">שלום!</string>
+    <string name="intro_dashboard_secondary_text">ברוכים הבאים לאפליקציה שתשפר את חייכם בתור מורים ותלמידים בתיכון אהל שם. להמשך לחצו כאן.</string>
 
     <string name="intro_bottombar_timetable_primary_text">מערכת שעות</string>
-    <string name="intro_bottombar_timetable_secondary_text">לחצו פעם אחת למערכת השעות הרגילה, ופעמיים למערכת השבועית</string>
+    <string name="intro_bottombar_timetable_secondary_text">פה נמצאת המערכת שלכם. רוצים למחוק שעה שאתם לא לומדים בה? לתת לשיעור שם מצחיק? לבחור את המקבץ? לחצו על כפתור העריכה כדי לערוך את המערכת.</string>
     <string name="intro_bottombar_timetable_secondary_text_teacher">במסך זה תוכלו לראות את מערכת השעות שלכם ושל כל הכיתות בבית הספר. לחיצה שנייה על הכפתור תפתח את המערכת השבועית. בשיעורים עם מקבץ ניתן ללחוץ על השעה כדי להציג את הכיתות לשיעור</string>
 
     <string name="intro_bottombar_changes_primary_text">שינויים</string>
-    <string name="intro_bottombar_changes_secondary_text">מגירסה זו תוכלו לקבל התראה כשהשינויים לכיתה שלכם מתעדכנים, ולשתף את השינויים השכבתיים כתמונה</string>
+    <string name="intro_bottombar_changes_secondary_text">כאן תוכלו לראות את השינויים של הכיתה והשכבה שלכם. האפליקציה תתריע לכם בזמן אמת על כל שינוי במערכת לפני ובמהלך היום.</string>
     <string name="intro_bottombar_changes_secondary_text_teacher">שינויים יומיים במערכת השעות עבור כל שכבה</string>
 
     <string name="intro_bottombar_dates_primary_text">מועדים</string>
-    <string name="intro_bottombar_dates_secondary_text">כל המבחנים והחופשים שלכם במקום אחד</string>
+    <string name="intro_bottombar_dates_secondary_text">במסך זה תוכלו למצוא רשימה של כל המבחנים והחופשים הקרובים שלכם. יש לשים לב לעדכונים של לוח המבחנים.</string>
     <string name="intro_bottombar_dates_secondary_text_teacher">מבחנים וחגים בבית הספר</string>
 
     <string name="intro_bottombar_contacts_primary_text">הכיתה שלי</string>
-    <string name="intro_bottombar_contacts_secondary_text">מספרי טלפון, ימי הולדת בבית הספר ועוד</string>
+    <string name="intro_bottombar_contacts_secondary_text">איזור זה מיועד למציאת פרטי ההתקשרות של חבריך לכיתה יחד עם ימי הולדת בכיתה ובבית הספר.</string>
     <string name="intro_bottombar_contacts_secondary_text_teacher">מספרי טלפון, ימי הולדת בבית הספר ועוד</string>
 
     <string name="intro_menu_primary_text">רגע, זה לא הכל!</string>
-    <string name="intro_menu_secondary_text">ערכות נושא, התראות, הגדרות ומידע נוסף אפשר למצוא פה</string>
-
-    <string name="intro_timetable_primary_text">הכוח בידך</string>
-    <string name="intro_timetable_secondary_text">שם השיעור לא מדויק? רוצה לבחור את המקבץ? לקבוע לשיעור שם מצחיק? לחץ על כפתור העריכה ולאחר מכן לחץ על השיעור כדי לשנותו.</string>
+    <string name="intro_menu_secondary_text">ערכות נושא, התראות, הגדרות ומידע נוסף אפשר למצוא פה. מקווים שתהנו!</string>
 
     <string name="intro_overrides_primary_text">חשוב לגבות</string>
     <string name="intro_overrides_secondary_text">מי יודע מה צופן העתיד? רעידת אדמה עלולה להשמיד עיר שלמה באפריקה. אז כדאי שתגבה את העריכות שעשית ליתר ביטחון.</string>
