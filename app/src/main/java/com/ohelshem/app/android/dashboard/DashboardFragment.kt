@@ -190,6 +190,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             timeLeft.text = "${data.timeToHour} $shortMinute $toStart"
         else
             timeLeft.text = "${data.timeToHour} $shortMinute $left"
+        if ((isTomorrow || isFuture) && data.hour.hourOfDay > 0)
+            timeLeft.append(", " + TimetableController.DayHours[data.hour.hourOfDay * 2])
     }
 
     private var hasModifiedNextLessonView = true
