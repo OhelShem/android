@@ -151,7 +151,6 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
         val alert = builder.create()
 
-        view.delete_hour.setColorFilter(view.currentName.currentTextColor)
         view.delete_hour.onClick {
             presenter.edit(hour, day, position, " ", " ", -1, all.isChecked)
             alert.hide()
