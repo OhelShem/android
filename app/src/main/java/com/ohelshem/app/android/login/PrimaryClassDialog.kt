@@ -6,7 +6,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.controller.storage.TeacherStorage
 import com.yoavst.changesystemohelshem.R
-import kotlin.comparisons.compareBy
 
 
 object PrimaryClassDialog {
@@ -23,7 +22,7 @@ object PrimaryClassDialog {
                 .cancelable(false)
                 .itemsGravity(GravityEnum.CENTER)
                 .items(listOf(activity.getString(R.string.no_primary_class)) + classes.map { "${layers[it.layer - 9]}'${it.clazz}" })
-                .itemsCallback { dialog, view, which, text ->
+                .itemsCallback { _, _, which, _ ->
                     if (which == 0)
                         storage.primaryClass = null
                     else

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.0-rc2"
 
     defaultConfig {
         applicationId "com.yoavst.changesystemohelshem"
@@ -72,7 +72,7 @@ dependencies {
     compile 'com.hannesdorfmann.mosby3:mvp:3.0.3'
     // UI
     compile 'com.nbsp:library:1.09' // material file picker
-    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.0'
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.4.3'
