@@ -2,7 +2,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:2.3.1")
         classpath("com.google.gms:google-services:3.0.0")
-        classpath(kotlinModule(module = "gradle-plugin", version = "1.1.2"))
+        classpath(kotlinModule(module = "gradle-plugin", version = "1.1.2-2"))
     }
     repositories {
         jcenter()
