@@ -74,19 +74,33 @@ interface TimetableController {
         )
 
         val Holidays = arrayOf(
-                Holiday("ראש השנה", "02/10/2016", "04/10/2016"),
-                Holiday("יום כיפור", "11/10/2016", "12/10/2016"),
-                Holiday("סוכות", "16/10/2016", "25/10/2016"),
-                Holiday("חנוכה", "26/12/2016", "01/01/2017"),
-                Holiday("פורים", "12/03/2017", "13/03/2017"),
-                Holiday("פסח", "02/04/2017", "18/04/2017"),
-                Holiday("יום העצמאות", "02/05/2017"),
-                Holiday("ל\"ג בעומר", "15/05/2017"),
-                Holiday("שבועות", "30/05/2017", "01/06/2017"))
+                Holiday("ראש השנה", "20/09/2017", "22/09/2017"),
+                Holiday("יום כיפור", "29/09/2017", "30/09/2017"),
+                Holiday("סוכות", "04/10/2017", "13/10/2017"),
+                Holiday("חנוכה", "14/12/2017", "20/12/2017"),
+                Holiday("פורים", "28/02/2018", "02/03/2018"),
+                Holiday("פסח", "22/03/2018", "07/04/2018"),
+                Holiday("יום העצמאות", "19/04/2018"),
+                Holiday("ל\"ג בעומר", "03/05/2018"),
+                Holiday("שבועות", "19/05/2018", "21/05/2018"))
 
-        val StartOfTheYear: Date = Holiday.Format.parse("01/09/2016")
+        val StartOfTheYear: Date
+            get() {
+                val cal = Calendar.getInstance()
+                var year = cal[Calendar.YEAR]
+                if (cal[Calendar.MONTH] <= Calendar.JUNE)
+                    year--
+                return Holiday.Format.parse("01/09/$year")
+            }
 
-        val Summer = Holiday("קיץ", "21/06/2017", "31/08/2017")
+        val Summer: Holiday
+            get() {
+                val cal = Calendar.getInstance()
+                var year = cal[Calendar.YEAR]
+                if (cal[Calendar.MONTH] >= Calendar.SEPTEMBER)
+                    year++
+                return Holiday("קיץ", "21/06/$year", "31/08/$year")
+            }
 
 
         fun getStartOfHour(hour: Int): String = DayHours[hour * 2 - 2]

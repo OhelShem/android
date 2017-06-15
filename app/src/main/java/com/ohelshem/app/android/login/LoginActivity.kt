@@ -88,16 +88,18 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
     }
 
     override fun showLoginError(error: UpdateError) {
-        loadingBar.stopAnim()
-        loadingBar.invisible()
-        passwordInputLayout.isEnabled = true
-        idInputLayout.isEnabled = true
+        runOnUiThread {
+            loadingBar.stopAnim()
+            loadingBar.invisible()
+            passwordInputLayout.isEnabled = true
+            idInputLayout.isEnabled = true
 
-        when (error) {
-            UpdateError.Connection -> Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
-            UpdateError.Login -> passwordInputLayout.error = getString(R.string.login_wrong)
-            UpdateError.NoData -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
-            UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
+            when (error) {
+                UpdateError.Connection -> Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
+                UpdateError.Login -> passwordInputLayout.error = getString(R.string.login_wrong)
+                UpdateError.NoData -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
+                UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 

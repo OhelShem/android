@@ -282,10 +282,10 @@
 
     <!-- Yoav Sternberg -->
     <string name="yoav_sternberg">יואב שטרנברג</string>
-    <string name="yoav_sternberg_info">תלמיד כיתה יב\' 4</string>
+    <string name="yoav_sternberg_info">בוגר בית הספר</string>
     <string name="quick_circle_apps">Quick Circle Apps</string>
 
     <!-- Eran Machlev -->
     <string name="eran_machlev">ערן מחלב</string>
-    <string name="eran_machlev_info">תלמיד כיתה י\'9</string>
+    <string name="eran_machlev_info">תלמיד כיתה י\"א 9</string>
 </resources>

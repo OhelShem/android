@@ -3,6 +3,7 @@ package com.ohelshem.app.android.changes.teacher
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Change
 import com.ohelshem.app.android.changes.BaseChangesFragment
@@ -15,8 +16,8 @@ import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.changes_teacher_fragment.*
 import org.jetbrains.anko.childrenSequence
-import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.padding
+import org.jetbrains.anko.sdk15.listeners.onClick
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,7 +48,7 @@ class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), T
 
     override fun setSelectedLayer(layer: Int) {
         layersBar.childrenSequence().forEach { it.isSelected = false }
-        layersBar.findViewWithTag(layer.toString()).isSelected = true
+        layersBar.findViewWithTag<View>(layer.toString()).isSelected = true
     }
 
     override fun showData(changes: List<Change>) {
