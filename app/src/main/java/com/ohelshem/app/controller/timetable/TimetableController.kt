@@ -147,7 +147,7 @@ interface TimetableController {
             else return DayType.Regular
         }
 
-        fun getHoliday(calendar: Calendar): Holiday? {
+        fun getHoliday(calendar: Calendar = Calendar.getInstance()): Holiday? {
             val time = calendar.clearTime().timeInMillis
             val parser = SimpleDateFormat("dd/MM/yyyy")
             for (holiday in Holidays) {

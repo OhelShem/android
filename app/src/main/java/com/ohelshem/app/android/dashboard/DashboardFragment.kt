@@ -137,9 +137,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.setTypeface(null, Typeface.BOLD)
             holidayText.textColor = Color.WHITE
             if (isBeforeHoliday)
-                holidayText.text = if (tomorrowHoliday!!.isOneDay()) tomorrowHoliday.name else "${tomorrowHoliday.name} (${daysBetween(today, tomorrowHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
+                holidayText.text = if (tomorrowHoliday!!.isOneDay()) tomorrowHoliday.name else "${tomorrowHoliday.name} (${daysBetween(today, tomorrowHoliday.endTime.toCalendar())} ימים נותרו" + ")"
             else
-                holidayText.text = if (todayHoliday!!.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar()) + 1} ימים נותרו" + ")"
+                holidayText.text = if (todayHoliday!!.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar())} ימים נותרו" + ")"
             lessonsContainer.backgroundColor = context.primaryLightColor
             lessonsContainer.addView(holidayText)
             return true
