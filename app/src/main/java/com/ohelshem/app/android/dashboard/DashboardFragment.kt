@@ -34,6 +34,7 @@ import com.ohelshem.api.model.Change
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.*
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.android.utils.MaterialTapTargetPrompt
 import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.daysBetween
@@ -47,7 +48,6 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.textResource
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -46,7 +46,7 @@ object WelcomeDialog {
                 .setCustomView(view, padding, padding, padding, padding)
                 .setCancelable(false)
                 .setPositiveText(R.string.save)
-                .onPositive { materialDialog, dialogAction ->
+                .onPositive { _, _ ->
                     val selection = view.nightMode.checkedRadioButtonId
                     storage.darkMode = if (selection == R.id.auto) MODE_NIGHT_AUTO else if (selection == R.id.enabled) MODE_NIGHT_YES else MODE_NIGHT_NO
 

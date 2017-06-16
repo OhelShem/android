@@ -76,7 +76,7 @@ class DebugMenuSwitchAction(val name: String, val default: Boolean, val callback
         /* no-op */
     }
 
-    private val switchListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+    private val switchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         callback(isChecked)
     }
 }

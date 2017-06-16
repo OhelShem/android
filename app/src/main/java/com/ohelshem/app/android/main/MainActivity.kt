@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Spinner
 import com.afollestad.materialdialogs.GravityEnum
 import com.afollestad.materialdialogs.MaterialDialog
@@ -33,10 +34,7 @@ import com.ohelshem.app.android.login.LoginActivity
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
-import com.ohelshem.app.android.utils.AppThemedActivity
-import com.ohelshem.app.android.utils.BadgeBarGenerator
-import com.ohelshem.app.android.utils.BaseMvpFragment
-import com.ohelshem.app.android.utils.DebugMenuSwitchAction
+import com.ohelshem.app.android.utils.*
 import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfo
@@ -58,7 +56,6 @@ import kotlinx.android.synthetic.main.teacher_badge_layout.*
 import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk15.listeners.onClick
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.util.*
 
 
@@ -234,7 +231,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
-            if (findViewById(R.id.storiesBar) != null)
+            if (findViewById<View>(R.id.storiesBar) != null)
                 storiesBar.hide()
             val layers = stringArrayRes(R.array.layers)
             var classes = storage.classes
@@ -270,7 +267,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             teacherBar.show()
         } else {
             teacherBar.hide()
-            if (findViewById(R.id.storiesBar) != null) {
+            if (findViewById<View>(R.id.storiesBar) != null) {
                 if (storage.debugFlag) {
                     story1.onClick {
                         doStories(R.drawable.story1)

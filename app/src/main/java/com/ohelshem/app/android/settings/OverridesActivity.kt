@@ -40,6 +40,7 @@ import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.primaryDarkColor
 import com.ohelshem.app.android.utils.AppThemedActivity
+import com.ohelshem.app.android.utils.MaterialTapTargetPrompt
 import com.ohelshem.app.android.utils.adapter.SimpleHeaderAdapter
 import com.ohelshem.app.controller.timetable.OverridableUserTimetableController
 import com.ohelshem.app.controller.timetable.TimetableController
@@ -51,7 +52,6 @@ import kotlinx.android.synthetic.main.overrides_activity.*
 import org.jetbrains.anko.childrenSequence
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.toast
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat

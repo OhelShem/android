@@ -69,8 +69,9 @@ public class ForegroundLinearLayout extends LinearLayout {
             setForeground(d);
         }
 
-        mForegroundInPadding = a.getBoolean(
-                R.styleable.Foreground_android_foregroundInsidePadding, true);
+//        mForegroundInPadding = a.getBoolean(
+//                R.styleable.Foreground_android_foregroundInsidePadding, true);
+        mForegroundInPadding = true;
 
         a.recycle();
 

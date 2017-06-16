@@ -57,8 +57,8 @@ public class ForegroundTextView extends AppCompatTextView {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Foreground, defStyle, 0);
 
         final Drawable d = a.getDrawable(R.styleable.Foreground_android_foreground);
-        foregroundPadding = a.getBoolean(R.styleable.Foreground_android_foregroundInsidePadding, false);
-
+//        foregroundPadding = a.getBoolean(R.styleable.Foreground_android_foregroundInsidePadding, false);
+        foregroundPadding = false;
         // Apply foreground padding for nine patches automatically
         if (!foregroundPadding && getBackground() instanceof NinePatchDrawable) {
             final NinePatchDrawable npd = (NinePatchDrawable) getBackground();
