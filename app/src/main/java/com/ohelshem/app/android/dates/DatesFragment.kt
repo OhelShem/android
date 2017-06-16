@@ -104,7 +104,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     }
 
     override fun update(tests: List<Test>) {
-        if (tests.isEmpty()) teacherErrorView.show()
+        if (tests.isEmpty() && presenter.isTeacher) teacherErrorView.show()
         else {
             teacherErrorView.hide()
             val now = Calendar.getInstance().clearTime().timeInMillis

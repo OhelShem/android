@@ -46,7 +46,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     }
 
     override fun showContacts(layer: Int, clazz: Int, contacts: List<Contact>) {
-        if (contacts.isEmpty()) {
+        if (contacts.isEmpty() && !storage.isStudent()) {
             teacherErrorView.show()
         } else {
             teacherErrorView.hide()

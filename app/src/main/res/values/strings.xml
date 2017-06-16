@@ -224,7 +224,7 @@
 
 
     <!-- Help -->
-    <string name="who_are_we">מי אנחנו</string>
+    <string name="who_are_we">מי פיתח את האפליקציה</string>
     <string name="more_apps_i_built">אפליקציות נוספות שלי</string>
     <string name="logout">התנתק</string>
     <string name="open_source">קוד פתוח</string>

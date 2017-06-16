@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.widget.Spinner
 import com.afollestad.materialdialogs.GravityEnum
 import com.afollestad.materialdialogs.MaterialDialog
@@ -231,7 +230,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
 
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
-            if (findViewById<View>(R.id.storiesBar) != null)
+            if (findViewById(R.id.storiesBar) != null)
                 storiesBar.hide()
             val layers = stringArrayRes(R.array.layers)
             var classes = storage.classes
@@ -267,7 +266,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             teacherBar.show()
         } else {
             teacherBar.hide()
-            if (findViewById<View>(R.id.storiesBar) != null) {
+            if (findViewById(R.id.storiesBar) != null) {
                 if (storage.debugFlag) {
                     story1.onClick {
                         doStories(R.drawable.story1)
