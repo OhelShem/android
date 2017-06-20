@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">Ohel Shem</string>
 
+    <!-- Changelog Error messages -->
+    <string name="changelog_internal_error_parsing">שגיאה בקריאת הקובץ</string>
+
+    <string name="changelog_internal_error_internet_connection">אין חיבור אינטרנט כדי להביא את המידע</string>
+
+    <!-- String for Version Header.
+         You can customize it in your strings.xml.
+         Use string with quotes if you want a space -->
+    <string name="changelog_header_version">"גרסה "</string>
+
+    <!-- Changelog BulletPoint
+        You can customize it in your strings.xml
+        If you don't want a bulletpoint you can specify it in your changelog.xml-->
+    <string name="changelog_row_bulletpoint">\u2022</string>
+
+
     <!-- Login -->
     <string name="login">התחברות</string>
     <string name="id">מספר ת.ז.</string>
@@ -238,7 +254,7 @@
     <string name="council">נציב קבילות ילדים ונוער</string>
     <string name="layer_counselor">יועצת השכבה</string>
     <string name="soon">בקרוב</string>
-    <string name="changelog">Changelog</string>
+    <string name="changelog">מה חדש?</string>
 
     <string-array name="questions">
         <item>מתי השינויים מתפרסמים</item>

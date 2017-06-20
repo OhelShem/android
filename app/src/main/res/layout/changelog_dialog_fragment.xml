@@ -6,5 +6,5 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:paddingTop="8dp"
-    chg:rowHeaderLayoutId="@layout/changelogrowheader_material_layout"
-    chg:rowLayoutId="@layout/changelogrow_material_layout" />
+    chg:rowHeaderLayoutId="@layout/changelog_rtl_header"
+    chg:rowLayoutId="@layout/changelog_rtl_row" />
