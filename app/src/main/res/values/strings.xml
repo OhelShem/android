@@ -123,7 +123,7 @@
     <string name="days_left_to_next_test">ימים למבחן הבא</string>
     <string name="old_test">מבחנים ישנים</string>
     <string name="tests_in_next_week">מבחנים בשבוע הקרוב</string>
-    <string name="tests_dialog_close">סגור</string>
+    <string name="dialog_close">סגור</string>
     <string name="choose_class_for_tests_long_text">בחר כיתה על מנת לראות את המבחנים שלה</string>
 
     <!-- Contacts -->

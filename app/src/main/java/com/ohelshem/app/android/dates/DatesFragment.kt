@@ -257,7 +257,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
 
         dialog = AlertDialog.Builder(context)
-                .setNeutralButton(R.string.tests_dialog_close) { dialog, _ -> dialog.dismiss() }
+                .setNeutralButton(R.string.dialog_close) { dialog, _ -> dialog.dismiss() }
                 .setView(view)
                 .show()
     }

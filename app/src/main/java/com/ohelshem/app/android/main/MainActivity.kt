@@ -514,7 +514,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     .setStyle(Style.HEADER_WITH_TITLE)
                     .setTitle(R.string.changelog)
                     .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
-                    .setPositiveText(android.R.string.ok)
+                    .setPositiveText(R.string.dialog_close)
                     .show()
         }
     }
