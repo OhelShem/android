@@ -120,9 +120,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         val todayHoliday = TimetableController.getHoliday(today)
         val tomorrowHoliday = TimetableController.getHoliday(tomorrow)
 
-        val isBeforeHoliday = todayHoliday == null && tomorrowHoliday != null && (isTomorrow || isFuture)
-        val isInHoliday = todayHoliday != null && tomorrowHoliday != null
-        val isEndOfHoliday = todayHoliday != null && tomorrowHoliday == null && !(isTomorrow || isFuture)
+        val isBeforeHoliday = todayHoliday == null && tomorrowHoliday != null && (isTomorrow || isFuture) // today is not a holiday, tomorrow is a holiday, schedule for today has ended
+        val isInHoliday = todayHoliday != null && tomorrowHoliday != null // today is a holiday and tomorrow is a holiday
+        val isEndOfHoliday = todayHoliday != null && tomorrowHoliday == null && !(isTomorrow || isFuture) // today is a holiday, tomorrow is not a holiday, schedule for today hasn't ended yet
 
         if (isBeforeHoliday || isInHoliday || isEndOfHoliday) {
             // Don't show the regular timetable if we're in the middle of any holiday (incl. Summer)
