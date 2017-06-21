@@ -111,7 +111,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         }
     }
 
-    private fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean {
+    override fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean {
 
         val today = Calendar.getInstance()
         val tomorrow = Calendar.getInstance()

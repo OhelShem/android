@@ -25,5 +25,7 @@ import com.ohelshem.app.model.HourData
 interface DashboardView : MvpView {
     fun showLessonInfo(data: HourData, isEndOfDay: Boolean, isTomorrow: Boolean, isFuture: Boolean, changes: List<Change>?)
 
+    fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean
+
     fun showTests(tests: List<Test>)
 }
