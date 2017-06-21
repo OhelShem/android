@@ -88,7 +88,7 @@ interface TimetableController {
             get() {
                 val cal = Calendar.getInstance()
                 var year = cal[Calendar.YEAR]
-                if (cal[Calendar.MONTH] <= Calendar.JUNE && cal[Calendar.DAY_OF_MONTH] <= 20)
+                if (cal[Calendar.MONTH] < Calendar.JUNE || (cal[Calendar.MONTH] == Calendar.JUNE && cal[Calendar.DAY_OF_MONTH] <= 20))
                     year--
                 return Holiday.Format.parse("01/09/$year")
             }
