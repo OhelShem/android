@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
     <changelogversion changeDate="21.06.2017" versionName="7.1.9">
-        <changelogtext>[b]עדכון חגי תשע"ח[/b]</changelogtext>
+        <changelogtext>עדכון חגי תשע"ח</changelogtext>
+        <changelogtext>[b][font color=#03A9F4]מחיקת שעות מיותרות:[/b] כדי למחוק שעה מהמערכת, היכנסו למצב עריכה ולחצו עליה כדי לערוך/למחוק אותה</changelogtext>
     </changelogversion>
 </changelog>
