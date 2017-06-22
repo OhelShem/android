@@ -176,9 +176,6 @@ class SettingsActivity : AppThemedActivity() {
         else
             profile.htmlText = resources.getString(R.string.logged_in_as_teacher, data.privateName, data.familyName)
 
-        contactButton.onClick {
-            email("yoav.sternberg@gmail.com", subject = getString(R.string.email_title))
-        }
         exitButton.onClick {
             setResult(42)
             finish()

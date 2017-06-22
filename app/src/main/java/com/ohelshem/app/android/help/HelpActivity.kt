@@ -61,9 +61,6 @@ class HelpActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-        contactButton.onClick {
-            email("yoav.sternberg@gmail.com", subject = getString(R.string.email_title))
-        }
         regulationButton.onClick {
             openRegulations()
         }

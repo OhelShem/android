@@ -87,6 +87,7 @@ abstract class BaseTimetableController : TimetableController {
                 return HourData(now, nextHour!!, minutesLeft, 0, isBefore = true)
 
             } else if (getLessonTimeToCompare(schoolHour) > timeNow) {
+                // lesson is today but in the future
                 val minutesLeft = getLessonTimeToCompare(schoolHour) - timeNow
                 val now = NumberedHour(h, day, schoolHour, h.room())
                 val nextHour = if (schoolHour + 1 != today.size) {
@@ -97,6 +98,7 @@ abstract class BaseTimetableController : TimetableController {
 
                 return HourData(now, nextHour!!, minutesLeft, 0, isBefore = true)
             } else if (getLessonTimeToCompare(schoolHour, false) > timeNow) {
+                // lesson is now
                 val minutesLeft = getLessonTimeToCompare(schoolHour, start = false) - timeNow
                 val now = NumberedHour(h, day, schoolHour, h.room())
                 val nextHour = if (schoolHour + 1 != today.size) {
