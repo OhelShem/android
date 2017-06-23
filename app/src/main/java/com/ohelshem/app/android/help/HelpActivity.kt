@@ -73,12 +73,6 @@ class HelpActivity : AppCompatActivity() {
         eliButton.onClick {
             browse("http://www.eli.org.il")
         }
-        mashovButton.onClick {
-            launchPlayStore("com.yoavst.mashov")
-        }
-        quickAppsButton.onClick {
-            launchPlayStore("com.yoavst.quickapps")
-        }
         yoavCard.onClick {
             browse("http://yoavst.com")
         }

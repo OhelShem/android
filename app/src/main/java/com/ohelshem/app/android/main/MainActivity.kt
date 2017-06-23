@@ -469,6 +469,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 } else handler.postDelayed(request, 500)
             }
 
+            val showChangelog = ButtonAction("Show changelog") {
+                alertChangelog()
+            }
+
             val shareFirebaseTokenAction = ButtonAction("Share firebaseToken") {
                 toast(FirebaseInstanceId.getInstance().token ?: "No token available")
                 startActivity(
@@ -492,7 +496,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, preferenceAction, shareFirebaseTokenAction),
+                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, preferenceAction, showChangelog, shareFirebaseTokenAction),
                     DeviceModule(),
                     BuildModule(),
                     NetworkModule(),
@@ -510,13 +514,17 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private fun showIntro() {
         if (App.updatedFromVersion != -1) {
             App.updatedFromVersion = -1
-            MaterialStyledDialog.Builder(this)
-                    .setStyle(Style.HEADER_WITH_TITLE)
-                    .setTitle(R.string.changelog)
-                    .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
-                    .setPositiveText(R.string.dialog_close)
-                    .show()
+            alertChangelog()
         }
+    }
+
+    private fun alertChangelog() {
+        MaterialStyledDialog.Builder(this)
+                .setStyle(Style.HEADER_WITH_TITLE)
+                .setTitle(R.string.changelog)
+                .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
+                .setPositiveText(R.string.dialog_close)
+                .show()
     }
 
     override fun startTour() {
