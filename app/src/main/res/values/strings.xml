@@ -269,7 +269,7 @@
 
     <!-- Intro -->
     <string name="intro_dashboard_primary_text">שלום!</string>
-    <string name="intro_dashboard_secondary_text">ברוכים הבאים לאפליקציה שתשפר את חייכם בתור תלמידים ומורים בתיכון אהל שם. להמשך לחצו כאן.</string>
+    <string name="intro_dashboard_secondary_text">ברוכים הבאים לאפליקציה שתקל על חייכם בתור תלמידים ומורים בתיכון אהל שם. להמשך לחצו כאן.</string>
 
     <string name="intro_bottombar_timetable_primary_text">מערכת שעות</string>
     <string name="intro_bottombar_timetable_secondary_text">פה נמצאת המערכת שלכם. רוצים למחוק שעה שאתם לא לומדים בה? לתת לשיעור שם מצחיק? לבחור את המקבץ? לחצו על כפתור העריכה כדי לערוך את המערכת.</string>
