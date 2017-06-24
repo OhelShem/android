@@ -23,6 +23,7 @@ import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.getDay
 import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.notificationManager
 import org.jetbrains.anko.startService
 import java.util.*
@@ -100,6 +101,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
                 }
             } else notificationManager.cancel(NotificationId)
         } else notificationManager.cancel(NotificationId)
+        stopSelf()
     }
 
     private fun NumberedHour.represent(showRoom: Boolean = true) = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0 && room != -1 && showRoom) "$name ($room)" else name
@@ -176,7 +178,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         private const val NotificationId = 1342
 
         fun update(context: Context) {
-            context.startService<OngoingNotificationService>()
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+                context.startForegroundService(context.intentFor<OngoingNotificationService>())
+            else
+                context.startService<OngoingNotificationService>()
         }
 
     }
