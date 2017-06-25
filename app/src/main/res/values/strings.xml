@@ -210,7 +210,7 @@
     <string name="version_name">שם גרסה</string>
     <string name="version_code">מספר גרסה</string>
     <string name="version_type">סוג גרסה</string>
-    <string name="not_yet_implemented">האפשרות הבאה עדיין איננה זמינה.</string>
+    <string name="not_yet_implemented">אפשרות זו עדיין איננה זמינה</string>
     <string name="theme_settings">ערכת נושא</string>
     <string name="theme_color">צבע מרכזי</string>
     <string name="restart_app">הפעל מחדש את האפליקציה</string>
