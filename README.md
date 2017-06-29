@@ -19,12 +19,16 @@ This app is for students, allowing them to be updated with the most important da
 
 * Timetable and changes
 <br>
-<img src="http://imgur.com/djmMQhx.jpg" width="350">
-<img src="http://imgur.com/HU0PnXQ.jpg" width="350">
+<div style="display: inline-block">
+<img src="https://github.com/OhelShem/android/blob/7.0.0/screenshots/phone/framed/6_framed.png" width="350">
+<img src="https://github.com/OhelShem/android/blob/7.0.0/screenshots/phone/framed/3_framed.png" width="350">
+</div>
 * Tests and holidays
 <br>
-<img src="http://imgur.com/ozhbftx.jpg" width="350">
-<img src="http://imgur.com/kTPJ9Kr.jpg" width="350">
+<div style="display: inline-block">
+<img src="https://github.com/OhelShem/android/blob/7.0.0/screenshots/phone/framed/1_framed.png" width="350">
+<img src="https://github.com/OhelShem/android/blob/7.0.0/screenshots/phone/framed/5_framed.png" width="350">
+</div>
 
 
 # Technology behind
