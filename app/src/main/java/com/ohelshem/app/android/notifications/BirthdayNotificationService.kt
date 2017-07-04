@@ -10,6 +10,7 @@ import com.ohelshem.app.android.flipName
 import com.ohelshem.app.android.main.MainActivity.Companion.Shortcut_LaunchMyClass
 import com.ohelshem.app.controller.storage.ContactsProvider
 import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.Contact
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
@@ -22,8 +23,8 @@ class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationSe
     val contactsProvider: ContactsProvider by kodein.instance()
 
     override fun onHandleIntent(intent: Intent?) {
-        if (storage.isSetup() && storage.notificationsForBirthdays && storage.lastNotificationTimeBirthday.toCalendar()[Calendar.DAY_OF_YEAR] != Calendar.getInstance()[Calendar.DAY_OF_YEAR]) {
-            val today = Calendar.getInstance()
+        if (storage.isSetup() && storage.notificationsForBirthdays && storage.lastNotificationTimeBirthday.toCalendar()[Calendar.DAY_OF_YEAR] != getIsraelCalendar()[Calendar.DAY_OF_YEAR]) {
+            val today = getIsraelCalendar()
             val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
             val allContacts =
                     if (storage.isStudent())

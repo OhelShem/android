@@ -1,6 +1,7 @@
 package com.ohelshem.app.controller.timetable
 
 import com.ohelshem.api.model.Hour
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
 import com.ohelshem.app.model.WrappedHour
@@ -115,7 +116,7 @@ abstract class BaseTimetableController : TimetableController {
 
     override val hasDoneLearningToday: Boolean
         get() {
-            val cal = Calendar.getInstance()
+            val cal = getIsraelCalendar()
             val today = cal[Calendar.DAY_OF_WEEK]
             if (today > timetable.size || timetable[today - 1].isEmpty()) return true
             return TimetableController.getTimeToCompare(cal[Calendar.MINUTE], cal[Calendar.HOUR_OF_DAY]) >= getLessonTimeToCompare(lastHourOfDay(timetable[today - 1]), start = false)

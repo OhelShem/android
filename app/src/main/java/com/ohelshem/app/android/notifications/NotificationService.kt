@@ -13,6 +13,7 @@ import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.getHour
+import com.ohelshem.app.getIsraelCalendar
 import com.yoavst.changesystemohelshem.R
 import java.util.*
 
@@ -24,10 +25,10 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
 
     override fun onHandleIntent(intent: Intent?) {
         if (storage.isSetup()) {
-            val day = Calendar.getInstance().apply {
+            val day = getIsraelCalendar().apply {
                 add(Calendar.DAY_OF_YEAR, 1)
             }.clearTime()
-            if (getHour() >= 21 && storage.lastNotificationTime < Calendar.getInstance().clearTime().timeInMillis) {
+            if (getHour() >= 21 && storage.lastNotificationTime < getIsraelCalendar().clearTime().timeInMillis) {
                 val dayType = TimetableController.getDayType(day, timetableController.learnsOnFriday)
                 if (dayType == DayType.Holiday) {
                     if (storage.notificationsForHolidays)

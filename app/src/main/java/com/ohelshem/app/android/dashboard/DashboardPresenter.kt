@@ -28,6 +28,7 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.toCalendar
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -46,10 +47,10 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
                 val hourData = timetableController.getHourData()
                 showLessonInfo(hourData,
                         isEndOfDay = TimetableController.isEndOfDay(hourData.hour.hourOfDay, timetableController[hourData.hour.day - 1]),
-                        isTomorrow = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                                Calendar.getInstance().clearTime().timeInMillis,
-                        isFuture = (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
-                                Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = generateChanges(hourData.hour.day, userClazz))
+                        isTomorrow = (getIsraelCalendar().timeInMillis + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
+                                getIsraelCalendar().clearTime().timeInMillis,
+                        isFuture = (getIsraelCalendar().timeInMillis + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
+                                getIsraelCalendar().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = generateChanges(hourData.hour.day, userClazz))
             }
             else
                 showHolidayInfo(false, false)
@@ -81,7 +82,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
 
     val testsForWeek: List<Test>
         get() {
-            val time = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
+            val time = getIsraelCalendar().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
             val now = Date().time
             if (storage.userData.isTeacher()) {
                 val primaryClass = storage.primaryClass

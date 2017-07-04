@@ -7,6 +7,7 @@ import com.ohelshem.api.model.Hour
 import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.getIsraelCalendar
 import mu.KLogging
 import org.jetbrains.anko.doAsync
 import java.util.*
@@ -82,7 +83,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
             with(response) {
                 storage.changesDate = changesDate
                 storage.serverUpdateDate = serverUpdateDate
-                storage.updateDate = System.currentTimeMillis()
+                storage.updateDate = getIsraelCalendar().timeInMillis
 
                 storage.userData = userData
                 apis += UpdatedApi.UserData

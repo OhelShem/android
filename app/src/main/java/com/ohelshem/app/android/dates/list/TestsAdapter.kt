@@ -25,8 +25,8 @@ import android.widget.TextView
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.utils.adapter.SimpleHeaderAdapter
 import com.ohelshem.app.model.VisibleItem
+import com.ohelshem.app.testDateFormat
 import com.yoavst.changesystemohelshem.R
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -41,7 +41,7 @@ class TestsAdapter(context: Context, items: List<VisibleItem<Test>>, callback: (
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: Test) {
         holder as TestsHolder
         holder.title.text = item.content
-        holder.date.text = DateFormat.format(Date(item.date))
+        holder.date.text = testDateFormat.format(Date(item.date))
         if (now > item.date)
             holder.indicator.text = "✓"
         else
@@ -53,10 +53,6 @@ class TestsAdapter(context: Context, items: List<VisibleItem<Test>>, callback: (
         val indicator: TextView by lazy { (layout as ViewGroup).getChildAt(2) as TextView }
         val title: TextView by lazy { (layout as ViewGroup).getChildAt(1) as TextView }
         val date: TextView by lazy { (layout as ViewGroup).getChildAt(0) as TextView }
-    }
-
-    companion object {
-        private val DateFormat = SimpleDateFormat("dd/MM/yy")
     }
 
 }

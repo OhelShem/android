@@ -19,6 +19,7 @@ import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
+import com.ohelshem.app.changesDateFormat
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
 import com.ohelshem.app.getDay
 import com.ohelshem.app.toCalendar
@@ -26,7 +27,6 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.changes_fragment.*
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), ChangesView {
@@ -118,7 +118,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
     override fun setData(changes: List<Change>) {
         initTabs()
         dateLayout.show()
-        date.text = ChangesDataFormat.format(Date(presenter.changesDate))
+        date.text = changesDateFormat.format(Date(presenter.changesDate))
         nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().getDay() - 1]}"
 
         childFragmentManager.fragments?.forEach {
@@ -132,7 +132,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
 
     private fun setTitle() {
         val data = presenter.changesDate
-        screenManager.screenTitle = day + " " + weekDays[data.toCalendar().getDay() - 1] + " " + ChangesDataFormat.format(Date(data))
+        screenManager.screenTitle = day + " " + weekDays[data.toCalendar().getDay() - 1] + " " + changesDateFormat.format(Date(data))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -173,7 +173,6 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
     }
 
     companion object {
-        private val ChangesDataFormat = SimpleDateFormat("dd/MM")
         private const val SharingFilename = "layer_changes.png"
     }
 }

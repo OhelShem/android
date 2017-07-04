@@ -21,6 +21,7 @@ import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.getDay
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.intentFor
@@ -37,11 +38,11 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
     private val with by lazy { " " + getString(R.string.with) + " " }
 
     override fun onHandleIntent(intent: Intent?) {
-        val cal = Calendar.getInstance()
+        val cal = getIsraelCalendar()
         val day = cal.getDay()
         if (storage.isSetup()) {
             val holiday = TimetableController.getHoliday()
-            if (timetableController.hasData && storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != Calendar.getInstance().clearTime().timeInMillis && holiday == null && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
+            if (timetableController.hasData && storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != getIsraelCalendar().clearTime().timeInMillis && holiday == null && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended

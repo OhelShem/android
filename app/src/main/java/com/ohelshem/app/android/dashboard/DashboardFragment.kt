@@ -38,8 +38,10 @@ import com.ohelshem.app.android.utils.MaterialTapTargetPrompt
 import com.ohelshem.app.controller.storage.UIStorage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.daysBetween
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.HourData
 import com.ohelshem.app.model.NumberedHour
+import com.ohelshem.app.testDateFormat
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
@@ -48,7 +50,6 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.textResource
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), DashboardView {
@@ -113,8 +114,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     override fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean {
 
-        val today = Calendar.getInstance()
-        val tomorrow = Calendar.getInstance()
+        val today = getIsraelCalendar()
+        val tomorrow = getIsraelCalendar()
         tomorrow.add(Calendar.DATE, 1)
 
         val todayHoliday = TimetableController.getHoliday(today)
@@ -275,7 +276,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                         @Suppress("CAST_NEVER_SUCCEEDS")
                         (this as ViewGroup)
                         (getChildAt(1) as TextView).text = test.content
-                        (getChildAt(0) as TextView).text = TestDateFormat.format(Date(test.date))
+                        (getChildAt(0) as TextView).text = testDateFormat.format(Date(test.date))
                         if (now > test.date)
                             (getChildAt(2) as TextView).text = "✓"
                         else
@@ -299,9 +300,5 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     override fun onPause() {
         super.onPause()
         activity.unregisterReceiver(timeTick)
-    }
-
-    companion object {
-        private val TestDateFormat = SimpleDateFormat("dd/MM/yy")
     }
 }

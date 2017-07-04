@@ -1,12 +1,40 @@
 package com.ohelshem.app
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
+
+
 fun Long.toCalendar(): Calendar {
-    val cal = Calendar.getInstance()
+    val cal = getIsraelCalendar()
     cal.timeInMillis = this
     return cal
 }
+
+val IsraelTimeZone: TimeZone
+    get() = TimeZone.getTimeZone("Asia/Jerusalem")
+
+val dateFormat: DateFormat
+        get() {
+            val f = SimpleDateFormat("dd/MM/yyyy")
+            f.timeZone = IsraelTimeZone
+            return f
+        }
+
+val changesDateFormat: DateFormat
+    get() {
+        val f = SimpleDateFormat("dd/MM")
+        f.timeZone = IsraelTimeZone
+        return f
+    }
+
+val testDateFormat: DateFormat
+    get() {
+        val f = SimpleDateFormat("dd/MM/yy")
+        f.timeZone = IsraelTimeZone
+        return f
+    }
 
 /**
  * Returns the given date with the time values cleared.
@@ -19,6 +47,8 @@ fun Calendar.clearTime(): Calendar {
     return this
 }
 
+fun getIsraelCalendar(): Calendar = Calendar.getInstance(IsraelTimeZone)
+
 /**
  * Returns the given date with the time values cleared.
  */
@@ -26,8 +56,10 @@ fun Date.clearTime(): Date {
     return time.toCalendar().clearTime().time
 }
 
+fun isInIsrael(): Boolean = getIsraelCalendar().timeZone == IsraelTimeZone
+
 fun Calendar.isTomorrow(): Boolean {
-    val tomorrow = Calendar.getInstance()
+    val tomorrow = getIsraelCalendar()
     tomorrow.add(Calendar.DAY_OF_YEAR, 1)
     return tomorrow.isSameDay(this)
 }
@@ -40,11 +72,11 @@ fun Calendar?.isSameDay(cal2: Calendar?): Boolean {
 }
 
 fun Calendar.isToday(): Boolean {
-    return isSameDay(Calendar.getInstance())
+    return isSameDay(getIsraelCalendar())
 }
 
 fun getHour(): Int {
-    val cal = Calendar.getInstance()
+    val cal = getIsraelCalendar()
     return cal.get(Calendar.HOUR_OF_DAY)
 }
 

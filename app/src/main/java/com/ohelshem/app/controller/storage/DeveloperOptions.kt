@@ -5,6 +5,7 @@ import com.ohelshem.app.android.App
 import com.ohelshem.app.android.colorArrayRes
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.getHour
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import java.util.*
@@ -13,7 +14,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
     override var changesDate: Long
         get() {
             if (isFakingChanges)
-                return if (getHour() < 21) Calendar.getInstance().clearTime().timeInMillis else Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis
+                return if (getHour() < 21) getIsraelCalendar().clearTime().timeInMillis else getIsraelCalendar().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis
             else
                 return storage.changesDate
         }

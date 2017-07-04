@@ -31,6 +31,7 @@ import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Test
+import com.ohelshem.app.*
 import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.dates.list.HolidaysListFragment
@@ -40,11 +41,8 @@ import com.ohelshem.app.android.primaryColor
 import com.ohelshem.app.android.show
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.view.OneDayDecorator
-import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.Holiday
-import com.ohelshem.app.daysBetween
-import com.ohelshem.app.toCalendar
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -53,7 +51,6 @@ import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.calendar_fragment.view.*
 import kotlinx.android.synthetic.main.dates_fragment.*
 import org.jetbrains.anko.sdk15.listeners.onClick
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -107,7 +104,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
         if (tests.isEmpty() && presenter.isTeacher) teacherErrorView.show()
         else {
             teacherErrorView.hide()
-            val now = Calendar.getInstance().clearTime().timeInMillis
+            val now = getIsraelCalendar().clearTime().timeInMillis
             val nextTest = tests.firstOrNull { now <= it.date }
             if (nextTest != null) {
                 daysToTest?.text = daysBetween(now.toCalendar(), nextTest.date.toCalendar()).toString()
@@ -178,7 +175,6 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
         dialog = null
     }
 
-    private val TestsDateFormat = SimpleDateFormat("dd/MM/yy")
     private fun openCalendarView() {
         val tests = presenter.tests
         val view = activity.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
@@ -187,12 +183,12 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
         val extra = view.extra
         val indicator = view.indicator
         val data = view.data
-        val now = System.currentTimeMillis()
+        val now = getIsraelCalendar().timeInMillis
 
         fun update(test: Test) {
             data.show()
             title.text = test.content
-            extra.text = TestsDateFormat.format(Date(test.date))
+            extra.text = testDateFormat.format(Date(test.date))
             if (now > test.date)
                 indicator.text = "✓"
             else

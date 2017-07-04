@@ -8,8 +8,8 @@ import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.getIsraelCalendar
 import org.jetbrains.anko.notificationManager
-import java.util.*
 
 
 class DismissNotificationReceiver : BroadcastReceiver() {
@@ -17,7 +17,7 @@ class DismissNotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         val kodein = LazyKodein(context.appKodein)
         val storage = kodein.instance<Storage>().value
-        storage.ongoingNotificationDisableDate = Calendar.getInstance().clearTime().timeInMillis
+        storage.ongoingNotificationDisableDate = getIsraelCalendar().clearTime().timeInMillis
         context.notificationManager.cancel(NotificationId)
     }
 

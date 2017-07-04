@@ -20,6 +20,7 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.implementation.Contacts
 import com.ohelshem.app.controller.timetable.TimetableController
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.injection.Modules
 import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
@@ -158,7 +159,7 @@ class App : Application(), KodeinAware {
                 val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
                 context.alarmManager.cancel(pendingIntent)
 
-                val cal = Calendar.getInstance().clearTime()
+                val cal = getIsraelCalendar().clearTime()
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
 

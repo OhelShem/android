@@ -11,6 +11,7 @@ import com.ohelshem.app.android.changes.layer.LayerChangesAdapter
 import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.stringResource
+import com.ohelshem.app.changesDateFormat
 import com.ohelshem.app.getDay
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
@@ -18,7 +19,6 @@ import kotlinx.android.synthetic.main.changes_teacher_fragment.*
 import org.jetbrains.anko.childrenSequence
 import org.jetbrains.anko.padding
 import org.jetbrains.anko.sdk15.listeners.onClick
-import java.text.SimpleDateFormat
 import java.util.*
 
 class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), TeacherChangesView {
@@ -52,7 +52,7 @@ class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), T
     }
 
     override fun showData(changes: List<Change>) {
-        date.text = ChangesDataFormat.format(Date(presenter.changesDate))
+        date.text = changesDateFormat.format(Date(presenter.changesDate))
         nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().getDay() - 1]}"
         recyclerView.adapter = LayerChangesAdapter(context, changes, presenter.classesAtLayer, MaxChangesHours, stringArrayRes(R.array.layers)[presenter.currentLayer - 9])
         recyclerView.scrollToPosition(0)
@@ -60,6 +60,5 @@ class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), T
 
     companion object {
         private const val MaxChangesHours = 11
-        private val ChangesDataFormat = SimpleDateFormat("dd/MM")
     }
 }

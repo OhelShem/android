@@ -10,9 +10,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.ohelshem.app.IsraelTimeZone
 import com.ohelshem.app.android.flipName
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.show
+import com.ohelshem.app.dateFormat
 import com.ohelshem.app.model.Contact
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.contact_item.view.*
@@ -50,6 +52,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
                                     .putExtra(Insert.PHONE, contact.phone)
 
                             val format = SimpleDateFormat("yyyy-MM-dd")
+                            format.timeZone = IsraelTimeZone
                             val data = arrayListOf(ContentValues().apply {
                                 put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE)
                                 put(ContactsContract.CommonDataKinds.Event.TYPE, ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY)
@@ -82,6 +85,4 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
         val birthday: TextView = itemView.birthday
 
     }
-
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 }

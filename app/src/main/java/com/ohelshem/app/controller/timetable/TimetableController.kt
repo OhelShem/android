@@ -2,11 +2,8 @@ package com.ohelshem.app.controller.timetable
 
 import android.graphics.Color
 import com.ohelshem.api.model.Hour
-import com.ohelshem.app.clearTime
-import com.ohelshem.app.daysBetween
+import com.ohelshem.app.*
 import com.ohelshem.app.model.HourData
-import com.ohelshem.app.toCalendar
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -24,9 +21,9 @@ interface TimetableController {
     /**
      * Get hour data. Note: [day] is 1 based index.
      */
-    fun getHourData(day: Int = Calendar.getInstance().get(Calendar.DAY_OF_WEEK),
-                    hour: Int = Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
-                    minutesNow: Int = Calendar.getInstance().get(Calendar.MINUTE)): HourData
+    fun getHourData(day: Int = getIsraelCalendar().get(Calendar.DAY_OF_WEEK),
+                    hour: Int = getIsraelCalendar().get(Calendar.HOUR_OF_DAY),
+                    minutesNow: Int = getIsraelCalendar().get(Calendar.MINUTE)): HourData
 
     val hasDoneLearningToday: Boolean
 
@@ -86,7 +83,7 @@ interface TimetableController {
 
         val StartOfTheYear: Date
             get() {
-                val cal = Calendar.getInstance()
+                val cal = getIsraelCalendar()
                 var year = cal[Calendar.YEAR]
                 if (cal[Calendar.MONTH] < Calendar.SEPTEMBER)
                     year--
@@ -95,7 +92,7 @@ interface TimetableController {
 
         val Summer: Holiday
             get() {
-                val cal = Calendar.getInstance()
+                val cal = getIsraelCalendar()
                 var year = cal[Calendar.YEAR]
                 if (cal[Calendar.MONTH] >= Calendar.SEPTEMBER)
                     year++
@@ -130,11 +127,10 @@ interface TimetableController {
             return hours * 60 + minutes
         }
 
-        fun getDayType(calendar: Calendar = Calendar.getInstance(), learnsOnFriday: Boolean): DayType {
+        fun getDayType(calendar: Calendar = getIsraelCalendar(), learnsOnFriday: Boolean): DayType {
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
             if (dayOfWeek == 7) return DayType.Saturday
             val time = calendar.clearTime().timeInMillis
-            val parser = SimpleDateFormat("dd/MM/yyyy")
             for (holiday in Holidays) {
                 if (holiday.isOneDay()) {
                     if (time == holiday.startTime) return DayType.Holiday
@@ -142,14 +138,13 @@ interface TimetableController {
                     if (time >= holiday.startTime && time <= holiday.endTime) return DayType.Holiday
                 }
             }
-            if (time in parser.parse(Summer.start).time..parser.parse(Summer.end).time) return DayType.Summer
+            if (time in dateFormat.parse(Summer.start).time..dateFormat.parse(Summer.end).time) return DayType.Summer
             if (dayOfWeek == 6 && !learnsOnFriday) return DayType.Friday
             else return DayType.Regular
         }
 
-        fun getHoliday(calendar: Calendar = Calendar.getInstance()): Holiday? {
+        fun getHoliday(calendar: Calendar = getIsraelCalendar()): Holiday? {
             val time = calendar.clearTime().timeInMillis
-            val parser = SimpleDateFormat("dd/MM/yyyy")
             for (holiday in Holidays) {
                 if (holiday.isOneDay()) {
                     if (time == holiday.startTime) return holiday
@@ -157,7 +152,7 @@ interface TimetableController {
                     if (time >= holiday.startTime && time <= holiday.endTime) return holiday
                 }
             }
-            if (time >= parser.parse(Summer.start).time && time <= parser.parse(Summer.end).time) return Summer
+            if (time >= dateFormat.parse(Summer.start).time && time <= dateFormat.parse(Summer.end).time) return Summer
             return null
         }
 
@@ -169,7 +164,7 @@ interface TimetableController {
             val length = daysBetween(startTime.toCalendar(), endTime.toCalendar()) + 1
 
             companion object {
-                val Format = SimpleDateFormat("dd/MM/yyyy")
+                val Format = dateFormat
 
                 private fun String.parseDate(): Long = Holiday.Companion.Format.parse(this).time
             }

@@ -26,6 +26,7 @@ import com.ohelshem.app.android.dates.DatesView
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.adapter.HeaderAdapter
 import com.ohelshem.app.clearTime
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.VisibleItem
 import com.yoavst.changesystemohelshem.R
 import java.util.*
@@ -46,8 +47,8 @@ class DatesListFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesVie
     }
 
     override fun update(tests: List<Test>) {
-        val time = Calendar.getInstance().clearTime().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
-        val now = Calendar.getInstance().clearTime().timeInMillis
+        val time = getIsraelCalendar().clearTime().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
+        val now = getIsraelCalendar().clearTime().timeInMillis
         val indexOfNew = tests.indexOfFirst { it.date > now }
         val items =
                 if (indexOfNew == -1 || indexOfNew == tests.lastIndex) tests.map { VisibleItem(it) }

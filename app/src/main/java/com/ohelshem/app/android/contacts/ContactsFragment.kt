@@ -14,6 +14,7 @@ import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.storage.implementation.Contacts
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.Contact
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
@@ -70,7 +71,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
     }
 
     fun showBirthdaysDialog() {
-        val today = Calendar.getInstance()
+        val today = getIsraelCalendar()
         val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
         val birthdays = Contacts.getContacts(-1, -1).filter {
             val cal = it.birthday.toCalendar()
