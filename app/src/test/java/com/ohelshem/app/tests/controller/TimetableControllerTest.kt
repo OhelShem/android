@@ -43,7 +43,7 @@ class TimetableControllerTest {
     }
 
     @Test
-    fun OnBottomOfLesson() {
+    fun InMiddleOfLesson() {
         val hourData = timetableController.getHourData(day = 3, hour = 10, minutesNow = 18)
         assertTrue(!hourData.isBefore)
         assertEquals(hourData.timeToHour, 17)
@@ -70,20 +70,19 @@ class TimetableControllerTest {
     }
 
     @Test
-    fun OnLastHour() {
-        val hourData = timetableController.getHourData(day = 3, hour = 16, minutesNow = 25)
+    fun InLastHour() {
+        val hourData = timetableController.getHourData(day = 3, hour = 17, minutesNow = 23)
         assertTrue(!hourData.isBefore)
-        assertEquals(hourData.timeToHour, 20)
-        assertEquals(hourData.hour, timetableController[day(3), hour(10)])
+        assertEquals(hourData.hour, timetableController[day(3), hour(11)])
         assertEquals(hourData.nextHour, timetableController[day(4), hour(1)])
     }
 
     @Test
-    fun OnLastMinute() {
-        val hourData = timetableController.getHourData(day = 3, hour = 16, minutesNow = 45)
-        assertTrue(hourData.isBefore)
-        assertEquals(hourData.hour, timetableController[day(4), hour(1)])
-        assertEquals(hourData.nextHour, timetableController[day(4), hour(2)])
+    fun InLastHourOfWeek() {
+        val hourData = timetableController.getHourData(day = 6, hour = 17, minutesNow = 23)
+        assertTrue(!hourData.isBefore)
+        assertEquals(hourData.hour, timetableController[day(6), hour(11)])
+        assertEquals(hourData.nextHour, timetableController[day(1), hour(1)])
     }
     //endregion
 
@@ -115,14 +114,6 @@ class TimetableControllerTest {
     //endregion
 
     @Test
-    fun onFriday() {
-        val hourData = timetableController.getHourData(day = 6, hour = 20, minutesNow = 50)
-        assertTrue(hourData.isBefore)
-        assertEquals(hourData.hour, timetableController[day(1), hour(1)])
-        assertEquals(hourData.nextHour, timetableController[day(1), hour(2)])
-    }
-
-    @Test
     fun onSaturday() {
         val hourData = timetableController.getHourData(day = 7, hour = 14, minutesNow = 20)
         assertTrue(hourData.isBefore)
@@ -136,7 +127,7 @@ class TimetableControllerTest {
 
     private class TimetableControllerImpl : BaseTimetableController() {
         override fun init() {
-            timetable = Array(6) { day -> Array(10) { hour -> Hour("day: ${day + 1}", "hour: ${hour + 1}") } }
+            timetable = Array(6) { day -> Array(11) { hour -> Hour("day: ${day + 1}", "hour: ${hour + 1}") } }
         }
     }
 

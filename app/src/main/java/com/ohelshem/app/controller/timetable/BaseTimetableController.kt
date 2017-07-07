@@ -69,7 +69,7 @@ abstract class BaseTimetableController : TimetableController {
             val h = today[schoolHour]
             if (h.isEmpty()) continue
             else if (day != startingDay) {
-                // Therefore timeNow doesn't matter since it is not the same day
+                // lesson is in in the future and not today
                 var days = 0
                 var newDay = startingDay
                 do {

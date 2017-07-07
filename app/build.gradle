@@ -8,6 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.yoavst.changesystemohelshem"
+        testApplicationId "com.yoavst.changesystemohelshem.tests"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 95
@@ -86,8 +87,8 @@ dependencies {
     compile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.1-SNAPSHOT'
     compile 'io.palaima.debugdrawer:debugdrawer-actions:0.7.1-SNAPSHOT'
     //Test
-    compile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-test:$kotlin"
+    testCompile 'junit:junit:4.12'
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin"
 
 }
 
