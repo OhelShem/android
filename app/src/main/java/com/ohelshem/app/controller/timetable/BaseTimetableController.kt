@@ -122,7 +122,7 @@ abstract class BaseTimetableController : TimetableController {
             return TimetableController.getTimeToCompare(cal[Calendar.MINUTE], cal[Calendar.HOUR_OF_DAY]) >= getLessonTimeToCompare(lastHourOfDay(timetable[today - 1]), start = false)
         }
 
-    private fun Array<Array<Hour>>.getFirstExisting(day: Int, startingDay: Int = day, isStartingNow: Boolean = false): NumberedHour? {
+    private fun Array<Array<Hour>>.getFirstExisting(day: Int, startingDay: Int = day, isStartingNow: Boolean = true): NumberedHour? {
         if (day > timetable.size || timetable[day - 1].isEmpty()) {
             return stillRunning(day, startingDay, isStartingNow) therefore { getFirstExisting(day.plusDay(), startingDay, isStartingNow = false) }
         }
