@@ -39,10 +39,11 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
             invalidateCache()
         }
         view?.flushMenu()
-        if (timetableController.hasData) {
+        if (timetableController.hasData)
             currentDay = today
-            setDay(currentDay)
-        }
+        else
+            currentDay = TimetableLayout.Day_Week
+        setDay(currentDay)
     }
     //endregion
 
@@ -182,7 +183,7 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
         get() = currentClass == null && isTeacher
 
     override fun onReselected() {
-        if (currentDay == 0)
+        if (currentDay == 0 && timetableController.hasData)
             setDay(today)
         else
             setDay(0)

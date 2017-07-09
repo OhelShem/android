@@ -22,6 +22,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -94,6 +96,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     private val toStart by stringResource(R.string.to_start)
     private val left by stringResource(R.string.left)
     private val endOfDay by stringResource(R.string.end_of_day)
+    private val emptyTimetable by stringResource(R.string.empty_timetable)
     private val with by lazy { " " + getString(R.string.with) + " " }
     private val daysOfWeek by lazy { resources.getStringArray(R.array.week_days) }
 
@@ -113,7 +116,8 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
     }
 
     override fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean {
-
+        if (storage.disableHolidayCard)
+            return false
         val today = getIsraelCalendar()
         val tomorrow = getIsraelCalendar()
         tomorrow.add(Calendar.DATE, 1)
@@ -146,6 +150,22 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             return true
         }
         return false
+    }
+
+    override fun showEmptyCard() {
+        lessonsContainer.removeAllViews()
+        val emptyText = TextView(context)
+        val params = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+        emptyText.layoutParams = params
+        emptyText.setPadding(16, 16, 16, 16)
+        emptyText.gravity = Gravity.CENTER
+        emptyText.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_empty_timetable, 0, 0)
+        emptyText.compoundDrawables[1].colorFilter = PorterDuffColorFilter(defaultTextColor, PorterDuff.Mode.SRC_IN)
+        emptyText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
+        emptyText.setTypeface(null, Typeface.BOLD)
+        emptyText.textColor = defaultTextColor
+        emptyText.text = emptyTimetable
+        lessonsContainer.addView(emptyText)
     }
 
     private var hasModifiedCurrentLessonView = true

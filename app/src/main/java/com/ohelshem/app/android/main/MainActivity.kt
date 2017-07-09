@@ -30,6 +30,7 @@ import com.ohelshem.app.android.dashboard.DashboardFragment
 import com.ohelshem.app.android.dates.DatesFragment
 import com.ohelshem.app.android.help.HelpActivity
 import com.ohelshem.app.android.login.LoginActivity
+import com.ohelshem.app.android.notifications.ChangesNotificationGenerator
 import com.ohelshem.app.android.notifications.OngoingNotificationService
 import com.ohelshem.app.android.settings.SettingsActivity
 import com.ohelshem.app.android.timetable.TimetableFragment
@@ -47,8 +48,6 @@ import io.palaima.debugdrawer.actions.ButtonAction
 import io.palaima.debugdrawer.actions.SpinnerAction
 import io.palaima.debugdrawer.commons.BuildModule
 import io.palaima.debugdrawer.commons.DeviceModule
-import io.palaima.debugdrawer.commons.NetworkModule
-import io.palaima.debugdrawer.commons.SettingsModule
 import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.teacher_badge_layout.*
 import me.tabak.fragmentswitcher.FragmentArrayPagerAdapter
@@ -456,12 +455,24 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 storage.debugFlag = it
             }
 
+            val disableHolidayCard = DebugMenuSwitchAction("Disable holiday card", storage.disableHolidayCard) {
+                storage.disableHolidayCard = it
+            }
+
             val restartAction = ButtonAction("Restart app") {
                 ProcessPhoenix.triggerRebirth(this)
             }
 
             val showChangelog = ButtonAction("Show changelog") {
                 alertChangelog()
+            }
+
+            val sendNotificationAction = ButtonAction("Send changes notification") {
+                Handler().postDelayed({ ChangesNotificationGenerator(this).prepareNotification() }, 1000)
+                val quit = Intent(Intent.ACTION_MAIN)
+                quit.addCategory(Intent.CATEGORY_HOME)
+                quit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(quit)
             }
 
             val shareFirebaseTokenAction = ButtonAction("Share firebaseToken") {
@@ -487,15 +498,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, showChangelog, shareFirebaseTokenAction),
+                    ActionsModule(fakingAction, debugFlagAction, disableHolidayCard, nightModeAction, restartAction, showChangelog, sendNotificationAction, shareFirebaseTokenAction),
                     DeviceModule(),
                     BuildModule()).build()
         }
-    }
-    private var numberOfTaps: Int = 0
-    private val handler = Handler()
-    private val request: Runnable = Runnable {
-        numberOfTaps = 0
     }
     //endregion
 

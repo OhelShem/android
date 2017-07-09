@@ -52,8 +52,10 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
                         isFuture = (getIsraelCalendar().timeInMillis + TimeUnit.MINUTES.toMillis(hourData.timeToHour.toLong())).toCalendar().clearTime().timeInMillis >
                                 getIsraelCalendar().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis, changes = generateChanges(hourData.hour.day, userClazz))
             }
-            else
-                showHolidayInfo(false, false)
+            else if (!showHolidayInfo(false, false))
+                showEmptyCard()
+
+
             showTests(testsForWeek)
         }
     }

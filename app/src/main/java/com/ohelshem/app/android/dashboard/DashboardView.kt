@@ -27,5 +27,7 @@ interface DashboardView : MvpView {
 
     fun showHolidayInfo(isTomorrow: Boolean, isFuture: Boolean): Boolean
 
+    fun showEmptyCard()
+
     fun showTests(tests: List<Test>)
 }

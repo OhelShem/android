@@ -17,6 +17,19 @@ class UIStorageCacheImpl(private val storage: UIStorage): UIStorage by storage {
         }
 
 
+    private var _disableHolidayCard: Boolean? = null
+
+    override var disableHolidayCard: Boolean
+        get() {
+            if (_disableHolidayCard == null)
+                _disableHolidayCard = storage.disableHolidayCard
+            return _disableHolidayCard!!
+        }
+        set(value) {
+            _disableHolidayCard = value
+            storage.disableHolidayCard = value
+        }
+
 
     private var _firstTimeInOverridesManager: Boolean? = null
 
