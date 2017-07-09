@@ -159,7 +159,6 @@ class App : Application(), KodeinAware {
                 val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
                 context.alarmManager.cancel(pendingIntent)
 
-                // fixme this will NOT work as expected in a different timezone
                 val cal = getIsraelCalendar().clearTime()
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
