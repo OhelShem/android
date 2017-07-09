@@ -87,5 +87,5 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
     protected abstract fun init()
 
     protected val screenManager: TopNavigationScreenManager
-        get() = activity as TopNavigationScreenManager
+        get() = context as TopNavigationScreenManager
 }

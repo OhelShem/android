@@ -39,7 +39,6 @@ import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.info.SchoolInfo
 import com.ohelshem.app.controller.storage.DeveloperOptions
 import com.plattysoft.leonids.ParticleSystem
-import com.sloydev.preferator.Preferator
 import com.yoavst.changesystemohelshem.BuildConfig
 import com.yoavst.changesystemohelshem.R
 import io.palaima.debugdrawer.DebugDrawer
@@ -461,14 +460,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 ProcessPhoenix.triggerRebirth(this)
             }
 
-            val preferenceAction = ButtonAction("Preferences editor") {
-                numberOfTaps++
-                handler.removeCallbacksAndMessages(null)
-                if (numberOfTaps == 7) {
-                    Preferator.launch(this)
-                } else handler.postDelayed(request, 500)
-            }
-
             val showChangelog = ButtonAction("Show changelog") {
                 alertChangelog()
             }
@@ -496,11 +487,9 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             }
 
             debugDrawer = DebugDrawer.Builder(this).modules(
-                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, preferenceAction, showChangelog, shareFirebaseTokenAction),
+                    ActionsModule(debugFlagAction, fakingAction, nightModeAction, restartAction, showChangelog, shareFirebaseTokenAction),
                     DeviceModule(),
-                    BuildModule(),
-                    NetworkModule(),
-                    SettingsModule()).build()
+                    BuildModule()).build()
         }
     }
     private var numberOfTaps: Int = 0
