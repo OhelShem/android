@@ -455,7 +455,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 storage.debugFlag = it
             }
 
-            val disableHolidayCard = DebugMenuSwitchAction("Disable holiday card", storage.disableHolidayCard) {
+            val disableHolidayCard = DebugMenuSwitchAction("Ignore holidays", storage.disableHolidayCard) {
                 storage.disableHolidayCard = it
             }
 
