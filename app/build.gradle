@@ -4,15 +4,15 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "com.yoavst.changesystemohelshem"
         testApplicationId "com.yoavst.changesystemohelshem.tests"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 95
-        versionName "7.2 Beta 1"
+        versionCode 96
+        versionName "7.1.9"
         resConfigs "he"
     }
 
