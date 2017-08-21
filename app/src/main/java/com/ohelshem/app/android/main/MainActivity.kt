@@ -226,6 +226,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
     }
 
+    @Suppress("PLUGIN_WARNING")
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
             if (findViewById(R.id.storiesBar) != null)
