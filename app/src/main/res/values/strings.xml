@@ -24,7 +24,7 @@
     <string name="do_login">התחבר</string>
     <string name="invalid_id">מספר ת.ז. שגוי</string>
     <string name="password_too_short">סיסמה קצרה מדי</string>
-    <string name="login_wrong">שם משתמש או סיסמה אינם נכונים</string>
+    <string name="login_wrong">מספר ת.ז או סיסמה אינם נכונים</string>
     <string name="no_connection">אין חיבור לאינטרנט</string>
     <string name="no_connection_subtitle">אנא התחבר לאינטרנט ונסה שנית</string>
     <string name="general_error">שגיאה, אנא נסה בשנית</string>
