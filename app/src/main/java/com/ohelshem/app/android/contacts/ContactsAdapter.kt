@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ohelshem.app.IsraelTimeZone
-import com.ohelshem.app.android.flipName
 import com.ohelshem.app.android.hide
 import com.ohelshem.app.android.show
 import com.ohelshem.app.dateFormat
@@ -29,7 +28,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
-        holder.name.text = contact.name.flipName()
+        holder.name.text = contact.name
         holder.birthday.hint = dateFormat.format(Date(contact.birthday))
         if (contact.phone.isEmpty()) {
             holder.dial.hide()
@@ -48,7 +47,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
                         R.id.addContact -> {
                             val intent = Intent(Intent.ACTION_INSERT)
                                     .setType(ContactsContract.Contacts.CONTENT_TYPE)
-                                    .putExtra(Insert.NAME, contact.name.flipName())
+                                    .putExtra(Insert.NAME, contact.name)
                                     .putExtra(Insert.PHONE, contact.phone)
 
                             val format = SimpleDateFormat("yyyy-MM-dd")
