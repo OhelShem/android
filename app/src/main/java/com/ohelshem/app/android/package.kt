@@ -94,21 +94,16 @@ class StringResourceDelegate(private val resources: () -> Resources, private val
     }
 }
 
-fun String.flipName(): String {
-    val arr = this.split(" ")
-    if (arr.size != 2) return this
-    return arr[1] + " " + arr[0]
-}
-
 fun nameOriginalHour(change: String, hourName: String): String {
     val changeIsWithout = " בלי " in change
     val changeIsMikbatz = "מקבץ" in change || "מקבצים" in change || "מגמה" in change || "מגמות" in change
-    val withoutNoMikbatz = changeIsWithout && !changeIsMikbatz // ex: מתמטיקה בלי קלמפנר
-    val withoutYesMikbatz = changeIsWithout && changeIsMikbatz // ex: מקבץ בלי לרר
+    val changeIsCancelled = "מבוטל" in change
+    val withoutNoMikbatz = changeIsWithout && !changeIsMikbatz // ex: מקצוע בלי מורה
+    val withoutYesMikbatz = changeIsWithout && changeIsMikbatz // ex: מקבץ/מגמות בלי מורה
     val roomOrWithoutNoName = change.startsWith("בלי") || change.startsWith("בחדר") // ex: בחדר 318
 
-    if (withoutNoMikbatz) return ""
-    else return "(${if (withoutYesMikbatz || roomOrWithoutNoName) "" else "במקום "}$hourName)"
+    return if (withoutNoMikbatz) ""
+    else "(${if (changeIsCancelled || withoutYesMikbatz || roomOrWithoutNoName) "" else "במקום "}$hourName)"
 }
 
 fun Fragment.stringResource(id: Int): StringResourceDelegate = StringResourceDelegate(futureResources(), id)
