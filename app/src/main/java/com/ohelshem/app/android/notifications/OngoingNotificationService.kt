@@ -1,12 +1,12 @@
 package com.ohelshem.app.android.notifications
 
-import android.app.IntentService
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.support.v4.app.JobIntentService
 import android.support.v4.app.NotificationCompat
 import android.text.SpannableString
 import android.text.style.StyleSpan
@@ -25,10 +25,10 @@ import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
-import org.jetbrains.anko.startService
 import java.util.*
 
-class OngoingNotificationService : IntentService("OhelShemOngoingNotificationService"), LazyKodeinAware {
+class OngoingNotificationService : JobIntentService(), LazyKodeinAware {
+
     override val kodein = LazyKodein(appKodein)
 
     val storage: Storage by kodein.instance()
@@ -36,7 +36,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     private val with by lazy { " " + getString(R.string.with) + " " }
 
-    override fun onHandleIntent(intent: Intent?) {
+    override fun onHandleWork(p0: Intent) {
         val cal = getIsraelCalendar()
         val day = cal.day
         if (storage.isSetup()) {
@@ -169,13 +169,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     companion object {
         private const val NotificationId = 1342
+        private const val JobId = 1243
 
         fun update(context: Context) {
-            //FIXME make the app works on Android O
-            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
-                context.startForegroundService(context.intentFor<OngoingNotificationService>())
-            else*/
-                context.startService<OngoingNotificationService>()
+            JobIntentService.enqueueWork(context, OngoingNotificationService::class.java, JobId, Intent())
         }
 
     }
