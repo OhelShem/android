@@ -24,7 +24,6 @@ import com.ohelshem.app.day
 import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
-import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.notificationManager
 import org.jetbrains.anko.startService
 import java.util.*
@@ -172,9 +171,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         private const val NotificationId = 1342
 
         fun update(context: Context) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+            //FIXME make the app works on Android O
+            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
                 context.startForegroundService(context.intentFor<OngoingNotificationService>())
-            else
+            else*/
                 context.startService<OngoingNotificationService>()
         }
 
