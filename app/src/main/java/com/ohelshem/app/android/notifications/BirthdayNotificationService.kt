@@ -18,8 +18,8 @@ import java.util.*
 class BirthdayNotificationService : IntentService("OhelShemHolidayNotificationService"), LazyKodeinAware {
     override val kodein = LazyKodein(appKodein)
 
-    val storage: Storage by kodein.instance()
-    val contactsProvider: ContactsProvider by kodein.instance()
+    private val storage: Storage by kodein.instance()
+    private val contactsProvider: ContactsProvider by kodein.instance()
 
     override fun onHandleIntent(intent: Intent?) {
         if (storage.isSetup() && storage.notificationsForBirthdays && storage.lastNotificationTimeBirthday.toCalendar()[Calendar.DAY_OF_YEAR] != getIsraelCalendar()[Calendar.DAY_OF_YEAR]) {

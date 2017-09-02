@@ -133,7 +133,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
             storage.changes = value
         }
 
-    override fun hasChanges(clazz: Int): Boolean = changes?.any { it.clazz == clazz } ?: false
+    override fun hasChanges(clazz: Int): Boolean = changes?.any { it.clazz == clazz } == true
 
     companion object {
         var isFakingChanges = false

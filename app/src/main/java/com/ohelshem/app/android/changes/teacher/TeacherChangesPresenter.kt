@@ -27,7 +27,7 @@ import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
 import com.ohelshem.app.toCalendar
 
-class TeacherChangesPresenter(val storage: Storage, val schoolInfo: SchoolInfo) : BasePresenter<ChangesView>(), IBaseChangesPresenter {
+class TeacherChangesPresenter(val storage: Storage, private val schoolInfo: SchoolInfo) : BasePresenter<ChangesView>(), IBaseChangesPresenter {
     override fun onCreate() {
         val currentLayer = storage.primaryClass?.layer ?: 9
         (view as? TeacherChangesView)?.setSelectedLayer(currentLayer)

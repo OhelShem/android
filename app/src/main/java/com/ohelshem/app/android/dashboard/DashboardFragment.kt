@@ -62,7 +62,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     private val storage: UIStorage by kodein.instance()
 
-    val timeTick = object : BroadcastReceiver() {
+    private val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             presenter?.update()
         }
@@ -107,12 +107,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             showCurrentLessonInfo(data, changes)
             showTimeLeft(data, isFuture, isTomorrow)
             showNextLessonInfo(data, changes, isEndOfDay, isFuture)
-            if (isFuture)
-                todayPlan.text = getString(R.string.future_plan, daysOfWeek[data.hour.day - 1])
-            else if (isTomorrow)
-                todayPlan.text = getString(R.string.tomorrow_plan)
-            else
-                todayPlan.text = getString(R.string.today_plan)
+            todayPlan.text = when {
+                isFuture -> getString(R.string.future_plan, daysOfWeek[data.hour.day - 1])
+                isTomorrow -> getString(R.string.tomorrow_plan)
+                else -> getString(R.string.today_plan)
+            }
         }
     }
 

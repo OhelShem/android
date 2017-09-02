@@ -49,17 +49,16 @@ abstract class BaseChangesFragment<K> : ChangesView, BaseMvpFragment<ChangesView
         if (dayType == DayType.Holiday || dayType == DayType.Summer) {
             progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.holiday_today), getString(R.string.holiday_today_subtitle))
         } else {
-            if (dayType == DayType.Saturday)
-                progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.shabat_today), getString(R.string.shabat_today_subtitle))
-            else if (dayType == DayType.Friday)
-                progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.friday_today), getString(R.string.friday_today_subtitle))
-            else
-                progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.no_changes), getString(R.string.no_changes_subtitle), getString(R.string.go_to_timetable)) {
+            when (dayType) {
+                DayType.Saturday -> progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.shabat_today), getString(R.string.shabat_today_subtitle))
+                DayType.Friday -> progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.friday_today), getString(R.string.friday_today_subtitle))
+                else -> progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.no_changes), getString(R.string.no_changes_subtitle), getString(R.string.go_to_timetable)) {
                     presenter.launchTimetableScreen(screenManager)
                 }
+            }
         }
     }
 
     override val isShowingData: Boolean
-        get() = progressActivity?.isContent ?: false
+        get() = progressActivity?.isContent == true
 }

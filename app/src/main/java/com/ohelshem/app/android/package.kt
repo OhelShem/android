@@ -57,7 +57,7 @@ fun <K> TypedArray.use(init: (typedArray: TypedArray) -> K): K {
     return value
 }
 
-fun Context.isNetworkAvailable() = connectivityManager.activeNetworkInfo?.isConnected ?: false
+fun Context.isNetworkAvailable() = connectivityManager.activeNetworkInfo?.isConnected == true
 
 fun Activity.hideKeyboard() = inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
 
