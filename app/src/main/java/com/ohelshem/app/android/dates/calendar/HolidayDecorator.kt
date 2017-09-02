@@ -29,15 +29,16 @@ class HolidayDecorator(private val drawable: Drawable, val dates: Array<Holiday>
     }
 
     companion object {
-        fun generate(context: Context, dates: Array<Holiday>): HolidayDecorator {
-            return HolidayDecorator(createDrawable(context), dates)
-        }
+        fun generate(context: Context, dates: Array<Holiday>): HolidayDecorator = HolidayDecorator(createDrawable(context), dates)
 
         private fun createDrawable(context: Context): Drawable {
             val colorNormal = context.primaryLightColor
             val colorSelected = context.primaryDarkColor
             val colorPressed = context.primaryColor
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) getPressedColorRippleDrawable(colorNormal, colorSelected, colorPressed) else getStateDrawable(colorNormal, colorSelected, colorPressed)
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getPressedColorRippleDrawable(colorNormal, colorSelected, colorPressed)
+            else
+                getStateDrawable(colorNormal, colorSelected, colorPressed)
         }
     }
 }

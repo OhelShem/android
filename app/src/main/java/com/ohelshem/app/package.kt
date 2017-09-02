@@ -1,5 +1,7 @@
+
 package com.ohelshem.app
 
+import android.annotation.SuppressLint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,35 +18,25 @@ val IsraelTimeZone: TimeZone
     get() = TimeZone.getTimeZone("Asia/Jerusalem")
 
 val dateFormat: DateFormat
-        get() {
-            val f = SimpleDateFormat("dd/MM/yyyy")
-            f.timeZone = IsraelTimeZone
-            return f
-        }
+        @SuppressLint("SimpleDateFormat")
+        get() = SimpleDateFormat("dd/MM/yyyy").apply { timeZone = IsraelTimeZone }
 
 val changesDateFormat: DateFormat
-    get() {
-        val f = SimpleDateFormat("dd/MM")
-        f.timeZone = IsraelTimeZone
-        return f
-    }
+    @SuppressLint("SimpleDateFormat")
+    get() = SimpleDateFormat("dd/MM").apply { timeZone = IsraelTimeZone }
 
 val testDateFormat: DateFormat
-    get() {
-        val f = SimpleDateFormat("dd/MM/yy")
-        f.timeZone = IsraelTimeZone
-        return f
-    }
+    @SuppressLint("SimpleDateFormat")
+    get() = SimpleDateFormat("dd/MM/yy").apply { timeZone = IsraelTimeZone }
 
 /**
  * Returns the given date with the time values cleared.
  */
-fun Calendar.clearTime(): Calendar {
-    this.set(Calendar.HOUR_OF_DAY, 0)
-    this.set(Calendar.MINUTE, 0)
-    this.set(Calendar.SECOND, 0)
-    this.set(Calendar.MILLISECOND, 0)
-    return this
+fun Calendar.clearTime(): Calendar = apply {
+    set(Calendar.HOUR_OF_DAY, 0)
+    set(Calendar.MINUTE, 0)
+    set(Calendar.SECOND, 0)
+    set(Calendar.MILLISECOND, 0)
 }
 
 fun getIsraelCalendar(): Calendar = Calendar.getInstance(IsraelTimeZone)
@@ -52,9 +44,7 @@ fun getIsraelCalendar(): Calendar = Calendar.getInstance(IsraelTimeZone)
 /**
  * Returns the given date with the time values cleared.
  */
-fun Date.clearTime(): Date {
-    return time.toCalendar().clearTime().time
-}
+fun Date.clearTime(): Date = time.toCalendar().clearTime().time
 
 fun isInIsrael(): Boolean = getIsraelCalendar().timeZone == IsraelTimeZone
 
@@ -71,18 +61,15 @@ fun Calendar?.isSameDay(cal2: Calendar?): Boolean {
     return (get(Calendar.ERA) == cal2.get(Calendar.ERA) && get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR))
 }
 
-fun Calendar.isToday(): Boolean {
-    return isSameDay(getIsraelCalendar())
-}
+fun Calendar.isToday(): Boolean = isSameDay(getIsraelCalendar())
 
 fun getHour(): Int {
     val cal = getIsraelCalendar()
     return cal.get(Calendar.HOUR_OF_DAY)
 }
 
-fun Calendar.getDay(): Int {
-    return get(Calendar.DAY_OF_WEEK)
-}
+val Calendar.day: Int
+    get() = get(Calendar.DAY_OF_WEEK)
 
 fun daysBetween(day1: Calendar, day2: Calendar): Int {
     var dayOne = day1.clone() as Calendar

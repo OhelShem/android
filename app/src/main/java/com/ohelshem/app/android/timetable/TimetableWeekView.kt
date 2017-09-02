@@ -23,7 +23,7 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    private var groupText: String = "(" + context.getString(R.string.group) + ")"
+    private var groupText: String = "(${context.getString(R.string.group)})"
 
     override var onClickListener: ((day: Int, hour: Int, data: Hour) -> Unit)? = null
 
@@ -143,16 +143,14 @@ class TimetableWeekView : LinearLayout, TimetableBasicView {
 
     private fun generateText(hour: Hour, groupFormatting: Boolean): CharSequence {
         val mikbatz = groupFormatting && hour.teacher.count { it == ',' } >= 2
-        if (hour.name.isEmpty()) return ""
-        else if (groupFormatting) return ("<b>${hour.represent()}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml()
-        else return hour.represent()
+        return when {
+            hour.name.isEmpty() -> ""
+            groupFormatting -> ("<b>${hour.represent()}</b> <font color='#ECEFF1'>${if (mikbatz) groupText else hour.teacher}</font>").fromHtml()
+            else -> hour.represent()
+        }
     }
 
     private fun getId(day: Int, hour: Int) = 100 + day * 10 + hour
 
-    private fun Hour.represent(): String {
-        if (this !is WrappedHour || room == 0 || room == -1) return name
-        else return "$name ($room)"
-    }
-
+    private fun Hour.represent(): String = if (this !is WrappedHour || room == 0 || room == -1) name else "$name ($room)"
 }

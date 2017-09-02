@@ -8,12 +8,7 @@ import android.view.MotionEvent
 class NoScrollViewPager(context: Context, attrs: AttributeSet) : ViewPager(context, attrs) {
     private var pagingEnabled: Boolean = false
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        return this.pagingEnabled && super.onTouchEvent(event)
-    }
+    override fun onTouchEvent(event: MotionEvent): Boolean = this.pagingEnabled && super.onTouchEvent(event)
 
-    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        return this.pagingEnabled && super.onInterceptTouchEvent(event)
-
-    }
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean = this.pagingEnabled && super.onInterceptTouchEvent(event)
 }

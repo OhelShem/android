@@ -1,5 +1,6 @@
 package com.ohelshem.app.android.contacts
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -23,9 +24,10 @@ import org.jetbrains.anko.sendSMS
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dial: (Contact) -> Unit) : RecyclerView.Adapter<ContactsAdapter.VH>() {
+class ContactsAdapter(val context: Context, val contacts: List<Contact>, private val dial: (Contact) -> Unit) : RecyclerView.Adapter<ContactsAdapter.VH>() {
     override fun getItemCount(): Int = contacts.size
 
+    @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: VH, position: Int) {
         val contact = contacts[position]
         holder.name.text = contact.name
@@ -73,9 +75,7 @@ class ContactsAdapter(val context: Context, val contacts: List<Contact>, val dia
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        return VH(context.layoutInflater.inflate(R.layout.contact_item, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH = VH(context.layoutInflater.inflate(R.layout.contact_item, parent, false))
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
         val menu: View = itemView.menu

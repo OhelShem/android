@@ -39,10 +39,7 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
             invalidateCache()
         }
         view?.flushMenu()
-        if (timetableController.hasData)
-            currentDay = today
-        else
-            currentDay = TimetableLayout.Day_Week
+        currentDay = if (timetableController.hasData) today else TimetableLayout.Day_Week
         setDay(currentDay)
     }
     //endregion
@@ -97,10 +94,10 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
                 val overrides = storage.overrides.toMutableList()
                 val name = hour.name
                 for (dayOfWeek in 0 until timetableController.size) {
-                    timetableController[dayOfWeek].forEachIndexed { i, hour ->
-                        if (hour.name == name) {
+                    timetableController[dayOfWeek].forEachIndexed { i, newHour ->
+                        if (newHour.name == name) {
                             val index = overrides.indexOfFirst { it.day == dayOfWeek && it.hour == i }
-                            val override = OverrideData(dayOfWeek, i, newLesson.or(hour.name), newTeacher.or(hour.teacher),
+                            val override = OverrideData(dayOfWeek, i, newLesson.or(newHour.name), newTeacher.or(newHour.teacher),
                                     if (newRoom >= 0) newRoom else if (index > 0) overrides[index].newRoom else 0 )
                             if (index < 0) overrides += override
                             else overrides[index] = override
@@ -172,11 +169,9 @@ class TimetablePresenter(private val storage: Storage, private val userTimetable
         private set
 
     private val today: Int
-        get() {
-            return timetableController.getHourData().hour.day
-        }
+        get() = timetableController.getHourData().hour.day
 
-    val isTeacher: Boolean
+    private val isTeacher: Boolean
         get() = !storage.isStudent()
 
     val groupFormatting: Boolean

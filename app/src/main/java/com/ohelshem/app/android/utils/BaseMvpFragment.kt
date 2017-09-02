@@ -50,9 +50,7 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
 
     open fun onBecomingVisible() = Unit
 
-    fun onReselected() {
-        presenter.onReselected()
-    }
+    fun onReselected() = presenter.onReselected()
 
     @CallSuper
     open fun onChoosingClass(classInfo: ClassInfo?) {
@@ -63,9 +61,7 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutId, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(layoutId, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

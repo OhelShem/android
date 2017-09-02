@@ -20,58 +20,43 @@ object AttributeExtractor {
      * Extracts the colorPrimary color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractPrimaryColorFrom(context: Context): Int {
-        return extractIntAttribute(context, PRIMARY)
-    }
+    fun extractPrimaryColorFrom(context: Context): Int = extractIntAttribute(context, PRIMARY)
 
     /**
      * Extracts the colorPrimaryDark color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractPrimaryDarkColorFrom(context: Context): Int {
-        return extractIntAttribute(context, PRIMARY_DARK)
-    }
+    fun extractPrimaryDarkColorFrom(context: Context): Int = extractIntAttribute(context, PRIMARY_DARK)
 
     /**
      * Extracts the colorPrimaryDark color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractPrimaryLightColorFrom(context: Context): Int {
-        return extractIntAttribute(context, PRIMARY_LIGHT)
-    }
+    fun extractPrimaryLightColorFrom(context: Context): Int = extractIntAttribute(context, PRIMARY_LIGHT)
 
     /**
      * Extracts the textColorPrimary color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractPrimaryTextColorFrom(context: Context): Int {
-        return extractIntAttribute(context, PRIMARY_TEXT_COLOR)
-    }
+    fun extractPrimaryTextColorFrom(context: Context): Int = extractIntAttribute(context, PRIMARY_TEXT_COLOR)
 
     /**
      * Extracts the activity background color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractBackgroundColorFrom(context: Context): Int {
-        return extractIntAttribute(context, BACKGROUND_COLOR)
-    }
-
+    fun extractBackgroundColorFrom(context: Context): Int = extractIntAttribute(context, BACKGROUND_COLOR)
 
     /**
      * Extracts the colorAccent color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractAccentColorFrom(context: Context): Int {
-        return extractIntAttribute(context, ACCENT)
-    }
+    fun extractAccentColorFrom(context: Context): Int = extractIntAttribute(context, ACCENT)
 
     /**
      * Extracts the colorAccent color attribute of the passing Context's theme
      */
     @ColorInt
-    fun extractRippleColorFrom(context: Context): Int {
-        return extractIntAttribute(context, RIPPLE)
-    }
+    fun extractRippleColorFrom(context: Context): Int = extractIntAttribute(context, RIPPLE)
 
     /**
      * Extracts the drawable of the passing Context's theme

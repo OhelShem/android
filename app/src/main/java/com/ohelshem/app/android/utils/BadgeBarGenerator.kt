@@ -81,10 +81,8 @@ object BadgeBarGenerator {
         } else view.more.hide()
     }
 
-    fun badgesDisableAll(view: ViewGroup) {
-        @Suppress("UNCHECKED_CAST")
-        (view.tag as List<View>).forEach { it.isSelected = false }
-    }
+    @Suppress("UNCHECKED_CAST")
+    private fun badgesDisableAll(view: ViewGroup) =  (view.tag as List<View>).forEach { it.isSelected = false }
 
     fun badgeSelect(view: ViewGroup, classInfo: ClassInfo?) {
         badgesDisableAll(view)
@@ -92,15 +90,15 @@ object BadgeBarGenerator {
         (view.tag as List<View>).find { classInfo == it.tag }?.isSelected = true
     }
 
-    private fun Context.generateBadge(text: String, background: Drawable?): View {
-        val view = TextView(this)
-        if (background != null)
-            view.backgroundDrawable = background
-        else
-            view.backgroundResource = R.drawable.badge_background
-        view.text = text
-        view.textColor = Color.WHITE
-        view.layoutParams = LinearLayout.LayoutParams(wrapContent, dip(40))
-        return view
+    private fun Context.generateBadge(badgeText: String, background: Drawable?): View = TextView(this).apply {
+            if (background != null) {
+                backgroundDrawable = background
+            }
+            else {
+                backgroundResource = R.drawable.badge_background
+            }
+            text = badgeText
+            textColor = Color.WHITE
+            layoutParams = LinearLayout.LayoutParams(wrapContent, dip(40))
     }
 }

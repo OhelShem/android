@@ -36,7 +36,7 @@ import org.jetbrains.anko.sdk15.listeners.onClick
  * Showing changes inside a [RecyclerView]. Based on [TimetableAdapter] UI.
  */
 class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordinatorLayout: CoordinatorLayout) : RecyclerView.Adapter<TimetableAdapter.VH>() {
-    val EmptyCallback = { _: View? -> }
+    private val EmptyCallback = { _: View? -> }
     val items = Array(Math.max(items.maxBy(Change::hour)!!.hour, timetable.size)) { position -> items.firstOrNull { it.hour - 1 == position } }
     val with = " " + coordinatorLayout.context.getString(R.string.with) + " "
 
@@ -59,8 +59,8 @@ class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordi
             holder.lesson.backgroundResource = R.drawable.number_circle_change
             //holder.text.setTypeface(holder.lesson.typeface, Typeface.ITALIC)
             holder.background.onClick {
-                if (!(hour?.isEmpty() ?: true))
-                    snackbar(hour!!.name + with + hour.teacher)
+                if (hour?.isEmpty() == false)
+                    snackbar(hour.name + with + hour.teacher)
                 else
                     snackbar(R.string.floating_hour)
             }
@@ -69,12 +69,8 @@ class ChangesAdapter(items: List<Change>, val timetable: Array<Hour>, val coordi
         holder.tillHour.text = TimetableController.getEndOfHour(position + 1)
     }
 
-    private fun snackbar(text: String) {
-        Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show()
-    }
+    private fun snackbar(text: String) = Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show()
 
-    private fun snackbar(text: Int) {
-        Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show()
-    }
+    private fun snackbar(text: Int) = Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show()
 }
 

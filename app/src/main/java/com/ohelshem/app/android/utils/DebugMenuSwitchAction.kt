@@ -14,7 +14,7 @@ import android.widget.TextView
 import io.palaima.debugdrawer.actions.Action
 import io.palaima.debugdrawer.actions.R
 
-class DebugMenuSwitchAction(val name: String, val default: Boolean, val callback: (Boolean) -> Unit) : Action {
+class DebugMenuSwitchAction(private val name: String, private val default: Boolean, private val callback: (Boolean) -> Unit) : Action {
     private lateinit var context: Context
     private lateinit var switchButton: Switch
 
@@ -48,21 +48,13 @@ class DebugMenuSwitchAction(val name: String, val default: Boolean, val callback
         return viewGroup
     }
 
-    override fun onOpened() {
-        /* no-op */
-    }
+    override fun onOpened() = Unit
 
-    override fun onClosed() {
-        /* no-op */
-    }
+    override fun onClosed() =Unit
 
-    override fun onResume() {
+    override fun onResume() = Unit
 
-    }
-
-    override fun onPause() {
-
-    }
+    override fun onPause() = Unit
 
     override fun onStart() {
         val isChecked = default
@@ -72,9 +64,7 @@ class DebugMenuSwitchAction(val name: String, val default: Boolean, val callback
         switchButton.setOnCheckedChangeListener(switchListener)
     }
 
-    override fun onStop() {
-        /* no-op */
-    }
+    override fun onStop() = Unit
 
     private val switchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         callback(isChecked)

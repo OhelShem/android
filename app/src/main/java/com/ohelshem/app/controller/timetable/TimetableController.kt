@@ -104,9 +104,7 @@ interface TimetableController {
 
         fun getEndOfHour(hour: Int): String = DayHours[hour * 2 - 1]
 
-        fun isEndOfDay(hour: Int, day: Array<Hour>): Boolean {
-            return hour >= day.indexOfLast { !it.isEmpty() }
-        }
+        fun isEndOfDay(hour: Int, day: Array<Hour>): Boolean = hour >= day.indexOfLast { !it.isEmpty() }
 
         /**
          * A numeric representation for all the lessons. Used for compare time.
@@ -123,9 +121,7 @@ interface TimetableController {
          * @param hours   The hours
          * @return The time in "time compare" format
          */
-        internal fun getTimeToCompare(minutes: Int, hours: Int): Int {
-            return hours * 60 + minutes
-        }
+        internal fun getTimeToCompare(minutes: Int, hours: Int): Int = hours * 60 + minutes
 
         fun getDayType(calendar: Calendar = getIsraelCalendar(), learnsOnFriday: Boolean): DayType {
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -139,8 +135,7 @@ interface TimetableController {
                 }
             }
             if (time in dateFormat.parse(Summer.start).time..dateFormat.parse(Summer.end).time) return DayType.Summer
-            if (dayOfWeek == 6 && !learnsOnFriday) return DayType.Friday
-            else return DayType.Regular
+            return if (dayOfWeek == 6 && !learnsOnFriday) DayType.Friday else DayType.Regular
         }
 
         fun getHoliday(calendar: Calendar = getIsraelCalendar()): Holiday? {

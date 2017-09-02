@@ -19,9 +19,7 @@ class TimetableControllerTest {
     }
 
     @Test
-    fun testDoesLearnOfFriday() {
-        assertEquals(timetableController.learnsOnFriday, true)
-    }
+    fun testDoesLearnOfFriday() = assertEquals(timetableController.learnsOnFriday, true)
 
     @Test
     fun beforeSchool() {

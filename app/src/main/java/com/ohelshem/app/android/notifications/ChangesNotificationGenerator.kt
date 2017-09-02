@@ -55,7 +55,7 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
 
             changesForTomorrow = (storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
 
-            if (storage.changes?.isNotEmpty() ?: false) {
+            if (storage.changes?.isNotEmpty() == true) {
                 if (areNoChangesNew) {
                     notifyNoChanges()
                 } else if (isThereDiff) {
@@ -71,14 +71,10 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
         }
     }
 
-    private fun notifyNoChanges() {
-        context.sendNotification(
-                if (changesForTomorrow)
-                    context.getString(R.string.changes_notif_title_tmrw)
-                else
-                    context.getString(R.string.changes_notif_title),
-                context.getString(R.string.no_changes), NotificationId, sound = true)
-    }
+    private fun notifyNoChanges() = context.sendNotification(
+            if (changesForTomorrow) context.getString(R.string.changes_notif_title_tmrw) else context.getString(R.string.changes_notif_title),
+            context.getString(R.string.no_changes), NotificationId, sound = true
+    )
 
     private fun notifyChanges() {
         context.sendNotification(

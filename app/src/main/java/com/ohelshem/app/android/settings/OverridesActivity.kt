@@ -18,11 +18,14 @@
 package com.ohelshem.app.android.settings
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -62,6 +65,8 @@ class OverridesActivity : AppThemedActivity() {
     private val timetableController: TimetableController by instance()
     private val weekDays by lazy { resources.getStringArray(R.array.week_days) }
     private val day by lazy { getString(R.string.day) }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.overrides_activity)
@@ -74,9 +79,9 @@ class OverridesActivity : AppThemedActivity() {
             if (it.itemId == R.id.save) {
                 backupData()
             } else if (it.itemId == R.id.restore) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED)
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RequestStorageReadPermission)
-                else {
+                } else {
                     launchFileChooser()
                 }
             }
@@ -91,14 +96,12 @@ class OverridesActivity : AppThemedActivity() {
         updateUI()
     }
 
-    fun launchFileChooser() {
-        MaterialFilePicker()
-                .withActivity(this)
-                .withRequestCode(RequestFileCode)
-                .withFilter(Pattern.compile(".*\\.backup$"))
-                .withHiddenFiles(true)
-                .start()
-    }
+    private fun launchFileChooser() = MaterialFilePicker()
+            .withActivity(this)
+            .withRequestCode(RequestFileCode)
+            .withFilter(Pattern.compile(".*\\.backup$"))
+            .withHiddenFiles(true)
+            .start()
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -121,7 +124,7 @@ class OverridesActivity : AppThemedActivity() {
         }
     }
 
-    fun processFile(file: String) {
+    private fun processFile(file: String) {
         File(file).inputStream().use { stream ->
             tempFile.createNewFile()
             FileOutputStream(tempFile).use { file ->
@@ -205,10 +208,8 @@ class OverridesActivity : AppThemedActivity() {
                     updateNotification()
                 }
 
-                override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
-                    if (viewHolder !is SimpleHeaderAdapter.HeaderViewHolder) return super.getMovementFlags(recyclerView, viewHolder)
-                    else return 0
-                }
+                override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int =
+                        if (viewHolder !is SimpleHeaderAdapter.HeaderViewHolder) super.getMovementFlags(recyclerView, viewHolder) else 0
             })
             itemTouchHelper.attachToRecyclerView(recycler)
         }
@@ -265,6 +266,7 @@ class OverridesActivity : AppThemedActivity() {
         private const val RequestFileCode = 21
         private const val PERMISSION_GRANTED = 0
         private fun BackupFileName() = "ohelshem_overrides_backup_${DateFormat.format(Date())}.backup"
+        @SuppressLint("SimpleDateFormat")
         private val DateFormat = SimpleDateFormat("dd_MM_hh_mm")
 
     }

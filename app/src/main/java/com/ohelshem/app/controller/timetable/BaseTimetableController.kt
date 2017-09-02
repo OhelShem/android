@@ -43,7 +43,7 @@ abstract class BaseTimetableController : TimetableController {
     /**
      * **Note:** Day is 1 based index. SUNDAY = 1, SATURDAY = 7.
      */
-    fun getHourData(day: Int, hour: Int, minutes: Int, timetable: Array<Array<Hour>>, startingDay: Int = day, isStartingNow: Boolean = true): HourData? {
+    private fun getHourData(day: Int, hour: Int, minutes: Int, timetable: Array<Array<Hour>>, startingDay: Int = day, isStartingNow: Boolean = true): HourData? {
         /*
          * Saturday
          * Friday - for those who doesn't learn on friday.
@@ -151,8 +151,6 @@ abstract class BaseTimetableController : TimetableController {
          *
          * @return A numeric representation of a hour in day (used for comparing).
          */
-        fun getLessonTimeToCompare(lessonNum: Int, start: Boolean = true): Int {
-            return TimetableController.HoursToCompare[if (start) lessonNum * 2 else lessonNum * 2 + 1]
-        }
+        fun getLessonTimeToCompare(lessonNum: Int, start: Boolean = true): Int = TimetableController.HoursToCompare[if (start) lessonNum * 2 else lessonNum * 2 + 1]
     }
 }

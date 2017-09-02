@@ -47,12 +47,12 @@ class DaySpinnerAdapter(context: Context, daysLearning: BooleanArray) : BaseAdap
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view: View
-        if (convertView == null) {
+        val view = if (convertView == null) {
             // Inflate the drop down using the helper's LayoutInflater
             val inflater = mDropDownHelper.dropDownViewInflater
-            view = inflater.inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
-        } else view = convertView
+            inflater.inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
+        } else convertView
+
         view.find<TextView>(android.R.id.text1).apply {
             text = if (position == 0) allWeek else daysOfWeek[getItem(position) - 1]
             gravity = Gravity.CENTER
@@ -80,7 +80,7 @@ class DaySpinnerAdapter(context: Context, daysLearning: BooleanArray) : BaseAdap
             holder = view.tag as ViewHolder
         } else {
             view = LayoutInflater.from(parent.context).inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
-            holder = ViewHolder(view.find<TextView>(android.R.id.text1))
+            holder = ViewHolder(view.find(android.R.id.text1))
             view.tag = holder
         }
 

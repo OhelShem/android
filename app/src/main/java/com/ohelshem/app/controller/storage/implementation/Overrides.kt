@@ -28,13 +28,13 @@ object Overrides {
 
     private fun readV3(file: File): List<OverrideData> {
         val data = file.readLines()
-        try {
-            return List(data.size) { i ->
+        return try {
+            List(data.size) { i ->
                 data[i].split(',').let { OverrideData(it[0].toInt(), it[1].toInt(), it[2], "", 0) }
             }
         } catch(e: Exception) {
             file.delete()
-            return emptyList()
+            emptyList()
         }
     }
 

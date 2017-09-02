@@ -13,10 +13,10 @@ import java.util.*
 class DeveloperOptions(private val storage: Storage) : Storage by storage {
     override var changesDate: Long
         get() {
-            if (isFakingChanges)
-                return if (getHour() < 21) getIsraelCalendar().clearTime().timeInMillis else getIsraelCalendar().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis
+            return if (isFakingChanges)
+                if (getHour() < 21) getIsraelCalendar().clearTime().timeInMillis else getIsraelCalendar().clearTime().apply { add(Calendar.DAY_OF_YEAR, 1) }.timeInMillis
             else
-                return storage.changesDate
+                storage.changesDate
         }
         set(value) {
             if (!isFakingChanges)
@@ -24,12 +24,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
         }
 
     override var serverUpdateDate: Long
-        get() {
-            if (isFakingChanges)
-                return System.currentTimeMillis()
-            else
-                return storage.serverUpdateDate
-        }
+        get() = if (isFakingChanges) System.currentTimeMillis() else storage.serverUpdateDate
         set(value) {
             if (!isFakingChanges)
                 storage.serverUpdateDate = value
@@ -138,9 +133,7 @@ class DeveloperOptions(private val storage: Storage) : Storage by storage {
             storage.changes = value
         }
 
-    override fun hasChanges(clazz: Int): Boolean {
-        return changes?.any { it.clazz == clazz } ?: false
-    }
+    override fun hasChanges(clazz: Int): Boolean = changes?.any { it.clazz == clazz } ?: false
 
     companion object {
         var isFakingChanges = false

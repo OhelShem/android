@@ -49,9 +49,7 @@ fun Fragment.stringArrayRes(id: Int): Array<String> = resources.getStringArray(i
 fun Context.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, theme)
 fun Context.colorRes(id: Int): Int = ResourcesCompat.getColor(resources, id, theme)
 fun Context.stringArrayRes(id: Int): Array<String> = resources.getStringArray(id)
-fun Context.colorArrayRes(id: Int): IntArray {
-    return resources.obtainTypedArray(id).use { IntArray(it.length()) { i -> it.getColor(i, Color.WHITE) } }
-}
+fun Context.colorArrayRes(id: Int): IntArray = resources.obtainTypedArray(id).use { IntArray(it.length()) { i -> it.getColor(i, Color.WHITE) } }
 
 fun <K> TypedArray.use(init: (typedArray: TypedArray) -> K): K {
     val value = init(this)
@@ -77,11 +75,7 @@ fun TextView.setTextAppear(context: Context, ta: Int) {
         this.setTextAppearance(ta)
 }
 
-fun Activity.resourceAttr(attr: Int): Int {
-    return theme.obtainStyledAttributes(com.yoavst.changesystemohelshem.R.style.AppTheme, intArrayOf(attr)).use { typedArray ->
-        typedArray.getResourceId(0, -1)
-    }
-}
+fun Activity.resourceAttr(attr: Int): Int = theme.obtainStyledAttributes(com.yoavst.changesystemohelshem.R.style.AppTheme, intArrayOf(attr)).use { it.getResourceId(0, -1) }
 
 class StringResourceDelegate(private val resources: () -> Resources, private val id: Int) : ReadOnlyProperty<Any?, String> {
     private var value: String? = null
@@ -107,8 +101,7 @@ fun nameOriginalHour(change: String, hourName: String): String {
     val withoutYesMikbatz = changeIsWithout && changeIsMikbatz // ex: מקבץ בלי לרר
     val roomOrWithoutNoName = change.startsWith("בלי") || change.startsWith("בחדר") // ex: בחדר 318
 
-    if (withoutNoMikbatz) return ""
-    else return "(${if (withoutYesMikbatz || roomOrWithoutNoName) "" else "במקום "}$hourName)"
+    return if (withoutNoMikbatz) "" else "(${if (withoutYesMikbatz || roomOrWithoutNoName) "" else "במקום "}$hourName)"
 }
 
 fun Fragment.stringResource(id: Int): StringResourceDelegate = StringResourceDelegate(futureResources(), id)
@@ -145,15 +138,12 @@ fun getStateDrawable(normalColor: Int, selectedColor: Int, pressedColor: Int): D
     return drawable
 }
 
-fun getPressedColorSelector(normalColor: Int, pressedColor: Int): ColorStateList {
-    return ColorStateList(
-            arrayOf(intArrayOf(android.R.attr.state_pressed), intArrayOf(android.R.attr.state_focused), intArrayOf(android.R.attr.state_activated), intArrayOf()),
-            intArrayOf(pressedColor, pressedColor, pressedColor, normalColor))
-}
+fun getPressedColorSelector(normalColor: Int, pressedColor: Int): ColorStateList = ColorStateList(
+        arrayOf(intArrayOf(android.R.attr.state_pressed), intArrayOf(android.R.attr.state_focused), intArrayOf(android.R.attr.state_activated), intArrayOf()),
+        intArrayOf(pressedColor, pressedColor, pressedColor, normalColor)
+)
 
-fun getColorDrawableFromColor(color: Int): ColorDrawable {
-    return ColorDrawable(color)
-}
+fun getColorDrawableFromColor(color: Int): ColorDrawable = ColorDrawable(color)
 
 @Suppress("DEPRECATION")
 fun String.fromHtml(): CharSequence = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY) else Html.fromHtml(this)

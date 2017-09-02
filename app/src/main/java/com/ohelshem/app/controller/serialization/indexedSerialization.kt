@@ -65,18 +65,14 @@ class IndexedDeserializationImpl<T : Any>(val serialization: Serialization<T>) :
 
 class ByteArrayOutputStream2(size: Int) : ByteArrayOutputStream(size) {
     /** Returns the internal buffer of this ByteArrayOutputStream, without copying.  */
-    @Synchronized fun buf(): ByteArray {
-        return this.buf
-    }
+    @Synchronized fun buf(): ByteArray = this.buf
 }
 
-class Buffer(val stream: ByteArrayOutputStream2, val writer: SimpleWriter = stream.simpleWriter()) : SimpleWriter by writer {
+class Buffer(private val stream: ByteArrayOutputStream2, private val writer: SimpleWriter = stream.simpleWriter()) : SimpleWriter by writer {
     override val size: Int
         get() = stream.size()
 
-    fun reset() {
-        stream.reset()
-    }
+    fun reset() = stream.reset()
 
     fun getBuffer(): ByteArray = stream.buf()
 }

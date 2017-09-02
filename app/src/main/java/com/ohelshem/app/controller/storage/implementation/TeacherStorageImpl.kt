@@ -13,10 +13,7 @@ class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, K
 
     private val classInfoSerialization = ClassInfoSerialization.ofList()
     override var classes: List<ClassInfo>
-        get() {
-            if (!ClassesFile.exists()) return emptyList()
-            else return ClassesFile.simpleReader().use { reader -> classInfoSerialization.deserialize(reader) }
-        }
+        get() = if (!ClassesFile.exists()) emptyList() else ClassesFile.simpleReader().use(classInfoSerialization::deserialize)
         set(value) {
             if (value.isEmpty()) ClassesFile.delete()
             else {
@@ -27,10 +24,7 @@ class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, K
 
     //region Primary class
     override var primaryClass: ClassInfo?
-        get() {
-            if (_primaryClassClass == -1 || _primaryClassLayer == -1) return null
-            else return ClassInfo(_primaryClassLayer, _primaryClassClass)
-        }
+        get() = if (_primaryClassClass == -1 || _primaryClassLayer == -1) null else ClassInfo(_primaryClassLayer, _primaryClassClass)
         set(value) {
             if (value == null) {
                 _primaryClassClass = -1

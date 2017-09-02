@@ -17,7 +17,7 @@
 
 package com.ohelshem.app.android.help
 
-import android.content.ActivityNotFoundException
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -36,7 +36,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class HelpActivity : AppCompatActivity() {
-    val usedPadding by lazy { dip(8) }
+    private val usedPadding by lazy { dip(8) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,36 +84,27 @@ class HelpActivity : AppCompatActivity() {
         }
     }
 
-    fun LinearLayout.questionItem(title: String, text: String): CardView {
-        return customView<CardView> {
-            setContentPadding(usedPadding, usedPadding, usedPadding, usedPadding)
-            useCompatPadding = true
-            linearLayout {
-                orientation = LinearLayout.VERTICAL
-                include<TextView>(R.layout.item_header) {
-                    setText(title + "?")
-                    textSize = 16f
-                }
-
-                textView(text) {
-
-                }.lparams(width = matchParent, height = wrapContent)
+    @SuppressLint("SetTextI18n")
+    private fun LinearLayout.questionItem(title: String, text: String): CardView = customView<CardView> {
+        setContentPadding(usedPadding, usedPadding, usedPadding, usedPadding)
+        useCompatPadding = true
+        linearLayout {
+            orientation = LinearLayout.VERTICAL
+            include<TextView>(R.layout.item_header) {
+                setText(title + "?")
+                textSize = 16f
             }
-        }.apply {
-            (layoutParams as ViewGroup.MarginLayoutParams).apply { setMargins(usedPadding, usedPadding, usedPadding, 0) }.let { layoutParams = it }
+
+            textView(text) {
+
+            }.lparams(width = matchParent, height = wrapContent)
         }
+    }.apply {
+        (layoutParams as ViewGroup.MarginLayoutParams).apply { setMargins(usedPadding, usedPadding, usedPadding, 0) }.let { layoutParams = it }
     }
 
-    private fun launchPlayStore(packageName: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
-        }
-    }
 
-    private
-    val RegulationFile by lazy { File(File(filesDir, MainActivity.SharingFolder).apply { mkdirs() }, RegulationFilename) }
+    private val RegulationFile by lazy { File(File(filesDir, MainActivity.SharingFolder).apply { mkdirs() }, RegulationFilename) }
     private val RegulationFilename = "regulation.pdf"
 
     private fun openRegulations() {

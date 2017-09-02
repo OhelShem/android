@@ -30,17 +30,13 @@ class DatesPresenter(private val storage: Storage) : BasePresenter<DatesView>(),
             load()
     }
 
-    override fun onCreate() {
-        load()
-    }
+    override fun onCreate() = load()
 
     private fun load() {
         view?.update(tests)
     }
 
-    override fun onChoosingClass() {
-        load()
-    }
+    override fun onChoosingClass() = load()
 
     val isTeacher: Boolean
         get() = !storage.isStudent()

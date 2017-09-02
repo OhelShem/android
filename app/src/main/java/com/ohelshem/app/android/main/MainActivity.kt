@@ -1,5 +1,6 @@
 package com.ohelshem.app.android.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Spinner
 import com.afollestad.materialdialogs.GravityEnum
 import com.afollestad.materialdialogs.MaterialDialog
@@ -169,22 +171,20 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.refresh -> {
-                refresh()
-                true
-            }
-            R.id.help -> {
-                openHelp()
-                true
-            }
-            R.id.settings -> {
-                openSettings()
-                true
-            }
-            else -> false
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.refresh -> {
+            refresh()
+            true
         }
+        R.id.help -> {
+            openHelp()
+            true
+        }
+        R.id.settings -> {
+            openSettings()
+            true
+        }
+        else -> false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -226,10 +226,10 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
     }
 
-    @Suppress("PLUGIN_WARNING")
+    @Suppress("UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
     private fun initTeacherBar() {
         if (storage.userData.isTeacher()) {
-            if (findViewById(R.id.storiesBar) != null)
+            if (findViewById<View>(R.id.storiesBar) != null)
                 storiesBar.hide()
             val layers = stringArrayRes(R.array.layers)
             var classes = storage.classes
@@ -265,7 +265,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
             teacherBar.show()
         } else {
             teacherBar.hide()
-            if (findViewById(R.id.storiesBar) != null) {
+            if (findViewById<View>(R.id.storiesBar) != null) {
                 if (storage.debugFlag) {
                     story1.onClick {
                         doStories(R.drawable.story1)
@@ -275,7 +275,6 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                     }
                     story3.onClick {
                         doStories(R.drawable.story3)
-
                     }
                     story4.onClick {
                         doStories(R.drawable.story4)
@@ -289,14 +288,11 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
     }
 
-    fun doStories(resource: Int) {
-        ParticleSystem(this, 80, resource, 10000)
-                .setSpeedModuleAndAngleRange(0f, 0.3f, 120, 180)
-                .setRotationSpeed(120f)
-                .setAcceleration(0.00005f, 60)
-                .oneShot(topRight, 10)
-
-    }
+    private fun doStories(resource: Int) = ParticleSystem(this, 80, resource, 10000)
+            .setSpeedModuleAndAngleRange(0f, 0.3f, 120, 180)
+            .setRotationSpeed(120f)
+            .setAcceleration(0.00005f, 60)
+            .oneShot(topRight, 10)
 
     override fun setScreen(screen: ScreenType, backStack: Boolean) {
         if (!backStack)
@@ -313,65 +309,52 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
     }
 
-    private fun setSelected(screen: ScreenType) {
-        bottomBar.selectTabAtPosition(fragmentPosition[screen]!!)
-    }
+    private fun setSelected(screen: ScreenType) = bottomBar.selectTabAtPosition(fragmentPosition[screen]!!)
 
-    private fun openSettings() {
-        startActivityForResult<SettingsActivity>(42)
-    }
+    private fun openSettings() = startActivityForResult<SettingsActivity>(42)
 
-    private fun openHelp() {
-        startActivity<HelpActivity>()
-    }
+    private fun openHelp() = startActivity<HelpActivity>()
 //endregion
 
-    fun logout() {
+    private fun logout() {
         analytics.onLogout()
         storage.clean()
         startActivity(intentFor<LoginActivity>().clearTask())
         finish()
     }
 
-    override fun refresh(): Boolean {
-        return apiController.update()
-    }
+    override fun refresh(): Boolean = apiController.update()
 
 
-    override fun onSuccess(apis: Set<ApiController.UpdatedApi>) {
-        runOnUiThread {
-            if (!firstUpdate) {
-                toast(R.string.refreshed)
-            } else {
-                firstUpdate = false
-            }
-            updatables.forEach { it.onSuccess(apis) }
-            OngoingNotificationService.update(applicationContext)
-            updateBadges()
+    override fun onSuccess(apis: Set<ApiController.UpdatedApi>) = runOnUiThread {
+        if (!firstUpdate) {
+            toast(R.string.refreshed)
+        } else {
+            firstUpdate = false
         }
+        updatables.forEach { it.onSuccess(apis) }
+        OngoingNotificationService.update(applicationContext)
+        updateBadges()
     }
 
-    override fun onFail(error: UpdateError) {
-        if (error == UpdateError.Login)
-            logout()
-        else if (error == UpdateError.Connection) {
+    override fun onFail(error: UpdateError) = when (error) {
+        UpdateError.Login -> logout()
+        UpdateError.Connection -> {
             toast(R.string.no_connection)
             updatables.forEach { it.onFail(error) }
-        } else
-            toast(R.string.refresh_fail)
+        }
+        else -> toast(R.string.refresh_fail)
     }
 
-    fun onNotification(title: String, body: String) {
-        runOnUiThread {
-            dialog = MaterialStyledDialog.Builder(act)
-                    .setTitle(title)
-                    .setDescription(body.fromHtml())
-                    .autoDismiss(true)
-                    .setPositiveText(R.string.accept)
-                    .onPositive { materialDialog, _ ->
-                        materialDialog.cancel()
-                    }.show()
-        }
+    private fun onNotification(title: String, body: String) = runOnUiThread {
+        dialog = MaterialStyledDialog.Builder(act)
+                .setTitle(title)
+                .setDescription(body.fromHtml())
+                .autoDismiss(true)
+                .setPositiveText(R.string.accept)
+                .onPositive { materialDialog, _ ->
+                    materialDialog.cancel()
+                }.show()
     }
 
 
@@ -428,18 +411,18 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         else changesTab.setBadgeCount(count)
     }
 
-    fun notifyFragmentOnReselect() {
+    private fun notifyFragmentOnReselect() {
         (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onReselected()
     }
 
-    fun notifyFragmentOnChooseClass(classInfo: ClassInfo?) {
+    private fun notifyFragmentOnChooseClass(classInfo: ClassInfo?) {
         currentClass = classInfo
         (fragmentSwitcher.currentFragment as? BaseMvpFragment<*, *>)?.onChoosingClass(classInfo)
     }
 
     override var currentClass: ClassInfo? = null
 
-    val updatables: List<ApiController.Callback>
+    private val updatables: List<ApiController.Callback>
         get() {
             @Suppress("UNCHECKED_CAST")
             return listOf(
@@ -514,18 +497,15 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
         }
     }
 
-    private fun alertChangelog() {
-        MaterialStyledDialog.Builder(this)
+    @SuppressLint("InflateParams")
+    private fun alertChangelog() = MaterialStyledDialog.Builder(this)
                 .setStyle(Style.HEADER_WITH_TITLE)
                 .setTitle(R.string.changelog)
                 .setCustomView(layoutInflater.inflate(R.layout.changelog_dialog_fragment, null, false))
                 .setPositiveText(R.string.dialog_close)
                 .show()
-    }
 
-    override fun startTour() {
-        introTimetable()
-    }
+    override fun startTour() = introTimetable()
 
     private fun introTimetable() {
         var prompt: MaterialTapTargetPrompt? = null
@@ -540,9 +520,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 .setIconDrawableColourFilter(act.primaryDarkColor)
                 .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
-                    override fun onHidePromptComplete() {
-                        introChanges()
-                    }
+                    override fun onHidePromptComplete() = introChanges()
 
                     override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
                         if (tappedTarget) {
@@ -565,9 +543,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 .setIconDrawableColourFilter(act.primaryDarkColor)
                 .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
-                    override fun onHidePromptComplete() {
-                        introDates()
-                    }
+                    override fun onHidePromptComplete() = introDates()
 
                     override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
                         if (tappedTarget) {
@@ -590,9 +566,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 .setIconDrawableColourFilter(act.primaryDarkColor)
                 .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
-                    override fun onHidePromptComplete() {
-                        introContacts()
-                    }
+                    override fun onHidePromptComplete() = introContacts()
 
                     override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
                         if (tappedTarget) {
@@ -615,9 +589,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 .setIconDrawableColourFilter(act.primaryDarkColor)
                 .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
-                    override fun onHidePromptComplete() {
-                        introMenu()
-                    }
+                    override fun onHidePromptComplete() = introMenu()
 
                     override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
                         if (tappedTarget) {
@@ -627,6 +599,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 }).show()
     }
 
+    @SuppressLint("PrivateResource")
     private fun introMenu() {
         val menuItem = toolbar.getChildAt(2).childrenSequence().last()
         var prompt: MaterialTapTargetPrompt? = null
@@ -640,8 +613,7 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
                 .setIconDrawableColourFilter(act.primaryDarkColor)
                 .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
 
-                    override fun onHidePromptComplete() {
-                    }
+                    override fun onHidePromptComplete() = Unit
 
                     override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
                         if (tappedTarget) {

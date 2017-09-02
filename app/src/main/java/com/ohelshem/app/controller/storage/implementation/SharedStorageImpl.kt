@@ -44,7 +44,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     override var appVersion: Int by intPref(EmptyData)
     override var debugFlag: Boolean by booleanPref()
 
-    var _theme: Int by intPref(Theme.Blue.ordinal)
+    private var _theme: Int by intPref(Theme.Blue.ordinal)
     override var theme: Theme
         get() = Theme.values()[_theme]
         set(value) {
@@ -120,7 +120,7 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
             } else {
                 prepare()
                 TimetableDataFile.simpleWriter().use { writer ->
-                    hourSerialization.serialize(writer, value.flatMap (Array<Hour>::toList))
+                    hourSerialization.serialize(writer, value.flatMap(Array<Hour>::toList))
                 }
                 timetableListeners.values.forEach { it(value) }
             }
@@ -139,14 +139,12 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
     }
 
     override var overrides: List<OverrideData>
-        get() {
-            try {
-                return Overrides.read(LatestVersion, TimetableOverridesFile)
-            } catch(e: Exception) {
-                e.printStackTrace()
-                TimetableOverridesFile.delete()
-                return emptyList()
-            }
+        get() = try {
+            Overrides.read(LatestVersion, TimetableOverridesFile)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            TimetableOverridesFile.delete()
+            emptyList()
         }
         set(value) {
             setOverridesSilently(value)
@@ -187,17 +185,13 @@ class SharedStorageImpl(private val offsetDataController: OffsetDataController) 
         TimetableOverridesFileBackup.delete()
     }
 
-    override fun exportOverrideFile(file: File): Boolean {
-        if (TimetableOverridesFile.exists()) {
-            try {
-                prepare()
-                TimetableOverridesFile.copyTo(file, overwrite = true)
-                return true
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return false
-            }
-        } else return false
+    override fun exportOverrideFile(file: File): Boolean = TimetableOverridesFile.exists() && try {
+        prepare()
+        TimetableOverridesFile.copyTo(file, overwrite = true)
+        true
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
     }
     //endregion
 

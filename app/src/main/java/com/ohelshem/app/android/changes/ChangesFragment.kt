@@ -1,5 +1,6 @@
 package com.ohelshem.app.android.changes
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.app.Fragment
@@ -21,7 +22,7 @@ import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.changesDateFormat
 import com.ohelshem.app.controller.timetable.TimetableController.Companion.DayType
-import com.ohelshem.app.getDay
+import com.ohelshem.app.day
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.changes_fragment.*
@@ -99,27 +100,25 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
         if (dayType == DayType.Holiday || dayType == DayType.Summer) {
             progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.holiday_today), getString(R.string.holiday_today_subtitle))
         } else {
-            if (dayType == DayType.Saturday)
-                progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.shabat_today), getString(R.string.shabat_today_subtitle))
-            else if (dayType == DayType.Friday)
-                progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.friday_today), getString(R.string.friday_today_subtitle))
-            else
-                progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.no_changes), getString(R.string.no_changes_subtitle), getString(R.string.go_to_timetable)) {
+            when (dayType) {
+                DayType.Saturday -> progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.shabat_today), getString(R.string.shabat_today_subtitle))
+                DayType.Friday -> progressActivity.showEmpty(drawableRes(R.drawable.ic_beach), getString(R.string.friday_today), getString(R.string.friday_today_subtitle))
+                else -> progressActivity.showError(drawableRes(R.drawable.ic_error), getString(R.string.no_changes), getString(R.string.no_changes_subtitle), getString(R.string.go_to_timetable)) {
                     presenter.launchTimetableScreen(screenManager)
                 }
+            }
         }
         dateLayout.hide()
     }
 
-    override fun onBecomingVisible() {
-        initTabs()
-    }
+    override fun onBecomingVisible() = initTabs()
 
+    @SuppressLint("SetTextI18n")
     override fun setData(changes: List<Change>) {
         initTabs()
         dateLayout.show()
         date.text = changesDateFormat.format(Date(presenter.changesDate))
-        nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().getDay() - 1]}"
+        nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().day - 1]}"
 
         childFragmentManager.fragments?.forEach {
             ((it as? BaseChangesFragment<*>)?.getPresenter() as? IBaseChangesPresenter)?.update()
@@ -132,7 +131,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
 
     private fun setTitle() {
         val data = presenter.changesDate
-        screenManager.screenTitle = day + " " + weekDays[data.toCalendar().getDay() - 1] + " " + changesDateFormat.format(Date(data))
+        screenManager.screenTitle = day + " " + weekDays[data.toCalendar().day - 1] + " " + changesDateFormat.format(Date(data))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -163,10 +162,7 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
     private var isSharing: Boolean = false
 
     class ChangesFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
-        override fun getItem(position: Int): Fragment {
-            return if (position == 0) ClassChangesFragment()
-            else LayerChangesFragment()
-        }
+        override fun getItem(position: Int): Fragment = if (position == 0) ClassChangesFragment() else LayerChangesFragment()
 
         override fun getCount(): Int = 2
 

@@ -1,5 +1,6 @@
 package com.ohelshem.app.android.changes
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -49,69 +50,68 @@ object LayerChangesGenerator {
     }
 
     //region Helper drawing
-    private fun createView(context: Context, classes: Int, layer: Int): Triple<View, Int, Int> {
-        with(context) {
-            val headerRowHeight = dip(30)
-            val defaultCellMargin = dip(1)
-            val standardColumnWidth = screenSize.x / 6
+    @SuppressLint("RtlHardcoded", "SetTextI18n")
+    private fun createView(context: Context, classes: Int, layer: Int): Triple<View, Int, Int> = with(context) {
+        val headerRowHeight = dip(30)
+        val defaultCellMargin = dip(1)
+        val standardColumnWidth = screenSize.x / 6
 
-            val width = standardColumnWidth * classes + (defaultCellMargin * classes - 1) + dip(5)
-            val height = screenSize.y
+        val width = standardColumnWidth * classes + (defaultCellMargin * classes - 1) + dip(5)
+        val height = screenSize.y
 
-            val layerText = stringArrayRes(R.array.layers)[layer - 9]
+        val layerText = stringArrayRes(R.array.layers)[layer - 9]
 
-            val view = UI {
+        val view = UI {
+            linearLayout {
+                gravity = Gravity.RIGHT
+                orientation = LinearLayout.VERTICAL
+
+                // Header row:
                 linearLayout {
-                    gravity = Gravity.RIGHT
-                    orientation = LinearLayout.VERTICAL
+                    orientation = LinearLayout.HORIZONTAL
+                    backgroundColor = primaryColor
 
-                    // Header row:
+                    repeat(classes) { c ->
+                        val clazz = classes - c
+                        textView {
+                            gravity = Gravity.CENTER
+                            textColor = Color.WHITE
+                            padding = 10
+                            text = "$layerText'$clazz"
+
+                            setTypeface(null, Typeface.BOLD)
+                        }.lparams(width = standardColumnWidth, height = matchParent) {
+                            marginize(clazz, classes, 0, MaxChangeHours, defaultCellMargin)
+                        }
+
+                    }
+                }.lparams(width = matchParent, height = headerRowHeight)
+
+                // Changes rows
+                repeat(MaxChangeHours) { hour ->
                     linearLayout {
                         orientation = LinearLayout.HORIZONTAL
-                        backgroundColor = primaryColor
 
                         repeat(classes) { c ->
                             val clazz = classes - c
-                            textView {
+                            autoResizeTextView {
                                 gravity = Gravity.CENTER
                                 textColor = Color.WHITE
+                                backgroundColor = NoChangesColors[hour % 2]
                                 padding = 10
-                                text = "$layerText'$clazz"
 
-                                setTypeface(null, Typeface.BOLD)
                             }.lparams(width = standardColumnWidth, height = matchParent) {
-                                marginize(clazz, classes, 0, MaxChangeHours, defaultCellMargin)
+                                marginize(clazz, classes, hour, MaxChangeHours, defaultCellMargin)
                             }
-
                         }
-                    }.lparams(width = matchParent, height = headerRowHeight)
 
-                    // Changes rows
-                    repeat(MaxChangeHours) { hour ->
-                        linearLayout {
-                            orientation = LinearLayout.HORIZONTAL
-
-                            repeat(classes) { c ->
-                                val clazz = classes - c
-                                autoResizeTextView {
-                                    gravity = Gravity.CENTER
-                                    textColor = Color.WHITE
-                                    backgroundColor = NoChangesColors[hour % 2]
-                                    padding = 10
-
-                                }.lparams(width = standardColumnWidth, height = matchParent) {
-                                    marginize(clazz, classes, hour, MaxChangeHours, defaultCellMargin)
-                                }
-                            }
-
-                        }.lparams(width = matchParent, height = 0) {
-                            weight = 1f
-                        }
+                    }.lparams(width = matchParent, height = 0) {
+                        weight = 1f
                     }
                 }
-            }.view
-            return Triple(view, width, height)
-        }
+            }
+        }.view
+        return Triple(view, width, height)
     }
 
     private fun ViewGroup.MarginLayoutParams.marginize(clazz: Int, maxClasses: Int, hour: Int, maxHours: Int, margin: Int) {
@@ -150,11 +150,9 @@ object LayerChangesGenerator {
     }
     //endregion
 
-    private fun takeScreenShot(view: View, width: Int, height: Int): Bitmap {
-        return getBitmapFromView(view, height, width)
-    }
+    private fun takeScreenShot(view: View, width: Int, height: Int): Bitmap = getBitmapFromView(view, height, width)
 
-    fun getBitmapFromView(view: View, totalHeight: Int, totalWidth: Int): Bitmap {
+    private fun getBitmapFromView(view: View, totalHeight: Int, totalWidth: Int): Bitmap {
         val returnedBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.RGB_565)
         val canvas = Canvas(returnedBitmap)
         val bgDrawable = view.background

@@ -72,32 +72,26 @@ class App : Application(), KodeinAware {
 
     }
 
-    private fun initApi() {
-        kodein.instance<ApiController>().setNetworkAvailabilityProvider { isNetworkAvailable() }
-    }
+    private fun initApi() = kodein.instance<ApiController>().setNetworkAvailabilityProvider { isNetworkAvailable() }
 
-    private fun initStorage() {
-        with(kodein.instance<Storage>()) {
-            prepare()
-            initTimetable()
-            migration()
-            if (isSetup())
-                kodein.instance<ApiController>().setAuthData(id, password)
+    private fun initStorage() = with(kodein.instance<Storage>()) {
+        prepare()
+        initTimetable()
+        migration()
+        if (isSetup())
+            kodein.instance<ApiController>().setAuthData(id, password)
 
-            val version = BuildConfig.VERSION_CODE
-            if (version != appVersion) {
-                // Migration comes here
-                updatedFromVersion = appVersion
-                appVersion = version
-            }
+        val version = BuildConfig.VERSION_CODE
+        if (version != appVersion) {
+            // Migration comes here
+            updatedFromVersion = appVersion
+            appVersion = version
         }
     }
 
-    private fun initTimetable() {
-        with(kodein.instance<TimetableController>()) {
-            colors = colorArrayRes(R.array.colors)
-            init()
-        }
+    private fun initTimetable() = with(kodein.instance<TimetableController>()) {
+        colors = colorArrayRes(R.array.colors)
+        init()
     }
 
     private fun Kodein.Builder.initApiModule() {
