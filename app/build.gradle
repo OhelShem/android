@@ -11,7 +11,7 @@ android {
         testApplicationId "com.yoavst.changesystemohelshem.tests"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 97
+        versionCode 98
         versionName "7.2"
         resConfigs "he"
     }
