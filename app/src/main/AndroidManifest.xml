@@ -91,12 +91,6 @@
         <receiver
             android:name="com.ohelshem.app.android.notifications.DismissNotificationReceiver"
             android:exported="false" />
-
-        <provider
-            android:name="com.chibatching.kotpref.KotprefInitProvider"
-            android:authorities="${applicationId}.KotprefInitProvider"
-            android:exported="false"
-            tools:node="remove" />
     </application>
 
 </manifest>

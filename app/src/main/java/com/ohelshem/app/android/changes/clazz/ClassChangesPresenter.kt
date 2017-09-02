@@ -22,7 +22,7 @@ import com.ohelshem.api.model.Hour
 import com.ohelshem.app.android.changes.BaseChangesPresenter
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
-import com.ohelshem.app.getDay
+import com.ohelshem.app.day
 import com.ohelshem.app.toCalendar
 
 class ClassChangesPresenter(storage: Storage, timetableController: TimetableController) : BaseChangesPresenter(storage, timetableController) {
@@ -37,10 +37,7 @@ class ClassChangesPresenter(storage: Storage, timetableController: TimetableCont
     }
 
     val dailyTimetable: Array<Hour>
-        get() = getTimetableForDay(changesDate.toCalendar().getDay() - 1)
+        get() = getTimetableForDay(changesDate.toCalendar().day - 1)
 
-    private fun getTimetableForDay(day: Int): Array<Hour> {
-        if (day >= timetableController.size) return emptyArray()
-        else return timetableController[day]
-    }
+    private fun getTimetableForDay(day: Int): Array<Hour> = if (day >= timetableController.size) emptyArray() else timetableController[day]
 }

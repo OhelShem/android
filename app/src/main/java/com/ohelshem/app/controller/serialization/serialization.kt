@@ -76,9 +76,7 @@ open class PartialListSerialization<K : Any>(val size: Int, serializer: Serializ
 
 
 class FilterListSerialization<K : Any>(val serialization: ListSerialization<K>, val filter: (K) -> Boolean) : Serialization<List<K>> by serialization {
-    override fun deserialize(reader: SimpleReader): List<K> {
-        return reader.readListFiltered({ serialization.deserializer.deserialize(this) }, filter)
-    }
+    override fun deserialize(reader: SimpleReader): List<K> = reader.readListFiltered({ serialization.deserializer.deserialize(this) }, filter)
 }
 
 fun <K : Any> Serialization<K>.ofList(): ListSerialization<K> = ListSerialization(this, this)

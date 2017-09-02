@@ -39,7 +39,7 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         presenter.onDestroy()
     }
 
-    fun initLayout() {
+    private fun initLayout() {
         // add the padding from bottom to the layout
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val config = SystemBarTintManager(this).config
@@ -60,7 +60,7 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         }
     }
 
-    fun initViews() {
+    private fun initViews() {
         registerFab.onClick {
             browse("http://ohel-shem.com/portal6/system/register.php")
         }
@@ -87,19 +87,17 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         loadingBar.startAnim()
     }
 
-    override fun showLoginError(error: UpdateError) {
-        runOnUiThread {
-            loadingBar.stopAnim()
-            loadingBar.invisible()
-            passwordInputLayout.isEnabled = true
-            idInputLayout.isEnabled = true
+    override fun showLoginError(error: UpdateError) = runOnUiThread {
+        loadingBar.stopAnim()
+        loadingBar.invisible()
+        passwordInputLayout.isEnabled = true
+        idInputLayout.isEnabled = true
 
-            when (error) {
-                UpdateError.Connection -> Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
-                UpdateError.Login -> passwordInputLayout.error = getString(R.string.login_wrong)
-                UpdateError.NoData -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
-                UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
-            }
+        when (error) {
+            UpdateError.Connection -> Snackbar.make(coordinatorLayout, R.string.no_connection, Snackbar.LENGTH_SHORT).show()
+            UpdateError.Login -> passwordInputLayout.error = getString(R.string.login_wrong)
+            UpdateError.NoData -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
+            UpdateError.Exception -> Snackbar.make(coordinatorLayout, R.string.general_error, Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -121,17 +119,13 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         shouldStopAnimation = true
     }
 
-    override fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit) {
-        runOnUiThread {
-            PrimaryClassDialog.create(teacherStorage, act) {
-                listener()
-            }
+    override fun showTeachersDialog(teacherStorage: TeacherStorage, listener: () -> Unit) = runOnUiThread {
+        PrimaryClassDialog.create(teacherStorage, act) {
+            listener()
         }
     }
 
-    override fun showStudentsDialog(studentStorage: Storage, listener: () -> Unit) {
-        listener()
-    }
+    override fun showStudentsDialog(studentStorage: Storage, listener: () -> Unit) = listener()
 
     private var shouldStopAnimation: Boolean = false
     private fun onRepeat() {
@@ -146,7 +140,7 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         }
     }
 
-    fun onLogin() {
+    private fun onLogin() {
         idInputLayout.error = null
         passwordInputLayout.error = null
         val id = idInputLayout.editText!!.text.toString()

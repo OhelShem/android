@@ -33,17 +33,13 @@ abstract class SimpleHeaderAdapter<K : Any>(context: Context, items: MutableList
         val title: TextView = itemView as TextView
     }
 
-    override fun onCreateHeaderViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder {
-        return HeaderViewHolder(inflater.inflate(R.layout.item_header, parent, false))
-    }
+    override fun onCreateHeaderViewHolder(inflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder = HeaderViewHolder(inflater.inflate(R.layout.item_header, parent, false))
 
     override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder, title: String) {
         (holder as HeaderViewHolder).title.text = title
     }
 
-    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return onCreateViewHolder(inflater.inflate(layout, parent, false))
-    }
+    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = onCreateViewHolder(inflater.inflate(layout, parent, false))
 
     abstract fun onCreateViewHolder(layout: View): RecyclerView.ViewHolder
 

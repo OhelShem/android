@@ -36,13 +36,11 @@ abstract class HeaderAdapter<K : Any>(context: Context, val items: MutableList<V
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == TypeHeader) return onCreateHeaderViewHolder(inflater, parent)
-        else return onCreateViewHolder(inflater, parent, viewType)
+        return if (viewType == TypeHeader) onCreateHeaderViewHolder(inflater, parent)
+        else onCreateViewHolder(inflater, parent, viewType)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (items[position].title == null) TypeData else TypeHeader
-    }
+    override fun getItemViewType(position: Int): Int = if (items[position].title == null) TypeData else TypeHeader
 
     override fun getItemCount(): Int = items.size
 
@@ -61,7 +59,7 @@ abstract class HeaderAdapter<K : Any>(context: Context, val items: MutableList<V
             val transform: List<K>.() -> MutableList<VisibleItem<K>> = { map { VisibleItem(it) }.toMutableList()}
             val before = data.takeWhile { !rule(it) }
             if (before.isEmpty()) return (listOf(VisibleItem<K>(secondTitle)) + data.transform()).toMutableList()
-            return (sequenceOf(VisibleItem<K>(firstTitle)) + before.transform() + VisibleItem<K>(secondTitle) + data.drop(before.size).transform()).toMutableList()
+            return (sequenceOf(VisibleItem<K>(firstTitle)) + before.transform() + VisibleItem(secondTitle) + data.drop(before.size).transform()).toMutableList()
         }
     }
 }

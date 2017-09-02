@@ -51,11 +51,11 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
             val areNoChangesNew = newChanges == null && current == null && storage.changesDate != changesDate &&
                     storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR]
             val isThereDiff = newChanges?.size ?: 0 != current?.size ?: 0 ||
-                    newChanges?.any { new -> current?.none { it.color == new.color && it.content.trim() == new.content.trim() } ?: false } ?: false
+                    newChanges?.any { new -> current?.none { it.color == new.color && it.content.trim() == new.content.trim() } == true } == true
 
             changesForTomorrow = (storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
 
-            if (storage.changes?.isNotEmpty() ?: false) {
+            if (storage.changes?.isNotEmpty() == true) {
                 if (areNoChangesNew) {
                     notifyNoChanges()
                 } else if (isThereDiff) {
@@ -71,14 +71,10 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
         }
     }
 
-    private fun notifyNoChanges() {
-        context.sendNotification(
-                if (changesForTomorrow)
-                    context.getString(R.string.changes_notif_title_tmrw)
-                else
-                    context.getString(R.string.changes_notif_title),
-                context.getString(R.string.no_changes), NotificationId, sound = true)
-    }
+    private fun notifyNoChanges() = context.sendNotification(
+            if (changesForTomorrow) context.getString(R.string.changes_notif_title_tmrw) else context.getString(R.string.changes_notif_title),
+            context.getString(R.string.no_changes), NotificationId, sound = true
+    )
 
     private fun notifyChanges() {
         context.sendNotification(

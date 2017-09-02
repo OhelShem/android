@@ -12,7 +12,7 @@ import com.ohelshem.app.android.drawableRes
 import com.ohelshem.app.android.stringArrayRes
 import com.ohelshem.app.android.stringResource
 import com.ohelshem.app.changesDateFormat
-import com.ohelshem.app.getDay
+import com.ohelshem.app.day
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.changes_teacher_fragment.*
@@ -53,7 +53,7 @@ class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), T
 
     override fun showData(changes: List<Change>) {
         date.text = changesDateFormat.format(Date(presenter.changesDate))
-        nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().getDay() - 1]}"
+        nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().day - 1]}"
         recyclerView.adapter = LayerChangesAdapter(context, changes, presenter.classesAtLayer, MaxChangesHours, stringArrayRes(R.array.layers)[presenter.currentLayer - 9])
         recyclerView.scrollToPosition(0)
     }

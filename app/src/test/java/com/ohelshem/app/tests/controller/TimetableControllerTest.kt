@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 
 
 class TimetableControllerTest {
-    lateinit var timetableController: TimetableController
+    private lateinit var timetableController: TimetableController
 
     @Before
     fun setUp() {
@@ -19,9 +19,7 @@ class TimetableControllerTest {
     }
 
     @Test
-    fun testDoesLearnOfFriday() {
-        assertEquals(timetableController.learnsOnFriday, true)
-    }
+    fun testDoesLearnOfFriday() = assertEquals(timetableController.learnsOnFriday, true)
 
     @Test
     fun beforeSchool() {
@@ -121,9 +119,9 @@ class TimetableControllerTest {
         assertEquals(hourData.nextHour, timetableController[day(1), hour(2)])
     }
 
-    fun hour(hour: Int): Int = hour - 1
+    private fun hour(hour: Int): Int = hour - 1
 
-    fun day(day: Int): Int = day - 1
+    private fun day(day: Int): Int = day - 1
 
     private class TimetableControllerImpl : BaseTimetableController() {
         override fun init() {

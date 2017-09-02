@@ -5,15 +5,14 @@ import com.ohelshem.app.controller.storage.SharedStorage
 
 class UserUpdatableTimetableController(private val storage: SharedStorage) : BaseTimetableController() {
     override var hasData: Boolean = false
-        protected set
 
     override fun init() {
-        storage.attachTimetableListener(1) { onUpdate(it) }
-        storage.timetable?.let { onUpdate(it) }
+        storage.attachTimetableListener(1, this::onUpdate)
+        storage.timetable?.let(this::onUpdate)
     }
 
-    fun onUpdate(data: Array<Array<Hour>>) {
+    private fun onUpdate(data: Array<Array<Hour>>) {
         timetable = data
-        hasData = data.any { it.isNotEmpty() }
+        hasData = data.any(Array<*>::isNotEmpty)
     }
 }

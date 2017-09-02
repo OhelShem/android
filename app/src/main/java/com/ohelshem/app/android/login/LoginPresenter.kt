@@ -23,9 +23,9 @@ import com.ohelshem.app.controller.analytics.Analytics
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.storage.Storage
 
-class LoginPresenter(private val storage: Storage, private val apiController: ApiController, val analytics: Analytics) : BasePresenter<LoginView>(), ApiController.Callback {
-    var lastPassword: String = ""
-    var lastId: String = ""
+class LoginPresenter(private val storage: Storage, private val apiController: ApiController, private val analytics: Analytics) : BasePresenter<LoginView>(), ApiController.Callback {
+    private var lastPassword: String = ""
+    private var lastId: String = ""
 
 
     override fun onCreate() {

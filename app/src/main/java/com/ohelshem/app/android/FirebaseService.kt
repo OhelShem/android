@@ -8,7 +8,7 @@ import org.jetbrains.anko.notificationManager
 
 class FirebaseService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        if (remoteMessage.data?.isNotEmpty() ?: false)
+        if (remoteMessage.data?.isNotEmpty() == true)
             parseData(remoteMessage.data)
     }
 

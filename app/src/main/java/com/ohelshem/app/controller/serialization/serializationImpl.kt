@@ -10,12 +10,7 @@ class DataOutputStreamWriter(private val stream: DataOutputStream) : SimpleWrite
 
     override fun writeByte(value: Int) = stream.writeByte(value)
 
-    override fun writeByteArray(value: ByteArray, length: Int) {
-        if (length == -1)
-            stream.write(value)
-        else
-            stream.write(value, 0, length)
-    }
+    override fun writeByteArray(value: ByteArray, length: Int) = if (length == -1) stream.write(value) else stream.write(value, 0, length)
 
     override fun writeBool(value: Boolean) = stream.writeBoolean(value)
 

@@ -83,10 +83,10 @@ abstract class BaseChangesPresenter(protected val storage: Storage, protected va
     override val changesDate: Long
         get() = storage.changesDate
 
-    protected fun areChangesUpdated() = changesDate.toCalendar().let { (it.isToday() && getHour() < 21) || it.isTomorrow() }
+    private fun areChangesUpdated() = changesDate.toCalendar().let { (it.isToday() && getHour() < 21) || it.isTomorrow() }
 
     override val hasData: Boolean
-        get() = lastChanges?.isNotEmpty() ?: false
+        get() = lastChanges?.isNotEmpty() == true
 
     abstract fun List<Change>.isConsideredAsChanges(): Boolean
 

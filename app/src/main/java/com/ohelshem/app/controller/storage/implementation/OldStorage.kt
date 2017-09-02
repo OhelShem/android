@@ -43,10 +43,10 @@ object OldStorage : KotprefModel() {
     val timetable: Array<Array<Hour>>?
         get() {
             if (!TimetableDataFile.exists() || !TimetableOffsetFile.exists()) return null
-            try {
+            return try {
                 val data = offsetDataController.read(TimetableOffsetFile, TimetableDataFile, OffsetDataController.AllFile)
                 val hours = ApiParserImpl.MaxHoursADay
-                return Array(data.size / hours) { day ->
+                Array(data.size / hours) { day ->
                     val offset = day * hours
                     Array(hours) { hour ->
                         data[offset + hour].split(InnerSeparator, limit = 3).let { Hour(it[0], it[1], it[2].toInt()) }
@@ -54,7 +54,7 @@ object OldStorage : KotprefModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                return null
+                null
             }
         }
 
@@ -101,13 +101,11 @@ object OldStorage : KotprefModel() {
     private val InnerSeparator: Char = '\u2004'
 
     val overrides: Array<OverrideData>
-        get() {
-            try {
-                return readOverrides()
-            } catch(e: Exception) {
-                TimetableOverridesFile.delete()
-                return emptyArray()
-            }
+        get() = try {
+            readOverrides()
+        } catch(e: Exception) {
+            TimetableOverridesFile.delete()
+            emptyArray()
         }
 
 

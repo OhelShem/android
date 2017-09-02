@@ -4,7 +4,7 @@ import com.ohelshem.app.android.utils.BasePresenter
 import com.ohelshem.app.controller.storage.ContactsProvider
 import com.ohelshem.app.controller.storage.SharedStorage
 
-class ContactsPresenter(val storage: SharedStorage, val contactsProvider: ContactsProvider) : BasePresenter<ContactsView>() {
+class ContactsPresenter(val storage: SharedStorage, private val contactsProvider: ContactsProvider) : BasePresenter<ContactsView>() {
     override fun onCreate() {
         if (storage.isStudent()) {
             val layer = storage.userData.layer

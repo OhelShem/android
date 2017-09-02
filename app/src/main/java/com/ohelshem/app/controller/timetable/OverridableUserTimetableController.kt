@@ -33,12 +33,9 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
         return temp.toTypedArray()
     }
 
-    override fun getHourData(day: Int, hour: Int, minutesNow: Int): HourData {
-        return timetableController.getHourDataFromTimetable(day, hour, minutesNow, overrideTimetable!!)
-    }
+    override fun getHourData(day: Int, hour: Int, minutesNow: Int): HourData = timetableController.getHourDataFromTimetable(day, hour, minutesNow, overrideTimetable!!)
 
-
-    fun onUpdate(data: List<OverrideData>) {
+    private fun onUpdate(data: List<OverrideData>) {
         val daysOfWeek = timetableController.size - 1
         val goodOverrides = data.toMutableList()
         data.forEachReversedWithIndex { i, (day, hour) ->
@@ -53,7 +50,7 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
             var c = 0
             val timetable = MutableList(timetableController.size) {
                 ArrayList<Hour>(timetableController[it].size).apply {
-                    for (hour in 0..timetableController[it].size - 1) {
+                    for (hour in 0 until timetableController[it].size) {
                         val original = timetableController[it][hour]
                         val override = data[it, hour]
                         val lesson = override?.newName ?: original.name
@@ -81,8 +78,6 @@ class OverridableUserTimetableController(internal val timetableController: BaseT
         }
     }
 
-    operator private fun List<OverrideData>.get(day: Int, hour: Int): OverrideData? {
-        return firstOrNull { it.day == day && it.hour == hour }
-    }
+    private operator fun List<OverrideData>.get(day: Int, hour: Int): OverrideData? = firstOrNull { it.day == day && it.hour == hour }
 
 }

@@ -35,9 +35,7 @@ import java.util.concurrent.TimeUnit
 
 class DashboardPresenter(private val storage: Storage, private val timetableController: TimetableController) : BasePresenter<DashboardView>(), ApiController.Callback {
     private val userClazz = storage.userData.clazz
-    override fun onCreate() {
-        update()
-    }
+    override fun onCreate() = update()
 
     override fun onDestroy() = Unit
 
@@ -60,9 +58,7 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
         }
     }
 
-    private fun generateChanges(day: Int, clazz: Int): List<Change>? {
-        return if (storage.changesDate.toCalendar()[Calendar.DAY_OF_WEEK] == day) storage.changes?.filter { it.clazz == clazz } else null
-    }
+    private fun generateChanges(day: Int, clazz: Int): List<Change>? = if (storage.changesDate.toCalendar()[Calendar.DAY_OF_WEEK] == day) storage.changes?.filter { it.clazz == clazz } else null
 
     override fun onSuccess(apis: Set<UpdatedApi>) {
         if (UpdatedApi.Tests in apis || UpdatedApi.Timetable in apis || UpdatedApi.Changes in apis) update()
@@ -72,26 +68,17 @@ class DashboardPresenter(private val storage: Storage, private val timetableCont
 
     override fun onChoosingClass() = Unit
 
-    fun launchTestsScreen(screenManager: ScreenManager) {
-        screenManager.setScreen(ScreenType.Dates, backStack = true)
-    }
+    fun launchTestsScreen(screenManager: ScreenManager) = screenManager.setScreen(ScreenType.Dates, backStack = true)
 
-    fun launchTodayPlan(screenManager: ScreenManager) {
-        if (storage.hasChanges(storage.userData.clazz))
-            screenManager.setScreen(ScreenType.Changes, backStack = true)
-        else screenManager.setScreen(ScreenType.Timetable, backStack = true)
-    }
+    fun launchTodayPlan(screenManager: ScreenManager) = screenManager.setScreen(if (storage.hasChanges(storage.userData.clazz)) ScreenType.Changes else ScreenType.Timetable, backStack = true)
 
-    val testsForWeek: List<Test>
+    private val testsForWeek: List<Test>
         get() {
             val time = getIsraelCalendar().apply { add(Calendar.DAY_OF_YEAR, 7) }.timeInMillis
             val now = Date().time
             if (storage.userData.isTeacher()) {
                 val primaryClass = storage.primaryClass
-                if (primaryClass != null)
-                    return storage.getTestsForClass(primaryClass.layer, primaryClass.clazz).filter { it.date in now..time }
-                else
-                    return emptyList()
+                return if (primaryClass != null) storage.getTestsForClass(primaryClass.layer, primaryClass.clazz).filter { it.date in now..time } else emptyList()
             }
             return storage.tests?.filter { it.date in now..time } ?: emptyList()
         }

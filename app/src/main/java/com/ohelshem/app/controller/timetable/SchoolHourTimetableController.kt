@@ -15,7 +15,7 @@ class SchoolHourTimetableController(hours: List<SchoolHour>) : BaseTimetableCont
         }
         timetable.forEach { day ->
             day.indices
-                    .filter { day[it]?.isEmpty() ?: false }
+                    .filter { day[it]?.isEmpty() == true }
                     .forEach { day[it]?.let { h -> day[it] = Hour(h.name, h.teacher, TimetableController.ColorEmpty) } }
             day.indices
                     .filter { day[it] == null }

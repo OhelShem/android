@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.dates
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -81,6 +82,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
     }
 
+    @Suppress("UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
     private fun initPager() {
         // portrait
         if (pager != null) {
@@ -128,10 +130,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
     class DatesFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
-        override fun getItem(position: Int): Fragment {
-            return if (position == 0) DatesListFragment()
-            else HolidaysListFragment()
-        }
+        override fun getItem(position: Int): Fragment = if (position == 0) DatesListFragment() else HolidaysListFragment()
 
         override fun getCount(): Int = 2
 
@@ -175,6 +174,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
         dialog = null
     }
 
+    @SuppressLint("InflateParams")
     private fun openCalendarView() {
         val tests = presenter.tests
         val view = activity.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
@@ -195,13 +195,14 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                 indicator.text = ""
         }
 
+        @SuppressLint("SetTextI18n")
         fun update(holiday: Holiday) {
             data.show()
             title.text = holiday.name
             if (holiday.isOneDay())
                 extra.text = holiday.start
             else
-                extra.text = holiday.start + " - " + holiday.end
+                extra.text = "${holiday.start} - ${holiday.end}"
 
             if (now > holiday.startTime)
                 indicator.text = "✓"
@@ -258,22 +259,17 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                 .show()
     }
 
-    private fun isGraderInstalled(): Boolean {
-        try {
-            context.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
-            return true
-        } catch (e: PackageManager.NameNotFoundException) {
-            return false
-        }
-
+    private fun isGraderInstalled(): Boolean = try {
+        context.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
     }
 
-    private fun launchPlayStore(packageName: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
-        }
+    private fun launchPlayStore(packageName: String) = try {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
+    } catch (e: ActivityNotFoundException) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
     }
 
     private class TestDecorator(private val color: Int, val tests: List<Test>) : DayViewDecorator {
@@ -283,8 +279,6 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             return tests.any { it.date == time }
         }
 
-        override fun decorate(view: DayViewFacade) {
-            view.addSpan(DotSpan(10f, color))
-        }
+        override fun decorate(view: DayViewFacade) = view.addSpan(DotSpan(10f, color))
     }
 }

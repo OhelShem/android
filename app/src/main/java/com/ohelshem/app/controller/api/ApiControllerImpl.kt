@@ -144,9 +144,7 @@ class ApiControllerImpl(override val storage: Storage, private val apiEngine: Ap
         }
     }
 
-    private inline fun forEach(callback: (ApiController.Callback) -> Unit) {
-        callbacks.values.forEach(callback)
-    }
+    private inline fun forEach(callback: (ApiController.Callback) -> Unit) = callbacks.values.forEach(callback)
 
     companion object : KLogging()
 }

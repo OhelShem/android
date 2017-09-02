@@ -64,17 +64,16 @@ class NotificationService : IntentService("OhelShemNotificationService"), LazyKo
     }
 
     //region Notifications
-    private fun notifyHoliday() {
-        sendNotification(getString(R.string.holiday_notification), "", action = MainActivity.Shortcut_LaunchDates, big = false, id = 1002)
-    }
+    private fun notifyHoliday() = sendNotification(getString(R.string.holiday_notification), "", action = MainActivity.Shortcut_LaunchDates, big = false, id = 1002)
 
-    private fun notifyTestTomorrow(test: Test) {
-        sendNotification(getString(R.string.test_tomorrow), test.content, action = MainActivity.Shortcut_LaunchDates, big = false, id = 1003)
-    }
+    private fun notifyTestTomorrow(test: Test) = sendNotification(getString(R.string.test_tomorrow), test.content, action = MainActivity.Shortcut_LaunchDates, big = false, id = 1003)
 
-    private fun notifyTestsInAWeek(tests: List<Test>) {
-        val text = if (tests.size == 1) tests.first().content else getString(R.string.tests_this_week_subtitle)
-        sendNotification(getString(R.string.tests_this_week), text, action = MainActivity.Shortcut_LaunchDates, big = false, id = 1004)
-    }
+    private fun notifyTestsInAWeek(tests: List<Test>) = sendNotification(
+            getString(R.string.tests_this_week),
+            if (tests.size == 1) tests.first().content else getString(R.string.tests_this_week_subtitle),
+            action = MainActivity.Shortcut_LaunchDates,
+            big = false,
+            id = 1004
+    )
     //endregion
 }

@@ -25,7 +25,7 @@ import java.io.*
 object OffsetDataControllerImpl : OffsetDataController {
     override fun read(offsetFileStream: DataInputStream, dataFileStream: DataInputStream, position: Int): List<String> {
         val offset: Int
-        var nextOffset: Int = 0
+        var nextOffset = 0
         if (position != OffsetDataController.AllFile) {
             offsetFileStream.skip((position * OffsetDataController.OffsetDataSize).toLong())
             offset = offsetFileStream.readInt()

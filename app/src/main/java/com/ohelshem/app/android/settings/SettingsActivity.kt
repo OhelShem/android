@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.settings
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -218,88 +219,85 @@ class SettingsActivity : AppThemedActivity() {
         numberOfTaps = 0
     }
 
-    fun LinearLayout.settingsItem(title: String, subtitle: String = "", showCheckBox: Boolean = false, isChecked: Boolean = false, listener: ((checked: Boolean) -> Unit)): LinearLayout {
-        return linearLayout {
-            orientation = LinearLayout.HORIZONTAL
-            bottomPadding = dip(5)
-            topPadding = dip(5)
-            backgroundResource = resourceAttr(R.attr.selectableItemBackground)
-            if (showCheckBox) {
-                appCompatSwitch {
-                    setChecked(isChecked)
-                    onCheckedChange { _, b -> listener(b) }
-                }.lparams(width = wrapContent, height = matchParent)
-                onClick { (getChildAt(0) as CompoundButton).toggle() }
-            } else onClick { listener(false) }
+    @SuppressLint("RtlHardcoded")
+    private fun LinearLayout.settingsItem(title: String, subtitle: String = "", showCheckBox: Boolean = false, isChecked: Boolean = false, listener: ((checked: Boolean) -> Unit)) =
             linearLayout {
-                orientation = LinearLayout.VERTICAL
+                orientation = LinearLayout.HORIZONTAL
+                bottomPadding = dip(5)
+                topPadding = dip(5)
+                backgroundResource = resourceAttr(R.attr.selectableItemBackground)
+                if (showCheckBox) {
+                    appCompatSwitch {
+                        setChecked(isChecked)
+                        onCheckedChange { _, b -> listener(b) }
+                    }.lparams(width = wrapContent, height = matchParent)
+                    onClick { (getChildAt(0) as CompoundButton).toggle() }
+                } else onClick { listener(false) }
+                linearLayout {
+                    orientation = LinearLayout.VERTICAL
 
-                textView {
-                    text = title
-                    gravity = Gravity.RIGHT
-                    textSize = 18f
-                }.lparams(width = matchParent, height = wrapContent)
-                if (subtitle.isNotEmpty())
                     textView {
-                        text = subtitle
+                        text = title
                         gravity = Gravity.RIGHT
-                        textSize = 14f
+                        textSize = 18f
                     }.lparams(width = matchParent, height = wrapContent)
-            }.lparams(width = matchParent, height = matchParent)
-        }
-    }
+                    if (subtitle.isNotEmpty())
+                        textView {
+                            text = subtitle
+                            gravity = Gravity.RIGHT
+                            textSize = 14f
+                        }.lparams(width = matchParent, height = wrapContent)
+                }.lparams(width = matchParent, height = matchParent)
+            }
 
-    fun LinearLayout.settingsItem(title: String, subtitle: String = "", items: List<String>, default: Int, listener: ((selected: Int) -> Unit)): LinearLayout {
-        return linearLayout {
-            orientation = LinearLayout.HORIZONTAL
-            bottomPadding = dip(5)
-            topPadding = dip(5)
-            backgroundResource = resourceAttr(R.attr.selectableItemBackground)
-            spinner {
-                val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-                setAdapter(adapter)
-                setSelection(default)
-                onItemSelectedListener {
-                    onItemSelected { _, _, position, _ ->
-                        listener(position)
+    @SuppressLint("RtlHardcoded")
+    private fun LinearLayout.settingsItem(title: String, subtitle: String = "", items: List<String>, default: Int, listener: ((selected: Int) -> Unit)) =
+            linearLayout {
+                orientation = LinearLayout.HORIZONTAL
+                bottomPadding = dip(5)
+                topPadding = dip(5)
+                backgroundResource = resourceAttr(R.attr.selectableItemBackground)
+                spinner {
+                    val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, items)
+                    adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+                    setAdapter(adapter)
+                    setSelection(default)
+                    onItemSelectedListener {
+                        onItemSelected { _, _, position, _ ->
+                            listener(position)
+                        }
                     }
-                }
-            }.lparams(width = wrapContent, height = matchParent)
-            linearLayout {
-                orientation = LinearLayout.VERTICAL
+                }.lparams(width = wrapContent, height = matchParent)
+                linearLayout {
+                    orientation = LinearLayout.VERTICAL
 
-                textView {
-                    text = title
-                    gravity = Gravity.RIGHT
-                    textSize = 18f
-                }.lparams(width = matchParent, height = wrapContent)
-                if (subtitle.isNotEmpty())
                     textView {
-                        text = subtitle
+                        text = title
                         gravity = Gravity.RIGHT
-                        textSize = 14f
+                        textSize = 18f
                     }.lparams(width = matchParent, height = wrapContent)
-            }.lparams(width = matchParent, height = matchParent)
-        }
-    }
+                    if (subtitle.isNotEmpty())
+                        textView {
+                            text = subtitle
+                            gravity = Gravity.RIGHT
+                            textSize = 14f
+                        }.lparams(width = matchParent, height = wrapContent)
+                }.lparams(width = matchParent, height = matchParent)
+            }
 
     companion object {
-        const val FACEBOOK_PAGE_ID = "ohelshem.school"
-        const val FACEBOOK_URL = "https://www.facebook.com/$FACEBOOK_PAGE_ID"
+        private const val FACEBOOK_PAGE_ID = "ohelshem.school"
+        private const val FACEBOOK_URL = "https://www.facebook.com/$FACEBOOK_PAGE_ID"
 
-        private fun Context.getFacebookPageURL(): String {
-            val packageManager = packageManager
-            try {
-                val versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode
-                if (versionCode >= 3002850) {
-                    return "fb://facewebmodal/f?href=" + FACEBOOK_URL
-                } else {
-                    return "fb://page/" + FACEBOOK_PAGE_ID
-                }
-            } catch (e: PackageManager.NameNotFoundException) {
-                return FACEBOOK_URL
+        private fun Context.getFacebookPageURL(): String = try {
+            val versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode
+            if (versionCode >= 3002850) {
+                "fb://facewebmodal/f?href=" + FACEBOOK_URL
+            } else {
+                "fb://page/" + FACEBOOK_PAGE_ID
             }
+        } catch (e: PackageManager.NameNotFoundException) {
+            FACEBOOK_URL
         }
     }
 }

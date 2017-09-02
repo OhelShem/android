@@ -46,11 +46,7 @@ object Contacts : ContactsProvider {
             return theList
         } else {
             generator(layer).use { reader ->
-                if (clazz == -1) {
-                    return serialization.deserialize(reader)
-                } else {
-                    return serialization.filter { it.clazz == clazz }.deserialize(reader)
-                }
+                return if (clazz == -1) serialization.deserialize(reader) else serialization.filter { it.clazz == clazz }.deserialize(reader)
             }
         }
     }

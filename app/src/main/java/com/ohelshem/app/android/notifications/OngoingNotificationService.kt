@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
-import android.support.v7.app.NotificationCompat
+import android.support.v4.app.NotificationCompat
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.widget.RemoteViews
@@ -20,11 +20,10 @@ import com.ohelshem.app.android.nameOriginalHour
 import com.ohelshem.app.clearTime
 import com.ohelshem.app.controller.storage.Storage
 import com.ohelshem.app.controller.timetable.TimetableController
-import com.ohelshem.app.getDay
+import com.ohelshem.app.day
 import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.model.NumberedHour
 import com.yoavst.changesystemohelshem.R
-import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.notificationManager
 import org.jetbrains.anko.startService
 import java.util.*
@@ -39,7 +38,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     override fun onHandleIntent(intent: Intent?) {
         val cal = getIsraelCalendar()
-        val day = cal.getDay()
+        val day = cal.day
         if (storage.isSetup()) {
             val holiday = TimetableController.getHoliday()
             if (timetableController.hasData && storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != getIsraelCalendar().clearTime().timeInMillis && (holiday == null || storage.disableHolidayCard) && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
@@ -107,25 +106,17 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
     private fun NumberedHour.represent(showRoom: Boolean = true) = if (isEmpty()) getString(R.string.window_lesson) else if (room != 0 && room != -1 && showRoom) "$name ($room)" else name
 
-    fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString {
-        val s: SpannableString?
-
-        if (orig != null)
-            s = SpannableString(text + " " + nameOriginalHour(text, orig))
-        else {
-            if (!storage.isStudent() && teacherName != null) {
-                s = SpannableString(text + if (teacherName.isNotEmpty()) with + teacherName else "")
-            } else {
-                s = SpannableString(text)
-            }
-        }
-        s.setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
-        return s
+    private fun toBold(text: String, orig: String? = null, teacherName: String? = null): SpannableString = when {
+        orig != null -> SpannableString(text + " " + nameOriginalHour(text, orig))
+        !storage.isStudent() && teacherName != null -> SpannableString(text + if (teacherName.isNotEmpty()) with + teacherName else "")
+        else -> SpannableString(text)
+    }.apply {
+        setSpan(StyleSpan(Typeface.BOLD), 0, text.length, 0)
     }
 
     private fun Context.createNotification(lesson: String, teacherName: String? = null, hours: String, nextLesson: String? = null, nextTeacherName: String? = null, color: Int? = null, nextColor: Int? = null, orig: String? = null, orig2: String? = null): Notification {
 
-        val contentView: RemoteViews = RemoteViews(packageName, R.layout.notification_view)
+        val contentView = RemoteViews(packageName, R.layout.notification_view)
 
         //reset colors
         contentView.setInt(R.id.currentLesson, "setBackgroundColor", Color.parseColor("#03A9F4"))
@@ -163,6 +154,7 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
 
         val intent = Intent(applicationContext, MainActivity::class.java)
         val pIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        // TODO migrate to android O notification channels
         return NotificationCompat.Builder(this)
                 .setOngoing(true)
                 .setAutoCancel(false)
@@ -179,9 +171,10 @@ class OngoingNotificationService : IntentService("OhelShemOngoingNotificationSer
         private const val NotificationId = 1342
 
         fun update(context: Context) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+            //FIXME make the app works on Android O
+            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
                 context.startForegroundService(context.intentFor<OngoingNotificationService>())
-            else
+            else*/
                 context.startService<OngoingNotificationService>()
         }
 

@@ -12,6 +12,7 @@ import com.ohelshem.app.android.getPressedColorRippleDrawable
 import com.ohelshem.app.android.getStateDrawable
 import com.ohelshem.app.android.rippleColor
 import com.ohelshem.app.controller.storage.SharedStorage
+import com.ohelshem.app.controller.storage.SharedStorage.Theme.*
 import com.yoavst.changesystemohelshem.R
 import kotlinx.android.synthetic.main.theme_dialog.view.*
 import org.jetbrains.anko.backgroundDrawable
@@ -50,12 +51,11 @@ object WelcomeDialog {
                     val selection = view.nightMode.checkedRadioButtonId
                     storage.darkMode = if (selection == R.id.auto) MODE_NIGHT_AUTO else if (selection == R.id.enabled) MODE_NIGHT_YES else MODE_NIGHT_NO
 
-                    if (view.redTheme.isSelected)
-                        storage.theme = SharedStorage.Theme.Red
-                    else if (view.greenTheme.isSelected)
-                        storage.theme = SharedStorage.Theme.Green
-                    else
-                        storage.theme = SharedStorage.Theme.Blue
+                    storage.theme = when {
+                        view.redTheme.isSelected ->  Red
+                        view.greenTheme.isSelected -> Green
+                        else -> Blue
+                    }
 
                     listener()
 

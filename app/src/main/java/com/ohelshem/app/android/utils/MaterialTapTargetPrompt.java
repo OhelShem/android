@@ -59,7 +59,7 @@ import java.text.Bidi;
 
 /**
  * A Material Design tap target onboarding implementation.
- *
+ * <p>
  * <div class="special reference">
  * <h3>Onboarding</h3>
  * <p>For more information about onboarding and tap targets, read the
@@ -67,8 +67,7 @@ import java.text.Bidi;
  * Material Design guidelines.</p>
  * </div>
  */
-public class MaterialTapTargetPrompt
-{
+public class MaterialTapTargetPrompt {
     /**
      * The activity that contains the view.
      */
@@ -287,81 +286,54 @@ public class MaterialTapTargetPrompt
      *
      * @param activity The activity that contains the target view.
      */
-    MaterialTapTargetPrompt(final Activity activity)
-    {
+    MaterialTapTargetPrompt(final Activity activity) {
         mActivity = activity;
         mView = new PromptView(activity);
-        mView.mOnPromptTouchedListener = new PromptView.OnPromptTouchedListener()
-            {
-                @Override
-                public void onPromptTouched(MotionEvent event, boolean tappedTarget)
-                {
-                    if (!mDismissing)
-                    {
-                        MaterialTapTargetPrompt.this.onHidePrompt(event, tappedTarget);
-                        if (tappedTarget)
-                        {
-                            if (mAutoFinish)
-                            {
-                                finish();
-                            }
+        mView.mOnPromptTouchedListener = new PromptView.OnPromptTouchedListener() {
+            @Override
+            public void onPromptTouched(MotionEvent event, boolean tappedTarget) {
+                if (!mDismissing) {
+                    MaterialTapTargetPrompt.this.onHidePrompt(event, tappedTarget);
+                    if (tappedTarget) {
+                        if (mAutoFinish) {
+                            finish();
                         }
-                        else
-                        {
-                            if (mAutoDismiss)
-                            {
-                                dismiss();
-                            }
+                    } else {
+                        if (mAutoDismiss) {
+                            dismiss();
                         }
                     }
                 }
-            };
+            }
+        };
 
         Rect rect = new Rect();
         mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         mStatusBarHeight = rect.top;
 
-        mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
-            {
-                @Override
-                public void onGlobalLayout()
-                {
-                    updateFocalCentrePosition();
-                }
-            };
+        mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                updateFocalCentrePosition();
+            }
+        };
     }
 
     /**
      * Displays the prompt.
      */
-    public void show()
-    {
+    public void show() {
         mParentView.addView(mView);
         addGlobalLayoutListener();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            startRevealAnimation();
-        }
-        else
-        {
-            mRevealedAmount = 1f;
-            mView.mBackgroundRadius = mBaseBackgroundRadius;
-            mView.mFocalRadius = mBaseFocalRadius;
-            mView.mPaintFocal.setAlpha(mBaseFocalColourAlpha);
-            mView.mPaintBackground.setAlpha(mBaseBackgroundColourAlpha);
-            mPaintSecondaryText.setAlpha(mSecondaryTextColourAlpha);
-            mPaintPrimaryText.setAlpha(mPrimaryTextColourAlpha);
-        }
+        startRevealAnimation();
     }
 
     /**
      * Adds layout listener to view parent to capture layout changes.
      */
-    void addGlobalLayoutListener()
-    {
+    void addGlobalLayoutListener() {
         final ViewTreeObserver viewTreeObserver = mParentView.getViewTreeObserver();
-        if (viewTreeObserver.isAlive())
-        {
+        if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(mGlobalLayoutListener);
         }
     }
@@ -369,17 +341,12 @@ public class MaterialTapTargetPrompt
     /**
      * Removes global layout listener added in {@link #addGlobalLayoutListener()}.
      */
-    void removeGlobalLayoutListener()
-    {
+    void removeGlobalLayoutListener() {
         final ViewTreeObserver viewTreeObserver = mParentView.getViewTreeObserver();
-        if (viewTreeObserver.isAlive())
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+        if (viewTreeObserver.isAlive()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 viewTreeObserver.removeOnGlobalLayoutListener(mGlobalLayoutListener);
-            }
-            else
-            {
+            } else {
                 //noinspection deprecation
                 viewTreeObserver.removeGlobalOnLayoutListener(mGlobalLayoutListener);
             }
@@ -388,199 +355,92 @@ public class MaterialTapTargetPrompt
 
     /**
      * Removes the prompt from view, using a expand and fade animation.
-     *
+     * <p>
      * This is treated as if the user has touched the target focal point.
      */
-    public void finish()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            if (mDismissing)
-            {
-                return;
+    public void finish() {
+        if (mDismissing) {
+            return;
+        }
+        mDismissing = true;
+        if (mAnimationCurrent != null) {
+            mAnimationCurrent.removeAllListeners();
+            mAnimationCurrent.cancel();
+            mAnimationCurrent = null;
+        }
+        mAnimationCurrent = ValueAnimator.ofFloat(1f, 0f);
+        mAnimationCurrent.setDuration(225);
+        mAnimationCurrent.setInterpolator(mAnimationInterpolator);
+        mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                final float value = (float) animation.getAnimatedValue();
+                mRevealedAmount = 1f + ((1f - value) / 4);
+                mView.mBackgroundRadius = mBaseBackgroundRadius * mRevealedAmount;
+                mView.mFocalRadius = mBaseFocalRadius * mRevealedAmount;
+                mView.mPaintFocal.setAlpha((int) (mBaseFocalColourAlpha * value));
+                mView.mPaintBackground.setAlpha((int) (mBaseBackgroundColourAlpha * value));
+                mPaintSecondaryText.setAlpha((int) (mSecondaryTextColourAlpha * value));
+                mPaintPrimaryText.setAlpha((int) (mPrimaryTextColourAlpha * value));
+                if (mView.mIconDrawable != null) {
+                    mView.mIconDrawable.setAlpha(mView.mPaintBackground.getAlpha());
+                }
+                mView.invalidate();
             }
-            mDismissing = true;
-            if (mAnimationCurrent != null)
-            {
+        });
+        mAnimationCurrent.addListener(new AnimatorListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 mAnimationCurrent.removeAllListeners();
-                mAnimationCurrent.cancel();
                 mAnimationCurrent = null;
+                cleanUpPrompt();
+                mDismissing = false;
             }
-            mAnimationCurrent = ValueAnimator.ofFloat(1f, 0f);
-            mAnimationCurrent.setDuration(225);
-            mAnimationCurrent.setInterpolator(mAnimationInterpolator);
-            mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-            {
-                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation)
-                {
-                    final float value = (float) animation.getAnimatedValue();
-                    mRevealedAmount = 1f + ((1f - value) / 4);
-                    mView.mBackgroundRadius = mBaseBackgroundRadius * mRevealedAmount;
-                    mView.mFocalRadius = mBaseFocalRadius * mRevealedAmount;
-                    mView.mPaintFocal.setAlpha((int) (mBaseFocalColourAlpha * value));
-                    mView.mPaintBackground.setAlpha((int) (mBaseBackgroundColourAlpha * value));
-                    mPaintSecondaryText.setAlpha((int) (mSecondaryTextColourAlpha * value));
-                    mPaintPrimaryText.setAlpha((int) (mPrimaryTextColourAlpha * value));
-                    if (mView.mIconDrawable != null)
-                    {
-                        mView.mIconDrawable.setAlpha(mView.mPaintBackground.getAlpha());
-                    }
-                    mView.invalidate();
-                }
-            });
-            mAnimationCurrent.addListener(new AnimatorListener()
-            {
-                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                @Override
-                public void onAnimationEnd(Animator animation)
-                {
-                    mAnimationCurrent.removeAllListeners();
-                    mAnimationCurrent = null;
-                    cleanUpPrompt();
-                    mDismissing = false;
-                }
 
-                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                @Override
-                public void onAnimationCancel(Animator animation)
-                {
-                    mAnimationCurrent.removeAllListeners();
-                    mAnimationCurrent = null;
-                    cleanUpPrompt();
-                    mDismissing = false;
-                }
-            });
-            mAnimationCurrent.start();
-        }
-        else
-        {
-            cleanUpPrompt();
-        }
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mAnimationCurrent.removeAllListeners();
+                mAnimationCurrent = null;
+                cleanUpPrompt();
+                mDismissing = false;
+            }
+        });
+        mAnimationCurrent.start();
     }
 
     /**
      * Removes the prompt from view, using a contract and fade animation.
-     *
+     * <p>
      * This is treated as if the user has touched outside the target focal point.
      */
-    public void dismiss()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            if (mDismissing)
-            {
-                return;
-            }
-            mDismissing = true;
-            if (mAnimationCurrent != null)
-            {
-                mAnimationCurrent.removeAllListeners();
-                mAnimationCurrent.cancel();
-                mAnimationCurrent = null;
-            }
-            mAnimationCurrent = ValueAnimator.ofFloat(1f, 0f);
-            mAnimationCurrent.setDuration(225);
-            mAnimationCurrent.setInterpolator(mAnimationInterpolator);
-            mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-            {
-                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation)
-                {
-                    mRevealedAmount = (float) animation.getAnimatedValue();
-                    mView.mBackgroundRadius = mBaseBackgroundRadius * mRevealedAmount;
-                    mView.mFocalRadius = mBaseFocalRadius * mRevealedAmount;
-                    mView.mPaintBackground.setAlpha((int) (mBaseBackgroundColourAlpha * mRevealedAmount));
-                    mView.mPaintFocal.setAlpha((int) (mBaseFocalColourAlpha * mRevealedAmount));
-                    mPaintSecondaryText.setAlpha((int) (mSecondaryTextColourAlpha * mRevealedAmount));
-                    mPaintPrimaryText.setAlpha((int) (mPrimaryTextColourAlpha * mRevealedAmount));
-                    if (mView.mIconDrawable != null)
-                    {
-                        mView.mIconDrawable.setAlpha(mView.mPaintBackground.getAlpha());
-                    }
-                    mView.mBackgroundPosition.set(mView.mFocalCentre.x + ((mBaseBackgroundPosition.x - mView.mFocalCentre.x) * mRevealedAmount),
-                            mView.mFocalCentre.y + ((mBaseBackgroundPosition.y - mView.mFocalCentre.y) * mRevealedAmount));
-                    mView.invalidate();
-                }
-            });
-            mAnimationCurrent.addListener(new AnimatorListener()
-            {
-                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                @Override
-                public void onAnimationEnd(Animator animation)
-                {
-                    mAnimationCurrent.removeAllListeners();
-                    mAnimationCurrent = null;
-                    cleanUpPrompt();
-                    mDismissing = false;
-                }
-
-                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                @Override
-                public void onAnimationCancel(Animator animation)
-                {
-                    mAnimationCurrent.removeAllListeners();
-                    mAnimationCurrent = null;
-                    cleanUpPrompt();
-                    mDismissing = false;
-                }
-            });
-            mAnimationCurrent.start();
+    public void dismiss() {
+        if (mDismissing) {
+            return;
         }
-        else
-        {
-            cleanUpPrompt();
+        mDismissing = true;
+        if (mAnimationCurrent != null) {
+            mAnimationCurrent.removeAllListeners();
+            mAnimationCurrent.cancel();
+            mAnimationCurrent = null;
         }
-    }
-
-    /**
-     * Removes the prompt from view and triggers the {@link #onHidePromptComplete()} event.
-     */
-    void cleanUpPrompt()
-    {
-        removeGlobalLayoutListener();
-        mParentView.removeView(mView);
-        if (mDismissing)
-        {
-            onHidePromptComplete();
-        }
-    }
-
-    @TargetApi(11)
-    void startRevealAnimation()
-    {
-        mPaintSecondaryText.setAlpha(0);
-        mPaintPrimaryText.setAlpha(0);
-        mView.mPaintBackground.setAlpha(0);
-        mView.mPaintFocal.setAlpha(0);
-        mView.mFocalRadius = 0;
-        mView.mBackgroundRadius = 0;
-        mView.mBackgroundPosition.set(mView.mFocalCentre);
-        if (mView.mIconDrawable != null)
-        {
-            mView.mIconDrawable.setAlpha(0);
-        }
-        mRevealedAmount = 0f;
-        mAnimationCurrent = ValueAnimator.ofFloat(0f, 1f);
-        mAnimationCurrent.setInterpolator(mAnimationInterpolator);
+        mAnimationCurrent = ValueAnimator.ofFloat(1f, 0f);
         mAnimationCurrent.setDuration(225);
-        mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        mAnimationCurrent.setInterpolator(mAnimationInterpolator);
+        mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
+            public void onAnimationUpdate(ValueAnimator animation) {
                 mRevealedAmount = (float) animation.getAnimatedValue();
                 mView.mBackgroundRadius = mBaseBackgroundRadius * mRevealedAmount;
                 mView.mFocalRadius = mBaseFocalRadius * mRevealedAmount;
-                mView.mPaintFocal.setAlpha((int) (mBaseFocalColourAlpha * mRevealedAmount));
                 mView.mPaintBackground.setAlpha((int) (mBaseBackgroundColourAlpha * mRevealedAmount));
+                mView.mPaintFocal.setAlpha((int) (mBaseFocalColourAlpha * mRevealedAmount));
                 mPaintSecondaryText.setAlpha((int) (mSecondaryTextColourAlpha * mRevealedAmount));
                 mPaintPrimaryText.setAlpha((int) (mPrimaryTextColourAlpha * mRevealedAmount));
-                if (mView.mIconDrawable != null)
-                {
+                if (mView.mIconDrawable != null) {
                     mView.mIconDrawable.setAlpha(mView.mPaintBackground.getAlpha());
                 }
                 mView.mBackgroundPosition.set(mView.mFocalCentre.x + ((mBaseBackgroundPosition.x - mView.mFocalCentre.x) * mRevealedAmount),
@@ -588,26 +448,90 @@ public class MaterialTapTargetPrompt
                 mView.invalidate();
             }
         });
-        mAnimationCurrent.addListener(new AnimatorListener()
-        {
+        mAnimationCurrent.addListener(new AnimatorListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public void onAnimationEnd(Animator animation)
-            {
+            public void onAnimationEnd(Animator animation) {
+                mAnimationCurrent.removeAllListeners();
+                mAnimationCurrent = null;
+                cleanUpPrompt();
+                mDismissing = false;
+            }
+
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mAnimationCurrent.removeAllListeners();
+                mAnimationCurrent = null;
+                cleanUpPrompt();
+                mDismissing = false;
+            }
+        });
+        mAnimationCurrent.start();
+    }
+
+    /**
+     * Removes the prompt from view and triggers the {@link #onHidePromptComplete()} event.
+     */
+    void cleanUpPrompt() {
+        removeGlobalLayoutListener();
+        mParentView.removeView(mView);
+        if (mDismissing) {
+            onHidePromptComplete();
+        }
+    }
+
+    @TargetApi(11)
+    void startRevealAnimation() {
+        mPaintSecondaryText.setAlpha(0);
+        mPaintPrimaryText.setAlpha(0);
+        mView.mPaintBackground.setAlpha(0);
+        mView.mPaintFocal.setAlpha(0);
+        mView.mFocalRadius = 0;
+        mView.mBackgroundRadius = 0;
+        mView.mBackgroundPosition.set(mView.mFocalCentre);
+        if (mView.mIconDrawable != null) {
+            mView.mIconDrawable.setAlpha(0);
+        }
+        mRevealedAmount = 0f;
+        mAnimationCurrent = ValueAnimator.ofFloat(0f, 1f);
+        mAnimationCurrent.setInterpolator(mAnimationInterpolator);
+        mAnimationCurrent.setDuration(225);
+        mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mRevealedAmount = (float) animation.getAnimatedValue();
+                mView.mBackgroundRadius = mBaseBackgroundRadius * mRevealedAmount;
+                mView.mFocalRadius = mBaseFocalRadius * mRevealedAmount;
+                mView.mPaintFocal.setAlpha((int) (mBaseFocalColourAlpha * mRevealedAmount));
+                mView.mPaintBackground.setAlpha((int) (mBaseBackgroundColourAlpha * mRevealedAmount));
+                mPaintSecondaryText.setAlpha((int) (mSecondaryTextColourAlpha * mRevealedAmount));
+                mPaintPrimaryText.setAlpha((int) (mPrimaryTextColourAlpha * mRevealedAmount));
+                if (mView.mIconDrawable != null) {
+                    mView.mIconDrawable.setAlpha(mView.mPaintBackground.getAlpha());
+                }
+                mView.mBackgroundPosition.set(mView.mFocalCentre.x + ((mBaseBackgroundPosition.x - mView.mFocalCentre.x) * mRevealedAmount),
+                        mView.mFocalCentre.y + ((mBaseBackgroundPosition.y - mView.mFocalCentre.y) * mRevealedAmount));
+                mView.invalidate();
+            }
+        });
+        mAnimationCurrent.addListener(new AnimatorListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 animation.removeAllListeners();
                 mAnimationCurrent = null;
                 mRevealedAmount = 1;
                 mView.mBackgroundPosition.set(mBaseBackgroundPosition);
-                if (mIdleAnimationEnabled)
-                {
+                if (mIdleAnimationEnabled) {
                     startIdleAnimations();
                 }
             }
 
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public void onAnimationCancel(Animator animation)
-            {
+            public void onAnimationCancel(Animator animation) {
                 animation.removeAllListeners();
                 mRevealedAmount = 1;
                 mView.mBackgroundPosition.set(mBaseBackgroundPosition);
@@ -618,10 +542,8 @@ public class MaterialTapTargetPrompt
     }
 
     @TargetApi(11)
-    void startIdleAnimations()
-    {
-        if (mAnimationCurrent != null)
-        {
+    void startIdleAnimations() {
+        if (mAnimationCurrent != null) {
             mAnimationCurrent.removeAllUpdateListeners();
             mAnimationCurrent.cancel();
             mAnimationCurrent = null;
@@ -631,25 +553,20 @@ public class MaterialTapTargetPrompt
         mAnimationCurrent.setDuration(1000);
         mAnimationCurrent.setStartDelay(225);
         mAnimationCurrent.setRepeatCount(ValueAnimator.INFINITE);
-        mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        mAnimationCurrent.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             boolean direction = true;
+
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
+            public void onAnimationUpdate(ValueAnimator animation) {
                 final float newFocalFraction = (Float) animation.getAnimatedValue();
                 boolean newDirection = direction;
-                if (newFocalFraction < mFocalRippleProgress && direction)
-                {
+                if (newFocalFraction < mFocalRippleProgress && direction) {
                     newDirection = false;
-                }
-                else if (newFocalFraction > mFocalRippleProgress && !direction)
-                {
+                } else if (newFocalFraction > mFocalRippleProgress && !direction) {
                     newDirection = true;
                 }
-                if (newDirection != direction && !newDirection)
-                {
+                if (newDirection != direction && !newDirection) {
                     mAnimationFocalRipple.start();
                 }
                 direction = newDirection;
@@ -659,8 +576,7 @@ public class MaterialTapTargetPrompt
             }
         });
         mAnimationCurrent.start();
-        if (mAnimationFocalRipple != null)
-        {
+        if (mAnimationFocalRipple != null) {
             mAnimationFocalRipple.removeAllUpdateListeners();
             mAnimationFocalRipple.cancel();
             mAnimationFocalRipple = null;
@@ -669,32 +585,21 @@ public class MaterialTapTargetPrompt
         mAnimationFocalRipple = ValueAnimator.ofFloat(baseRadius, baseRadius + (mFocalRadius10Percent * 6));
         mAnimationFocalRipple.setInterpolator(mAnimationInterpolator);
         mAnimationFocalRipple.setDuration(500);
-        mAnimationFocalRipple.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        mAnimationFocalRipple.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
+            public void onAnimationUpdate(ValueAnimator animation) {
                 mView.mFocalRippleSize = (float) animation.getAnimatedValue();
                 final float fraction;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
-                {
-                    fraction = animation.getAnimatedFraction();
-                }
-                else
-                {
-                    fraction = (mFocalRadius10Percent * 6) / (mView.mFocalRippleSize - mBaseFocalRadius - mFocalRadius10Percent);
-                }
+                fraction = animation.getAnimatedFraction();
                 mView.mFocalRippleAlpha = (int) (mBaseFocalRippleAlpha * (1f - fraction));
             }
         });
     }
 
-    void updateFocalCentrePosition()
-    {
+    void updateFocalCentrePosition() {
         updateClipBounds();
-        if (mTargetView != null)
-        {
+        if (mTargetView != null) {
             final int[] viewPosition = new int[2];
             mView.getLocationInWindow(viewPosition);
             final int[] targetPosition = new int[2];
@@ -702,9 +607,7 @@ public class MaterialTapTargetPrompt
 
             mView.mFocalCentre.x = targetPosition[0] - viewPosition[0] + (mTargetView.getWidth() / 2);
             mView.mFocalCentre.y = targetPosition[1] - viewPosition[1] + (mTargetView.getHeight() / 2);
-        }
-        else
-        {
+        } else {
             mView.mFocalCentre.x = mTargetPosition.x;
             mView.mFocalCentre.y = mTargetPosition.y;
         }
@@ -717,71 +620,51 @@ public class MaterialTapTargetPrompt
         updateIconPosition();
     }
 
-    void updateTextPositioning()
-    {
+    void updateTextPositioning() {
         final float maxWidth = Math.max(80, Math.min(mMaxTextWidth, (mView.mClipToBounds ? mView.mClipBounds.right - mView.mClipBounds.left : mParentView.getWidth()) - (mTextPadding * 2)));
         mView.mPrimaryTextLayout = createStaticTextLayout(mPrimaryText, mPaintPrimaryText, (int) maxWidth, mPrimaryTextAlignment);
-        if (mSecondaryText != null)
-        {
+        if (mSecondaryText != null) {
             mView.mSecondaryTextLayout = createStaticTextLayout(mSecondaryText, mPaintSecondaryText, (int) maxWidth, mSecondaryTextAlignment);
-        }
-        else
-        {
+        } else {
             mView.mSecondaryTextLayout = null;
         }
 
         final float primaryTextWidth = calculateMaxTextWidth(mView.mPrimaryTextLayout);
         final float secondaryTextWidth = calculateMaxTextWidth(mView.mSecondaryTextLayout);
-        final float textWidth  = Math.max(primaryTextWidth, secondaryTextWidth);
+        final float textWidth = Math.max(primaryTextWidth, secondaryTextWidth);
 
-        if (mInside88dpBounds)
-        {
+        if (mInside88dpBounds) {
             mView.mPrimaryTextLeft = mView.mClipBounds.left;
             final float width = Math.min(textWidth, maxWidth);
-            if (mHorizontalTextPositionLeft)
-            {
+            if (mHorizontalTextPositionLeft) {
                 mView.mPrimaryTextLeft = mView.mFocalCentre.x - width + mFocalToTextPadding;
-            }
-            else
-            {
+            } else {
                 mView.mPrimaryTextLeft = mView.mFocalCentre.x - width - mFocalToTextPadding;
             }
-            if (mView.mPrimaryTextLeft < mView.mClipBounds.left + mTextPadding)
-            {
+            if (mView.mPrimaryTextLeft < mView.mClipBounds.left + mTextPadding) {
                 mView.mPrimaryTextLeft = mView.mClipBounds.left + mTextPadding;
             }
-            if (mView.mPrimaryTextLeft + width > mView.mClipBounds.right - mTextPadding)
-            {
+            if (mView.mPrimaryTextLeft + width > mView.mClipBounds.right - mTextPadding) {
                 mView.mPrimaryTextLeft = mView.mClipBounds.right - mTextPadding - width;
             }
-        }
-        else
-        {
-            if (mHorizontalTextPositionLeft)
-            {
+        } else {
+            if (mHorizontalTextPositionLeft) {
                 mView.mPrimaryTextLeft = (mView.mClipToBounds ? mView.mClipBounds.right : mParentView.getRight()) - mTextPadding - textWidth;
-            }
-            else
-            {
+            } else {
                 mView.mPrimaryTextLeft = (mView.mClipToBounds ? mView.mClipBounds.left : mParentView.getLeft()) + mTextPadding;
             }
         }
 
         mView.mPrimaryTextTop = mView.mFocalCentre.y;
-        if (mVerticalTextPositionAbove)
-        {
+        if (mVerticalTextPositionAbove) {
             mView.mPrimaryTextTop = mView.mPrimaryTextTop - mBaseFocalRadius - mFocalToTextPadding - mView.mPrimaryTextLayout.getHeight();
-        }
-        else
-        {
+        } else {
             mView.mPrimaryTextTop += mBaseFocalRadius + mFocalToTextPadding;
         }
 
-        if (mSecondaryText != null)
-        {
-            if (mVerticalTextPositionAbove)
-            {
-                mView.mPrimaryTextTop =  mView.mPrimaryTextTop - mView.mTextSeparation - mView.mSecondaryTextLayout.getHeight();
+        if (mSecondaryText != null) {
+            if (mVerticalTextPositionAbove) {
+                mView.mPrimaryTextTop = mView.mPrimaryTextTop - mView.mTextSeparation - mView.mSecondaryTextLayout.getHeight();
             }
 
             mView.mSecondaryTextOffsetTop = mView.mPrimaryTextLayout.getHeight() + mView.mTextSeparation;
@@ -793,12 +676,10 @@ public class MaterialTapTargetPrompt
         mView.mPrimaryTextLeftChange = 0;
         mView.mSecondaryTextLeftChange = 0;
         final float change = maxWidth - textWidth;
-        if (isRtlText(mView.mPrimaryTextLayout))
-        {
+        if (isRtlText(mView.mPrimaryTextLayout)) {
             mView.mPrimaryTextLeftChange = change;
         }
-        if (isRtlText(mView.mSecondaryTextLayout))
-        {
+        if (isRtlText(mView.mSecondaryTextLayout)) {
             mView.mSecondaryTextLeftChange = change;
         }
     }
@@ -809,30 +690,22 @@ public class MaterialTapTargetPrompt
      * @param layout The layout to check.
      * @return True if the text in the supplied layout is displayed right to left. False otherwise.
      */
-    private boolean isRtlText(final Layout layout)
-    {
+    private boolean isRtlText(final Layout layout) {
         boolean result = false;
-        if (layout != null)
-        {
+        if (layout != null) {
             // Treat align opposite as right to left by default
             result = layout.getAlignment() == Layout.Alignment.ALIGN_OPPOSITE;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            {
-                // If the first character is a right to left character
-                final boolean textIsRtl = layout.isRtlCharAt(0);
-                // If the text and result are right to left then false otherwise use the textIsRtl value
-                result = (!(result && textIsRtl) && !(!result && !textIsRtl)) || textIsRtl;
-                if (!result && layout.getAlignment() == Layout.Alignment.ALIGN_NORMAL
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                {
-                    // If the layout and text are right to left and the alignment is normal then rtl
-                    result = textIsRtl && mActivity.getResources().getConfiguration()
-                                                .getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-                }
-                else if (layout.getAlignment() == Layout.Alignment.ALIGN_OPPOSITE && textIsRtl)
-                {
-                    result = false;
-                }
+            // If the first character is a right to left character
+            final boolean textIsRtl = layout.isRtlCharAt(0);
+            // If the text and result are right to left then false otherwise use the textIsRtl value
+            result = (!(result && textIsRtl) && !(!result && !textIsRtl)) || textIsRtl;
+            if (!result && layout.getAlignment() == Layout.Alignment.ALIGN_NORMAL
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                // If the layout and text are right to left and the alignment is normal then rtl
+                result = textIsRtl && mActivity.getResources().getConfiguration()
+                        .getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+            } else if (layout.getAlignment() == Layout.Alignment.ALIGN_OPPOSITE && textIsRtl) {
+                result = false;
             }
         }
         return result;
@@ -841,24 +714,20 @@ public class MaterialTapTargetPrompt
     /**
      * Creates a static text layout. Uses the {@link android.text.StaticLayout.Builder} if available.
      *
-     * @param text The text to be laid out, optionally with spans
-     * @param paint The base paint used for layout
-     * @param maxTextWidth The width in pixels
+     * @param text          The text to be laid out, optionally with spans
+     * @param paint         The base paint used for layout
+     * @param maxTextWidth  The width in pixels
      * @param textAlignment Alignment for the resulting {@link StaticLayout}
      * @return the newly constructed {@link StaticLayout} object
      */
     private StaticLayout createStaticTextLayout(final String text, final TextPaint paint,
-                                    final int maxTextWidth, final Layout.Alignment textAlignment)
-    {
+                                                final int maxTextWidth, final Layout.Alignment textAlignment) {
         final StaticLayout layout;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final StaticLayout.Builder builder = StaticLayout.Builder.obtain(text, 0, text.length(), paint, maxTextWidth);
             builder.setAlignment(textAlignment);
             layout = builder.build();
-        }
-        else
-        {
+        } else {
             layout = new StaticLayout(text, paint, maxTextWidth, textAlignment, 1f, 0f, false);
         }
         return layout;
@@ -870,13 +739,10 @@ public class MaterialTapTargetPrompt
      * @param textLayout The text layout
      * @return The maximum length line
      */
-    float calculateMaxTextWidth(final Layout textLayout)
-    {
+    float calculateMaxTextWidth(final Layout textLayout) {
         float maxTextWidth = 0f;
-        if (textLayout != null)
-        {
-            for (int i = 0, count = textLayout.getLineCount(); i < count; i++)
-            {
+        if (textLayout != null) {
+            for (int i = 0, count = textLayout.getLineCount(); i < count; i++) {
                 maxTextWidth = Math.max(maxTextWidth, textLayout.getLineWidth(i));
             }
         }
@@ -888,26 +754,20 @@ public class MaterialTapTargetPrompt
      *
      * @param maxTextWidth The maximum width for the displayed text.
      */
-    void updateBackgroundRadius(final float maxTextWidth)
-    {
+    void updateBackgroundRadius(final float maxTextWidth) {
         /*mView.textWidth = (int) maxTextWidth;
         mView.padding = (int) mTextPadding;*/
-        if (mInside88dpBounds)
-        {
+        if (mInside88dpBounds) {
             float x1 = mView.mFocalCentre.x;
             float x2 = mView.mPrimaryTextLeft - mTextPadding;
             float y1, y2;
-            if (mVerticalTextPositionAbove)
-            {
+            if (mVerticalTextPositionAbove) {
                 y1 = mView.mFocalCentre.y + mBaseFocalRadius + mTextPadding;
                 y2 = mView.mPrimaryTextTop;
-            }
-            else
-            {
+            } else {
                 y1 = mView.mFocalCentre.y - (mBaseFocalRadius + mFocalToTextPadding + mTextPadding);
                 float baseY2 = mView.mPrimaryTextTop + mView.mPrimaryTextLayout.getHeight();
-                if (mView.mSecondaryTextLayout != null)
-                {
+                if (mView.mSecondaryTextLayout != null) {
                     baseY2 += mView.mSecondaryTextLayout.getHeight() + mView.mTextSeparation;
                 }
                 y2 = baseY2;
@@ -918,53 +778,41 @@ public class MaterialTapTargetPrompt
 
             final float focalLeft = mView.mFocalCentre.x - mBaseFocalRadius - mFocalToTextPadding;
             final float focalRight = mView.mFocalCentre.x + mBaseFocalRadius + mFocalToTextPadding;
-            if (x2 > focalLeft && x2 < focalRight)
-            {
-                if (mVerticalTextPositionAbove)
-                {
+            if (x2 > focalLeft && x2 < focalRight) {
+                if (mVerticalTextPositionAbove) {
                     x1 -= mBaseFocalRadius - mFocalToTextPadding;
-                }
-                else
-                {
+                } else {
                     x2 -= mBaseFocalRadius - mFocalToTextPadding;
                 }
-            }
-            else if (x3 > focalLeft && x3 < focalRight)
-            {
-                if (mVerticalTextPositionAbove)
-                {
+            } else if (x3 > focalLeft && x3 < focalRight) {
+                if (mVerticalTextPositionAbove) {
                     x1 += mBaseFocalRadius + mFocalToTextPadding;
-                }
-                else
-                {
+                } else {
                     x3 += mBaseFocalRadius + mFocalToTextPadding;
                 }
             }
 
-            final double offset = Math.pow(x2,2) + Math.pow(y2,2);
-            final double bc = (Math.pow(x1,2) + Math.pow(y1,2) - offset )/2.0;
-            final double cd = (offset - Math.pow(x3, 2) - Math.pow(y3, 2))/2.0;
-            final double det = (x1 - x2) * (y2 - y3) - (x2 - x3)* (y1 - y2);
-            final double idet = 1/det;
+            final double offset = Math.pow(x2, 2) + Math.pow(y2, 2);
+            final double bc = (Math.pow(x1, 2) + Math.pow(y1, 2) - offset) / 2.0;
+            final double cd = (offset - Math.pow(x3, 2) - Math.pow(y3, 2)) / 2.0;
+            final double det = (x1 - x2) * (y2 - y3) - (x2 - x3) * (y1 - y2);
+            final double idet = 1 / det;
             mBaseBackgroundPosition.set((float) ((bc * (y2 - y3) - cd * (y1 - y2)) * idet),
-                                                (float) ((cd * (x1 - x2) - bc * (x2 - x3)) * idet));
+                    (float) ((cd * (x1 - x2) - bc * (x2 - x3)) * idet));
             mBaseBackgroundRadius = (float) Math.sqrt(Math.pow(x2 - mBaseBackgroundPosition.x, 2)
-                            + Math.pow(y2 - mBaseBackgroundPosition.y, 2));
+                    + Math.pow(y2 - mBaseBackgroundPosition.y, 2));
             /*mView.point1.set(x1, y1);
             mView.point2.set(x2, y2);
             mView.point3.set(x3, y3);*/
-        }
-        else
-        {
+        } else {
             mBaseBackgroundPosition.set(mView.mFocalCentre.x, mView.mFocalCentre.y);
             final float length = Math.abs(mView.mPrimaryTextLeft
-                        + (mHorizontalTextPositionLeft ? 0 : maxTextWidth)
-                        - mView.mFocalCentre.x) + mTextPadding;
+                    + (mHorizontalTextPositionLeft ? 0 : maxTextWidth)
+                    - mView.mFocalCentre.x) + mTextPadding;
             float height = mBaseFocalRadius + mFocalToTextPadding
-                            + mView.mPrimaryTextLayout.getHeight();
+                    + mView.mPrimaryTextLayout.getHeight();
             //Check if secondary text should be included with text separation
-            if (mView.mSecondaryTextLayout != null)
-            {
+            if (mView.mSecondaryTextLayout != null) {
                 height += mView.mSecondaryTextLayout.getHeight() + mView.mTextSeparation;
             }
             mBaseBackgroundRadius = (float) Math.sqrt(Math.pow(length, 2) + Math.pow(height, 2));
@@ -975,15 +823,11 @@ public class MaterialTapTargetPrompt
         mView.mBackgroundRadius = mBaseBackgroundRadius * mRevealedAmount;
     }
 
-    void updateIconPosition()
-    {
-        if (mView.mIconDrawable != null)
-        {
+    void updateIconPosition() {
+        if (mView.mIconDrawable != null) {
             mView.mIconDrawableLeft = mView.mFocalCentre.x - (mView.mIconDrawable.getIntrinsicWidth() / 2);
             mView.mIconDrawableTop = mView.mFocalCentre.y - (mView.mIconDrawable.getIntrinsicHeight() / 2);
-        }
-        else if (mView.mTargetRenderView != null)
-        {
+        } else if (mView.mTargetRenderView != null) {
             final int[] viewPosition = new int[2];
             mView.getLocationInWindow(viewPosition);
             final int[] targetPosition = new int[2];
@@ -994,10 +838,8 @@ public class MaterialTapTargetPrompt
         }
     }
 
-    void updateClipBounds()
-    {
-        if (mClipToView != null)
-        {
+    void updateClipBounds() {
+        if (mClipToView != null) {
             mView.mClipToBounds = true;
 
             //Reset the top to 0
@@ -1007,39 +849,31 @@ public class MaterialTapTargetPrompt
             final Point offset = new Point();
             mClipToView.getGlobalVisibleRect(mView.mClipBounds, offset);
 
-            if (offset.y == 0)
-            {
+            if (offset.y == 0) {
                 mView.mClipBounds.top += mStatusBarHeight;
             }
 
             mClipViewBoundsInset88dp = new RectF(mView.mClipBounds);
-            mClipViewBoundsInset88dp.inset(m88dp,  m88dp);
-        }
-        else
-        {
+            mClipViewBoundsInset88dp.inset(m88dp, m88dp);
+        } else {
             final View contentView = mActivity.findViewById(android.R.id.content);
-            if (contentView != null)
-            {
+            if (contentView != null) {
                 contentView.getGlobalVisibleRect(mView.mClipBounds, new Point());
                 mClipViewBoundsInset88dp = new RectF(mView.mClipBounds);
-                mClipViewBoundsInset88dp.inset(m88dp,  m88dp);
+                mClipViewBoundsInset88dp.inset(m88dp, m88dp);
             }
             mView.mClipToBounds = false;
         }
     }
 
-    protected void onHidePrompt(final MotionEvent event, final boolean targetTapped)
-    {
-        if (mOnHidePromptListener != null)
-        {
+    protected void onHidePrompt(final MotionEvent event, final boolean targetTapped) {
+        if (mOnHidePromptListener != null) {
             mOnHidePromptListener.onHidePrompt(event, targetTapped);
         }
     }
 
-    protected void onHidePromptComplete()
-    {
-        if (mOnHidePromptListener != null)
-        {
+    protected void onHidePromptComplete() {
+        if (mOnHidePromptListener != null) {
             mOnHidePromptListener.onHidePromptComplete();
         }
     }
@@ -1047,8 +881,7 @@ public class MaterialTapTargetPrompt
     /**
      * View used to render the tap target.
      */
-    static class PromptView extends View
-    {
+    static class PromptView extends View {
         /*int padding, textWidth;
         Paint paddingPaint = new Paint();
         Paint itemPaint = new Paint();
@@ -1072,7 +905,7 @@ public class MaterialTapTargetPrompt
         float mSecondaryTextOffsetTop;
         Layout mPrimaryTextLayout;
         Layout mSecondaryTextLayout;
-        boolean mDrawRipple = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+        boolean mDrawRipple = true;
         OnPromptTouchedListener mOnPromptTouchedListener;
         boolean mCaptureTouchEventOnFocal;
         Rect mClipBounds = new Rect();
@@ -1081,8 +914,7 @@ public class MaterialTapTargetPrompt
         boolean mClipToBounds;
         boolean mCaptureTouchEventOutsidePrompt;
 
-        public PromptView(final Context context)
-        {
+        public PromptView(final Context context) {
             super(context);
             setId(R.id.material_target_prompt_view);
             /*paddingPaint.setColor(Color.GREEN);
@@ -1092,20 +924,16 @@ public class MaterialTapTargetPrompt
         }
 
         @Override
-        public void onDraw(final Canvas canvas)
-        {
-            if (this.mBackgroundRadius > 0)
-            {
-                if (mClipToBounds)
-                {
+        public void onDraw(final Canvas canvas) {
+            if (this.mBackgroundRadius > 0) {
+                if (mClipToBounds) {
                     canvas.clipRect(mClipBounds);
                 }
 
                 //Draw the backgrounds
                 canvas.drawCircle(mBackgroundPosition.x, mBackgroundPosition.y, mBackgroundRadius, mPaintBackground);
                 //Draw the ripple
-                if (mDrawRipple)
-                {
+                if (mDrawRipple) {
                     final int oldAlpha = mPaintFocal.getAlpha();
                     mPaintFocal.setAlpha(mFocalRippleAlpha);
                     canvas.drawCircle(mFocalCentre.x, mFocalCentre.y, mFocalRippleSize, mPaintFocal);
@@ -1119,14 +947,11 @@ public class MaterialTapTargetPrompt
                 canvas.drawRect(mPrimaryTextLeft + textWidth, mPrimaryTextTop, mPrimaryTextLeft + textWidth + padding, mPrimaryTextTop + mSecondaryTextOffsetTop + mSecondaryTextLayout.getHeight(), paddingPaint);*/
 
                 //Draw the icon
-                if (mIconDrawable != null)
-                {
+                if (mIconDrawable != null) {
                     canvas.translate(mIconDrawableLeft, mIconDrawableTop);
                     mIconDrawable.draw(canvas);
                     canvas.translate(-mIconDrawableLeft, -mIconDrawableTop);
-                }
-                else if (mTargetRenderView != null)
-                {
+                } else if (mTargetRenderView != null) {
                     canvas.translate(mIconDrawableLeft, mIconDrawableTop);
                     mTargetRenderView.draw(canvas);
                     canvas.translate(-mIconDrawableLeft, -mIconDrawableTop);
@@ -1138,39 +963,32 @@ public class MaterialTapTargetPrompt
 
                 //Draw the text
                 canvas.translate(mPrimaryTextLeft - mPrimaryTextLeftChange, mPrimaryTextTop);
-                if (mPrimaryTextLayout != null)
-                {
+                if (mPrimaryTextLayout != null) {
                     mPrimaryTextLayout.draw(canvas);
                 }
-                if (mSecondaryTextLayout != null)
-                {
+                if (mSecondaryTextLayout != null) {
                     canvas.translate(-(mPrimaryTextLeft - mPrimaryTextLeftChange)
-                        + mSecondaryTextLeft - mSecondaryTextLeftChange, mSecondaryTextOffsetTop);
+                            + mSecondaryTextLeft - mSecondaryTextLeftChange, mSecondaryTextOffsetTop);
                     mSecondaryTextLayout.draw(canvas);
                 }
             }
         }
 
         @Override
-        public boolean onTouchEvent(MotionEvent event)
-        {
+        public boolean onTouchEvent(MotionEvent event) {
             final float x = event.getX();
             final float y = event.getY();
             //If the touch point is within the prompt background stop the event from passing through it
             boolean captureEvent = (!mClipToBounds || mClipBounds.contains((int) x, (int) y))
-                                    && pointInCircle(x, y, mBackgroundPosition, mBackgroundRadius);
+                    && pointInCircle(x, y, mBackgroundPosition, mBackgroundRadius);
             //If the touch event was at least in the background and in the focal
-            if (captureEvent && pointInCircle(x, y, mFocalCentre, mFocalRadius))
-            {
+            if (captureEvent && pointInCircle(x, y, mFocalCentre, mFocalRadius)) {
                 //Override allowing the touch event to pass through the view with the user defined value
                 captureEvent = mCaptureTouchEventOnFocal;
                 onPromptTouched(event, true);
-            }
-            else
-            {
+            } else {
                 // If the prompt background was not touched
-                if (!captureEvent)
-                {
+                if (!captureEvent) {
                     captureEvent = mCaptureTouchEventOutsidePrompt;
                 }
                 onPromptTouched(event, false);
@@ -1181,21 +999,18 @@ public class MaterialTapTargetPrompt
         /**
          * Determines if a point is in the centre of a circle with a radius from the point ({@link #mFocalCentre , {@link #mFocalCentre.y}}.
          *
-         * @param x The x position in the view.
-         * @param y The y position in the view.
+         * @param x            The x position in the view.
+         * @param y            The y position in the view.
          * @param circleCentre The circle centre position
-         * @param radius The radius of the circle.
+         * @param radius       The radius of the circle.
          * @return True if the point (x, y) is in the circle.
          */
-        boolean pointInCircle(final float x, final float y, final PointF circleCentre, final float radius)
-        {
+        boolean pointInCircle(final float x, final float y, final PointF circleCentre, final float radius) {
             return Math.pow(x - circleCentre.x, 2) + Math.pow(y - circleCentre.y, 2) < Math.pow(radius, 2);
         }
 
-        protected void onPromptTouched(final MotionEvent event, final boolean targetTapped)
-        {
-            if (mOnPromptTouchedListener != null)
-            {
+        protected void onPromptTouched(final MotionEvent event, final boolean targetTapped) {
+            if (mOnPromptTouchedListener != null) {
                 mOnPromptTouchedListener.onPromptTouched(event, targetTapped);
             }
         }
@@ -1203,12 +1018,11 @@ public class MaterialTapTargetPrompt
         /**
          * Interface definition for a callback to be invoked when a {@link PromptView} is touched.
          */
-        public interface OnPromptTouchedListener
-        {
+        public interface OnPromptTouchedListener {
             /**
              * Called when a touch event occurs in the prompt view.
              *
-             * @param event The touch event that triggered the dismiss or finish.
+             * @param event        The touch event that triggered the dismiss or finish.
              * @param tappedTarget True if the prompt focal point was touched.
              */
             void onPromptTouched(final MotionEvent event, final boolean tappedTarget);
@@ -1218,8 +1032,7 @@ public class MaterialTapTargetPrompt
     /**
      * A builder to create a {@link MaterialTapTargetPrompt} instance.
      */
-    public static class Builder
-    {
+    public static class Builder {
         /**
          * The containing activity.
          */
@@ -1283,30 +1096,27 @@ public class MaterialTapTargetPrompt
          *
          * @param activity the activity to show the prompt within.
          */
-        public Builder(final Activity activity)
-        {
+        public Builder(final Activity activity) {
             this(activity, 0);
         }
 
         /**
          * Creates a builder for a material tap target prompt that uses an explicit theme
          * resource.
-         *
+         * <p>
          * The {@code themeResId} may be specified as {@code 0}
          * to use the parent {@code context}'s resolved value for
          * {@link R.attr#MaterialTapTargetPromptTheme}.
          *
-         * @param activity the activity to show the prompt within.
+         * @param activity   the activity to show the prompt within.
          * @param themeResId the resource ID of the theme against which to inflate
          *                   this dialog, or {@code 0} to use the parent
          *                   {@code context}'s default material tap target prompt theme
          */
-        public Builder(final Activity activity, int themeResId)
-        {
+        public Builder(final Activity activity, int themeResId) {
             mActivity = activity;
             //Attempt to load the theme from the activity theme
-            if (themeResId == 0)
-            {
+            if (themeResId == 0) {
                 final TypedValue outValue = new TypedValue();
                 activity.getTheme().resolveAttribute(R.attr.MaterialTapTargetPromptTheme, outValue, true);
                 themeResId = outValue.resourceId;
@@ -1347,11 +1157,9 @@ public class MaterialTapTargetPrompt
             final int targetId = a.getResourceId(R.styleable.PromptView_target, 0);
             a.recycle();
 
-            if (targetId != 0)
-            {
+            if (targetId != 0) {
                 mTargetView = mActivity.findViewById(targetId);
-                if (mTargetView != null)
-                {
+                if (mTargetView != null) {
                     mTargetSet = true;
                 }
             }
@@ -1361,11 +1169,11 @@ public class MaterialTapTargetPrompt
 
         /**
          * Set the view for the prompt to focus on.
+         *
          * @param target The view that the prompt will highlight.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTarget(final View target)
-        {
+        public Builder setTarget(final View target) {
             mTargetView = target;
             mTargetSet = mTargetView != null;
             return this;
@@ -1376,8 +1184,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTarget(@IdRes final int target)
-        {
+        public Builder setTarget(@IdRes final int target) {
             mTargetView = mActivity.findViewById(target);
             mTargetPosition = null;
             mTargetSet = mTargetView != null;
@@ -1386,12 +1193,12 @@ public class MaterialTapTargetPrompt
 
         /**
          * Set the centre point as a screen position
+         *
          * @param left Centre point from screen left
-         * @param top Centre point from screen top
+         * @param top  Centre point from screen top
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTarget(final float left, final float top)
-        {
+        public Builder setTarget(final float left, final float top) {
             mTargetView = null;
             mTargetPosition = new PointF(left, top);
             mTargetSet = true;
@@ -1405,8 +1212,7 @@ public class MaterialTapTargetPrompt
          * @param view The view to use to render the prompt target
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTargetRenderView(final View view)
-        {
+        public Builder setTargetRenderView(final View view) {
             mTargetRenderView = view;
             return this;
         }
@@ -1416,8 +1222,7 @@ public class MaterialTapTargetPrompt
          *
          * @return True if set successfully.
          */
-        public boolean isTargetSet()
-        {
+        public boolean isTargetSet() {
             return mTargetSet;
         }
 
@@ -1426,8 +1231,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryText(@StringRes final int resId)
-        {
+        public Builder setPrimaryText(@StringRes final int resId) {
             mPrimaryText = mActivity.getString(resId);
             return this;
         }
@@ -1437,8 +1241,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryText(final String text)
-        {
+        public Builder setPrimaryText(final String text) {
             mPrimaryText = text;
             return this;
         }
@@ -1448,8 +1251,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryTextSize(@DimenRes final int resId)
-        {
+        public Builder setPrimaryTextSize(@DimenRes final int resId) {
             mPrimaryTextSize = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1459,8 +1261,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryTextSize(final float size)
-        {
+        public Builder setPrimaryTextSize(final float size) {
             mPrimaryTextSize = size;
             return this;
         }
@@ -1470,8 +1271,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryTextColour(@ColorInt final int colour)
-        {
+        public Builder setPrimaryTextColour(@ColorInt final int colour) {
             mPrimaryTextColour = colour;
             return this;
         }
@@ -1481,8 +1281,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryTextColourFromRes(@ColorRes final int resId)
-        {
+        public Builder setPrimaryTextColourFromRes(@ColorRes final int resId) {
             mPrimaryTextColour = getColour(resId);
             return this;
         }
@@ -1490,16 +1289,14 @@ public class MaterialTapTargetPrompt
         /**
          * Sets the typeface and style used to display the primary text.
          */
-        public Builder setPrimaryTextTypeface(final Typeface typeface)
-        {
+        public Builder setPrimaryTextTypeface(final Typeface typeface) {
             return setPrimaryTextTypeface(typeface, 0);
         }
 
         /**
          * Sets the typeface used to display the primary text.
          */
-        public Builder setPrimaryTextTypeface(final Typeface typeface, final int style)
-        {
+        public Builder setPrimaryTextTypeface(final Typeface typeface, final int style) {
             mPrimaryTextTypeface = typeface;
             mPrimaryTextTypefaceStyle = style;
             return this;
@@ -1510,8 +1307,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryText(@StringRes final int resId)
-        {
+        public Builder setSecondaryText(@StringRes final int resId) {
             mSecondaryText = mActivity.getString(resId);
             return this;
         }
@@ -1521,8 +1317,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryText(final String text)
-        {
+        public Builder setSecondaryText(final String text) {
             mSecondaryText = text;
             return this;
         }
@@ -1532,8 +1327,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryTextSize(@DimenRes final int resId)
-        {
+        public Builder setSecondaryTextSize(@DimenRes final int resId) {
             mSecondaryTextSize = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1543,8 +1337,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryTextSize(final float size)
-        {
+        public Builder setSecondaryTextSize(final float size) {
             mSecondaryTextSize = size;
             return this;
         }
@@ -1554,8 +1347,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryTextColour(@ColorInt final int colour)
-        {
+        public Builder setSecondaryTextColour(@ColorInt final int colour) {
             mSecondaryTextColour = colour;
             return this;
         }
@@ -1565,8 +1357,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryTextColourFromRes(@ColorRes final int resId)
-        {
+        public Builder setSecondaryTextColourFromRes(@ColorRes final int resId) {
             mSecondaryTextColour = getColour(resId);
             return this;
         }
@@ -1574,16 +1365,14 @@ public class MaterialTapTargetPrompt
         /**
          * Sets the typeface used to display the secondary text.
          */
-        public Builder setSecondaryTextTypeface(final Typeface typeface)
-        {
+        public Builder setSecondaryTextTypeface(final Typeface typeface) {
             return setSecondaryTextTypeface(typeface, 0);
         }
 
         /**
          * Sets the typeface and style used to display the secondary text.
          */
-        public Builder setSecondaryTextTypeface(final Typeface typeface, final int style)
-        {
+        public Builder setSecondaryTextTypeface(final Typeface typeface, final int style) {
             mSecondaryTextTypeface = typeface;
             mSecondaryTextTypefaceStyle = style;
             return this;
@@ -1594,8 +1383,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTextPadding(final float padding)
-        {
+        public Builder setTextPadding(final float padding) {
             mTextPadding = padding;
             return this;
         }
@@ -1605,8 +1393,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTextPadding(@DimenRes final int resId)
-        {
+        public Builder setTextPadding(@DimenRes final int resId) {
             mTextPadding = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1616,8 +1403,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTextSeparation(final float separation)
-        {
+        public Builder setTextSeparation(final float separation) {
             mTextSeparation = separation;
             return this;
         }
@@ -1628,8 +1414,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTextSeparation(@DimenRes final int resId)
-        {
+        public Builder setTextSeparation(@DimenRes final int resId) {
             mTextSeparation = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1639,8 +1424,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalToTextPadding(final float padding)
-        {
+        public Builder setFocalToTextPadding(final float padding) {
             mFocalToTextPadding = padding;
             return this;
         }
@@ -1651,8 +1435,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalToTextPadding(@DimenRes final int resId)
-        {
+        public Builder setFocalToTextPadding(@DimenRes final int resId) {
             mFocalToTextPadding = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1662,8 +1445,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setAnimationInterpolator(final Interpolator interpolator)
-        {
+        public Builder setAnimationInterpolator(final Interpolator interpolator) {
             mAnimationInterpolator = interpolator;
             return this;
         }
@@ -1674,8 +1456,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIdleAnimationEnabled(final boolean enabled)
-        {
+        public Builder setIdleAnimationEnabled(final boolean enabled) {
             mIdleAnimationEnabled = enabled;
             return this;
         }
@@ -1685,14 +1466,10 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIcon(@DrawableRes final int resId)
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
+        public Builder setIcon(@DrawableRes final int resId) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mIconDrawable = mActivity.getDrawable(resId);
-            }
-            else
-            {
+            } else {
                 //noinspection deprecation
                 mIconDrawable = mActivity.getResources().getDrawable(resId);
             }
@@ -1704,8 +1481,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIconDrawable(final Drawable drawable)
-        {
+        public Builder setIconDrawable(final Drawable drawable) {
             mIconDrawable = drawable;
             return this;
         }
@@ -1716,8 +1492,7 @@ public class MaterialTapTargetPrompt
          * @param tint the tint to apply to the icon drawable, {@code null} will remove the tint.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIconDrawableTintList(@Nullable ColorStateList tint)
-        {
+        public Builder setIconDrawableTintList(@Nullable ColorStateList tint) {
             mIconDrawableTintList = tint;
             mHasIconDrawableTint = tint != null;
             return this;
@@ -1729,11 +1504,9 @@ public class MaterialTapTargetPrompt
          * @param tintMode the tint mode to use on the icon drawable, {@code null} will remove the tint.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIconDrawableTintMode(@Nullable PorterDuff.Mode tintMode)
-        {
+        public Builder setIconDrawableTintMode(@Nullable PorterDuff.Mode tintMode) {
             mIconDrawableTintMode = tintMode;
-            if (tintMode == null)
-            {
+            if (tintMode == null) {
                 mIconDrawableTintList = null;
                 mHasIconDrawableTint = false;
             }
@@ -1744,13 +1517,12 @@ public class MaterialTapTargetPrompt
          * Sets the colour to use to tint the icon drawable.
          *
          * @param colour The colour to use to tint the icon drawable, call
-         *          {@link #setIconDrawableTintList(ColorStateList)} or
-         *           {@link #setIconDrawableTintMode(PorterDuff.Mode)} with {@code null}
-         *           to remove the tint.
+         *               {@link #setIconDrawableTintList(ColorStateList)} or
+         *               {@link #setIconDrawableTintMode(PorterDuff.Mode)} with {@code null}
+         *               to remove the tint.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIconDrawableColourFilter(@ColorInt final int colour)
-        {
+        public Builder setIconDrawableColourFilter(@ColorInt final int colour) {
             mIconDrawableColourFilter = colour;
             mIconDrawableTintList = null;
             mHasIconDrawableTint = true;
@@ -1766,15 +1538,11 @@ public class MaterialTapTargetPrompt
          *           to remove the tint.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setIconDrawableColourFilterFromRes(@ColorRes final int id)
-        {
+        public Builder setIconDrawableColourFilterFromRes(@ColorRes final int id) {
             final int colour;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 colour = mActivity.getColor(id);
-            }
-            else
-            {
+            } else {
                 colour = mActivity.getResources().getColor(id);
             }
             return setIconDrawableColourFilter(colour);
@@ -1785,8 +1553,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setOnHidePromptListener(final OnHidePromptListener listener)
-        {
+        public Builder setOnHidePromptListener(final OnHidePromptListener listener) {
             mOnHidePromptListener = listener;
             return this;
         }
@@ -1797,8 +1564,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setCaptureTouchEventOnFocal(final boolean captureTouchEvent)
-        {
+        public Builder setCaptureTouchEventOnFocal(final boolean captureTouchEvent) {
             mCaptureTouchEventOnFocal = captureTouchEvent;
             return this;
         }
@@ -1808,8 +1574,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setMaxTextWidth(final float width)
-        {
+        public Builder setMaxTextWidth(final float width) {
             mMaxTextWidth = width;
             return this;
         }
@@ -1820,8 +1585,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setMaxTextWidth(@DimenRes final int resId)
-        {
+        public Builder setMaxTextWidth(@DimenRes final int resId) {
             mMaxTextWidth = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1831,8 +1595,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setBackgroundColour(@ColorInt final int colour)
-        {
+        public Builder setBackgroundColour(@ColorInt final int colour) {
             mBackgroundColour = colour;
             return this;
         }
@@ -1842,8 +1605,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setBackgroundColourFromRes(@ColorRes final int resId)
-        {
+        public Builder setBackgroundColourFromRes(@ColorRes final int resId) {
             mBackgroundColour = getColour(resId);
             return this;
         }
@@ -1852,14 +1614,13 @@ public class MaterialTapTargetPrompt
          * Set the background colour alpha value.
          * The alpha value set using {@link #setBackgroundColour(int)} and
          * {@link #setBackgroundColourFromRes(int)} is ignored.
-         *
+         * <p>
          * Default value is 244.
          *
          * @param alpha Alpha value between 0-255.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setBackgroundColourAlpha(final int alpha)
-        {
+        public Builder setBackgroundColourAlpha(final int alpha) {
             mBackgroundColourAlpha = alpha;
             return this;
         }
@@ -1869,8 +1630,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalColour(@ColorInt final int colour)
-        {
+        public Builder setFocalColour(@ColorInt final int colour) {
             mFocalColour = colour;
             return this;
         }
@@ -1880,8 +1640,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalColourFromRes(@ColorRes final int resId)
-        {
+        public Builder setFocalColourFromRes(@ColorRes final int resId) {
             mFocalColour = getColour(resId);
             return this;
         }
@@ -1890,14 +1649,13 @@ public class MaterialTapTargetPrompt
          * Set the focal colour alpha value.
          * The alpha value set using {@link #setFocalColour(int)} and
          * {@link #setFocalColourFromRes(int)} is ignored.
-         *
+         * <p>
          * Default value is 244.
          *
          * @param alpha Alpha value between 0-255.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalColourAlpha(final int alpha)
-        {
+        public Builder setFocalColourAlpha(final int alpha) {
             mFocalColourAlpha = alpha;
             return this;
         }
@@ -1907,8 +1665,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalRadius(final float radius)
-        {
+        public Builder setFocalRadius(final float radius) {
             mFocalRadius = radius;
             return this;
         }
@@ -1918,8 +1675,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setFocalRadius(@DimenRes final int resId)
-        {
+        public Builder setFocalRadius(@DimenRes final int resId) {
             mFocalRadius = mActivity.getResources().getDimension(resId);
             return this;
         }
@@ -1931,8 +1687,7 @@ public class MaterialTapTargetPrompt
          * @param autoDismiss True - prompt will dismiss when touched outside the focal, false - no action taken.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setAutoDismiss(final boolean autoDismiss)
-        {
+        public Builder setAutoDismiss(final boolean autoDismiss) {
             mAutoDismiss = autoDismiss;
             return this;
         }
@@ -1944,8 +1699,7 @@ public class MaterialTapTargetPrompt
          * @param autoFinish True - prompt will finish when touched inside the focal, false - no action taken.
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setAutoFinish(final boolean autoFinish)
-        {
+        public Builder setAutoFinish(final boolean autoFinish) {
             mAutoFinish = autoFinish;
             return this;
         }
@@ -1956,8 +1710,7 @@ public class MaterialTapTargetPrompt
          *
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setCaptureTouchEventOutsidePrompt(final boolean captureTouchEventOutsidePrompt)
-        {
+        public Builder setCaptureTouchEventOutsidePrompt(final boolean captureTouchEventOutsidePrompt) {
             mCaptureTouchEventOutsidePrompt = captureTouchEventOutsidePrompt;
             return this;
         }
@@ -1969,8 +1722,7 @@ public class MaterialTapTargetPrompt
          * @param gravity The horizontal gravity
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setTextGravity(final int gravity)
-        {
+        public Builder setTextGravity(final int gravity) {
             mPrimaryTextGravity = gravity;
             mSecondaryTextGravity = gravity;
             return this;
@@ -1983,8 +1735,7 @@ public class MaterialTapTargetPrompt
          * @param gravity The horizontal gravity
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setPrimaryTextGravity(final int gravity)
-        {
+        public Builder setPrimaryTextGravity(final int gravity) {
             mPrimaryTextGravity = gravity;
             return this;
         }
@@ -1996,8 +1747,7 @@ public class MaterialTapTargetPrompt
          * @param gravity The horizontal gravity
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setSecondaryTextGravity(final int gravity)
-        {
+        public Builder setSecondaryTextGravity(final int gravity) {
             mSecondaryTextGravity = gravity;
             return this;
         }
@@ -2005,14 +1755,13 @@ public class MaterialTapTargetPrompt
         /**
          * Set the view to clip the prompt to.
          * Default: {@link android.R.id#content}
-         *
+         * <p>
          * Null can be used to stop the prompt being clipped to a view.
          *
          * @param view The view to clip to
          * @return This Builder object to allow for chaining of calls to set methods
          */
-        public Builder setClipToView(final View view)
-        {
+        public Builder setClipToView(final View view) {
             mClipToView = view;
             return this;
         }
@@ -2030,24 +1779,19 @@ public class MaterialTapTargetPrompt
          * To check that a valid target has been set call {@link #isTargetSet()}.
          * </p>
          */
-        public MaterialTapTargetPrompt create()
-        {
-            if (!mTargetSet || mPrimaryText == null)
-            {
+        public MaterialTapTargetPrompt create() {
+            if (!mTargetSet || mPrimaryText == null) {
                 return null;
             }
             final MaterialTapTargetPrompt mPrompt = new MaterialTapTargetPrompt(mActivity);
-            if (mTargetView != null)
-            {
+            if (mTargetView != null) {
                 mPrompt.mTargetView = mTargetView;
                 mPrompt.mView.mTargetView = mTargetView;
-            }
-            else
-            {
+            } else {
                 mPrompt.mTargetPosition = mTargetPosition;
             }
             mPrompt.mParentView = (ViewGroup) mActivity.getWindow().getDecorView();
-            mPrompt.mView.mDrawRipple = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && mIdleAnimationEnabled;
+            mPrompt.mView.mDrawRipple = mIdleAnimationEnabled;
             mPrompt.mIdleAnimationEnabled = mIdleAnimationEnabled;
             mPrompt.mClipToView = mClipToView;
 
@@ -2068,12 +1812,9 @@ public class MaterialTapTargetPrompt
             mPrompt.mOnHidePromptListener = mOnHidePromptListener;
             mPrompt.mView.mCaptureTouchEventOnFocal = mCaptureTouchEventOnFocal;
 
-            if (mAnimationInterpolator != null)
-            {
+            if (mAnimationInterpolator != null) {
                 mPrompt.mAnimationInterpolator = mAnimationInterpolator;
-            }
-            else
-            {
+            } else {
                 mPrompt.mAnimationInterpolator = new AccelerateDecelerateInterpolator();
             }
 
@@ -2082,21 +1823,15 @@ public class MaterialTapTargetPrompt
             mPrompt.mFocalRadius10Percent = mFocalRadius / 100 * 10;
 
 
-            if (mIconDrawable != null)
-            {
+            if (mIconDrawable != null) {
                 mIconDrawable.mutate();
                 mIconDrawable.setBounds(0, 0, mIconDrawable.getIntrinsicWidth(), mIconDrawable.getIntrinsicHeight());
-                if (mHasIconDrawableTint)
-                {
-                    if (mIconDrawableTintList != null)
-                    {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                        {
+                if (mHasIconDrawableTint) {
+                    if (mIconDrawableTintList != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             mIconDrawable.setTintList(mIconDrawableTintList);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         mIconDrawable.setColorFilter(mIconDrawableColourFilter, mIconDrawableTintMode);
                         mIconDrawable.setAlpha(Color.alpha(mIconDrawableColourFilter));
                     }
@@ -2136,12 +1871,9 @@ public class MaterialTapTargetPrompt
 
             mPrompt.mView.mCaptureTouchEventOutsidePrompt = mCaptureTouchEventOutsidePrompt;
 
-            if (mTargetRenderView == null)
-            {
+            if (mTargetRenderView == null) {
                 mPrompt.mView.mTargetRenderView = mPrompt.mView.mTargetView;
-            }
-            else
-            {
+            } else {
                 mPrompt.mView.mTargetRenderView = mTargetRenderView;
             }
 
@@ -2163,25 +1895,19 @@ public class MaterialTapTargetPrompt
          * To check that a valid target has been set call {@link #isTargetSet()}.
          * </p>
          */
-        public MaterialTapTargetPrompt show()
-        {
+        public MaterialTapTargetPrompt show() {
             final MaterialTapTargetPrompt mPrompt = create();
-            if (mPrompt != null)
-            {
+            if (mPrompt != null) {
                 mPrompt.show();
             }
             return mPrompt;
         }
 
-        private int getColour(final int resId)
-        {
+        private int getColour(final int resId) {
             final int colour;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 colour = mActivity.getColor(resId);
-            }
-            else
-            {
+            } else {
                 //noinspection deprecation
                 colour = mActivity.getResources().getColor(resId);
             }
@@ -2192,16 +1918,11 @@ public class MaterialTapTargetPrompt
          * Based on setTypeface in android TextView, Copyright (C) 2006 The Android Open Source Project.
          * https://android.googlesource.com/platform/frameworks/base.git/+/master/core/java/android/widget/TextView.java
          */
-        private void setTypeface(TextPaint textPaint, Typeface typeface, int style)
-        {
-            if (style > 0)
-            {
-                if (typeface == null)
-                {
+        private void setTypeface(TextPaint textPaint, Typeface typeface, int style) {
+            if (style > 0) {
+                if (typeface == null) {
                     typeface = Typeface.defaultFromStyle(style);
-                }
-                else
-                {
+                } else {
                     typeface = Typeface.create(typeface, style);
                 }
 
@@ -2211,9 +1932,7 @@ public class MaterialTapTargetPrompt
                 int need = style & ~typefaceStyle;
                 textPaint.setFakeBoldText((need & Typeface.BOLD) != 0);
                 textPaint.setTextSkewX((need & Typeface.ITALIC) != 0 ? -0.25f : 0);
-            }
-            else
-            {
+            } else {
                 textPaint.setTypeface(typeface);
             }
         }
@@ -2222,19 +1941,15 @@ public class MaterialTapTargetPrompt
          * Based on setTypefaceFromAttrs in android TextView, Copyright (C) 2006 The Android Open Source Project.
          * https://android.googlesource.com/platform/frameworks/base.git/+/master/core/java/android/widget/TextView.java
          */
-        private Typeface setTypefaceFromAttrs(String familyName, int typefaceIndex, int styleIndex)
-        {
+        private Typeface setTypefaceFromAttrs(String familyName, int typefaceIndex, int styleIndex) {
             Typeface tf = null;
-            if (familyName != null)
-            {
+            if (familyName != null) {
                 tf = Typeface.create(familyName, styleIndex);
-                if (tf != null)
-                {
+                if (tf != null) {
                     return tf;
                 }
             }
-            switch (typefaceIndex)
-            {
+            switch (typefaceIndex) {
                 case 1:
                     tf = Typeface.SANS_SERIF;
                     break;
@@ -2254,19 +1969,22 @@ public class MaterialTapTargetPrompt
          * Based on parseTintMode in android appcompat v7 DrawableUtils, Copyright (C) 2014 The Android Open Source Project.
          * https://android.googlesource.com/platform/frameworks/support.git/+/master/v7/appcompat/src/android/support/v7/widget/DrawableUtils.java
          */
-        PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode)
-        {
-            switch (value)
-            {
-                case 3: return PorterDuff.Mode.SRC_OVER;
-                case 5: return PorterDuff.Mode.SRC_IN;
-                case 9: return PorterDuff.Mode.SRC_ATOP;
-                case 14: return PorterDuff.Mode.MULTIPLY;
-                case 15: return PorterDuff.Mode.SCREEN;
-                case 16: return Build.VERSION.SDK_INT >= 11
-                        ? PorterDuff.Mode.valueOf("ADD")
-                        : defaultMode;
-                default: return defaultMode;
+        PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
+            switch (value) {
+                case 3:
+                    return PorterDuff.Mode.SRC_OVER;
+                case 5:
+                    return PorterDuff.Mode.SRC_IN;
+                case 9:
+                    return PorterDuff.Mode.SRC_ATOP;
+                case 14:
+                    return PorterDuff.Mode.MULTIPLY;
+                case 15:
+                    return PorterDuff.Mode.SCREEN;
+                case 16:
+                    return PorterDuff.Mode.valueOf("ADD");
+                default:
+                    return defaultMode;
             }
         }
 
@@ -2277,45 +1995,31 @@ public class MaterialTapTargetPrompt
          * @param gravity The gravity to convert to absolute values
          * @return absolute layout direction
          */
-        Layout.Alignment getTextAlignment(final int gravity, final String text)
-        {
+        Layout.Alignment getTextAlignment(final int gravity, final String text) {
             final int absoluteGravity;
-            if (isVersionAfterJellyBeanMR1())
-            {
+            if (isVersionAfterJellyBeanMR1()) {
                 int realGravity = gravity;
                 final int layoutDirection = getLayoutDirection();
                 if (text != null && layoutDirection == View.LAYOUT_DIRECTION_RTL
-                        && new Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isRightToLeft())
-                {
-                    if (gravity == Gravity.START)
-                    {
+                        && new Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isRightToLeft()) {
+                    if (gravity == Gravity.START) {
                         realGravity = Gravity.END;
-                    }
-                    else if (gravity == Gravity.END)
-                    {
+                    } else if (gravity == Gravity.END) {
                         realGravity = Gravity.START;
                     }
                 }
                 absoluteGravity = Gravity.getAbsoluteGravity(realGravity, layoutDirection);
-            }
-            else
-            {
-                if ((gravity & Gravity.START) == Gravity.START)
-                {
+            } else {
+                if ((gravity & Gravity.START) == Gravity.START) {
                     absoluteGravity = Gravity.LEFT;
-                }
-                else if ((gravity & Gravity.END) == Gravity.END)
-                {
+                } else if ((gravity & Gravity.END) == Gravity.END) {
                     absoluteGravity = Gravity.RIGHT;
-                }
-                else
-                {
+                } else {
                     absoluteGravity = gravity & Gravity.HORIZONTAL_GRAVITY_MASK;
                 }
             }
             final Layout.Alignment alignment;
-            switch (absoluteGravity)
-            {
+            switch (absoluteGravity) {
                 case Gravity.RIGHT:
                     alignment = Layout.Alignment.ALIGN_OPPOSITE;
                     break;
@@ -2336,13 +2040,11 @@ public class MaterialTapTargetPrompt
          * @return Returns {@link View#LAYOUT_DIRECTION_RTL} if the configuration
          * is {@link android.content.res.Configuration#SCREENLAYOUT_LAYOUTDIR_RTL}, otherwise {@link View#LAYOUT_DIRECTION_LTR}.
          */
-        int getLayoutDirection()
-        {
+        int getLayoutDirection() {
             return mActivity.getResources().getConfiguration().getLayoutDirection();
         }
 
-        boolean isVersionAfterJellyBeanMR1()
-        {
+        boolean isVersionAfterJellyBeanMR1() {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
         }
     }
@@ -2350,13 +2052,12 @@ public class MaterialTapTargetPrompt
     /**
      * Interface definition for a callback to be invoked when a {@link MaterialTapTargetPrompt} is removed from view.
      */
-    public interface OnHidePromptListener
-    {
+    public interface OnHidePromptListener {
         /**
          * Called when the use touches the prompt view,
          * but before the prompt is removed from view.
          *
-         * @param event The touch event that triggered the dismiss or finish.
+         * @param event        The touch event that triggered the dismiss or finish.
          * @param tappedTarget True if the prompt focal point was touched.
          */
         void onHidePrompt(final MotionEvent event, final boolean tappedTarget);
@@ -2368,30 +2069,25 @@ public class MaterialTapTargetPrompt
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    static class AnimatorListener implements Animator.AnimatorListener
-    {
+    static class AnimatorListener implements Animator.AnimatorListener {
 
         @Override
-        public void onAnimationStart(Animator animation)
-        {
+        public void onAnimationStart(Animator animation) {
 
         }
 
         @Override
-        public void onAnimationEnd(Animator animation)
-        {
+        public void onAnimationEnd(Animator animation) {
 
         }
 
         @Override
-        public void onAnimationCancel(Animator animation)
-        {
+        public void onAnimationCancel(Animator animation) {
 
         }
 
         @Override
-        public void onAnimationRepeat(Animator animation)
-        {
+        public void onAnimationRepeat(Animator animation) {
 
         }
     }

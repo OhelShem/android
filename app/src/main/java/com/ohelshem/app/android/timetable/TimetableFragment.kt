@@ -107,9 +107,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
     }
 
-    override fun flush() {
-        timetableLayout.destroyView()
-    }
+    override fun flush() = timetableLayout.destroyView()
 
     override fun showEditScreen(hour: Hour, day: Int, position: Int, hasOverride: Boolean) {
         val room = (hour as? WrappedHour)?.room?.takeIf { it != 0 }
@@ -168,15 +166,11 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         }
     }
 
-    private fun removeListener() {
-        screenManager.topNavigationElement.onItemSelectedListener {}
-    }
+    private fun removeListener() = screenManager.topNavigationElement.onItemSelectedListener {}
 
-    private fun setListener() {
-        screenManager.topNavigationElement.onItemSelectedListener {
-            onItemSelected { _, _, position, _ ->
-                presenter.setDay(position)
-            }
+    private fun setListener() = screenManager.topNavigationElement.onItemSelectedListener {
+        onItemSelected { _, _, position, _ ->
+            presenter.setDay(position)
         }
     }
 

@@ -12,6 +12,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
         maven { url "http://dl.bintray.com/ohelshem/maven" }
         maven { url "http://dl.bintray.com/lukaville/maven" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }

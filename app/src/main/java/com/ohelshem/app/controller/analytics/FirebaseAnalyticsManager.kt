@@ -12,8 +12,8 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : Analytics {
-    val firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
-    val firebaseMessaging: FirebaseMessaging = FirebaseMessaging.getInstance()
+    private val firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    private val firebaseMessaging: FirebaseMessaging = FirebaseMessaging.getInstance()
 
     init {
         if (storage.isSetup())
@@ -43,14 +43,10 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
             subscribe()
     }
 
-    override fun subscribe() {
-        // for changes
-        firebaseMessaging.subscribeToTopic("notifSub")
-    }
+    // for changes
+    override fun subscribe() = firebaseMessaging.subscribeToTopic("notifSub")
 
-    override fun unsubscribe() {
-        firebaseMessaging.unsubscribeFromTopic("notifSub")
-    }
+    override fun unsubscribe() = firebaseMessaging.unsubscribeFromTopic("notifSub")
 
     override fun unsubscribeMessages() {
         firebaseMessaging.unsubscribeFromTopic("layer" + storage.userData.layer.toString())
@@ -67,9 +63,7 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         unsubscribeMessages()
     }
 
-    override fun logEvent(type: String, info: Map<String, Any>) {
-        firebaseAnalytics.logEvent(type, bundleOf(*info.map { it.toPair() }.toTypedArray()))
-    }
+    override fun logEvent(type: String, info: Map<String, Any>) = firebaseAnalytics.logEvent(type, bundleOf(*info.map { it.toPair() }.toTypedArray()))
 
     companion object {
         private const val Salt = "dyIVuLoEih"
@@ -99,7 +93,7 @@ class FirebaseAnalyticsManager(val storage: SharedStorage, context: Context) : A
         // http://stackoverflow.com/questions/9655181/convert-from-byte-array-to-hex-string-in-java
         private val hexArray = "0123456789ABCDEF".toCharArray()
 
-        fun bytesToHex(bytes: ByteArray): String {
+        private fun bytesToHex(bytes: ByteArray): String {
             val hexChars = CharArray(bytes.size * 2)
             for (j in bytes.indices) {
                 val v = bytes[j].toInt() and 0xFF

@@ -17,6 +17,7 @@
 
 package com.ohelshem.app.android.dashboard
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -61,7 +62,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     private val storage: UIStorage by kodein.instance()
 
-    val timeTick = object : BroadcastReceiver() {
+    private val timeTick = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             presenter?.update()
         }
@@ -106,12 +107,11 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             showCurrentLessonInfo(data, changes)
             showTimeLeft(data, isFuture, isTomorrow)
             showNextLessonInfo(data, changes, isEndOfDay, isFuture)
-            if (isFuture)
-                todayPlan.text = getString(R.string.future_plan, daysOfWeek[data.hour.day - 1])
-            else if (isTomorrow)
-                todayPlan.text = getString(R.string.tomorrow_plan)
-            else
-                todayPlan.text = getString(R.string.today_plan)
+            todayPlan.text = when {
+                isFuture -> getString(R.string.future_plan, daysOfWeek[data.hour.day - 1])
+                isTomorrow -> getString(R.string.tomorrow_plan)
+                else -> getString(R.string.today_plan)
+            }
         }
     }
 
@@ -202,17 +202,16 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         hasModifiedCurrentLessonView = false
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showTimeLeft(data: HourData, isFuture: Boolean, isTomorrow: Boolean) {
-        if (isFuture)
-            timeLeft.text = daysOfWeek[data.hour.day - 1]
-        else if (isTomorrow)
-            timeLeft.text = tomorrow
-        else if (data.isBefore)
-            timeLeft.text = "${data.timeToHour} $shortMinute $toStart"
-        else
-            timeLeft.text = "${data.timeToHour} $shortMinute $left"
+        timeLeft.text = when {
+            isFuture -> daysOfWeek[data.hour.day - 1]
+            isTomorrow -> tomorrow
+            data.isBefore -> "${data.timeToHour} $shortMinute $toStart"
+            else -> "${data.timeToHour} $shortMinute $left"
+        }
         if ((isTomorrow || isFuture) && data.hour.hourOfDay > 0)
-            timeLeft.append(", " + TimetableController.DayHours[data.hour.hourOfDay * 2])
+            timeLeft.append(", ${TimetableController.DayHours[data.hour.hourOfDay * 2]}")
     }
 
     private var hasModifiedNextLessonView = true
@@ -267,9 +266,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                     .setCaptureTouchEventOutsidePrompt(true)
                     .setAutoFinish(false)
                     .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
-                        override fun onHidePromptComplete() {
-                            screenManager.startTour()
-                        }
+                        override fun onHidePromptComplete() = screenManager.startTour()
 
                         override fun onHidePrompt(event: MotionEvent?, tappedTarget: Boolean) {
                             if (tappedTarget) {
@@ -302,9 +299,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                         else
                             (getChildAt(2) as TextView).text = ""
                     }
-                    view.onClick {
-
-                    }
+                    view.onClick {}
                     list.addView(view)
                 }
             }

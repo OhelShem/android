@@ -11,10 +11,12 @@ import com.ohelshem.app.controller.storage.Storage
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, callingIntent: Intent?) {
-        App.setAlarm(context)
+        if (callingIntent?.action.orEmpty() == Intent.ACTION_BOOT_COMPLETED) {
+            App.setAlarm(context)
 
-        val kodein = context.appKodein()
-        if (kodein.instance<Storage>().isSetup())
-            kodein.instance<Analytics>().onLogin()
+            val kodein = context.appKodein()
+            if (kodein.instance<Storage>().isSetup())
+                kodein.instance<Analytics>().onLogin()
+        }
     }
 }

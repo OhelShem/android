@@ -1,5 +1,6 @@
 package com.ohelshem.app.android.contacts
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
@@ -46,6 +47,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun showContacts(layer: Int, clazz: Int, contacts: List<Contact>) {
         if (contacts.isEmpty() && !storage.isStudent()) {
             teacherErrorView.show()
@@ -59,18 +61,18 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         }
     }
 
-    fun makeCall(number: String): Boolean {
-        try {
+    private fun makeCall(number: String): Boolean {
+        return try {
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
             startActivity(intent)
-            return true
+            true
         } catch (e: Exception) {
             e.printStackTrace()
-            return false
+            false
         }
     }
 
-    fun showBirthdaysDialog() {
+    private fun showBirthdaysDialog() {
         val today = getIsraelCalendar()
         val (day, month) = today[Calendar.DAY_OF_MONTH] to today[Calendar.MONTH]
         val birthdays = Contacts.getContacts(-1, -1).filter {
