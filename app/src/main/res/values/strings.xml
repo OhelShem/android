@@ -149,7 +149,7 @@
     <string name="no_birthdays_in_school">אין ימי הולדת היום</string>
     <string name="want_get_notification_for_changes">האם ברצונך לקבל התראה בשעה תשע כשהשינויים מתעדכנים?</string>
     <string name="test_in">מקצוע המבחן</string>
-    <string name="enter_to_see_changes">היכנס על מנת לראות את השינויים</string>
+    <string name="enter_to_see_changes">היכנסו על מנת לראות את השינויים</string>
     <string name="try_again">נסה שנית</string>
     <string name="no_data">אין מידע עדכני</string>
     <string name="no_data_subtitle">רענן על מנת לקבל מידע עדכני</string>
@@ -173,7 +173,7 @@
     <string name="no_tests_next_week">אין מבחנים בשבוע הקרוב</string>
     <string name="test_tomorrow">מבחן מחר</string>
     <string name="tests_this_week">מבחנים בשבוע הקרוב</string>
-    <string name="tests_this_week_subtitle">היכנס לאפליקציה על מנת לראות</string>
+    <string name="tests_this_week_subtitle">היכנסו לאפליקציה על מנת לראות</string>
     <string name="holiday_notification">מחר יום חופש</string>
     <string name="permission_denied">אנא אשר את ההרשאה על מנת שזה יעבוד</string>
     <string name="window_lesson">שעת חלון</string>
