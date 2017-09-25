@@ -93,12 +93,6 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
             removeCallback()
             currentChanges = null
             changesDate = 0
-            when (error) {
-                UpdateError.Connection -> context.sendNotification(context.getString(R.string.no_connection), context.getString(R.string.no_connection_subtitle_notification), NotificationId)
-                UpdateError.Login -> context.sendNotification(context.getString(R.string.login_error), context.getString(R.string.login_error_subtitle), NotificationId)
-                UpdateError.Exception -> context.sendNotification(context.getString(R.string.general_error), context.getString(R.string.try_again_notification), NotificationId)
-                UpdateError.NoData -> Unit
-            }
         }
     }
 
