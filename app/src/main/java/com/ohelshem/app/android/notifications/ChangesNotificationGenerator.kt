@@ -55,7 +55,7 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
 
             changesForTomorrow = (storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
 
-            if (storage.changes?.isNotEmpty() == true) {
+            if (storage.changes?.isNotEmpty() == true || isThereDiff) {
                 if (areNoChangesNew) {
                     notifyNoChanges()
                 } else if (isThereDiff) {
