@@ -10,6 +10,7 @@ import com.ohelshem.api.model.UpdateError
 import com.ohelshem.app.controller.api.ApiController
 import com.ohelshem.app.controller.api.ApiController.UpdatedApi
 import com.ohelshem.app.controller.storage.Storage
+import com.ohelshem.app.getIsraelCalendar
 import com.ohelshem.app.toCalendar
 import com.yoavst.changesystemohelshem.R
 import java.util.*
@@ -53,7 +54,7 @@ class ChangesNotificationGenerator(context: Context) : LazyKodeinAware, ApiContr
             val isThereDiff = newChanges?.size ?: 0 != current?.size ?: 0 ||
                     newChanges?.any { new -> current?.none { it.hour == new.hour && it.color == new.color && it.content.trim() == new.content.trim() } == true } == true
 
-            changesForTomorrow = (storage.changesDate.toCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
+            changesForTomorrow = (getIsraelCalendar()[Calendar.DAY_OF_YEAR] != changesDate.toCalendar()[Calendar.DAY_OF_YEAR])
 
             if (storage.changes?.isNotEmpty() == true || isThereDiff) {
                 if (areNoChangesNew) {
