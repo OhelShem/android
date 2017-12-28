@@ -43,7 +43,7 @@ fun View.show() {
 }
 
 
-fun Fragment.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, activity.theme)
+fun Fragment.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, activity!!.theme)
 fun Fragment.stringArrayRes(id: Int): Array<String> = resources.getStringArray(id)
 
 fun Context.drawableRes(id: Int) = ResourcesCompat.getDrawable(resources, id, theme)

@@ -63,7 +63,7 @@ abstract class BaseMvpFragment<V : MvpView, P : BasePresenter<V>> : MvpFragment<
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(layoutId, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.currentClass = screenManager.currentClass
         init()

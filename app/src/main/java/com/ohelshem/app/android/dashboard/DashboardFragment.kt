@@ -138,14 +138,14 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
             holidayText.setPadding(16, 16, 16, 16)
             holidayText.gravity = Gravity.CENTER
             holidayText.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_beach, 0, 0)
-            holidayText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
+            holidayText.setTextAppear(context!!, R.style.TextAppearance_AppCompat_Title)
             holidayText.setTypeface(null, Typeface.BOLD)
             holidayText.textColor = Color.WHITE
             if (isBeforeHoliday)
                 holidayText.text = if (tomorrowHoliday!!.isOneDay()) tomorrowHoliday.name else "${tomorrowHoliday.name} (${daysBetween(today, tomorrowHoliday.endTime.toCalendar())} ימים נותרו" + ")"
             else
                 holidayText.text = if (todayHoliday!!.isOneDay()) todayHoliday.name else "${todayHoliday.name} (${daysBetween(today, todayHoliday.endTime.toCalendar())} ימים נותרו" + ")"
-            lessonsContainer.backgroundColor = context.primaryLightColor
+            lessonsContainer.backgroundColor = context!!.primaryLightColor
             lessonsContainer.addView(holidayText)
             return true
         }
@@ -161,7 +161,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
         emptyText.gravity = Gravity.CENTER
         emptyText.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_empty_timetable, 0, 0)
         emptyText.compoundDrawables[1].colorFilter = PorterDuffColorFilter(defaultTextColor, PorterDuff.Mode.SRC_IN)
-        emptyText.setTextAppear(context, R.style.TextAppearance_AppCompat_Title)
+        emptyText.setTextAppear(context!!, R.style.TextAppearance_AppCompat_Title)
         emptyText.setTypeface(null, Typeface.BOLD)
         emptyText.textColor = defaultTextColor
         emptyText.text = emptyTimetable
@@ -262,7 +262,7 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                     .setPrimaryText(R.string.intro_dashboard_primary_text)
                     .setSecondaryText(R.string.intro_dashboard_secondary_text)
                     .setTarget(dashboardLogo)
-                    .setBackgroundColour(activity.primaryColor)
+                    .setBackgroundColour(activity!!.primaryColor)
                     .setCaptureTouchEventOutsidePrompt(true)
                     .setAutoFinish(false)
                     .setOnHidePromptListener(object : MaterialTapTargetPrompt.OnHidePromptListener {
@@ -308,12 +308,12 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
 
     override fun onResume() {
         super.onResume()
-        activity.registerReceiver(timeTick, IntentFilter(Intent.ACTION_TIME_TICK))
+        activity!!.registerReceiver(timeTick, IntentFilter(Intent.ACTION_TIME_TICK))
         presenter.update()
     }
 
     override fun onPause() {
         super.onPause()
-        activity.unregisterReceiver(timeTick)
+        activity!!.unregisterReceiver(timeTick)
     }
 }

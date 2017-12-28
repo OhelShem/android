@@ -55,7 +55,7 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
             teacherErrorView.hide()
             studentsInClass.text = contacts.size.toString()
             classname.text = stringArrayRes(R.array.layers)[layer - 9] + clazz
-            recyclerView.adapter = ContactsAdapter(activity, contacts) {
+            recyclerView.adapter = ContactsAdapter(activity!!, contacts) {
                 makeCall(it.phone)
             }
         }
@@ -83,12 +83,12 @@ class ContactsFragment : BaseMvpFragment<ContactsView, ContactsPresenter>(), Con
         if (birthdays.isNotEmpty()) {
             val view = UI {
                 recyclerView {
-                    backgroundColor = activity.backgroundColor
+                    backgroundColor = activity!!.backgroundColor
                     clipToPadding = false
                     topPadding = 4
                     bottomPadding = 4
                     layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                    adapter = BirthdaysAdapter(activity, birthdays)
+                    adapter = BirthdaysAdapter(activity!!, birthdays)
 
                     setHasFixedSize(true)
                 }

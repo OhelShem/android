@@ -56,7 +56,7 @@ class DatesListFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesVie
                 else listOf(VisibleItem<Test>(oldTests)) +
                         tests.take(indexOfNew).map { VisibleItem(it) } +
                         HeaderAdapter.split(tests.drop(indexOfNew), getString(R.string.close_week), getString(R.string.later)) { date >= time }
-        list.adapter = TestsAdapter(activity, items) {}
+        list.adapter = TestsAdapter(activity!!, items) {}
         if (indexOfNew > 0)
             list.scrollToPosition(indexOfNew + 1)
     }

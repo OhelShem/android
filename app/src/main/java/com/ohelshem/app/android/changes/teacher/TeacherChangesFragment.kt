@@ -54,7 +54,7 @@ class TeacherChangesFragment : BaseChangesFragment<TeacherChangesPresenter>(), T
     override fun showData(changes: List<Change>) {
         date.text = changesDateFormat.format(Date(presenter.changesDate))
         nameDay.text = "$day ${weekDays[presenter.changesDate.toCalendar().day - 1]}"
-        recyclerView.adapter = LayerChangesAdapter(context, changes, presenter.classesAtLayer, MaxChangesHours, stringArrayRes(R.array.layers)[presenter.currentLayer - 9])
+        recyclerView.adapter = LayerChangesAdapter(context!!, changes, presenter.classesAtLayer, MaxChangesHours, stringArrayRes(R.array.layers)[presenter.currentLayer - 9])
         recyclerView.scrollToPosition(0)
     }
 

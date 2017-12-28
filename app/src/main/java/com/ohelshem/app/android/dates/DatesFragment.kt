@@ -142,10 +142,10 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             menu.findItem(R.id.menu_mashov).isVisible = false
         else
             menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {
-                val intent = activity.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")
+                val intent = activity!!.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")
                 if (isGraderInstalled() && intent != null) {
                     intent.addCategory(Intent.CATEGORY_LAUNCHER)
-                    activity.startActivity(intent)
+                    activity!!.startActivity(intent)
                 } else {
                     MaterialStyledDialog.Builder(activity)
                             .setTitle(R.string.grader_dialog_title)
@@ -177,7 +177,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
     @SuppressLint("InflateParams")
     private fun openCalendarView() {
         val tests = presenter.tests
-        val view = activity.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
+        val view = activity!!.layoutInflater.inflate(R.layout.calendar_fragment, null, false)
         val calendarView = view.calendarView
         val title = view.title
         val extra = view.extra
@@ -248,19 +248,19 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                 }
             }
         }
-        calendarView.addDecorator(HolidayDecorator.generate(context, TimetableController.Holidays))
-        calendarView.addDecorator(TestDecorator(context.primaryColor, tests))
+        calendarView.addDecorator(HolidayDecorator.generate(context!!, TimetableController.Holidays))
+        calendarView.addDecorator(TestDecorator(context!!.primaryColor, tests))
         calendarView.addDecorator(OneDayDecorator())
 
 
-        dialog = AlertDialog.Builder(context)
+        dialog = AlertDialog.Builder(context!!)
                 .setNeutralButton(R.string.dialog_close) { dialog, _ -> dialog.dismiss() }
                 .setView(view)
                 .show()
     }
 
     private fun isGraderInstalled(): Boolean = try {
-        context.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
+        context!!.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {
         false

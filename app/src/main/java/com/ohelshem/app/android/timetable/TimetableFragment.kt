@@ -79,7 +79,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
         }
 
         menu.findItem(R.id.overridesSettings).setOnMenuItemClickListener {
-            activity.startActivity<OverridesActivity>()
+            activity!!.startActivity<OverridesActivity>()
             true
         }
     }
@@ -133,7 +133,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
             newName.hint = hour.oldName
             newTeacher.hint = hour.oldTeacher
         }
-        val builder = AlertDialog.Builder(activity)
+        val builder = AlertDialog.Builder(activity!!)
                 .setView(view)
                 .setPositiveButton(R.string.apply) { _, _ ->
                     presenter.edit(hour, day, position, newName.text.toString(), newTeacher.text.toString(), newRoom.text.toString().toIntOrNull() ?: -1, all.isChecked)
@@ -159,7 +159,7 @@ class TimetableFragment : BaseMvpFragment<TimetableView, TimetablePresenter>(), 
 
     override fun flushMenu() {
         val spinner = screenManager.topNavigationElement
-        spinner.adapter = DaySpinnerAdapter(activity, presenter.daysLearning)
+        spinner.adapter = DaySpinnerAdapter(activity!!, presenter.daysLearning)
         spinner.gravity = Gravity.CENTER
         spinner.post {
             setListener()

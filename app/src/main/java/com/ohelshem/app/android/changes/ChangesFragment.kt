@@ -140,10 +140,10 @@ class ChangesFragment : BaseMvpFragment<ChangesView, LayerChangesPresenter>(), C
             if (isShowingData && presenter.lastChanges != null) {
                 if (!isSharing) {
                     isSharing = true
-                    val file = File(File(context.filesDir, MainActivity.SharingFolder).apply { mkdirs() }, SharingFilename)
-                    val uri = Uri.parse("content://${context.packageName}/${MainActivity.SharingFolder}/$SharingFilename")
+                    val file = File(File(context!!.filesDir, MainActivity.SharingFolder).apply { mkdirs() }, SharingFilename)
+                    val uri = Uri.parse("content://${context!!.packageName}/${MainActivity.SharingFolder}/$SharingFilename")
                     toast(R.string.generating_data)
-                    LayerChangesGenerator.generateLayerChanges(context, presenter.lastChanges!!, presenter.classesAtLayer, presenter.userLayer, file) {
+                    LayerChangesGenerator.generateLayerChanges(context!!, presenter.lastChanges!!, presenter.classesAtLayer, presenter.userLayer, file) {
                         val shareIntent = Intent(Intent.ACTION_SEND)
                                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                 .setDataAndType(uri, "image/png")

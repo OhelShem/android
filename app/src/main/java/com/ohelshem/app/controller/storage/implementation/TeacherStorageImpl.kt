@@ -144,7 +144,11 @@ class TeacherStorageImpl(private val schoolInfo: SchoolInfo) : TeacherStorage, K
     private fun <K : SchoolModel> List<K>.layerFlatMap(): List<List<K>> {
         val layers = Array(4) { i -> Array(schoolInfo[i + 9]) { mutableListOf<K>() }.toList() }.toList()
         forEach {
-            layers[it.layer - 9][it.clazz - 1] += it
+            try {
+                layers[it.layer - 9][it.clazz - 1] += it
+            } catch (e: IndexOutOfBoundsException) {
+                e.printStackTrace()
+            }
         }
         return layers.flatten()
     }

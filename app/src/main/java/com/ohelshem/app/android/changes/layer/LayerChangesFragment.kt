@@ -42,7 +42,7 @@ class LayerChangesFragment : BaseChangesFragment<LayerChangesPresenter>() {
     }
 
     override fun showData(changes: List<Change>) {
-        recyclerView.adapter = LayerChangesAdapter(context, changes, presenter.classesAtLayer, MaxChangesHours, stringArrayRes(R.array.layers)[presenter.userLayer - 9])
+        recyclerView.adapter = LayerChangesAdapter(context!!, changes, presenter.classesAtLayer, MaxChangesHours, stringArrayRes(R.array.layers)[presenter.userLayer - 9])
         recyclerView.scrollToPosition(0)
     }
 
