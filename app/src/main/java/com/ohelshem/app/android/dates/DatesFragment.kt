@@ -222,30 +222,15 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             setMaximumDate(CalendarDay.from(Date(TimetableController.Summer.endTime)))
         }.commit()
         calendarView.setOnDateChangedListener { _, calendarDay, _ ->
-            var hasFound = false
             val time = calendarDay.date.time
-            for (test in tests) {
-                if (test.date == time) {
-                    update(test)
-                    hasFound = true
-                    break
-                }
-            }
-            if (!hasFound) {
+            val todayTest = tests.firstOrNull { it.date == time }
+            if (todayTest != null) {
+                update(todayTest)
+            } else {
                 clear()
-                for (holiday in TimetableController.Holidays) {
-                    if (holiday.isOneDay()) {
-                        if (time == holiday.startTime) {
-                            update(holiday)
-                            break
-                        }
-                    } else {
-                        if (time >= holiday.startTime && time <= holiday.endTime) {
-                            update(holiday)
-                            break
-                        }
-                    }
-                }
+                TimetableController.Holidays.firstOrNull {
+                    (it.isOneDay() && it.startTime == time) || (!it.isOneDay() && time in it.startTime..it.endTime)
+                }?.let(::update)
             }
         }
         calendarView.addDecorator(HolidayDecorator.generate(context!!, TimetableController.Holidays))
