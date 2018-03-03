@@ -1,15 +1,20 @@
 package com.ohelshem.app.android.notifications
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.support.v4.app.NotificationCompat
 import com.ohelshem.app.android.fromHtml
 import com.ohelshem.app.android.main.MainActivity
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.notificationManager
+
+
 
 
 /**
@@ -27,7 +32,14 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, showDi
     }
     val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
-    notificationManager.notify(id, NotificationCompat.Builder(this)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channel = NotificationChannel("OSHNotify",
+                "Ohel-Shem Notifications",
+                NotificationManager.IMPORTANCE_HIGH)
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    notificationManager.notify(id, NotificationCompat.Builder(this, "OSHNotify")
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(messageBody.fromHtml())
@@ -43,7 +55,14 @@ fun Context.sendNotification(title: String, messageBody: String, id: Int, action
         val linkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         val linkPIntent = PendingIntent.getActivity(this, 0, linkIntent, 0)
 
-        notificationManager.notify(id, NotificationCompat.Builder(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("OSHNotify",
+                    "Ohel-Shem Notifications",
+                    NotificationManager.IMPORTANCE_HIGH)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(id, NotificationCompat.Builder(this, "OSHNotify")
                 .apply { if (big) setStyle(android.support.v4.app.NotificationCompat.BigTextStyle().bigText(messageBody)) }
                 .setSmallIcon(icon)
                 .setContentTitle(title)
