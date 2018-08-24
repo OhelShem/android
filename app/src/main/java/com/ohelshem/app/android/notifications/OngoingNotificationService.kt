@@ -41,7 +41,7 @@ class OngoingNotificationService : JobIntentService(), LazyKodeinAware {
         val day = cal.day
         if (storage.isSetup()) {
             val holiday = TimetableController.getHoliday()
-            if (timetableController.hasData && storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != getIsraelCalendar().clearTime().timeInMillis && (holiday == null || storage.disableHolidayCard) && day != Calendar.SATURDAY && ((cal[Calendar.HOUR_OF_DAY] >= 7 && cal[Calendar.MINUTE] >= 55) || cal[Calendar.HOUR_OF_DAY] >= 8)) {
+            if (timetableController.hasData && storage.notificationsForTimetable && storage.ongoingNotificationDisableDate != getIsraelCalendar().clearTime().timeInMillis && (holiday == null || storage.disableHolidayCard) && day != Calendar.SATURDAY && (cal[Calendar.HOUR_OF_DAY] >= 8 && cal[Calendar.MINUTE] >= 10)) {
                 val data = timetableController.getHourData(day)
                 if (data.hour.day != day) {
                     // Day has ended
