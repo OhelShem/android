@@ -40,16 +40,16 @@ interface TimetableController {
          */
         val DayHours: Array<String> = arrayOf(
                 "08:15", "09:00",
-                "09:05", "09:50",
-                "10:05", "10:50",
-                "10:55", "11:40",
+                "09:00", "09:45",
+                "10:00", "10:45",
+                "10:45", "11:30",
                 "12:00", "12:45",
-                "12:50", "13:35",
+                "12:45", "13:30",
                 "13:45", "14:30",
-                "14:35", "15:20",
-                "15:25", "16:10",
+                "14:30", "15:15",
+                "15:30", "16:15",
                 "16:15", "17:00",
-                "17:05", "17:50")
+                "17:00", "17:45")
 
         /**
          * Hours for alarm, the first int is hour and the second is minute.
@@ -57,16 +57,16 @@ interface TimetableController {
         val AlarmHours: Array<Pair<Int, Int>> = arrayOf(
                 8 to 10,
                 9 to 0,
-                9 to 50,
-                10 to 50,
-                11 to 40,
+                9 to 45,
+                10 to 45,
+                11 to 30,
                 12 to 45,
-                13 to 35,
+                13 to 30,
                 14 to 30,
-                15 to 20,
-                16 to 10,
+                15 to 15,
+                16 to 15,
                 17 to 0,
-                17 to 50
+                17 to 45
 
         )
 
