@@ -53,9 +53,14 @@ class TimetableAdapter(val context: Context, val items: Array<Hour>, val listene
             listener(item, position)
         }
 
-        if (item is WrappedHour && item.room != 0 && item.room != -1) {
-            holder.text.htmlText = "<b>${item.name}</b> <small>(${item.room})</small><br><small><font color='#ECEFF1'>${item.teacher}</font></small>"
-        } else holder.text.htmlText = "<b>${item.name}</b><br><small><font color='#ECEFF1'>${item.teacher}</font></small>"
+        var hourName = "<b>${item.name}</b>"
+        if (item is WrappedHour && item.room != 0 && item.room != -1)
+            hourName += " <small>(${item.room})</small>"
+        if (item.teacher.trim().isNotEmpty())
+            hourName += "<br><small><font color='#ECEFF1'>${item.teacher}</font>"
+
+        holder.text.htmlText = hourName
+
     }
 
 

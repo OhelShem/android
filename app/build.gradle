@@ -11,7 +11,7 @@ android {
         testApplicationId "com.yoavst.changesystemohelshem.tests"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 104
+        versionCode 105
         versionName "7.4"
         resConfigs "he"
     }
@@ -57,7 +57,7 @@ dependencies {
     compile 'com.github.salomonbrys.kodein:kodein-erased:4.0.0'
     compile 'com.github.salomonbrys.kodein:kodein-android:4.0.0'
     compile 'com.chibatching.kotpref:kotpref:2.1.1'
-    compile 'com.github.kittinunf.fuel:fuel-android:1.7.0'
+    compile 'com.github.kittinunf.fuel:fuel-android:1.9.0'
     // Util
     compile 'io.github.microutils:kotlin-logging:1.4.4'
     compile 'org.slf4j:slf4j-android:1.7.21'
