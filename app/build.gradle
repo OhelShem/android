@@ -74,7 +74,7 @@ dependencies {
     compile 'com.nbsp:library:1.09' // material file picker
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
-    compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
+    compile 'com.github.emachlev:MaterialStyledDialogs:2.2'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.vlonjatg.android:progress-activity:1.1.1'
     compile 'com.roughike:bottom-bar:2.3.1'

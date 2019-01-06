@@ -202,6 +202,12 @@
     <string name="grader_dialog_description">מהיוצרים של אפליקציית אהל שם. קליינט למשו\"ב עם כל הפיצ\'רים המוכרים והאהובים, ביחד עם גרפים שנראים טוב וממשק מהיר. וגם המשו\"ב לא ממש מחבבים את האפליקציה, אז אם אתם לא אוהבים את המשו\"ב, זאת סיבה מעולה להוריד!</string>
     <string name="menu_mashov_message">התקן את אפליקציית Grader</string>
 
+    <!-- PerPage -->
+    <string name="perpage">PerPage</string>
+    <string name="perpage_dialog_title">כותרת פרפייג</string>
+    <string name="perpage_dialog_description">תיאור פרפייג</string>
+    <string name="menu_perpage_message">התקן את אפליקציית PerPage</string>
+
     <!-- Settings -->
     <string name="overrides">עריכות במערכת</string>
     <string name="no_overrides">אין עריכות למערכת השעות</string>

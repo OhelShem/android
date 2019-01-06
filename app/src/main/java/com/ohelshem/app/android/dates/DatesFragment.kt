@@ -166,6 +166,35 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                 }
                 true
             }
+        menu.findItem(R.id.menu_perpage).setOnMenuItemClickListener {
+            val intent = activity!!.packageManager.getLaunchIntentForPackage("io.perpage.perpage")
+            if (isPerPageInstalled() && intent != null) {
+                intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                activity!!.startActivity(intent)
+            } else {
+                showPerPageAlert()
+            }
+            true
+        }
+    }
+
+    private fun showPerPageAlert() {
+        MaterialStyledDialog.Builder(activity)
+                .setTitle(R.string.perpage_dialog_title)
+                .setDescription(R.string.perpage_dialog_description)
+                .setStyle(Style.HEADER_WITH_ICON)
+                .setIcon(R.drawable.mashov)
+                .autoDismiss(true)
+                .setPositiveText(R.string.download)
+                .onPositive { materialDialog, _ ->
+                    materialDialog.cancel()
+                    launchPlayStore("io.perpage.perpage")
+                }
+                .setNegativeText(R.string.no_thanks)
+                .onNegative { materialDialog, _ ->
+                    materialDialog.cancel()
+                }
+                .show()
     }
 
     override fun onPause() {
@@ -246,6 +275,13 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
     private fun isGraderInstalled(): Boolean = try {
         context!!.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
+
+    private fun isPerPageInstalled(): Boolean = try {
+        context!!.packageManager.getApplicationInfo("io.perpage.perpage", 0)
         true
     } catch (e: PackageManager.NameNotFoundException) {
         false
