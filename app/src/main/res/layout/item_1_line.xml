@@ -36,7 +36,7 @@
         android:layout_marginLeft="9dp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
-        android:src="@drawable/perpage"/>
+        android:src="@drawable/mashov"/>
 
     <TextView
         android:id="@+id/indicator"
