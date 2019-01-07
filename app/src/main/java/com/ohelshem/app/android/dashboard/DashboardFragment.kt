@@ -295,9 +295,9 @@ class DashboardFragment : BaseMvpFragment<DashboardView, DashboardPresenter>(), 
                         (getChildAt(1) as TextView).text = test.content
                         (getChildAt(0) as TextView).text = testDateFormat.format(Date(test.date))
                         if (now > test.date)
-                            (getChildAt(3) as TextView).text = "✓"
+                            (getChildAt(2) as TextView).text = "✓"
                         else
-                            (getChildAt(3) as TextView).text = ""
+                            (getChildAt(2) as TextView).text = ""
                     }
                     view.onClick {}
                     list.addView(view)

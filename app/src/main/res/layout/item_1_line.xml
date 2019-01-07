@@ -29,15 +29,6 @@
         android:maxLines="1"
         tools:text="אלגברה לינארית 1"/>
 
-    <ImageView
-        android:id="@+id/perpage_indicator"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginLeft="9dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:src="@drawable/mashov"/>
-
     <TextView
         android:id="@+id/indicator"
         android:layout_width="32dp"

@@ -21,7 +21,6 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.android.utils.adapter.SimpleHeaderAdapter
@@ -47,11 +46,11 @@ class TestsAdapter(context: Context, items: List<VisibleItem<Test>>, callback: (
             holder.indicator.text = "✓"
         else
             holder.indicator.text = ""
+
     }
 
     class TestsHolder(layout: View) : RecyclerView.ViewHolder(layout) {
-        val indicator: TextView by lazy { (layout as ViewGroup).getChildAt(3) as TextView }
-        val perpageIndicator: ImageView by lazy { (layout as ViewGroup).getChildAt(2) as ImageView }
+        val indicator: TextView by lazy { (layout as ViewGroup).getChildAt(2) as TextView }
         val title: TextView by lazy { (layout as ViewGroup).getChildAt(1) as TextView }
         val date: TextView by lazy { (layout as ViewGroup).getChildAt(0) as TextView }
     }
