@@ -2,7 +2,10 @@ package com.ohelshem.app.android
 
 import android.annotation.TargetApi
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.content.res.TypedArray
@@ -12,6 +15,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
+import android.net.Uri
 import android.os.Build
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
@@ -21,8 +25,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.TextView
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
+import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.ohelshem.app.android.utils.AttributeExtractor
 import com.ohelshem.app.android.utils.view.AutoResizeTextView
+import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.inputMethodManager
@@ -164,3 +171,35 @@ val Context.screenSize: Point
         screen.getSize(size)
         return size
     }
+
+fun Context.isAppInstalled(packageName: String): Boolean = try {
+    packageManager.getApplicationInfo(packageName, 0)
+    true
+} catch (e: PackageManager.NameNotFoundException) {
+    false
+}
+
+fun Context.launchPlayStore(packageName: String) = try {
+    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
+} catch (e: ActivityNotFoundException) {
+    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
+}
+
+fun Context.showPerPageAlert(isCancelable: Boolean = true) {
+    MaterialStyledDialog.Builder(this)
+            .setTitle(R.string.perpage_hebrew)
+            .setDescription(R.string.perpage_dialog_description)
+            .setStyle(Style.HEADER_WITH_ICON)
+            .setIcon(R.drawable.perpage_196)
+            .setCancelable(isCancelable)
+            .setPositiveText(R.string.download)
+            .onPositive { materialDialog, _ ->
+                materialDialog.cancel()
+                this.launchPlayStore("io.perpage.perpage")
+            }
+            .setNegativeText(R.string.no_thanks)
+            .onNegative { materialDialog, _ ->
+                materialDialog.cancel()
+            }
+            .show()
+}

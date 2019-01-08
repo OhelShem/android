@@ -18,10 +18,7 @@
 package com.ohelshem.app.android.dates
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -33,13 +30,10 @@ import com.github.javiersantos.materialstyleddialogs.enums.Style
 import com.github.salomonbrys.kodein.erased.instance
 import com.ohelshem.api.model.Test
 import com.ohelshem.app.*
+import com.ohelshem.app.android.*
 import com.ohelshem.app.android.dates.calendar.HolidayDecorator
 import com.ohelshem.app.android.dates.list.DatesListFragment
 import com.ohelshem.app.android.dates.list.HolidaysListFragment
-import com.ohelshem.app.android.drawableRes
-import com.ohelshem.app.android.hide
-import com.ohelshem.app.android.primaryColor
-import com.ohelshem.app.android.show
 import com.ohelshem.app.android.utils.BaseMvpFragment
 import com.ohelshem.app.android.utils.view.OneDayDecorator
 import com.ohelshem.app.controller.timetable.TimetableController
@@ -143,7 +137,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
         else
             menu.findItem(R.id.menu_mashov).setOnMenuItemClickListener {
                 val intent = activity!!.packageManager.getLaunchIntentForPackage("com.yoavst.mashov")
-                if (isGraderInstalled() && intent != null) {
+                if (context!!.isAppInstalled("com.yoavst.mashov") && intent != null) {
                     intent.addCategory(Intent.CATEGORY_LAUNCHER)
                     activity!!.startActivity(intent)
                 } else {
@@ -156,7 +150,7 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                             .setPositiveText(R.string.download)
                             .onPositive { materialDialog, _ ->
                                 materialDialog.cancel()
-                                launchPlayStore("com.yoavst.mashov")
+                                context!!.launchPlayStore("com.yoavst.mashov")
                             }
                             .setNegativeText(R.string.no_thanks)
                             .onNegative { materialDialog, _ ->
@@ -168,33 +162,14 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
             }
         menu.findItem(R.id.menu_perpage).setOnMenuItemClickListener {
             val intent = activity!!.packageManager.getLaunchIntentForPackage("io.perpage.perpage")
-            if (isPerPageInstalled() && intent != null) {
+            if (context!!.isAppInstalled("io.perpage.perpage") && intent != null) {
                 intent.addCategory(Intent.CATEGORY_LAUNCHER)
                 activity!!.startActivity(intent)
             } else {
-                showPerPageAlert()
+                context!!.showPerPageAlert()
             }
             true
         }
-    }
-
-    private fun showPerPageAlert(isCancelable: Boolean = true) {
-        MaterialStyledDialog.Builder(activity)
-                .setTitle(R.string.perpage_hebrew)
-                .setDescription(R.string.perpage_dialog_description)
-                .setStyle(Style.HEADER_WITH_ICON)
-                .setIcon(R.drawable.perpage_196)
-                .setCancelable(isCancelable)
-                .setPositiveText(R.string.download)
-                .onPositive { materialDialog, _ ->
-                    materialDialog.cancel()
-                    launchPlayStore("io.perpage.perpage")
-                }
-                .setNegativeText(R.string.no_thanks)
-                .onNegative { materialDialog, _ ->
-                    materialDialog.cancel()
-                }
-                .show()
     }
 
     override fun onPause() {
@@ -271,26 +246,6 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
                 .setNeutralButton(R.string.dialog_close) { dialog, _ -> dialog.dismiss() }
                 .setView(view)
                 .show()
-    }
-
-    private fun isGraderInstalled(): Boolean = try {
-        context!!.packageManager.getApplicationInfo("com.yoavst.mashov", 0)
-        true
-    } catch (e: PackageManager.NameNotFoundException) {
-        false
-    }
-
-    private fun isPerPageInstalled(): Boolean = try {
-        context!!.packageManager.getApplicationInfo("io.perpage.perpage", 0)
-        true
-    } catch (e: PackageManager.NameNotFoundException) {
-        false
-    }
-
-    private fun launchPlayStore(packageName: String) = try {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
-    } catch (e: ActivityNotFoundException) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)))
     }
 
     private class TestDecorator(private val color: Int, val tests: List<Test>) : DayViewDecorator {
