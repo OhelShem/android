@@ -44,9 +44,24 @@ class UIStorageCacheImpl(private val storage: UIStorage): UIStorage by storage {
             storage.firstTimeInOverridesManager = value
         }
 
+    private var _firstTimePerPage: Boolean? = null
+
+    override var firstTimePerPage: Boolean
+        get() {
+            if (_firstTimePerPage == null)
+                _firstTimePerPage = storage.firstTimePerPage
+            return _firstTimePerPage!!
+        }
+        set(value) {
+            _firstTimePerPage = value
+            storage.firstTimePerPage = value
+        }
+
     override fun clean() {
         _firstTimeInApp = null
         _firstTimeInOverridesManager = null
+        _disableHolidayCard = null
+        _firstTimePerPage = null
         storage.clean()
     }
 }

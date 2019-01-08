@@ -10,6 +10,7 @@ class UIStorageImpl: UIStorage, KotprefModel() {
     override var firstTimeInApp: Boolean by booleanPref(true)
     override var firstTimeInOverridesManager: Boolean by booleanPref(true)
     override var disableHolidayCard: Boolean by booleanPref(false)
+    override var firstTimePerPage: Boolean by booleanPref(true)
 
     override fun migration() {
         version = 4

@@ -493,7 +493,12 @@ class MainActivity : AppThemedActivity(), ApiController.Callback, TopNavigationS
     private fun showIntro() {
         if (App.updatedFromVersion != -1) {
             App.updatedFromVersion = -1
-            alertChangelog()
+            if (!storage.firstTimePerPage)
+                alertChangelog()
+        }
+        if (storage.firstTimePerPage) {
+            showPerPageAlert(isCancelable = false)
+            storage.firstTimePerPage = false
         }
     }
 

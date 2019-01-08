@@ -4,4 +4,5 @@ interface UIStorage: IStorage {
     var firstTimeInApp: Boolean
     var firstTimeInOverridesManager: Boolean
     var disableHolidayCard: Boolean
+    var firstTimePerPage: Boolean
 }
