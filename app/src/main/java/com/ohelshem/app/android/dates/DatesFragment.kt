@@ -180,10 +180,10 @@ class DatesFragment : BaseMvpFragment<DatesView, DatesPresenter>(), DatesView {
 
     private fun showPerPageAlert(isCancelable: Boolean = true) {
         MaterialStyledDialog.Builder(activity)
-                .setTitle(R.string.perpage_dialog_title)
+                .setTitle(R.string.perpage_hebrew)
                 .setDescription(R.string.perpage_dialog_description)
                 .setStyle(Style.HEADER_WITH_ICON)
-                .setIcon(R.drawable.perpage)
+                .setIcon(R.drawable.perpage_196)
                 .setCancelable(isCancelable)
                 .setPositiveText(R.string.download)
                 .onPositive { materialDialog, _ ->

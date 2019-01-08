@@ -204,8 +204,9 @@
 
     <!-- PerPage -->
     <string name="perpage">PerPage</string>
-    <string name="perpage_dialog_title">כותרת פרפייג</string>
-    <string name="perpage_dialog_description">תיאור פרפייג</string>
+    <string name="perpage_hebrew">פרפייג\'</string>
+    <string name="perpage_dialog_description">דבר אינו יכול לגבור על הכוח של תלמידים שעובדים ביחד למען מטרה משותפת.
+מוזמנים ליהנות מפרפייג’ - אפליקציה חברתית לשיתוף חומרי לימוד, וביחד לנצח את הבגרות!</string>
     <string name="menu_perpage_message">התקן את אפליקציית PerPage</string>
 
     <!-- Settings -->
