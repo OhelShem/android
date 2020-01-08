@@ -32,7 +32,6 @@ import com.ohelshem.app.android.utils.view.AutoResizeTextView
 import com.yoavst.changesystemohelshem.R
 import org.jetbrains.anko.connectivityManager
 import org.jetbrains.anko.custom.ankoView
-import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.windowManager
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -66,7 +65,7 @@ fun <K> TypedArray.use(init: (typedArray: TypedArray) -> K): K {
 
 fun Context.isNetworkAvailable() = connectivityManager.activeNetworkInfo?.isConnected == true
 
-fun Activity.hideKeyboard() = inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+//fun Activity.hideKeyboard() = inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
 
 fun View.setMargins(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0) {
     val params = layoutParams as ViewGroup.MarginLayoutParams

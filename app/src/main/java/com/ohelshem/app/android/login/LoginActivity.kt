@@ -9,7 +9,6 @@ import com.github.salomonbrys.kodein.android.appKodein
 import com.github.salomonbrys.kodein.erased.instance
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import com.ohelshem.api.model.UpdateError
-import com.ohelshem.app.android.hideKeyboard
 import com.ohelshem.app.android.invisible
 import com.ohelshem.app.android.main.MainActivity
 import com.ohelshem.app.android.setMargins
@@ -82,7 +81,7 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
 
         passwordInputLayout.isEnabled = false
         idInputLayout.isEnabled = false
-        hideKeyboard()
+        //hideKeyboard()
         loadingBar.show()
         loadingBar.startAnim()
     }
@@ -145,7 +144,7 @@ class LoginActivity : MvpActivity<LoginView, LoginPresenter>(), LoginView {
         passwordInputLayout.error = null
         val id = idInputLayout.editText!!.text.toString()
         val password = passwordInputLayout.editText!!.text.toString()
-        hideKeyboard()
+        //hideKeyboard()
         presenter.login(id, password)
     }
 
