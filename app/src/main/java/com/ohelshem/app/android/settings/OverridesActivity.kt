@@ -186,7 +186,8 @@ class OverridesActivity : AppThemedActivity() {
             }
             recycler.adapter = OverridesAdapter(this, items) {}
             val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-                override fun onMove(recyclerView: RecyclerView, viewHolder: ViewHolder?, target: ViewHolder?): Boolean = false
+
+                override fun onMove(p0: RecyclerView, p1: ViewHolder, p2: ViewHolder): Boolean = false
                 override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
                     val position = viewHolder.adapterPosition
                     @Suppress("UNCHECKED_CAST")
@@ -199,10 +200,10 @@ class OverridesActivity : AppThemedActivity() {
                         if (!adapterItems[position - 1].title.isNullOrEmpty() && (adapterItems.size <= position + 1 || !adapterItems[position + 1].title.isNullOrEmpty())) {
                             adapterItems.removeAt(viewHolder.adapterPosition - 1) // remove title
                             adapterItems.removeAt(viewHolder.adapterPosition - 1) // remove the item itself, that was pushed one back
-                            recycler.adapter.notifyItemRangeRemoved(viewHolder.adapterPosition - 1, 2)
+                            (recycler.adapter as OverridesAdapter).notifyItemRangeRemoved(viewHolder.adapterPosition - 1, 2)
                         } else {
                             adapterItems.removeAt(viewHolder.adapterPosition)
-                            recycler.adapter.notifyItemRemoved(position)
+                            (recycler.adapter as OverridesAdapter).notifyItemRemoved(position)
                         }
                     }
                     updateNotification()

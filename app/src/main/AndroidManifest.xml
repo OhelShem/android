@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
-        tools:replace="android:supportsRtl,android:allowBackup">
+        tools:replace="android:supportsRtl,android:allowBackup"
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
             android:name="com.ohelshem.app.android.main.MainActivity"
