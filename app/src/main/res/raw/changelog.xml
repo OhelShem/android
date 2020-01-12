@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+    <changelogversion changeDate="12.01.2020" versionName="7.6">
+        <changelogtext>[b]עדכון חגים ואנשי קשר לשנת תש"פ:[/b] [font color=red]זכרו לשנות את הכיתה שלכם דרך האתר![/font]</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="25.08.2018" versionName="7.4">
         <changelogtext>[b]עדכון חגים ואנשי קשר לשנת תשע"ט:[/b] [font color=red]זכרו לשנות את הכיתה שלכם דרך האתר![/font]</changelogtext>
         <changelogtext>[b]לוח צלצולים:[/b] [font color=blue]משנה זו יום הלימודים מתחיל בשעה 08:15 ואין הפסקות של 5 דקות.[/font]</changelogtext>
